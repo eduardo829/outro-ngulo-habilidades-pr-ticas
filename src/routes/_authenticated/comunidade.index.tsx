@@ -48,7 +48,7 @@ function Composer({ onDone }: { onDone: () => void }) {
     const { error } = await supabase.from("posts").insert({
       author_id: user!.id, kind, body: body.trim(), link_url: link || null, image_url,
       category: kind === "oportunidade" ? "Oportunidades" : category,
-      opportunity_type: kind === "oportunidade" ? opp : null,
+      opportunity_type: kind === "oportunidade" ? (opp ?? null) : null,
     });
     setBusy(false);
     if (error) return toast.error("Não foi possível publicar.");
