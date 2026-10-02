@@ -33,6 +33,9 @@ import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authent
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
 import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
+import { Route as AuthenticatedEncontrosIndexRouteImport } from './routes/_authenticated/encontros.index'
+import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenticated/encontros.$id'
+import { Route as AuthenticatedGestoresIdRouteImport } from './routes/_authenticated/gestores.$id'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedMensagensIdRouteImport } from './routes/_authenticated/mensagens.$id'
 import { Route as AuthenticatedPessoasIndexRouteImport } from './routes/_authenticated/pessoas.index'
@@ -165,6 +168,23 @@ const AuthenticatedCursoSlugRoute = AuthenticatedCursoSlugRouteImport.update({
   path: '/curso/$slug',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEncontrosIndexRoute =
+  AuthenticatedEncontrosIndexRouteImport.update({
+    id: '/encontros/',
+    path: '/encontros/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEncontrosIdRoute =
+  AuthenticatedEncontrosIdRouteImport.update({
+    id: '/encontros/$id',
+    path: '/encontros/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGestoresIdRoute = AuthenticatedGestoresIdRouteImport.update({
+  id: '/gestores/$id',
+  path: '/gestores/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMensagensIndexRoute =
   AuthenticatedMensagensIndexRouteImport.update({
     id: '/mensagens/',
@@ -223,10 +243,13 @@ export interface FileRoutesByFullPath {
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
+  '/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
@@ -253,10 +276,13 @@ export interface FileRoutesByTo {
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
+  '/encontros': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/pessoas': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
@@ -286,10 +312,13 @@ export interface FileRoutesById {
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/_authenticated/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
+  '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
@@ -319,10 +348,13 @@ export interface FileRouteTypes {
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
+    | '/encontros/$id'
+    | '/gestores/$id'
     | '/mensagens/$id'
     | '/pessoas/$id'
     | '/admin/'
     | '/comunidade/'
+    | '/encontros/'
     | '/mensagens/'
     | '/pessoas/'
     | '/admin/cursos/$id'
@@ -349,10 +381,13 @@ export interface FileRouteTypes {
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
+    | '/encontros/$id'
+    | '/gestores/$id'
     | '/mensagens/$id'
     | '/pessoas/$id'
     | '/admin'
     | '/comunidade'
+    | '/encontros'
     | '/mensagens'
     | '/pessoas'
     | '/admin/cursos/$id'
@@ -381,10 +416,13 @@ export interface FileRouteTypes {
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/comunidade/$postId'
     | '/_authenticated/curso/$slug'
+    | '/_authenticated/encontros/$id'
+    | '/_authenticated/gestores/$id'
     | '/_authenticated/mensagens/$id'
     | '/_authenticated/pessoas/$id'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
+    | '/_authenticated/encontros/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/pessoas/'
     | '/_authenticated/admin/cursos/$id'
@@ -575,6 +613,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCursoSlugRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/encontros/': {
+      id: '/_authenticated/encontros/'
+      path: '/encontros'
+      fullPath: '/encontros/'
+      preLoaderRoute: typeof AuthenticatedEncontrosIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/encontros/$id': {
+      id: '/_authenticated/encontros/$id'
+      path: '/encontros/$id'
+      fullPath: '/encontros/$id'
+      preLoaderRoute: typeof AuthenticatedEncontrosIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gestores/$id': {
+      id: '/_authenticated/gestores/$id'
+      path: '/gestores/$id'
+      fullPath: '/gestores/$id'
+      preLoaderRoute: typeof AuthenticatedGestoresIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/mensagens/': {
       id: '/_authenticated/mensagens/'
       path: '/mensagens'
@@ -652,9 +711,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
   AuthenticatedComunidadePostIdRoute: typeof AuthenticatedComunidadePostIdRoute
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
+  AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
+  AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
   AuthenticatedMensagensIdRoute: typeof AuthenticatedMensagensIdRoute
   AuthenticatedPessoasIdRoute: typeof AuthenticatedPessoasIdRoute
   AuthenticatedComunidadeIndexRoute: typeof AuthenticatedComunidadeIndexRoute
+  AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedPessoasIndexRoute: typeof AuthenticatedPessoasIndexRoute
 }
@@ -669,9 +731,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
   AuthenticatedComunidadePostIdRoute: AuthenticatedComunidadePostIdRoute,
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
+  AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
+  AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
   AuthenticatedMensagensIdRoute: AuthenticatedMensagensIdRoute,
   AuthenticatedPessoasIdRoute: AuthenticatedPessoasIdRoute,
   AuthenticatedComunidadeIndexRoute: AuthenticatedComunidadeIndexRoute,
+  AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedPessoasIndexRoute: AuthenticatedPessoasIndexRoute,
 }

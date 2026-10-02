@@ -12,7 +12,7 @@ import { useMyProfile } from "@/components/AppShell";
 import { Page, SectionTitle } from "@/components/community/Bits";
 import { EventCard } from "@/components/community/EventCard";
 import { PostCard } from "@/components/community/PostCard";
-import { PersonCard, PEOPLE_COLS } from "./pessoas.index";
+import { PersonCard, PEOPLE_COLS } from "@/components/community/PersonCard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
