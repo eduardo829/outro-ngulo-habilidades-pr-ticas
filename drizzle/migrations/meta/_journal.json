@@ -92,6 +92,13 @@
       "when": 1790979289634,
       "tag": "0012_assistant_chat",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790980352713,
+      "tag": "0013_meu_angulo",
+      "breakpoints": true
     }
   ]
 }

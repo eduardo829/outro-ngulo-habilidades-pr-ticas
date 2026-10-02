@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
-import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid } from "lucide-react";
+import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth";
@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/inicio", label: "Início", icon: Home },
+  { to: "/meu-angulo", label: "Meu Ângulo", short: "Ângulo", icon: Compass },
   { to: "/meus-cursos", label: "Meus cursos", short: "Cursos", icon: BookOpen },
   { to: "/comunidade", label: "Comunidade", icon: MessagesSquare },
   { to: "/encontros", label: "Encontros", icon: CalendarDays },
@@ -80,6 +81,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Icon className="h-4 w-4" aria-hidden />{label}
             </Link>
           ))}
+          <Link to="/missoes" className={linkCls} activeProps={active}><Target className="h-4 w-4" aria-hidden />Missões</Link>
           <div className="my-3 border-t" />
           <Link to="/mensagens" className={linkCls} activeProps={active}><Mail className="h-4 w-4" aria-hidden />Mensagens{!!unread.data?.messages && <span className="ml-auto text-xs text-primary">{unread.data.messages}</span>}</Link>
           <Link to="/notificacoes" className={linkCls} activeProps={active}><Bell className="h-4 w-4" aria-hidden />Notificações{!!unread.data?.all && <span className="ml-auto text-xs text-primary">{unread.data.all}</span>}</Link>

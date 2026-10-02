@@ -26,6 +26,7 @@ import { Route as TrilhasRouteImport } from './routes/trilhas'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBoasVindasRouteImport } from './routes/_authenticated/boas-vindas'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
+import { Route as AuthenticatedMeuAnguloRouteImport } from './routes/_authenticated/meu-angulo'
 import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authenticated/meu-espaco'
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
@@ -51,6 +52,8 @@ import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenti
 import { Route as AuthenticatedGestoresIdRouteImport } from './routes/_authenticated/gestores.$id'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedMensagensIdRouteImport } from './routes/_authenticated/mensagens.$id'
+import { Route as AuthenticatedMissoesIndexRouteImport } from './routes/_authenticated/missoes.index'
+import { Route as AuthenticatedMissoesKeyRouteImport } from './routes/_authenticated/missoes.$key'
 import { Route as AuthenticatedPessoasIndexRouteImport } from './routes/_authenticated/pessoas.index'
 import { Route as AuthenticatedPessoasIdRouteImport } from './routes/_authenticated/pessoas.$id'
 import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
@@ -141,6 +144,11 @@ const AuthenticatedBoasVindasRoute = AuthenticatedBoasVindasRouteImport.update({
 const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
   id: '/inicio',
   path: '/inicio',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMeuAnguloRoute = AuthenticatedMeuAnguloRouteImport.update({
+  id: '/meu-angulo',
+  path: '/meu-angulo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMeuEspacoRoute = AuthenticatedMeuEspacoRouteImport.update({
@@ -282,6 +290,17 @@ const AuthenticatedMensagensIdRoute =
     path: '/mensagens/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMissoesIndexRoute =
+  AuthenticatedMissoesIndexRouteImport.update({
+    id: '/missoes/',
+    path: '/missoes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMissoesKeyRoute = AuthenticatedMissoesKeyRouteImport.update({
+  id: '/missoes/$key',
+  path: '/missoes/$key',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPessoasIndexRoute =
   AuthenticatedPessoasIndexRouteImport.update({
     id: '/pessoas/',
@@ -341,6 +360,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -362,11 +382,13 @@ export interface FileRoutesByFullPath {
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
+  '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
@@ -390,6 +412,7 @@ export interface FileRoutesByTo {
   '/trilhas': typeof TrilhasRoute
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -411,11 +434,13 @@ export interface FileRoutesByTo {
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
+  '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
+  '/missoes': typeof AuthenticatedMissoesIndexRoute
   '/pessoas': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
@@ -442,6 +467,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
+  '/_authenticated/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/_authenticated/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -463,11 +489,13 @@ export interface FileRoutesById {
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
+  '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/_authenticated/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
+  '/_authenticated/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/_authenticated/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/_authenticated/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
@@ -494,6 +522,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
@@ -515,11 +544,13 @@ export interface FileRouteTypes {
     | '/encontros/$id'
     | '/gestores/$id'
     | '/mensagens/$id'
+    | '/missoes/$key'
     | '/pessoas/$id'
     | '/admin/'
     | '/comunidade/'
     | '/encontros/'
     | '/mensagens/'
+    | '/missoes/'
     | '/pessoas/'
     | '/admin/cursos/$id'
     | '/aprender/$slug/$modulo'
@@ -543,6 +574,7 @@ export interface FileRouteTypes {
     | '/trilhas'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
@@ -564,11 +596,13 @@ export interface FileRouteTypes {
     | '/encontros/$id'
     | '/gestores/$id'
     | '/mensagens/$id'
+    | '/missoes/$key'
     | '/pessoas/$id'
     | '/admin'
     | '/comunidade'
     | '/encontros'
     | '/mensagens'
+    | '/missoes'
     | '/pessoas'
     | '/admin/cursos/$id'
     | '/aprender/$slug/$modulo'
@@ -594,6 +628,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/boas-vindas'
     | '/_authenticated/inicio'
+    | '/_authenticated/meu-angulo'
     | '/_authenticated/meu-espaco'
     | '/_authenticated/meus-cursos'
     | '/_authenticated/notificacoes'
@@ -615,11 +650,13 @@ export interface FileRouteTypes {
     | '/_authenticated/encontros/$id'
     | '/_authenticated/gestores/$id'
     | '/_authenticated/mensagens/$id'
+    | '/_authenticated/missoes/$key'
     | '/_authenticated/pessoas/$id'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
     | '/_authenticated/encontros/'
     | '/_authenticated/mensagens/'
+    | '/_authenticated/missoes/'
     | '/_authenticated/pessoas/'
     | '/_authenticated/admin/cursos/$id'
     | '/_authenticated/aprender/$slug/$modulo'
@@ -769,6 +806,13 @@ declare module '@tanstack/react-router' {
       path: '/inicio'
       fullPath: '/inicio'
       preLoaderRoute: typeof AuthenticatedInicioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/meu-angulo': {
+      id: '/_authenticated/meu-angulo'
+      path: '/meu-angulo'
+      fullPath: '/meu-angulo'
+      preLoaderRoute: typeof AuthenticatedMeuAnguloRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/meu-espaco': {
@@ -946,6 +990,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMensagensIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/missoes/': {
+      id: '/_authenticated/missoes/'
+      path: '/missoes'
+      fullPath: '/missoes/'
+      preLoaderRoute: typeof AuthenticatedMissoesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/missoes/$key': {
+      id: '/_authenticated/missoes/$key'
+      path: '/missoes/$key'
+      fullPath: '/missoes/$key'
+      preLoaderRoute: typeof AuthenticatedMissoesKeyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pessoas/': {
       id: '/_authenticated/pessoas/'
       path: '/pessoas'
@@ -1032,6 +1090,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedBoasVindasRoute: typeof AuthenticatedBoasVindasRoute
   AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
+  AuthenticatedMeuAnguloRoute: typeof AuthenticatedMeuAnguloRoute
   AuthenticatedMeuEspacoRoute: typeof AuthenticatedMeuEspacoRoute
   AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
   AuthenticatedNotificacoesRoute: typeof AuthenticatedNotificacoesRoute
@@ -1042,10 +1101,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
   AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
   AuthenticatedMensagensIdRoute: typeof AuthenticatedMensagensIdRoute
+  AuthenticatedMissoesKeyRoute: typeof AuthenticatedMissoesKeyRoute
   AuthenticatedPessoasIdRoute: typeof AuthenticatedPessoasIdRoute
   AuthenticatedComunidadeIndexRoute: typeof AuthenticatedComunidadeIndexRoute
   AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
+  AuthenticatedMissoesIndexRoute: typeof AuthenticatedMissoesIndexRoute
   AuthenticatedPessoasIndexRoute: typeof AuthenticatedPessoasIndexRoute
   AuthenticatedAprenderSlugModuloRoute: typeof AuthenticatedAprenderSlugModuloRoute
   AuthenticatedAprenderSlugEspacoRoute: typeof AuthenticatedAprenderSlugEspacoRoute
@@ -1056,6 +1117,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedBoasVindasRoute: AuthenticatedBoasVindasRoute,
   AuthenticatedInicioRoute: AuthenticatedInicioRoute,
+  AuthenticatedMeuAnguloRoute: AuthenticatedMeuAnguloRoute,
   AuthenticatedMeuEspacoRoute: AuthenticatedMeuEspacoRoute,
   AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
   AuthenticatedNotificacoesRoute: AuthenticatedNotificacoesRoute,
@@ -1066,10 +1128,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
   AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
   AuthenticatedMensagensIdRoute: AuthenticatedMensagensIdRoute,
+  AuthenticatedMissoesKeyRoute: AuthenticatedMissoesKeyRoute,
   AuthenticatedPessoasIdRoute: AuthenticatedPessoasIdRoute,
   AuthenticatedComunidadeIndexRoute: AuthenticatedComunidadeIndexRoute,
   AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
+  AuthenticatedMissoesIndexRoute: AuthenticatedMissoesIndexRoute,
   AuthenticatedPessoasIndexRoute: AuthenticatedPessoasIndexRoute,
   AuthenticatedAprenderSlugModuloRoute: AuthenticatedAprenderSlugModuloRoute,
   AuthenticatedAprenderSlugEspacoRoute: AuthenticatedAprenderSlugEspacoRoute,
