@@ -64,6 +64,13 @@
       "when": 1790977018426,
       "tag": "0008_course_corretor_do_zero",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790977847297,
+      "tag": "0009_courses_carreira_comunicacao_dinheiro",
+      "breakpoints": true
     }
   ]
 }
