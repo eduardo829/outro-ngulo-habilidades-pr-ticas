@@ -59,7 +59,7 @@ function Composer({ onDone }: { onDone: () => void }) {
   }
 
   return (
-    <div className="rounded-xl border bg-card p-4">
+    <div className="card-live p-4">
       <Textarea value={body} onFocus={() => setOpen(true)} onChange={(e) => setBody(e.target.value)} maxLength={4000}
         placeholder={kind === "ajuda" ? "Conte em que você está travado. Ex.: estou tentando conseguir meus primeiros clientes…" : "Compartilhe uma dúvida, experiência ou ideia…"}
         className={cn("resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0", open ? "min-h-28" : "min-h-10")} />
@@ -116,8 +116,8 @@ function Community() {
 
   return (
     <Page narrow>
-      <header className="grid items-stretch gap-0 overflow-hidden rounded-md border bg-card sm:grid-cols-[1fr_1.1fr]">
-        <div className="flex flex-col justify-center p-6">
+      <header className="grid items-stretch gap-0 overflow-hidden card-live sm:grid-cols-[1fr_1.1fr]">
+        <div className="paper-light flex flex-col justify-center p-6">
           <p className="eyebrow">Mesa aberta</p>
           <h1 className="mt-3 text-3xl font-extrabold md:text-4xl">Comunidade</h1>
           <p className="mt-2 text-muted-foreground">Pergunte, conte o que aprendeu, peça ajuda. Gente real, sem palco.</p>
