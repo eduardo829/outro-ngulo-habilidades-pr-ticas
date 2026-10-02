@@ -5,6 +5,15 @@ import { CourseGate, CourseSidebar, courseProgress } from "@/components/learning
 import { showOutput } from "@/components/learning/Blocks";
 import { hasValue } from "@/lib/learning/store";
 import { cn } from "@/lib/utils";
+import { NextCourses } from "@/components/learning/NextCourses";
+import type { Course } from "@/lib/learning/types";
+
+function labelsOf(c: Course): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const m of c.modules) for (const b of m.blocks) if (b.type === "fields" || b.type === "list") for (const f of b.fields) out[f.k] = f.l;
+  return out;
+}
+let LABELS: Record<string, string> = {};
 
 export const Route = createFileRoute("/_authenticated/aprender/$slug/espaco")({
   head: () => ({ meta: [{ title: "Meu espaço — Outro Ângulo" }, { name: "description", content: "Tudo o que você construiu no curso, num só lugar." }] }),
@@ -13,7 +22,7 @@ export const Route = createFileRoute("/_authenticated/aprender/$slug/espaco")({
 
 function Value({ v }: { v: unknown }) {
   if (Array.isArray(v) && v.length && typeof v[0] === "object") return <ul className="space-y-1">{v.map((r, i) => <li key={i} className="text-sm">{showOutput(r)}</li>)}</ul>;
-  if (v && typeof v === "object" && !Array.isArray(v)) return <dl className="space-y-1">{Object.entries(v as Record<string, unknown>).filter(([, x]) => hasValue(x)).map(([k, x]) => <div key={k} className="text-sm"><dt className="inline text-muted-foreground">{k}: </dt><dd className="inline">{showOutput(x)}</dd></div>)}</dl>;
+  if (v && typeof v === "object" && !Array.isArray(v)) return <dl className="space-y-1">{Object.entries(v as Record<string, unknown>).filter(([, x]) => hasValue(x)).map(([k, x]) => <div key={k} className="text-sm"><dt className="inline text-muted-foreground">{LABELS[k] ?? k}: </dt><dd className="inline">{showOutput(x)}</dd></div>)}</dl>;
   return <p className="whitespace-pre-line">{showOutput(v)}</p>;
 }
 
@@ -23,12 +32,14 @@ function Workspace() {
     <CourseGate slug={slug}>
       {(c, _id, o) => {
         const p = courseProgress(c, o);
+        LABELS = labelsOf(c);
         return (
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-8 md:grid-cols-[15rem_1fr] md:px-8">
             <aside className="hidden md:block print:hidden"><div className="sticky top-6"><CourseSidebar c={c} o={o} active="espaco" /></div></aside>
             <div className="min-w-0 pb-16">
-              <p className="eyebrow">Meu espaço · privado</p>
-              <h1 className="mt-3 font-display text-3xl font-extrabold md:text-5xl">O que você está construindo</h1>
+              <p className="eyebrow">Meu espaço · Meus projetos · privado</p>
+              <h1 className="mt-3 font-display text-3xl font-extrabold md:text-5xl">{c.project}</h1>
+              <p className="mt-2 text-muted-foreground">O que você construiu em {c.title}.</p>
               <div className="mt-6 grid grid-cols-5 gap-1 md:grid-cols-10" aria-label={`${p.outputs} de ${c.modules.length} resultados`}>
                 {c.modules.map((m, i) => <Link key={m.key} to="/aprender/$slug/$modulo" params={{ slug, modulo: m.key }} title={m.output.title} className={cn("h-10 border p-1 text-[10px] font-bold leading-tight", hasValue(o[m.output.key]) ? "border-primary bg-primary text-primary-foreground" : "text-muted-foreground hover:border-foreground")}>{String(i + 1).padStart(2, "0")}</Link>)}
               </div>
@@ -60,6 +71,7 @@ function Workspace() {
                   })}
                 </dl>
               </section>
+              <NextCourses c={c} done={p.modules === c.modules.length} />
             </div>
           </div>
         );
