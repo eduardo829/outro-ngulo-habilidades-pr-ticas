@@ -76,7 +76,7 @@ function CourseEditor() {
   }
   async function move<T extends { id: string; position: number }>(table: "modules" | "lessons", list: T[], i: number, dir: -1 | 1) {
     const a = list[i], b = list[i + dir];
-    if (!b) return;
+    if (!a || !b) return;
     await Promise.all([
       supabase.from(table).update({ position: b.position }).eq("id", a.id),
       supabase.from(table).update({ position: a.position === b.position ? b.position + dir : a.position }).eq("id", b.id),

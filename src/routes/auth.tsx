@@ -11,9 +11,8 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    modo: s.modo === "cadastro" ? ("cadastro" as const) : undefined,
-  }),
+  validateSearch: (s: Record<string, unknown>): { modo?: "cadastro" } =>
+    s["modo"] === "cadastro" ? { modo: "cadastro" } : {},
   head: () => ({
     meta: [
       { title: "Entrar — Outro Ângulo" },
@@ -52,7 +51,7 @@ function AuthPage() {
     try {
       if (mode === "cadastro") {
         const p = signupSchema.safeParse({ name, email, password });
-        if (!p.success) return toast.error(p.error.issues[0].message);
+        if (!p.success) return toast.error(p.error.issues[0]?.message ?? "Dados inválidos");
         const { error } = await supabase.auth.signUp({
           email: p.data.email,
           password: p.data.password,

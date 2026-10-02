@@ -50,7 +50,7 @@ function ProfilePage() {
   async function save(e: React.FormEvent) {
     e.preventDefault();
     const p = schema.safeParse(f);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) return toast.error(p.error.issues[0]?.message ?? "Dados inválidos");
     setBusy(true);
     const { error } = await supabase.from("profiles").update({
       display_name: f!.display_name.trim(), bio: f!.bio || null, city: f!.city || null, area: f!.area || null,

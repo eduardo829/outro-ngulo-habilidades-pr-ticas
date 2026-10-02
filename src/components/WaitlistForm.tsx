@@ -19,7 +19,7 @@ export function WaitlistForm({ courseId }: { courseId?: string }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     const parsed = schema.safeParse({ name: name || undefined, email });
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message ?? "Dados inválidos");
     setState("sending");
     const { error } = await supabase.from("waitlist").insert({
       email: parsed.data.email.toLowerCase(),

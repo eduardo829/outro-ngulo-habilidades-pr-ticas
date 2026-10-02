@@ -25,9 +25,9 @@ export const settingsQuery = queryOptions({
     if (error) throw error;
     const map = Object.fromEntries((data ?? []).map((r) => [r.key, r.value]));
     return {
-      founders: (map.founders ?? []) as Founder[],
-      offer: (map.offer ?? { price_cents: 9900, label: "Pagamento único", payments_enabled: false }) as Offer,
-      support: (map.support ?? {}) as { email: string | null; note?: string },
+      founders: (map["founders"] ?? []) as Founder[],
+      offer: (map["offer"] ?? { price_cents: 9900, label: "Pagamento único", payments_enabled: false }) as Offer,
+      support: (map["support"] ?? {}) as { email: string | null; note?: string },
     };
   },
 });
