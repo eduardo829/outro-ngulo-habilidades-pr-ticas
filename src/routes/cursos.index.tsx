@@ -30,6 +30,7 @@ export const Route = createFileRoute("/cursos/")({
 const gestorName = (c: Course) => (c.gestor ? getGestor(c.gestor)?.name : undefined) ?? "Gestor a confirmar";
 
 function CourseCard({ c, i }: { c: Course; i: number }) {
+  const { data: prices } = useCoursePrices();
   return (
     <Link to="/cursos/$slug" params={{ slug: c.slug }} className="group relative flex h-full flex-col bg-background p-6 transition-colors duration-300 hover:bg-card focus-visible:bg-card">
       <div className="photo-zoom relative -mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden bg-ink">
@@ -43,7 +44,8 @@ function CourseCard({ c, i }: { c: Course; i: number }) {
       <dl className="mt-6 grid grid-cols-2 gap-3 border-t pt-4 text-sm">
         <div><dt className="eyebrow">Gestor</dt><dd className="mt-1">{gestorName(c)}</dd></div>
         <div><dt className="eyebrow">Compromisso</dt><dd className="mt-1">{c.modules.length} módulos</dd></div>
-        <div className="col-span-2"><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-display font-bold">{c.finalPlan.title}</dd></div>
+        <div><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-display font-bold">{c.finalPlan.title}</dd></div>
+        <div><dt className="eyebrow">Investimento</dt><dd className="mt-1 font-display font-bold">{brl(prices?.[c.slug]) ?? "A definir"}<span className="block text-xs font-normal text-muted-foreground">pagamento único</span></dd></div>
       </dl>
       <span className="mt-auto inline-flex items-center gap-1 pt-6 text-sm font-semibold">Explorar curso<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
     </Link>

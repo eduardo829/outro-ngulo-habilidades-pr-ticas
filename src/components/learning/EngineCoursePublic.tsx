@@ -37,11 +37,12 @@ export function EngineCoursePublic({ c }: { c: Course }) {
         <p className="eyebrow mt-8">{c.category} · {c.difficulty}</p>
         <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">{c.title}</h1>
         <p className="mt-6 max-w-2xl text-xl leading-snug text-muted-foreground">{c.thesis}</p>
-        <dl className="mt-10 grid gap-px border bg-border text-sm sm:grid-cols-4">
+        <dl className="mt-10 grid gap-px border bg-border text-sm sm:grid-cols-5">
           <div className="bg-background p-4"><dt className="eyebrow">Gestor</dt><dd className="mt-1">{g ? <Link to="/gestor/$slug" params={{ slug: g.slug }} className="underline">{g.name}</Link> : "A confirmar"}</dd></div>
           <div className="bg-background p-4"><dt className="eyebrow">Módulos</dt><dd className="mt-1">{c.modules.length}</dd></div>
           <div className="bg-background p-4"><dt className="eyebrow">Compromisso</dt><dd className="mt-1">{c.commitment}</dd></div>
           <div className="bg-background p-4"><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-semibold">{c.project}</dd></div>
+          <div className="bg-background p-4"><dt className="eyebrow">Investimento</dt><dd className="mt-1 font-display text-lg font-bold">{brl(prices?.[c.slug]) ?? "A definir"}</dd><dd className="text-xs text-muted-foreground">pagamento único</dd></div>
         </dl>
         <div className="mt-8 flex flex-wrap items-center gap-4">{cta}<span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Lock className="h-3.5 w-3.5" />Acesso por matrícula. Seu trabalho é privado.</span></div>
       </section>
