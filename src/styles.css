@@ -220,3 +220,10 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Cinematic photo layer */
+.photo-scrim-l { background: linear-gradient(90deg, color-mix(in oklab, var(--ink) 92%, transparent) 0%, color-mix(in oklab, var(--ink) 70%, transparent) 45%, color-mix(in oklab, var(--ink) 25%, transparent) 100%); }
+.photo-scrim-r { background: linear-gradient(270deg, color-mix(in oklab, var(--ink) 92%, transparent) 0%, color-mix(in oklab, var(--ink) 70%, transparent) 45%, color-mix(in oklab, var(--ink) 25%, transparent) 100%); }
+.photo-scrim-b { background: linear-gradient(0deg, color-mix(in oklab, var(--ink) 95%, transparent) 0%, color-mix(in oklab, var(--ink) 55%, transparent) 55%, color-mix(in oklab, var(--ink) 15%, transparent) 100%); }
+.photo-zoom img { transition: transform 700ms var(--ease-out, ease); }
+.photo-zoom:hover img { transform: scale(1.04); }
