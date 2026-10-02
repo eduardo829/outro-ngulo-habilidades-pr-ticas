@@ -9,11 +9,11 @@ import { useAuth } from "@/lib/auth";
 import { parseVideo } from "@/lib/video";
 import { CalculadoraViabilidade, type CalcValues } from "@/components/tools/Tools";
 import { getGestor } from "@/lib/gestores";
-import { hasValue, useSaveOutput, type Outputs } from "@/lib/learning/store";
+import { hasValue, useCourseVideos, useSaveOutput, type Outputs } from "@/lib/learning/store";
 import type { Block, Field } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";
 
-type Ctx = { courseId: string; outputs: Outputs; moduleKey: string };
+export type Ctx = { courseId: string; outputs: Outputs; moduleKey: string; slug: string; gestorName?: string };
 
 const inputCls = "w-full border-b-2 bg-transparent py-2 outline-none transition-colors focus:border-foreground";
 
@@ -80,24 +80,132 @@ function MultipleChoiceReflection({ b, ctx }: { b: Extract<Block, { type: "choic
   return <Shell label="Reflexão" title={b.prompt}><div className="flex flex-wrap gap-2">{b.options.map((o) => <button key={o} type="button" aria-pressed={d.v.includes(o)} onClick={() => toggle(o)} className={cn("border px-3 py-2 text-sm transition-colors", d.v.includes(o) ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{o}</button>)}</div>{d.bar}</Shell>;
 }
 
+/** Placeholder until an admin sets a video URL in course_videos; then it becomes the player automatically. */
+export function VideoLessonPlaceholder({ title, gestor, duration, thumbnail, n }: { title: string; gestor?: string | null; duration?: string | null; thumbnail?: string | null; n: string }) {
+  return (
+    <div className="relative grid overflow-hidden bg-ink text-ink-foreground md:grid-cols-[1.4fr_1fr]">
+      <div className="flex flex-col justify-between gap-6 p-6 md:p-8">
+        <div className="flex items-start justify-between gap-4"><p className="eyebrow !text-highlight">Aula complementar · {n}</p></div>
+        <div>
+          <p className="max-w-xl font-display text-2xl font-extrabold leading-tight md:text-3xl">{title}</p>
+          <p className="mt-3 text-sm text-ink-foreground/70">{gestor ? `Com ${gestor}` : "Gestor a confirmar"} · {duration || "Duração a definir"}</p>
+        </div>
+        <div><span className="inline-flex cursor-not-allowed items-center gap-2 border border-ink-foreground/30 px-3 py-2 text-sm text-ink-foreground/70" aria-disabled="true"><Play className="h-4 w-4" />Vídeo em preparação</span>
+          <p className="mt-3 text-xs text-ink-foreground/50">O texto e os exercícios abaixo já funcionam sem o vídeo. Ele não é obrigatório para concluir o módulo.</p></div>
+      </div>
+      <div className="relative hidden min-h-[12rem] border-l border-ink-foreground/15 md:block" aria-hidden>
+        {thumbnail ? <img src={thumbnail} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" /> : (
+          <><span className="absolute left-8 top-8 h-16 w-16 border-l-2 border-t-2 border-ink-foreground/30" /><span className="absolute bottom-10 right-10 h-6 w-6 bg-highlight/80" /></>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function VideoLesson({ b, ctx, n }: { b: Extract<Block, { type: "video" }>; ctx: Ctx; n: string }) {
-  const src = parseVideo(b.provider ?? null, b.ref ?? null);
+  const videos = useCourseVideos(ctx.slug);
+  const row = videos.data?.[ctx.moduleKey];
+  const src = parseVideo(row?.provider ?? null, row?.video_url ?? null);
+  const title = row?.title || b.title;
+  const gestor = row?.gestor || ctx.gestorName;
   const m = useSaveOutput(ctx.courseId);
   const key = `${ctx.moduleKey}.video`;
   return (
     <section className="border-t py-8">
-      <p className="eyebrow">Assista</p>
-      <div className="mt-4 overflow-hidden bg-ink text-ink-foreground">
-        {src ? <div className="aspect-video"><iframe src={src} title={b.title} className="h-full w-full" allow="encrypted-media; picture-in-picture; fullscreen" /></div> : (
-          <div className="relative flex aspect-video flex-col justify-between p-6 md:p-10">
-            <div className="flex items-start justify-between gap-4"><p className="eyebrow !text-highlight">Aula {n}</p><span className="border border-ink-foreground/30 px-2 py-0.5 text-xs text-ink-foreground/70">Em gravação</span></div>
-            <div><p className="max-w-xl font-display text-2xl font-extrabold leading-tight md:text-4xl">{b.title}</p><p className="mt-3 text-sm text-ink-foreground/60">O vídeo será adicionado em breve. Você já pode fazer os exercícios desta aula.</p></div>
-            <span aria-hidden className="absolute right-8 top-1/2 hidden h-16 w-16 -translate-y-1/2 items-center justify-center border border-ink-foreground/30 md:flex"><Play className="h-6 w-6 text-ink-foreground/50" /></span>
-          </div>
-        )}
+      <p className="eyebrow">O ângulo do gestor</p>
+      <div className="mt-4">
+        {src ? (
+          <div className="overflow-hidden bg-ink"><div className="aspect-video"><iframe src={src} title={title} className="h-full w-full" allow="encrypted-media; picture-in-picture; fullscreen" allowFullScreen /></div></div>
+        ) : <VideoLessonPlaceholder title={title} gestor={gestor} duration={row?.duration_text} thumbnail={row?.thumbnail_url} n={n} />}
       </div>
-      {src && <Button size="sm" variant="outline" className="mt-3" disabled={hasValue(ctx.outputs[key])} onClick={() => m.mutate({ key, value: true })}>{hasValue(ctx.outputs[key]) ? <><Check />Assistido</> : "Marcar como assistido"}</Button>}
+      {src && (
+        <div className="mt-3 space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="font-display font-bold">{title}</p>
+            <span className="text-sm text-muted-foreground">{[gestor, row?.duration_text].filter(Boolean).join(" · ")}</span>
+            <Button size="sm" variant="outline" className="ml-auto" disabled={hasValue(ctx.outputs[key]) || m.isPending} onClick={() => m.mutate({ key, value: true })}>{hasValue(ctx.outputs[key]) ? <><Check />Assistido</> : "Marcar como assistido"}</Button>
+          </div>
+          {row?.description && <p className="text-muted-foreground">{row.description}</p>}
+          {row?.transcript && <details className="border-t pt-3"><summary className="cursor-pointer text-sm font-semibold">Transcrição</summary><p className="mt-2 whitespace-pre-line text-sm text-muted-foreground">{row.transcript}</p></details>}
+          {row?.captions_url && <a href={row.captions_url} target="_blank" rel="noopener noreferrer" className="text-sm underline">Legendas</a>}
+        </div>
+      )}
     </section>
+  );
+}
+
+function Concept({ b }: { b: Extract<Block, { type: "concept" }> }) {
+  const rows: [string, string][] = [["O que é", b.what], ["Por que importa", b.why]];
+  return (
+    <section className="border-t py-8">
+      <p className="eyebrow">Conceito</p>
+      <h2 className="mt-2 font-display text-2xl font-extrabold md:text-3xl">{b.title}</h2>
+      <dl className="mt-5 space-y-4">{rows.map(([t, d]) => <div key={t} className="grid gap-1 md:grid-cols-[9rem_1fr]"><dt className="eyebrow pt-1">{t}</dt><dd className="max-w-2xl text-lg leading-relaxed">{d}</dd></div>)}</dl>
+      <div className="mt-6 grid gap-px border bg-border md:grid-cols-2">
+        <div className="bg-card p-5"><p className="eyebrow">Exemplo</p><p className="mt-2 leading-relaxed">{b.example}</p></div>
+        <div className="bg-background p-5"><p className="eyebrow">Erro comum</p><p className="mt-2 leading-relaxed">{b.mistake}</p></div>
+      </div>
+    </section>
+  );
+}
+
+function Classify({ b, ctx }: { b: Extract<Block, { type: "classify" }>; ctx: Ctx }) {
+  const d = useDraft<Record<string, string>>(ctx, b.key, {});
+  const [reveal, setReveal] = useState(false);
+  const all = b.items.every((i) => d.v[i.t]);
+  const hits = b.items.filter((i) => d.v[i.t] === i.a).length;
+  return (
+    <Shell label="Exercício" title={b.prompt}>
+      <ul className="divide-y border-y">
+        {b.items.map((it) => {
+          const pick = d.v[it.t];
+          return (
+            <li key={it.t} className="py-4">
+              <p className="font-medium">{it.t}</p>
+              <div className="mt-2 flex flex-wrap gap-2">{b.categories.map((c) => (
+                <button key={c} type="button" aria-pressed={pick === c} onClick={() => d.setV({ ...d.v, [it.t]: c })}
+                  className={cn("border px-3 py-1 text-sm transition-colors", pick === c ? "border-foreground bg-foreground text-background" : "hover:border-foreground", reveal && c === it.a && pick !== c && "border-primary")}>{c}</button>
+              ))}</div>
+              {reveal && <p className="mt-2 text-sm text-muted-foreground">{pick === it.a ? <Check className="mr-1 inline h-3.5 w-3.5" /> : null}Leitura sugerida: <b>{it.a}</b>{it.why ? `. ${it.why}` : ""}</p>}
+            </li>
+          );
+        })}
+      </ul>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <Button size="sm" variant="outline" disabled={!all} onClick={() => setReveal(true)}>Ver leitura sugerida</Button>
+        {reveal && <span className="text-sm">{hits} de {b.items.length} iguais à leitura sugerida</span>}
+      </div>
+      {d.bar}
+    </Shell>
+  );
+}
+
+function Groups({ b, ctx }: { b: Extract<Block, { type: "groups" }>; ctx: Ctx }) {
+  const d = useDraft<Record<string, string[]>>(ctx, b.key, {});
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const add = (g: string) => { const s = (draft[g] ?? "").trim(); if (!s) return; d.setV({ ...d.v, [g]: [...(d.v[g] ?? []), s.slice(0, 80)].slice(0, 40) }); setDraft({ ...draft, [g]: "" }); };
+  const total = Object.values(d.v).reduce((a, x) => a + x.length, 0);
+  return (
+    <Shell label="Construir" title={b.title}>
+      {b.help && <p className="mb-4 text-muted-foreground">{b.help}</p>}
+      <p className="mb-4 font-display text-3xl font-extrabold">{total}<span className="ml-2 text-base font-normal text-muted-foreground">no total</span></p>
+      <div className="grid gap-px border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        {b.groups.map((g) => (
+          <div key={g} className="bg-background p-4">
+            <p className="eyebrow">{g} · {(d.v[g] ?? []).length}</p>
+            <ul className="mt-2 flex flex-wrap gap-1.5">{(d.v[g] ?? []).map((x, i) => (
+              <li key={`${x}-${i}`} className="inline-flex items-center gap-1 border bg-card px-2 py-0.5 text-sm">{x}
+                <button type="button" aria-label={`Remover ${x}`} onClick={() => d.setV({ ...d.v, [g]: (d.v[g] ?? []).filter((_, j) => j !== i) })} className="text-muted-foreground hover:text-destructive">×</button></li>
+            ))}</ul>
+            <form className="mt-2 flex gap-1" onSubmit={(e) => { e.preventDefault(); add(g); }}>
+              <input value={draft[g] ?? ""} onChange={(e) => setDraft({ ...draft, [g]: e.target.value })} placeholder={b.ph ?? "Adicionar"} aria-label={`Adicionar em ${g}`} className="min-w-0 flex-1 border-b bg-transparent py-1 text-sm outline-none focus:border-foreground" />
+              <button type="submit" aria-label={`Adicionar em ${g}`} className="p-1 text-muted-foreground hover:text-foreground"><Plus className="h-4 w-4" /></button>
+            </form>
+          </div>
+        ))}
+      </div>
+      {d.bar}
+    </Shell>
   );
 }
 
