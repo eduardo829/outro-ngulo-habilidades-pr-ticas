@@ -10,6 +10,7 @@ import { publishedCoursesQuery, settingsQuery } from "@/lib/queries";
 import { CourseCard } from "@/components/CourseCard";
 import { Angle, SectionLabel } from "@/components/Angle";
 import { RotatingWord } from "@/components/motion/Motion";
+import { Entrada } from "@/components/home/Entrada";
 import { Manifesto, Acontecendo, Ciclo, Problema, Pilares, PreviewRede } from "@/components/home/Thesis";
 
 export const Route = createFileRoute("/")({
@@ -94,6 +95,7 @@ function Home() {
         <div className="angle-rule mx-auto max-w-6xl px-5" />
       </section>
 
+      <Entrada />
       <Problema />
       <Manifesto />
       <Pilares />

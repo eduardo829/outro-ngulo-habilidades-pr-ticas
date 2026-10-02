@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ConhecaAComunidadeRouteImport } from './routes/conheca-a-comunidade'
 import { Route as ConhecaOsEncontrosRouteImport } from './routes/conheca-os-encontros'
 import { Route as DiretrizesRouteImport } from './routes/diretrizes'
+import { Route as FerramentasRouteImport } from './routes/ferramentas'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
@@ -79,6 +80,11 @@ const ConhecaOsEncontrosRoute = ConhecaOsEncontrosRouteImport.update({
 const DiretrizesRoute = DiretrizesRouteImport.update({
   id: '/diretrizes',
   path: '/diretrizes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FerramentasRoute = FerramentasRouteImport.update({
+  id: '/ferramentas',
+  path: '/ferramentas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OportunidadesRoute = OportunidadesRouteImport.update({
@@ -284,6 +290,7 @@ export interface FileRoutesByFullPath {
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
@@ -327,6 +334,7 @@ export interface FileRoutesByTo {
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
@@ -371,6 +379,7 @@ export interface FileRoutesById {
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
@@ -416,6 +425,7 @@ export interface FileRouteTypes {
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
@@ -459,6 +469,7 @@ export interface FileRouteTypes {
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
@@ -502,6 +513,7 @@ export interface FileRouteTypes {
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
@@ -547,6 +559,7 @@ export interface RootRouteChildren {
   ConhecaAComunidadeRoute: typeof ConhecaAComunidadeRoute
   ConhecaOsEncontrosRoute: typeof ConhecaOsEncontrosRoute
   DiretrizesRoute: typeof DiretrizesRoute
+  FerramentasRoute: typeof FerramentasRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
@@ -602,6 +615,13 @@ declare module '@tanstack/react-router' {
       path: '/diretrizes'
       fullPath: '/diretrizes'
       preLoaderRoute: typeof DiretrizesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ferramentas': {
+      id: '/ferramentas'
+      path: '/ferramentas'
+      fullPath: '/ferramentas'
+      preLoaderRoute: typeof FerramentasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/oportunidades': {
@@ -937,6 +957,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConhecaAComunidadeRoute: ConhecaAComunidadeRoute,
   ConhecaOsEncontrosRoute: ConhecaOsEncontrosRoute,
   DiretrizesRoute: DiretrizesRoute,
+  FerramentasRoute: FerramentasRoute,
   OportunidadesRoute: OportunidadesRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
