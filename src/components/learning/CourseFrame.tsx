@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, FolderOpen, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getEngineCourse } from "@/lib/learning/da-ideia";
+import { getEngineCourse } from "@/lib/learning/courses";
 import { hasValue, useEngineAccess, useOutputs, type Outputs } from "@/lib/learning/store";
 import { requiredKeys, type Course, type Module } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";

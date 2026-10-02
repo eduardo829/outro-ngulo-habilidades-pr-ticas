@@ -53,3 +53,20 @@ export function hasValue(v: unknown): boolean {
   if (typeof v === "object") return Object.values(v as object).some(hasValue);
   return true;
 }
+
+export type CourseVideo = {
+  module_key: string; title: string | null; gestor: string | null; provider: string | null; video_url: string | null;
+  thumbnail_url: string | null; duration_text: string | null; description: string | null; transcript: string | null; captions_url: string | null;
+};
+
+/** Admin-editable video data for every module of a course (public.course_videos). */
+export function useCourseVideos(slug: string) {
+  return useQuery({
+    queryKey: ["course-videos", slug],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("course_videos").select("*").eq("course_slug", slug);
+      if (error) throw error;
+      return Object.fromEntries((data ?? []).map((r) => [r.module_key, r as CourseVideo])) as Record<string, CourseVideo>;
+    },
+  });
+}
