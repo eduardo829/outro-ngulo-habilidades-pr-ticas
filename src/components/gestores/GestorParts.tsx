@@ -32,7 +32,7 @@ export function GestorPhoto({ g, className }: { g: GestorProfile; className?: st
 /** Interactive ventures: pick a node to see its details. */
 export function Ventures({ g }: { g: GestorProfile }) {
   const [a, setA] = useState(0);
-  const v = g.ventures[a];
+  const v = g.ventures[a] ?? g.ventures[0]!;
   return (
     <div className="grid gap-10 md:grid-cols-[1fr_1fr] md:items-start">
       <ol className="relative border-l">
@@ -133,7 +133,7 @@ export function DoisAngulos({ n }: { n?: string }) {
   return (
     <section className="border-t">
       <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
-        <SectionLabel n={n}>Dois Ângulos</SectionLabel>
+        <SectionLabel {...(n ? { n } : {})}>Dois Ângulos</SectionLabel>
         <p className="mt-3 text-sm text-muted-foreground">Formato em preparação. Uma pergunta, duas experiências, raciocínios diferentes. Não é para achar um vencedor.</p>
         <ScrollReveal><p className="mt-10 max-w-4xl font-display text-3xl font-extrabold leading-tight md:text-5xl">“{DOIS_ANGULOS.question}”</p></ScrollReveal>
         <div className="mt-12 grid gap-10 md:grid-cols-[1fr_auto_1fr] md:items-start">
