@@ -1,0 +1,1 @@
+UPDATE public.courses SET price_cents = 9900 WHERE price_cents IS NULL;
