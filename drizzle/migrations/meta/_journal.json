@@ -15,6 +15,13 @@
       "when": 1790956496932,
       "tag": "0001_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790959256544,
+      "tag": "0002_add_gestor_role",
+      "breakpoints": true
     }
   ]
 }

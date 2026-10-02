@@ -503,7 +503,7 @@ export type Database = {
       touch_last_lesson: { Args: { _lesson: string }; Returns: undefined }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "member"
+      app_role: "admin" | "moderator" | "member" | "gestor"
       content_status: "draft" | "published" | "archived"
     }
     CompositeTypes: {
@@ -632,7 +632,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "member"],
+      app_role: ["admin", "moderator", "member", "gestor"],
       content_status: ["draft", "published", "archived"],
     },
   },
