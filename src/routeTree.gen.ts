@@ -30,6 +30,7 @@ import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authentica
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as GestorSlugRouteImport } from './routes/gestor.$slug'
@@ -162,6 +163,11 @@ const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiAssistantRoute = ApiAssistantRouteImport.update({
+  id: '/api/assistant',
+  path: '/api/assistant',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CursosIndexRoute = CursosIndexRouteImport.update({
   id: '/cursos/',
@@ -339,6 +345,7 @@ export interface FileRoutesByFullPath {
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
   '/cursos/': typeof CursosIndexRoute
@@ -387,6 +394,7 @@ export interface FileRoutesByTo {
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
   '/cursos': typeof CursosIndexRoute
@@ -438,6 +446,7 @@ export interface FileRoutesById {
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
   '/cursos/': typeof CursosIndexRoute
@@ -489,6 +498,7 @@ export interface FileRouteTypes {
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
+    | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
     | '/cursos/'
@@ -537,6 +547,7 @@ export interface FileRouteTypes {
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
+    | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
     | '/cursos'
@@ -587,6 +598,7 @@ export interface FileRouteTypes {
     | '/_authenticated/meus-cursos'
     | '/_authenticated/notificacoes'
     | '/_authenticated/perfil'
+    | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
     | '/cursos/'
@@ -631,6 +643,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   TrilhasRoute: typeof TrilhasRoute
+  ApiAssistantRoute: typeof ApiAssistantRoute
   CursosSlugRoute: typeof CursosSlugRoute
   GestorSlugRoute: typeof GestorSlugRoute
   CursosIndexRoute: typeof CursosIndexRoute
@@ -785,6 +798,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/perfil'
       preLoaderRoute: typeof AuthenticatedPerfilRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/assistant': {
+      id: '/api/assistant'
+      path: '/api/assistant'
+      fullPath: '/api/assistant'
+      preLoaderRoute: typeof ApiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/cursos/': {
       id: '/cursos/'
@@ -1074,6 +1094,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   TrilhasRoute: TrilhasRoute,
+  ApiAssistantRoute: ApiAssistantRoute,
   CursosSlugRoute: CursosSlugRoute,
   GestorSlugRoute: GestorSlugRoute,
   CursosIndexRoute: CursosIndexRoute,
