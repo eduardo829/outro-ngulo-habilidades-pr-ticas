@@ -477,6 +477,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_metrics: { Args: never; Returns: Json }
       course_outline: {
         Args: { _course: string }
         Returns: {
