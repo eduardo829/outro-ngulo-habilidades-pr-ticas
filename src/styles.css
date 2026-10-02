@@ -47,42 +47,44 @@
 }
 
 :root {
-  --radius: 0.5rem;
-  /* #F7F8FA */
-  --background: oklch(0.982 0.003 264);
-  /* #151922 */
-  --foreground: oklch(0.21 0.02 265);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 265);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 265);
-  /* #4056F4 */
-  --primary: oklch(0.54 0.22 270);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.945 0.006 264);
-  --secondary-foreground: oklch(0.21 0.02 265);
-  --muted: oklch(0.945 0.006 264);
-  --muted-foreground: oklch(0.47 0.02 265);
-  --accent: oklch(0.94 0.03 270);
-  --accent-foreground: oklch(0.36 0.16 270);
-  /* #C9F27B */
-  --highlight: oklch(0.91 0.16 125);
-  --highlight-foreground: oklch(0.21 0.02 265);
-  --ink: oklch(0.21 0.02 265);
-  --ink-foreground: oklch(0.96 0.004 264);
-  --destructive: oklch(0.56 0.21 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --border: oklch(0.9 0.008 264);
-  --input: oklch(0.88 0.01 264);
-  --ring: oklch(0.54 0.22 270);
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.21 0.02 265);
-  --sidebar-primary: oklch(0.54 0.22 270);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.945 0.006 264);
-  --sidebar-accent-foreground: oklch(0.21 0.02 265);
-  --sidebar-border: oklch(0.9 0.008 264);
-  --sidebar-ring: oklch(0.54 0.22 270);
+  --radius: 0.25rem;
+  /* Warm Paper #F4F1EA */
+  --background: oklch(0.959 0.009 85);
+  /* Charcoal #171A1F */
+  --foreground: oklch(0.21 0.01 260);
+  --card: oklch(0.977 0.006 85);
+  --card-foreground: oklch(0.21 0.01 260);
+  --popover: oklch(0.985 0.004 85);
+  --popover-foreground: oklch(0.21 0.01 260);
+  /* Deep Ink Navy #14213D */
+  --primary: oklch(0.25 0.06 265);
+  --primary-foreground: oklch(0.959 0.009 85);
+  --secondary: oklch(0.925 0.011 85);
+  --secondary-foreground: oklch(0.25 0.06 265);
+  --muted: oklch(0.925 0.011 85);
+  /* Slate #65758B (darkened slightly for text contrast) */
+  --muted-foreground: oklch(0.5 0.035 255);
+  --accent: oklch(0.92 0.014 85);
+  --accent-foreground: oklch(0.25 0.06 265);
+  /* Signature Lime #C7D84B */
+  --highlight: oklch(0.85 0.16 115);
+  --highlight-foreground: oklch(0.21 0.01 260);
+  --ink: oklch(0.25 0.06 265);
+  --ink-foreground: oklch(0.959 0.009 85);
+  --destructive: oklch(0.52 0.19 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.87 0.012 85);
+  --input: oklch(0.84 0.014 85);
+  --ring: oklch(0.25 0.06 265);
+  --sidebar: oklch(0.945 0.01 85);
+  --sidebar-foreground: oklch(0.21 0.01 260);
+  --sidebar-primary: oklch(0.25 0.06 265);
+  --sidebar-primary-foreground: oklch(0.959 0.009 85);
+  --sidebar-accent: oklch(0.92 0.014 85);
+  --sidebar-accent-foreground: oklch(0.25 0.06 265);
+  --sidebar-border: oklch(0.87 0.012 85);
+  --sidebar-ring: oklch(0.25 0.06 265);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer base {
@@ -97,7 +99,12 @@
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  ::selection {
+    background: var(--color-highlight);
+    color: var(--color-highlight-foreground);
   }
   :focus-visible {
     outline: 2px solid var(--color-ring);
@@ -109,17 +116,107 @@
   font-family: var(--font-display);
 }
 
-/* "Outro ângulo" frame: a displaced corner bracket */
+/* ---------- Outro Ângulo signature language ---------- */
+
+/* Frame with one displaced corner (lime) */
 @utility frame-offset {
   position: relative;
   &::before {
     content: "";
     position: absolute;
-    inset: -10px auto auto -10px;
-    width: 36px;
-    height: 36px;
-    border-top: 3px solid var(--color-primary);
-    border-left: 3px solid var(--color-primary);
+    inset: -7px auto auto -7px;
+    width: 22px;
+    height: 22px;
+    border-top: 2px solid var(--color-highlight);
+    border-left: 2px solid var(--color-highlight);
     pointer-events: none;
+    transition: transform 300ms var(--ease-out);
   }
+  &:hover::before {
+    transform: translate(-3px, -3px);
+  }
+}
+
+/* Small editorial label: 01 / APRENDER */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+
+/* Large composed editorial type */
+@utility display-xl {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  font-size: clamp(2.6rem, 7vw, 5.6rem);
+}
+
+/* Editorial link with an arrow that slides */
+@utility link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-weight: 600;
+  & svg, & .arr {
+    transition: transform 250ms var(--ease-out);
+  }
+  &:hover svg, &:hover .arr {
+    transform: translateX(4px);
+  }
+}
+
+/* Navigation underline grows from the left */
+@utility nav-line {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 280ms var(--ease-out);
+  }
+  &:hover::after, &[data-status="active"]::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Very subtle lift */
+@utility lift {
+  transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out);
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Thin line that changes direction — section divider */
+@utility angle-rule {
+  height: 14px;
+  background:
+    linear-gradient(var(--color-border), var(--color-border)) left 50% / calc(100% - 46px) 1px no-repeat,
+    linear-gradient(-28deg, transparent calc(50% - 0.6px), var(--color-border) 50%, transparent calc(50% + 0.6px)) right / 30px 100% no-repeat;
+}
+
+@keyframes oa-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@utility reveal {
+  animation: oa-reveal 700ms var(--ease-out) both;
+  @supports (animation-timeline: view()) {
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
