@@ -26,6 +26,7 @@ import { Route as TrilhasRouteImport } from './routes/trilhas'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBoasVindasRouteImport } from './routes/_authenticated/boas-vindas'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
+import { Route as AuthenticatedMeuAnguloRouteImport } from './routes/_authenticated/meu-angulo'
 import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authenticated/meu-espaco'
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
@@ -141,6 +142,11 @@ const AuthenticatedBoasVindasRoute = AuthenticatedBoasVindasRouteImport.update({
 const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
   id: '/inicio',
   path: '/inicio',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMeuAnguloRoute = AuthenticatedMeuAnguloRouteImport.update({
+  id: '/meu-angulo',
+  path: '/meu-angulo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMeuEspacoRoute = AuthenticatedMeuEspacoRouteImport.update({
@@ -341,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -390,6 +397,7 @@ export interface FileRoutesByTo {
   '/trilhas': typeof TrilhasRoute
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -442,6 +450,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
+  '/_authenticated/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/_authenticated/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
@@ -494,6 +503,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
@@ -543,6 +553,7 @@ export interface FileRouteTypes {
     | '/trilhas'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
@@ -594,6 +605,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/boas-vindas'
     | '/_authenticated/inicio'
+    | '/_authenticated/meu-angulo'
     | '/_authenticated/meu-espaco'
     | '/_authenticated/meus-cursos'
     | '/_authenticated/notificacoes'
@@ -769,6 +781,13 @@ declare module '@tanstack/react-router' {
       path: '/inicio'
       fullPath: '/inicio'
       preLoaderRoute: typeof AuthenticatedInicioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/meu-angulo': {
+      id: '/_authenticated/meu-angulo'
+      path: '/meu-angulo'
+      fullPath: '/meu-angulo'
+      preLoaderRoute: typeof AuthenticatedMeuAnguloRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/meu-espaco': {
@@ -1032,6 +1051,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedBoasVindasRoute: typeof AuthenticatedBoasVindasRoute
   AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
+  AuthenticatedMeuAnguloRoute: typeof AuthenticatedMeuAnguloRoute
   AuthenticatedMeuEspacoRoute: typeof AuthenticatedMeuEspacoRoute
   AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
   AuthenticatedNotificacoesRoute: typeof AuthenticatedNotificacoesRoute
@@ -1056,6 +1076,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedBoasVindasRoute: AuthenticatedBoasVindasRoute,
   AuthenticatedInicioRoute: AuthenticatedInicioRoute,
+  AuthenticatedMeuAnguloRoute: AuthenticatedMeuAnguloRoute,
   AuthenticatedMeuEspacoRoute: AuthenticatedMeuEspacoRoute,
   AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
   AuthenticatedNotificacoesRoute: AuthenticatedNotificacoesRoute,

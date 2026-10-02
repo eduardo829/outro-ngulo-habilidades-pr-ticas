@@ -185,10 +185,6 @@ function Proximo() {
   );
 }
 
-function ResourceLink({ value }: { value: string | null; type?: string | null }) {
-  return null;
-}
-
 function resLink(type: string | null, ref: string | null) {
   if (!type || !ref) return null;
   const [r, label] = ref.split("|");
