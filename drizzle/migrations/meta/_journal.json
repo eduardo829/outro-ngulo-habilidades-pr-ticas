@@ -57,6 +57,13 @@
       "when": 1790973511478,
       "tag": "0007_course_videos",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790977018426,
+      "tag": "0008_course_corretor_do_zero",
+      "breakpoints": true
     }
   ]
 }
