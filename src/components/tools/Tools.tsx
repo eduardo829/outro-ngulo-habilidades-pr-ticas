@@ -40,7 +40,8 @@ const VQS: VQ[] = [
   { k: "tempo", q: "Quanto tempo consegue dedicar por semana?", type: "choice", opts: [{ v: "pouco", l: "Até 5 horas" }, { v: "medio", l: "5 a 20 horas" }, { v: "muito", l: "Mais de 20 horas" }] },
 ];
 
-function analyze(a: Record<string, string>) {
+type VA = Partial<Record<"ideia" | "tipo" | "quem" | "problema" | "margem" | "capital" | "canal" | "conc" | "vendeu" | "tempo", string>>;
+function analyze(a: VA) {
   const demanda: Lvl = a.vendeu === "sim" || a.problema === "urgente" ? "alta" : a.problema === "desejo" && a.vendeu !== "sim" ? "baixa" : "media";
   const margem: Lvl = a.margem === "alta" ? "alta" : a.margem === "baixa" ? "baixa" : "media";
   const complex: Lvl = a.tipo === "produto" ? "alta" : a.tipo === "digital" ? "media" : "baixa";
@@ -67,11 +68,11 @@ function analyze(a: Record<string, string>) {
 
 export function ValidadorIdeias() {
   const [i, setI] = useState(0);
-  const [a, setA] = useState<Record<string, string>>({});
+  const [a, setA] = useState<VA>({});
   const done = i >= VQS.length;
   const q = VQS[Math.min(i, VQS.length - 1)]!;
   const r = useMemo(() => (done ? analyze(a) : null), [done, a]);
-  const val = a[q.k] ?? "";
+  const val = a[q.k as keyof VA] ?? "";
   const set = (v: string) => setA((p) => ({ ...p, [q.k]: v }));
   if (r) return (
     <div className="space-y-8">
@@ -165,9 +166,10 @@ export function CalculadoraViabilidade() {
 }
 
 /* ---------------- 03 Plano de validação ---------------- */
+type PA = Partial<Record<"ideia" | "cliente" | "tipo" | "inv" | "aud" | "cli", string>>;
 export function PlanoValidacao() {
-  const [a, setA] = useState<Record<string, string>>({});
-  const s = (k: string) => (v: string) => setA((p) => ({ ...p, [k]: v }));
+  const [a, setA] = useState<PA>({});
+  const s = (k: keyof PA) => (v: string) => setA((p) => ({ ...p, [k]: v }));
   const ready = a.ideia?.trim() && a.cliente?.trim() && a.tipo && a.aud && a.cli;
   const where = a.aud === "sim" ? "seu público atual (redes, lista, contatos)" : a.cli === "sim" ? "quem já é seu cliente e pode indicar alguém" : "grupos, comunidades e lugares onde esse cliente já está";
   const offer = a.tipo === "servico" ? "uma oferta simples: o que você faz, para quem, por quanto e quando" : "uma página ou mensagem descrevendo o produto, o preço e uma forma de reservar";
