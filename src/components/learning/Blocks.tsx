@@ -328,10 +328,10 @@ export function LearningBlock({ b, ctx, n }: { b: Block; ctx: Ctx; n: string }) 
 /* ---------- community + gestor ---------- */
 const STATUS: Record<string, string> = { enviada: "Enviada", selecionada: "Selecionada", respondida: "Respondida" };
 
-export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { prompt: string; courseId: string; moduleKey: string; gestorSlug: string }) {
+export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { prompt: string; courseId: string; moduleKey: string; gestorSlug?: string | undefined }) {
   const { user } = useAuth();
   const qc = useQueryClient();
-  const g = getGestor(gestorSlug);
+  const g = gestorSlug ? getGestor(gestorSlug) : undefined;
   const [q, setQ] = useState("");
   const mine = useQuery({
     queryKey: ["gq", moduleKey, user?.id],
@@ -339,7 +339,7 @@ export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { p
     queryFn: async () => (await supabase.from("gestor_questions").select("id, body, status, answer").eq("user_id", user!.id).eq("course_id", courseId).eq("module_key", moduleKey).order("created_at", { ascending: false })).data ?? [],
   });
   const send = useMutation({
-    mutationFn: async () => { const { error } = await supabase.from("gestor_questions").insert({ user_id: user!.id, course_id: courseId, module_key: moduleKey, gestor_slug: gestorSlug, body: q.trim() }); if (error) throw error; },
+    mutationFn: async () => { const { error } = await supabase.from("gestor_questions").insert({ user_id: user!.id, course_id: courseId, module_key: moduleKey, gestor_slug: gestorSlug ?? "equipe", body: q.trim() }); if (error) throw error; },
     onSuccess: () => { setQ(""); toast.success("Pergunta enviada."); qc.invalidateQueries({ queryKey: ["gq", moduleKey] }); },
     onError: () => toast.error("Não foi possível enviar."),
   });
@@ -357,7 +357,7 @@ export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { p
       </div>
       <div className="bg-background p-6">
         <p className="eyebrow">Pergunte ao gestor</p>
-        <p className="mt-2 text-sm text-muted-foreground">Sua pergunta vai para a fila de {g?.name ?? "gestores"}. Algumas são escolhidas para encontros e conteúdos. Não há resposta automática.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Sua pergunta vai para a fila de {g?.name ?? "equipe do Outro Ângulo"}. Algumas são escolhidas para encontros e conteúdos. Não há resposta automática.</p>
         <textarea value={q} onChange={(e) => setQ(e.target.value.slice(0, 1000))} rows={2} className={cn(inputCls, "mt-3 resize-y")} aria-label="Sua pergunta ao gestor" />
         <Button size="sm" className="mt-3" disabled={q.trim().length < 5 || send.isPending} onClick={() => send.mutate()}>Enviar pergunta</Button>
         {!!mine.data?.length && <ul className="mt-4 space-y-2 text-sm">{mine.data.map((x) => <li key={x.id} className="border-l-2 pl-3"><span className="eyebrow">{STATUS[x.status] ?? x.status}</span><p>{x.body}</p>{x.answer && <p className="mt-1 text-muted-foreground">{x.answer}</p>}</li>)}</ul>}
