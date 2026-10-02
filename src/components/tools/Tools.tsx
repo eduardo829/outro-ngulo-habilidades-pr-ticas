@@ -28,7 +28,7 @@ const LV: Record<Lvl, string> = { baixa: "Baixa", media: "Média", alta: "Alta" 
 
 type VQ = { k: string; q: string; type: "text" | "choice"; opts?: { v: string; l: string }[]; ph?: string };
 const VQS: VQ[] = [
-  { k: "ideia", q: "Qual é a ideia?", type: "text", ph: "Ex.: limpeza de estofados a domicílio" },
+  { k: "ideia", q: "Qual é a ideia?", type: "text", ph: "Ex.: limpeza de estofados em domicílio" },
   { k: "tipo", q: "Produto ou serviço?", type: "choice", opts: [{ v: "servico", l: "Serviço" }, { v: "produto", l: "Produto físico" }, { v: "digital", l: "Produto digital" }] },
   { k: "quem", q: "Quem compra?", type: "text", ph: "Ex.: famílias com sofá e criança pequena" },
   { k: "problema", q: "Qual problema resolve?", type: "choice", opts: [{ v: "urgente", l: "Urgente, a pessoa já procura solução" }, { v: "incomodo", l: "Incomoda, mas dá para adiar" }, { v: "desejo", l: "É mais um desejo do que um problema" }] },
@@ -51,7 +51,7 @@ function analyze(a: VA) {
   const difer: Lvl = a.conc === "alguns" ? "alta" : a.conc === "muitos" ? "baixa" : "media";
   const riscos: string[] = [];
   if (a.conc === "nenhum") riscos.push("Não ter concorrentes às vezes significa que ninguém paga por isso.");
-  if (a.margem === "nsei") riscos.push("Sem saber a margem, você pode vender muito e não sobrar nada.");
+  if (a.margem === "nsei") riscos.push("Sem saber a margem, você pode vender muito sem que sobre nada.");
   if (a.margem === "baixa") riscos.push("Margem baixa exige volume alto para valer a pena.");
   if (a.canal === "nsei") riscos.push("Sem um caminho claro até o cliente, a ideia fica parada.");
   if (capital === "alta" && a.vendeu !== "sim") riscos.push("Investir alto antes da primeira venda aumenta muito a perda possível.");
@@ -63,7 +63,7 @@ function analyze(a: VA) {
     a.canal === "nsei" ? "Existe um canal acessível para chegar a esses clientes." : "O canal escolhido traz clientes a um custo que cabe na margem.",
   ];
   const next = a.vendeu === "sim" ? "Repita a venda com 3 clientes novos e anote de onde cada um veio." : a.vendeu === "tentou" ? "Converse com quem não comprou e pergunte o que faltou. Ajuste a oferta antes de investir." : "Ofereça para 5 pessoas do público certo antes de investir. Uma pré-venda vale mais do que dez elogios.";
-  return { rows: [["Demanda", demanda], ["Margem potencial", margem], ["Complexidade", complex], ["Capital necessário", capital], ["Velocidade até receita", velocidade], ["Distribuição", distrib], ["Diferenciação", difer]] as [string, Lvl][], riscos, premissas, next };
+  return { rows: [["Demanda", demanda], ["Margem potencial", margem], ["Complexidade", complex], ["Capital necessário", capital], ["Velocidade até gerar receita", velocidade], ["Distribuição", distrib], ["Diferenciação", difer]] as [string, Lvl][], riscos, premissas, next };
 }
 
 export function ValidadorIdeias() {
@@ -159,7 +159,7 @@ export function CalculadoraViabilidade({ initial, onChange }: { initial?: Partia
         <div className="border-l-2 border-highlight bg-card p-5 text-sm leading-relaxed">
           <p className="eyebrow">O que esses números significam?</p>
           {contrib <= 0 ? <p className="mt-2">Cada venda hoje <b>tira</b> dinheiro do seu bolso: custo e aquisição somam mais que o preço. Vender mais só aumenta o prejuízo. Antes de qualquer coisa, suba o preço ou reduza custos.</p>
-            : <p className="mt-2">De cada venda sobram {brl(contrib)} para pagar os custos fixos e você. Precisa de {int(be)} vendas por mês só para não perder dinheiro, e {int(vendasMeta)} para tirar {brl(meta)}. Pergunte-se: consigo encontrar {int(vendasMeta)} clientes por mês com o canal que tenho? Considera clientes que compram uma vez por mês.</p>}
+            : <p className="mt-2">De cada venda sobram {brl(contrib)} para pagar os custos fixos e remunerar você. Precisa de {int(be)} vendas por mês só para não perder dinheiro, e {int(vendasMeta)} para tirar {brl(meta)}. Pergunte-se: consigo encontrar {int(vendasMeta)} clientes por mês com o canal que tenho? O cálculo considera clientes que compram uma vez por mês.</p>}
         </div>
         <Disclaimer />
       </div>
@@ -178,9 +178,9 @@ export function PlanoValidacao() {
   const dias = [
     ["Definir hipótese", `Escreva em uma frase: "${a.cliente || "Esse cliente"} paga por ${a.ideia || "isso"} porque…". Defina o número que vai considerar sucesso (ex.: 3 de 10 pessoas aceitam).`],
     ["Criar oferta", `Monte ${offer}. Sem logo, sem site completo.`],
-    ["Encontrar potenciais clientes", `Liste 15 pessoas em ${where}.`],
+    ["Encontrar potenciais clientes", `Liste 15 pessoas a partir de ${where}.`],
     ["Apresentar oferta", "Fale com pelo menos 10. Peça um compromisso real: pagamento, reserva ou agendamento. Elogio não conta."],
-    ["Coletar objeções", "Anote palavra por palavra por que quem disse não, disse não."],
+    ["Coletar objeções", "Anote, palavra por palavra, os motivos de quem disse não."],
     ["Ajustar", "Mude uma coisa só (preço, público ou promessa) e ofereça de novo para quem ainda não ouviu."],
     ["Decidir", "Compare com o número que você definiu no dia 1."],
   ];
@@ -203,7 +203,7 @@ export function PlanoValidacao() {
       </ol>
       {a.inv === "mais" && <p className="border-l-2 border-highlight pl-3 text-sm">Você não precisa gastar mais que isso para fazer esse teste. Guarde o dinheiro para depois da decisão.</p>}
       <div className="grid gap-px border bg-border md:grid-cols-3">
-        {[["Validar", "Atingiu ou passou o número do dia 1, e pelo menos uma pessoa pagou ou se comprometeu de verdade."], ["Ajustar", "Houve interesse, mas as objeções se repetem (preço, prazo, confiança). Mude esse ponto e repita."], ["Abandonar", "Quase ninguém se interessou mesmo depois do ajuste. Abandonar a ideia não é fracasso: você economizou meses."]].map(([t, d]) => (
+        {[["Validar", "Atingiu ou superou o número do dia 1, e pelo menos uma pessoa pagou ou se comprometeu de verdade."], ["Ajustar", "Houve interesse, mas as objeções se repetem (preço, prazo, confiança). Mude esse ponto e repita."], ["Abandonar", "Quase ninguém se interessou mesmo depois do ajuste. Abandonar a ideia não é fracasso: você economizou meses."]].map(([t, d]) => (
           <div key={t} className="bg-background p-5"><p className="font-display text-xl font-extrabold">{t}</p><p className="mt-2 text-sm text-muted-foreground">{d}</p></div>
         ))}
       </div>

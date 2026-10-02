@@ -42,7 +42,7 @@ function Page() {
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <SectionLabel n="01">Que tipo de oportunidade aparece</SectionLabel>
+          <SectionLabel n="01">Que tipo de oportunidade aparece?</SectionLabel>
           <Illustrative />
         </div>
         <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar por tipo">

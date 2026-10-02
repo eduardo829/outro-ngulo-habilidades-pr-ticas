@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Outro Ângulo — Habilidades para a vida que não veio com manual" },
-      { name: "description", content: "Aulas práticas, experiências reais e uma comunidade para aprender networking, planejamento, comunicação e decisões." },
+      { name: "description", content: "Aulas práticas, experiências reais e uma comunidade para aprender sobre networking, planejamento, comunicação e tomada de decisões." },
       { property: "og:title", content: "Outro Ângulo" },
       { property: "og:description", content: "Conhecimento, pessoas e oportunidades para quem quer construir alguma coisa." },
       { property: "og:type", content: "website" },
@@ -44,7 +44,7 @@ const FAQ: [string, string][] = [
   ["Criar uma conta já libera os cursos?", "Não. A conta dá acesso à sua área pessoal. Cada curso é liberado individualmente por matrícula."],
   ["Como funcionam as aulas?", "Cada curso é dividido em módulos com aulas em vídeo, materiais e uma atividade prática para aplicar o que você aprendeu."],
   ["Existe comunidade?", "Sim. Alunos matriculados participam de canais de conversa para trocar experiências e tirar dúvidas, com moderação e diretrizes claras."],
-  ["Quanto custa?", "A oferta inicial está prevista como pagamento único. O valor e as condições aparecem na página de cada curso quando ele for publicado."],
+  ["Quanto custa?", "A oferta inicial está prevista com pagamento único. O valor e as condições aparecem na página de cada curso quando ele for publicado."],
 ];
 
 function Home() {

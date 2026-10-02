@@ -29,7 +29,7 @@ const FORMATS = [
 ];
 const HOW = [
   { title: "Reserve sua vaga", body: "Os encontros têm vagas definidas. A reserva é feita na sua área." },
-  { title: "Envie sua pergunta", body: "Membros podem enviar e votar nas perguntas que querem ver respondidas." },
+  { title: "Envie sua pergunta", body: "Membros podem enviar perguntas e votar nas que querem ver respondidas." },
   { title: "Entre no encontro", body: "O link da sala externa aparece para quem reservou, perto do horário." },
   { title: "Saia com uma ação", body: "Depois do encontro, você registra um próximo passo concreto." },
 ];

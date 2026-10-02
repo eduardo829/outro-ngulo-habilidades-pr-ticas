@@ -32,7 +32,7 @@ function LegacyCourse({ slug }: { slug: string }) {
   });
 
   if (isLoading) return <p className="p-8 text-muted-foreground">Carregando…</p>;
-  if (!data) return <div className="p-8"><p className="font-semibold">Curso não encontrado ou sem acesso.</p><Button asChild className="mt-4"><Link to="/meus-cursos">Meus cursos</Link></Button></div>;
+  if (!data) return <div className="p-8"><p className="font-semibold">Curso não encontrado ou você não tem acesso a ele.</p><Button asChild className="mt-4"><Link to="/meus-cursos">Meus cursos</Link></Button></div>;
 
   const { course, modules, lessons, completed, enrolled } = data;
   const total = lessons.length;

@@ -45,7 +45,7 @@ function LessonPage() {
       <div className="mx-auto max-w-md p-10 text-center">
         <Lock className="mx-auto h-8 w-8 text-muted-foreground" aria-hidden />
         <h1 className="mt-3 text-xl font-bold">Aula indisponível</h1>
-        <p className="mt-2 text-muted-foreground">Esta aula exige matrícula ativa no curso, ou ainda não foi publicada.</p>
+        <p className="mt-2 text-muted-foreground">Esta aula exige matrícula ativa no curso ou ainda não foi publicada.</p>
         <Button asChild className="mt-5"><Link to="/meus-cursos">Meus cursos</Link></Button>
       </div>
     );

@@ -44,7 +44,7 @@ function ModulePage() {
               <div className="mt-6">
                 {m.blocks.map((b, j) => <LearningBlock key={`${m.key}-${j}`} b={b} n={n} ctx={{ courseId, outputs: o, moduleKey: m.key, slug, ...(gestor ? { gestorName: gestor.name } : {}) }} />)}
               </div>
-              {s.complete && <div className="reveal is-visible my-6 flex items-center gap-3 border-l-2 border-highlight bg-card p-5"><Check className="h-5 w-5" /><p><b>{m.output.title}</b> está salvo em {c.project}. {next ? `Próximo: ${next.title}.` : "Seu projeto está pronto para revisar."}</p></div>}
+              {s.complete && <div className="reveal is-visible my-6 flex items-center gap-3 border-l-2 border-highlight bg-card p-5"><Check className="h-5 w-5" /><p><b>{m.output.title}</b> está salvo em {c.project}. {next ? `Próximo: ${next.title}.` : "Seu projeto está pronto para ser revisado."}</p></div>}
               <p className="mt-6 text-sm text-muted-foreground"><span className="eyebrow mr-2">Próximo passo</span>{m.next}</p>
               <div className="mt-8"><CommunityPrompt prompt={m.community} courseId={courseId} moduleKey={m.key} gestorSlug={c.gestor} /></div>
               <div className="sticky bottom-16 z-10 mt-10 flex items-center justify-between gap-3 border-t bg-background/95 py-3 backdrop-blur md:bottom-0">
