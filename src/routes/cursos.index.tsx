@@ -4,7 +4,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
-import { CATEGORIES, COURSES_ENGINE, getEngineCourse } from "@/lib/learning/courses";
+import { COURSES_ENGINE, getEngineCourse } from "@/lib/learning/courses";
+import { AREAS, UPCOMING, areaOf, type Area } from "@/lib/learning/catalog";
 import { useMyProjects } from "@/lib/learning/progress";
 import { getGestor } from "@/lib/gestores";
 import type { Course } from "@/lib/learning/types";
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/cursos/")({
   head: () => ({
     meta: [
       { title: "Cursos — Outro Ângulo" },
-      { name: "description", content: "Menos conteúdo para assistir, mais conhecimento para usar. Cursos práticos de negócios, vendas, networking e IA." },
+      { name: "description", content: "Menos conteúdo para assistir, mais conhecimento para usar. Cursos práticos de carreira, comunicação, dinheiro, relacionamentos, tecnologia, profissões e negócios." },
       { property: "og:title", content: "Cursos — Outro Ângulo" },
       { property: "og:description", content: "Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula." },
       { property: "og:type", content: "website" },
@@ -50,11 +51,12 @@ function CourseCard({ c, i }: { c: Course; i: number }) {
 }
 
 function Catalog() {
-  const [cat, setCat] = useState<(typeof CATEGORIES)[number]>("Todos");
+  const [cat, setCat] = useState<"Todos" | Area>("Todos");
   const { user } = useAuth();
   const mine = useMyProjects();
   const featured = getEngineCourse("da-ideia-aos-primeiros-clientes")!;
-  const list = COURSES_ENGINE.filter((c) => cat === "Todos" || c.category === cat);
+  const list = COURSES_ENGINE.filter((c) => cat === "Todos" || areaOf(c) === cat);
+  const soon = UPCOMING.filter((u) => cat === "Todos" || u.area === cat);
   return (
     <PublicLayout>
       <section className="relative mx-auto max-w-6xl px-5 pb-12 pt-16 md:pt-24">
@@ -63,8 +65,14 @@ function Catalog() {
           <span className="absolute bottom-0 left-0 h-1 w-24 bg-highlight" />
         </div>
         <p className="eyebrow">Cursos</p>
-        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">Menos conteúdo para assistir.<br /><span className="text-muted-foreground">Mais conhecimento para usar.</span></h1>
-        <p className="mt-6 max-w-2xl lg:max-w-[55%] text-lg text-muted-foreground">Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula.</p>
+        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-6xl">Você não precisa mudar tudo.<br /><span className="text-muted-foreground">Às vezes precisa aprender a próxima coisa certa.</span></h1>
+        <p className="mt-6 max-w-2xl lg:max-w-[55%] text-lg text-muted-foreground">Escolha pelo que você quer melhorar, não pelo que você acha que deveria saber.</p>
+        <div className="relative mt-10 lg:max-w-[58%]">
+          <p className="eyebrow">O que você quer melhorar?</p>
+          <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Escolher área">
+            {(["Todos", ...AREAS] as const).map((c) => <a key={c} href="#explorar" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-4 py-2 text-sm font-medium transition-all duration-200", cat === c ? "border-foreground bg-foreground text-background" : "bg-background/70 hover:-translate-y-0.5 hover:border-foreground")}>{c === "Todos" ? "Ver tudo" : c}</a>)}
+          </div>
+        </div>
       </section>
 
       {user && !!mine.data?.length && (
@@ -82,7 +90,7 @@ function Catalog() {
         </section>
       )}
 
-      <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
+      {cat === "Negócios" && <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
         <img src={coursePhoto(featured.slug)} alt="" aria-hidden loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70" />
         <div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" />
         <Link to="/cursos/$slug" params={{ slug: featured.slug }} className="group mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr] md:py-20">
@@ -98,20 +106,34 @@ function Catalog() {
             {featured.outcomes.map((o, i) => <li key={o} className="flex gap-3"><span className="w-6 font-display font-bold text-highlight">{String(i + 1).padStart(2, "0")}</span>{o}</li>)}
           </ol>
         </Link>
-      </section>
+      </section>}
 
-      <section className="mx-auto max-w-6xl px-5 py-16">
+      <section id="explorar" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <h2 className="font-display text-3xl font-extrabold">Explore os cursos</h2>
+          <h2 className="font-display text-3xl font-extrabold">{cat === "Todos" ? "Todos os cursos" : cat}</h2>
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por tema">
-            {CATEGORIES.map((c) => <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-3 py-1.5 text-sm transition-colors", cat === c ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{c}</button>)}
+            {(["Todos", ...AREAS] as const).map((c) => <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-3 py-1.5 text-sm transition-colors", cat === c ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{c}</button>)}
           </div>
         </div>
-        {list.length ? (
+        {list.length > 0 && (
           <div className="mt-8 grid gap-px border bg-border sm:grid-cols-2">{list.map((c) => <CourseCard key={c.slug} c={c} i={COURSES_ENGINE.indexOf(c)} />)}</div>
-        ) : (
-          <p className="mt-8 border-y py-10 text-muted-foreground">Ainda não há curso de <b>{cat}</b>. Está nos planos, sem data definida.</p>
         )}
+        {soon.length > 0 && (
+          <div className="mt-14">
+            <p className="eyebrow">Em preparação · sem data definida</p>
+            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+              {soon.map((u) => (
+                <li key={u.title} className="card-live p-6">
+                  <p className="eyebrow">{u.area}</p>
+                  <h3 className="mt-3 font-display text-xl font-extrabold leading-tight">{u.title}</h3>
+                  <p className="mt-2 text-muted-foreground">{u.thesis}</p>
+                  <p className="mt-4 border-t pt-3 text-sm"><span className="eyebrow">Você vai construir </span><span className="font-display font-bold">{u.output}</span></p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {!list.length && !soon.length && <p className="mt-8 border-y py-10 text-muted-foreground">Ainda não há curso de <b>{cat}</b>. Está nos planos, sem data definida.</p>}
       </section>
     </PublicLayout>
   );
