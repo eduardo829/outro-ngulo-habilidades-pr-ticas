@@ -1,4 +1,5 @@
-import { useCoursePrices, brl } from "@/lib/coursePrices";
+import { useCoursePrices, useCourseCommerce, useMyLearning, brl } from "@/lib/coursePrices";
+import { courseState, ctaLabel, type CourseState } from "@/lib/learning/ownership";
 import { useState } from "react";
 import catalogPhoto from "@/assets/photo-fazer.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -30,10 +31,10 @@ export const Route = createFileRoute("/cursos/")({
 
 const gestorName = (c: Course) => (c.gestor ? getGestor(c.gestor)?.name : undefined) ?? "Gestor a confirmar";
 
-function CourseCard({ c, i }: { c: Course; i: number }) {
+function CourseCard({ c, i, state = "locked" }: { c: Course; i: number; state?: CourseState }) {
   const { data: prices } = useCoursePrices();
   return (
-    <Link to="/cursos/$slug" params={{ slug: c.slug }} className="group relative flex h-full flex-col bg-background p-6 transition-colors duration-300 hover:bg-card focus-visible:bg-card">
+    <Link to={state === "locked" ? "/cursos/$slug" : "/aprender/$slug"} params={{ slug: c.slug }} className="group relative flex h-full flex-col bg-background p-6 transition-colors duration-300 hover:bg-card focus-visible:bg-card">
       <div className="photo-zoom relative -mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden bg-ink">
         <img src={coursePhoto(c.slug)} alt="" loading="lazy" width={1200} height={800} className="h-full w-full object-cover opacity-90" />
         <div aria-hidden className="photo-scrim-b absolute inset-0 opacity-60" />
@@ -48,7 +49,7 @@ function CourseCard({ c, i }: { c: Course; i: number }) {
         <div><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-display font-bold">{c.finalPlan.title}</dd></div>
         <div><dt className="eyebrow">Investimento</dt><dd className="mt-1 font-display font-bold">{brl(prices?.[c.slug]) ?? "A definir"}<span className="block text-xs font-normal text-muted-foreground">pagamento único</span></dd></div>
       </dl>
-      <span className="mt-auto inline-flex items-center gap-1 pt-6 text-sm font-semibold">Explorar curso<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+      <span className="mt-auto inline-flex items-center gap-1 pt-6 text-sm font-semibold">{ctaLabel[state]}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
     </Link>
   );
 }
@@ -57,6 +58,9 @@ function Catalog() {
   const [cat, setCat] = useState<"Todos" | Area>("Todos");
   const { user } = useAuth();
   const mine = useMyProjects();
+  const commerce = useCourseCommerce();
+  const my = useMyLearning(user?.id);
+  const stateOf = (c: Course): CourseState => { const id = commerce.data?.[c.slug]?.id; return id && my.data ? courseState(c, my.data.owned.has(id), my.data.keys[id]) : "locked"; };
   const featured = getEngineCourse("da-ideia-aos-primeiros-clientes")!;
   const list = COURSES_ENGINE.filter((c) => cat === "Todos" || areaOf(c) === cat);
   const soon = UPCOMING.filter((u) => cat === "Todos" || u.area === cat);
@@ -118,9 +122,14 @@ function Catalog() {
             {(["Todos", ...AREAS] as const).map((c) => <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-3 py-1.5 text-sm transition-colors", cat === c ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{c}</button>)}
           </div>
         </div>
-        {list.length > 0 && (
-          <div className="mt-8 grid gap-px border bg-border sm:grid-cols-2">{list.map((c) => <CourseCard key={c.slug} c={c} i={COURSES_ENGINE.indexOf(c)} />)}</div>
-        )}
+        {(() => {
+          const owned = list.filter((c) => stateOf(c) !== "locked");
+          const others = list.filter((c) => stateOf(c) === "locked");
+          return <>
+            {owned.length > 0 && <><p className="eyebrow mt-8">Meus cursos</p><div className="mt-4 grid gap-px border bg-border sm:grid-cols-2">{owned.map((c) => <CourseCard key={c.slug} c={c} i={COURSES_ENGINE.indexOf(c)} state={stateOf(c)} />)}</div></>}
+            {others.length > 0 && <>{owned.length > 0 && <p className="eyebrow mt-12">Outros cursos</p>}<div className="mt-4 grid gap-px border bg-border sm:grid-cols-2">{others.map((c) => <CourseCard key={c.slug} c={c} i={COURSES_ENGINE.indexOf(c)} />)}</div></>}
+          </>;
+        })()}
         {soon.length > 0 && (
           <div className="mt-14">
             <p className="eyebrow">Em preparação · sem data definida</p>

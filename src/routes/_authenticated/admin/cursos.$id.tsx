@@ -183,6 +183,8 @@ function CourseForm({ course, onSaved }: { course: Course; onSaved: () => void }
       title: f.title, slug: f.slug, subtitle: f.subtitle || null, description: f.description || null,
       cover_url: f.cover_url || null, instructor: f.instructor || null, level: f.level || null, duration_text: f.duration_text || null,
       access_policy: f.access_policy, is_public: f.is_public, price_cents: priceNum,
+      sale_price_cents: f.sale_price_cents ?? null, sale_start: f.sale_start || null, sale_end: f.sale_end || null,
+      is_free: f.is_free, is_purchasable: f.is_purchasable, preview_enabled: f.preview_enabled, preview_module_key: f.preview_module_key || null,
       objectives: objectives.split("\n").map((s) => s.trim()).filter(Boolean), updated_at: new Date().toISOString(),
     }).eq("id", course.id);
     error ? toast.error(error.message.includes("unique") ? "Esse endereço já existe." : "Falha ao salvar.") : toast.success("Curso salvo");
@@ -202,6 +204,14 @@ function CourseForm({ course, onSaved }: { course: Course; onSaved: () => void }
       <div><Label htmlFor="du">Duração (opcional)</Label><Input id="du" value={f.duration_text ?? ""} onChange={set("duration_text")} /></div>
       <div><Label htmlFor="p">Preço em centavos (vazio = valor padrão da oferta)</Label><Input id="p" type="number" min={0} value={f.price_cents ?? ""} onChange={(e) => setF({ ...f, price_cents: e.target.value === "" ? null : Number(e.target.value) })} /></div>
       <div className="flex items-center gap-3 pt-6"><Switch id="pub" checked={f.is_public} onCheckedChange={(c) => setF({ ...f, is_public: c })} /><Label htmlFor="pub">Aparece no catálogo público</Label></div>
+      <div><Label htmlFor="sp">Preço promocional em centavos (opcional)</Label><Input id="sp" type="number" min={0} value={f.sale_price_cents ?? ""} onChange={(e) => setF({ ...f, sale_price_cents: e.target.value === "" ? null : Number(e.target.value) })} /></div>
+      <div className="grid grid-cols-2 gap-2"><div><Label htmlFor="ss">Promoção de</Label><Input id="ss" type="date" value={f.sale_start?.slice(0, 10) ?? ""} onChange={(e) => setF({ ...f, sale_start: e.target.value || null })} /></div><div><Label htmlFor="se">até</Label><Input id="se" type="date" value={f.sale_end?.slice(0, 10) ?? ""} onChange={(e) => setF({ ...f, sale_end: e.target.value || null })} /></div></div>
+      <div><Label htmlFor="pk">Módulo da aula aberta (ex.: n01)</Label><Input id="pk" value={f.preview_module_key ?? ""} onChange={set("preview_module_key")} /></div>
+      <div className="flex flex-col gap-3 pt-2">
+        <div className="flex items-center gap-3"><Switch id="pv" checked={f.preview_enabled} onCheckedChange={(c) => setF({ ...f, preview_enabled: c })} /><Label htmlFor="pv">Aula aberta ativa</Label></div>
+        <div className="flex items-center gap-3"><Switch id="fr" checked={f.is_free} onCheckedChange={(c) => setF({ ...f, is_free: c })} /><Label htmlFor="fr">Curso gratuito</Label></div>
+        <div className="flex items-center gap-3"><Switch id="pu" checked={f.is_purchasable} onCheckedChange={(c) => setF({ ...f, is_purchasable: c })} /><Label htmlFor="pu">Disponível para compra (só ative quando o pagamento estiver conectado)</Label></div>
+      </div>
       <div className="sm:col-span-2"><Label htmlFor="ap">Política de acesso</Label><Textarea id="ap" value={f.access_policy} onChange={set("access_policy")} className="min-h-16" /></div>
       <div className="sm:col-span-2"><Button type="submit">Salvar curso</Button></div>
     </form>

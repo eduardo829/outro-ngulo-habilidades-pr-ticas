@@ -9,7 +9,10 @@ import { useAuth } from "@/lib/auth";
 import type { Course } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";
 import { coursePhoto } from "@/lib/photos";
-import { useCoursePrices, brl } from "@/lib/coursePrices";
+import { useCoursePrices, useCourseCommerce, useMyLearning, brl } from "@/lib/coursePrices";
+import { courseState, ctaLabel } from "@/lib/learning/ownership";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -23,9 +26,29 @@ export function EngineCoursePublic({ c }: { c: Course }) {
     on(); window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
   }, []);
-  const cta = user
-    ? <Button asChild size="lg"><Link to="/aprender/$slug" params={{ slug: c.slug }}>Entrar no curso<ArrowRight /></Link></Button>
-    : <Button asChild size="lg"><Link to="/auth">Criar conta para começar<ArrowRight /></Link></Button>;
+  const commerce = useCourseCommerce();
+  const my = useMyLearning(user?.id);
+  const qc = useQueryClient();
+  const info = commerce.data?.[c.slug];
+  const state = info && my.data ? courseState(c, my.data.owned.has(info.id), my.data.keys[info.id]) : "locked";
+  const interested = !!(info && my.data?.interest.has(info.id));
+  const toggleInterest = async () => {
+    if (!user || !info) return;
+    if (interested) await supabase.from("course_interest").delete().eq("user_id", user.id).eq("course_id", info.id);
+    else await supabase.from("course_interest").insert({ user_id: user.id, course_id: info.id });
+    qc.invalidateQueries({ queryKey: ["my-learning"] });
+  };
+  const previewKey = info?.preview_enabled ? info.preview_module_key : null;
+  const cta = state !== "locked"
+    ? <Button asChild size="lg"><Link to="/aprender/$slug" params={{ slug: c.slug }}>{ctaLabel[state]}<ArrowRight /></Link></Button>
+    : <>
+        {previewKey && (user
+          ? <Button asChild size="lg"><Link to="/aprender/$slug/$modulo" params={{ slug: c.slug, modulo: previewKey }}>Começar aula aberta<ArrowRight /></Link></Button>
+          : <Button asChild size="lg"><Link to="/auth">Criar conta e experimentar<ArrowRight /></Link></Button>)}
+        {info?.is_purchasable
+          ? <Button size="lg" variant="outline" disabled title="Pagamento on-line em preparação">Adquirir curso</Button>
+          : user && <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>{interested ? "Na minha lista de interesse" : "Tenho interesse"}</Button>}
+      </>;
   return (
     <PublicLayout>
       <div aria-hidden className="fixed left-0 top-0 z-50 h-0.5 bg-highlight transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
@@ -46,7 +69,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           <div className="bg-background p-4"><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-semibold">{c.project}</dd></div>
           <div className="bg-background p-4"><dt className="eyebrow">Investimento</dt><dd className="mt-1 font-display text-lg font-bold">{brl(prices?.[c.slug]) ?? "A definir"}</dd><dd className="text-xs text-muted-foreground">pagamento único</dd></div>
         </dl>
-        <div className="mt-8 flex flex-wrap items-center gap-4">{cta}<span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Lock className="h-3.5 w-3.5" />Acesso por matrícula. Seu trabalho é privado.</span></div>
+        <div className="mt-8 flex flex-wrap items-center gap-4">{cta}<span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Lock className="h-3.5 w-3.5" />{state === "locked" ? (previewKey ? "Experimente o primeiro módulo de graça. O curso completo é liberado por curso, sem assinatura." : "Acesso por curso, sem assinatura.") : "Você tem acesso. Seu trabalho é privado."}</span></div>
       </section>
 
       <section className="bg-ink text-ink-foreground">

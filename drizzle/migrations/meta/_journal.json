@@ -78,6 +78,13 @@
       "when": 1790977980018,
       "tag": "0010_course_price_default",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790978259350,
+      "tag": "0011_individual_course_commerce",
+      "breakpoints": true
     }
   ]
 }
