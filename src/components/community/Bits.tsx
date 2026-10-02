@@ -12,7 +12,7 @@ export function Avatar({ name, url, size = "md" }: { name: string; url?: string 
   );
 }
 
-export function Tag({ children, tone = "default" }: { children: ReactNode; tone?: "default" | "primary" }) {
+export function Tag({ children, tone = "default" }: { children: ReactNode; tone?: "default" | "primary" | undefined }) {
   return (
     <span className={cn("inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs", tone === "primary" ? "border-primary/30 text-primary" : "text-muted-foreground")}>
       {children}
