@@ -63,8 +63,8 @@ function Catalog() {
           <span className="absolute bottom-0 left-0 h-1 w-24 bg-highlight" />
         </div>
         <p className="eyebrow">Cursos</p>
-        <h1 className="relative mt-4 max-w-4xl font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">Menos conteúdo para assistir.<br /><span className="text-muted-foreground">Mais conhecimento para usar.</span></h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula.</p>
+        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">Menos conteúdo para assistir.<br /><span className="text-muted-foreground">Mais conhecimento para usar.</span></h1>
+        <p className="mt-6 max-w-2xl lg:max-w-[55%] text-lg text-muted-foreground">Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula.</p>
       </section>
 
       {user && !!mine.data?.length && (
