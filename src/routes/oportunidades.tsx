@@ -5,6 +5,8 @@ import { ItemGrid } from "@/components/PublicPage";
 import { Opening, RevealCard, Illustrative, Closing } from "@/components/public/Story";
 import { SectionLabel } from "@/components/Angle";
 import { cn } from "@/lib/utils";
+import { PhotoBand } from "@/components/PhotoBand";
+import bandPhoto from "@/assets/photo-escada.jpg";
 import heroPhoto from "@/assets/photo-networking.jpg";
 
 const T = "Oportunidades — Outro Ângulo";
@@ -56,6 +58,7 @@ function Page() {
         </div>
       </section>
 
+      <PhotoBand src={bandPhoto} title=<>Um passo leva a outro.<span className="block text-ink-foreground/60">Uma conversa, também.</span></> />
       <ItemGrid n="02" label="Como funciona" items={RULES} />
       <Closing a="Algumas oportunidades" b="começam com uma conversa." />
     </PublicLayout>

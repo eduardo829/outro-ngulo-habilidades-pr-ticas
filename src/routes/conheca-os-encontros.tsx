@@ -73,7 +73,7 @@ function Journey() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
       <SectionLabel n="03">Como funciona</SectionLabel>
-      <StickyStory steps={HOW.length} className="!h-auto md:!h-[300vh]" render={(a, p) => (
+      <StickyStory steps={HOW.length} render={(a, p) => (
         <div className="w-full">
           <div className="relative mt-4 hidden h-px bg-border md:block"><div className="absolute inset-y-0 left-0 bg-highlight transition-[width] duration-200" style={{ width: `${Math.min(100, p * 115)}%` }} /></div>
           <ol className="mt-10 grid gap-8 md:grid-cols-4">
