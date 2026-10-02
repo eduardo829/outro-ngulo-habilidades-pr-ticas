@@ -234,7 +234,7 @@ function ScenarioExercise({ b, ctx }: { b: Extract<Block, { type: "scenarios" }>
   const [i, setI] = useState(0);
   const item = b.items[i]!;
   return (
-    <Shell label="Prática" title="Responda às objeções">
+    <Shell label="Prática" title={b.title ?? "Responda às objeções"}>
       <p className="text-muted-foreground">{b.intro}</p>
       <ol className="mt-4 space-y-1 border-l-2 border-highlight pl-4 text-sm">{b.framework.map((f, j) => <li key={f}><b>{j + 1}.</b> {f}</li>)}</ol>
       <div className="mt-6 flex flex-wrap gap-2">{b.items.map((t, j) => <button key={t} type="button" onClick={() => setI(j)} aria-pressed={i === j} className={cn("border px-3 py-1.5 text-sm", i === j ? "border-foreground bg-foreground text-background" : "hover:border-foreground", hasValue(d.v[t]) && i !== j && "border-primary")}>{hasValue(d.v[t]) && "✓ "}{t}</button>)}</div>
@@ -310,6 +310,9 @@ function CalcBlock({ b, ctx }: { b: Extract<Block, { type: "tool" }>; ctx: Ctx }
 export function LearningBlock({ b, ctx, n }: { b: Block; ctx: Ctx; n: string }) {
   switch (b.type) {
     case "text": return <Shell label="Contexto" {...(b.title ? { title: b.title } : {})}><p className="max-w-2xl text-lg leading-relaxed">{b.body}</p></Shell>;
+    case "concept": return <Concept b={b} />;
+    case "classify": return <Classify b={b} ctx={ctx} />;
+    case "groups": return <Groups b={b} ctx={ctx} />;
     case "question": return <LessonQuestion b={b} ctx={ctx} />;
     case "fields": return <FrameworkBuilder b={b} ctx={ctx} />;
     case "choices": return <MultipleChoiceReflection b={b} ctx={ctx} />;
@@ -346,7 +349,11 @@ export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { p
         <p className="eyebrow">Conversar sobre isso</p>
         <p className="mt-2 font-display text-xl font-bold">“{prompt}”</p>
         <p className="mt-2 text-sm text-muted-foreground">Suas respostas do curso nunca são publicadas. Se quiser, leve a pergunta para a comunidade com suas próprias palavras.</p>
-        <Link to="/comunidade" className="link-arrow mt-4 inline-flex items-center gap-1 text-sm font-semibold">Ir para a comunidade<ArrowUpRight className="h-4 w-4" /></Link>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Button asChild size="sm" variant="outline"><Link to="/comunidade">Ver respostas</Link></Button>
+          <Button asChild size="sm"><Link to="/comunidade">Compartilhar meu ângulo<ArrowUpRight /></Link></Button>
+        </div>
+        <p className="mt-2 text-xs text-muted-foreground">Compartilhar é sempre opcional.</p>
       </div>
       <div className="bg-background p-6">
         <p className="eyebrow">Pergunte ao gestor</p>
