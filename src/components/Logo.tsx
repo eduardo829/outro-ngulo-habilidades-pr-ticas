@@ -6,11 +6,11 @@ export function LogoMark({ className }: { className?: string }) {
     <span
       aria-hidden
       className={cn(
-        "relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[6px] bg-ink font-display text-[13px] font-extrabold text-ink-foreground",
+        "relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[3px] bg-ink font-display text-[13px] font-extrabold text-ink-foreground",
         className,
       )}
     >
-      <span className="absolute -right-1 -top-1 h-3 w-3 rotate-12 rounded-[2px] bg-highlight" />
+      <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rotate-12 bg-highlight" />
       OÂ
     </span>
   );

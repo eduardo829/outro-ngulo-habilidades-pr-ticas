@@ -66,8 +66,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   if (path === "/boas-vindas") return <main id="conteudo" className="min-h-screen bg-background">{children}</main>;
 
-  const linkCls = "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground";
-  const active = { className: "bg-accent !text-accent-foreground" };
+  const linkCls = "relative flex items-center gap-3 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground before:absolute before:left-0 before:top-1/2 before:h-3 before:w-3 before:-translate-y-1/2 before:border-b-2 before:border-l-2 before:border-highlight before:opacity-0 before:transition-all before:duration-300 [&>svg]:transition-transform hover:[&>svg]:translate-x-0.5";
+  const active = { className: "!text-foreground font-semibold before:!opacity-100 [&>svg]:translate-x-1" };
   const iconBtn = "relative rounded-md p-2 text-muted-foreground hover:bg-secondary hover:text-foreground";
 
   return (
@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <nav aria-label="Navegação inferior" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t bg-background md:hidden">
         {NAV.slice(0, 5).map((n) => (
-          <Link key={n.to} to={n.to} className="flex flex-col items-center gap-1 py-2.5 text-[11px] text-muted-foreground" activeProps={{ className: "!text-primary" }}>
+          <Link key={n.to} to={n.to} className="flex flex-col items-center gap-1 py-2.5 text-[11px] text-muted-foreground" activeProps={{ className: "!text-foreground font-semibold [&>svg]:text-primary shadow-[inset_0_2px_0_var(--color-highlight)]" }}>
             <n.icon className="h-5 w-5" aria-hidden />{"short" in n ? n.short : n.label}
           </Link>
         ))}

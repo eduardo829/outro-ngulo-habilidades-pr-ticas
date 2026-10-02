@@ -11,16 +11,16 @@ export function PublicLayout({ children }: { children: ReactNode }) {
       <a href="#conteudo" className="sr-only focus:not-sr-only focus:absolute focus:p-2">
         Pular para o conteúdo
       </a>
-      <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b bg-background/95">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
           <Link to="/" aria-label="Outro Ângulo — início">
             <Logo />
           </Link>
           <nav className="hidden items-center gap-7 text-sm font-medium md:flex">
-            <Link to="/cursos" className="hover:text-primary" activeProps={{ className: "text-primary" }}>
+            <Link to="/cursos" className="nav-line">
               Cursos
             </Link>
-            <Link to="/sobre" className="hover:text-primary" activeProps={{ className: "text-primary" }}>
+            <Link to="/sobre" className="nav-line">
               Sobre
             </Link>
           </nav>
@@ -47,7 +47,8 @@ export function PublicLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 md:grid-cols-3">
           <div>
             <Logo className="[&_span.bg-ink]:bg-ink-foreground [&_span.bg-ink]:text-ink" />
-            <p className="mt-3 max-w-xs text-sm opacity-75">Habilidades para a vida que não veio com manual.</p>
+            <p className="mt-4 max-w-xs font-display text-lg font-semibold leading-snug">Existe sempre<br />outro ângulo.</p>
+            <p className="mt-2 max-w-xs text-sm opacity-65">Habilidades para a vida que não veio com manual.</p>
           </div>
           <nav className="flex flex-col gap-2 text-sm opacity-85">
             <Link to="/cursos">Cursos</Link>
