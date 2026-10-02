@@ -9,7 +9,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { publishedCoursesQuery, settingsQuery } from "@/lib/queries";
 import { CourseCard } from "@/components/CourseCard";
 import { Angle, SectionLabel } from "@/components/Angle";
-import { Manifesto, Acontecendo, Ciclo } from "@/components/home/Thesis";
+import { RotatingWord } from "@/components/motion/Motion";
+import { Manifesto, Acontecendo, Ciclo, Problema, Pilares, PreviewRede } from "@/components/home/Thesis";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -68,6 +69,10 @@ function Home() {
             <p className="mt-10 max-w-md text-lg leading-relaxed text-muted-foreground md:ml-[8%]">
               Conhecimento, pessoas e oportunidades para quem quer construir alguma coisa.
             </p>
+            <p className="mt-6 flex items-baseline gap-3 font-display text-2xl font-extrabold md:ml-[8%]">
+              <span className="eyebrow">Aprender a</span>
+              <RotatingWord words={["negociar.", "conectar.", "vender.", "decidir.", "construir.", "investir.", "aprender."]} />
+            </p>
             <div className="mt-8 flex flex-wrap items-center gap-6 md:ml-[8%]">
               <Button asChild size="lg">
                 <Link to="/trilhas">Explorar a plataforma <ArrowRight /></Link>
@@ -89,7 +94,10 @@ function Home() {
         <div className="angle-rule mx-auto max-w-6xl px-5" />
       </section>
 
+      <Problema />
       <Manifesto />
+      <Pilares />
+      <PreviewRede />
       <Acontecendo courses={courses.data ?? []} />
       <Ciclo />
 
