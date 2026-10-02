@@ -33,7 +33,7 @@ export const VENDAS: Course = {
       next: "Aprender a perguntar antes de apresentar.",
     },
     {
-      key: "v02", title: "Perguntar antes de apresentar", question: "Quais perguntas revelam do que o cliente precisa?",
+      key: "v02", title: "Perguntar antes de apresentar", question: "Quais perguntas revelam o que o cliente precisa?",
       blocks: [
         { type: "concept", title: "Perguntas de descoberta",
           what: "Perguntas abertas que ajudam o cliente a explicar a situação atual, o problema, o impacto e o que já tentou.",
