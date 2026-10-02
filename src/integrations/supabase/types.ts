@@ -492,6 +492,96 @@ export type Database = {
           },
         ]
       }
+      gestor_questions: {
+        Row: {
+          answer: string | null
+          body: string
+          course_id: string | null
+          created_at: string
+          gestor_slug: string
+          id: string
+          module_key: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          answer?: string | null
+          body: string
+          course_id?: string | null
+          created_at?: string
+          gestor_slug: string
+          id?: string
+          module_key?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          answer?: string | null
+          body?: string
+          course_id?: string | null
+          created_at?: string
+          gestor_slug?: string
+          id?: string
+          module_key?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gestor_questions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gestor_questions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_outputs: {
+        Row: {
+          course_id: string
+          key: string
+          updated_at: string
+          user_id: string
+          value: Json
+        }
+        Insert: {
+          course_id: string
+          key: string
+          updated_at?: string
+          user_id: string
+          value?: Json
+        }
+        Update: {
+          course_id?: string
+          key?: string
+          updated_at?: string
+          user_id?: string
+          value?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_outputs_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_outputs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lesson_notes: {
         Row: {
           content: string

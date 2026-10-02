@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -122,8 +122,9 @@ function Num({ label, value, set, max, step }: { label: string; value: number; s
   );
 }
 
-export function CalculadoraViabilidade() {
-  const [inv, setInv] = useState(5000), [preco, setPreco] = useState(200), [custo, setCusto] = useState(80), [fixos, setFixos] = useState(1500), [cac, setCac] = useState(30), [meta, setMeta] = useState(3000);
+export type CalcValues = { inv: number; preco: number; custo: number; fixos: number; cac: number; meta: number };
+export function CalculadoraViabilidade({ initial, onChange }: { initial?: Partial<CalcValues>; onChange?: (v: CalcValues & { contribuicao: number; breakEven: number | null; vendasMeta: number | null }) => void } = {}) {
+  const [inv, setInv] = useState(initial?.inv ?? 5000), [preco, setPreco] = useState(initial?.preco ?? 200), [custo, setCusto] = useState(initial?.custo ?? 80), [fixos, setFixos] = useState(initial?.fixos ?? 1500), [cac, setCac] = useState(initial?.cac ?? 30), [meta, setMeta] = useState(initial?.meta ?? 3000);
   const bruta = preco - custo;
   const contrib = bruta - cac;
   const be = contrib > 0 ? fixos / contrib : Infinity;
@@ -131,6 +132,7 @@ export function CalculadoraViabilidade() {
   const receita = vendasMeta * preco;
   const payback = contrib > 0 && meta > 0 ? inv / meta : Infinity;
   const pct = preco > 0 ? (contrib / preco) * 100 : 0;
+  useEffect(() => { onChange?.({ inv, preco, custo, fixos, cac, meta, contribuicao: contrib, breakEven: isFinite(be) ? Math.ceil(be) : null, vendasMeta: isFinite(vendasMeta) ? Math.ceil(vendasMeta) : null }); }, [inv, preco, custo, fixos, cac, meta]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="grid gap-12 md:grid-cols-2">
       <div className="space-y-6">

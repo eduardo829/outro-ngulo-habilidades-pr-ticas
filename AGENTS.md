@@ -19,3 +19,4 @@
 - AI calls go through server functions (src/lib/*.functions.ts) to the AI Gateway Responses API, output validated against known data (e.g. trail titles). Why: keep keys server-side and avoid invented content.
 - Public gestor profiles use one typed template (src/lib/gestores.ts) rendered by /gestores and /gestor/$slug; "[...]" values are placeholders shown as unconfirmed. Why: add gestores without redesign and never invent facts.
 - Public tools (src/components/tools) are deterministic client-side calculators with no AI and no persistence. Why: transparent results, no fake certainty, visitor data never stored.
+- Interactive courses are defined as data (src/lib/learning/*) and rendered by reusable blocks; member work saves to learning_outputs (owner-only, write requires enrollment or staff). Gestor questions go to gestor_questions queue. Why: new courses without new layouts, private work by default.

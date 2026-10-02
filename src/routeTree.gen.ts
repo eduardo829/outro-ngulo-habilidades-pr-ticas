@@ -52,6 +52,9 @@ import { Route as AuthenticatedPessoasIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedPessoasIdRouteImport } from './routes/_authenticated/pessoas.$id'
 import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
 import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authenticated/admin/cursos.$id'
+import { Route as AuthenticatedAprenderSlugIndexRouteImport } from './routes/_authenticated/aprender.$slug.index'
+import { Route as AuthenticatedAprenderSlugModuloRouteImport } from './routes/_authenticated/aprender.$slug.$modulo'
+import { Route as AuthenticatedAprenderSlugEspacoRouteImport } from './routes/_authenticated/aprender.$slug.espaco'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -283,6 +286,24 @@ const AuthenticatedAdminCursosIdRoute =
     path: '/cursos/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAprenderSlugIndexRoute =
+  AuthenticatedAprenderSlugIndexRouteImport.update({
+    id: '/aprender/$slug/',
+    path: '/aprender/$slug/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAprenderSlugModuloRoute =
+  AuthenticatedAprenderSlugModuloRouteImport.update({
+    id: '/aprender/$slug/$modulo',
+    path: '/aprender/$slug/$modulo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAprenderSlugEspacoRoute =
+  AuthenticatedAprenderSlugEspacoRouteImport.update({
+    id: '/aprender/$slug/espaco',
+    path: '/aprender/$slug/espaco',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -326,7 +347,10 @@ export interface FileRoutesByFullPath {
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
+  '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
+  '/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -369,7 +393,10 @@ export interface FileRoutesByTo {
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/pessoas': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
+  '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/admin/cursos': typeof AuthenticatedAdminCursosIndexRoute
+  '/aprender/$slug': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -415,7 +442,10 @@ export interface FileRoutesById {
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/_authenticated/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
+  '/_authenticated/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/_authenticated/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
+  '/_authenticated/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -461,7 +491,10 @@ export interface FileRouteTypes {
     | '/mensagens/'
     | '/pessoas/'
     | '/admin/cursos/$id'
+    | '/aprender/$slug/$modulo'
+    | '/aprender/$slug/espaco'
     | '/admin/cursos/'
+    | '/aprender/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -504,7 +537,10 @@ export interface FileRouteTypes {
     | '/mensagens'
     | '/pessoas'
     | '/admin/cursos/$id'
+    | '/aprender/$slug/$modulo'
+    | '/aprender/$slug/espaco'
     | '/admin/cursos'
+    | '/aprender/$slug'
   id:
     | '__root__'
     | '/'
@@ -549,7 +585,10 @@ export interface FileRouteTypes {
     | '/_authenticated/mensagens/'
     | '/_authenticated/pessoas/'
     | '/_authenticated/admin/cursos/$id'
+    | '/_authenticated/aprender/$slug/$modulo'
+    | '/_authenticated/aprender/$slug/espaco'
     | '/_authenticated/admin/cursos/'
+    | '/_authenticated/aprender/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -876,6 +915,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCursosIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/aprender/$slug/': {
+      id: '/_authenticated/aprender/$slug/'
+      path: '/aprender/$slug'
+      fullPath: '/aprender/$slug/'
+      preLoaderRoute: typeof AuthenticatedAprenderSlugIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aprender/$slug/$modulo': {
+      id: '/_authenticated/aprender/$slug/$modulo'
+      path: '/aprender/$slug/$modulo'
+      fullPath: '/aprender/$slug/$modulo'
+      preLoaderRoute: typeof AuthenticatedAprenderSlugModuloRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/aprender/$slug/espaco': {
+      id: '/_authenticated/aprender/$slug/espaco'
+      path: '/aprender/$slug/espaco'
+      fullPath: '/aprender/$slug/espaco'
+      preLoaderRoute: typeof AuthenticatedAprenderSlugEspacoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -925,6 +985,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedPessoasIndexRoute: typeof AuthenticatedPessoasIndexRoute
+  AuthenticatedAprenderSlugModuloRoute: typeof AuthenticatedAprenderSlugModuloRoute
+  AuthenticatedAprenderSlugEspacoRoute: typeof AuthenticatedAprenderSlugEspacoRoute
+  AuthenticatedAprenderSlugIndexRoute: typeof AuthenticatedAprenderSlugIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -945,6 +1008,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedPessoasIndexRoute: AuthenticatedPessoasIndexRoute,
+  AuthenticatedAprenderSlugModuloRoute: AuthenticatedAprenderSlugModuloRoute,
+  AuthenticatedAprenderSlugEspacoRoute: AuthenticatedAprenderSlugEspacoRoute,
+  AuthenticatedAprenderSlugIndexRoute: AuthenticatedAprenderSlugIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
