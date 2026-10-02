@@ -129,6 +129,51 @@ export type Database = {
           },
         ]
       }
+      course_videos: {
+        Row: {
+          captions_url: string | null
+          course_slug: string
+          description: string | null
+          duration_text: string | null
+          gestor: string | null
+          module_key: string
+          provider: string | null
+          thumbnail_url: string | null
+          title: string | null
+          transcript: string | null
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          captions_url?: string | null
+          course_slug: string
+          description?: string | null
+          duration_text?: string | null
+          gestor?: string | null
+          module_key: string
+          provider?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          transcript?: string | null
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          captions_url?: string | null
+          course_slug?: string
+          description?: string | null
+          duration_text?: string | null
+          gestor?: string | null
+          module_key?: string
+          provider?: string | null
+          thumbnail_url?: string | null
+          title?: string | null
+          transcript?: string | null
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
       courses: {
         Row: {
           access_policy: string
