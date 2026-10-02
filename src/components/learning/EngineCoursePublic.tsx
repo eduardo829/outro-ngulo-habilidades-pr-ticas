@@ -9,10 +9,12 @@ import { useAuth } from "@/lib/auth";
 import type { Course } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";
 import { coursePhoto } from "@/lib/photos";
+import { useCoursePrices, brl } from "@/lib/coursePrices";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
   const { user } = useAuth();
+  const { data: prices } = useCoursePrices();
   const g = c.gestor ? getGestor(c.gestor) : undefined;
   const [scroll, setScroll] = useState(0);
   const [open, setOpen] = useState<string | null>(c.modules[0]?.key ?? null);
