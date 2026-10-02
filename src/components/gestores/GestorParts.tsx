@@ -18,7 +18,7 @@ export function Txt({ v, className }: { v: string; className?: string }) {
 /** Photo: profile photo, else founder photo from site settings, else initials. */
 export function GestorPhoto({ g, className }: { g: GestorProfile; className?: string }) {
   const s = useQuery(settingsQuery);
-  const first = g.name.split(" ")[0].normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+  const first = (g.name.split(" ")[0] ?? "").normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
   const founder = s.data?.founders.find((f) => f.name.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().startsWith(first));
   const url = founder?.photo_url || g.photo;
   return (
