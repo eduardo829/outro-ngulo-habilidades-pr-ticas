@@ -94,7 +94,7 @@ function Agora() {
       <p className="mt-1 text-sm text-muted-foreground">Uma foto da sua situação hoje. Serve para você enxergar, não para te classificar.</p>
       <p className="mt-6 text-sm font-semibold">Situação atual</p>
       <div className="mt-2 flex flex-wrap gap-2">
-        {SITUATIONS.map((x) => <button key={x} type="button" aria-pressed={now.situacao === x} onClick={() => set("situacao")(x)} className={cn("border px-3 py-1.5 text-sm", now.situacao === x ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{x}</button>)}
+        {SITUATIONS.map((x) => <button key={x} type="button" aria-pressed={now["situacao"] === x} onClick={() => set("situacao")(x)} className={cn("border px-3 py-1.5 text-sm", now["situacao"] === x ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{x}</button>)}
       </div>
       <div className="mt-6 grid gap-5 md:grid-cols-2">
         {NOW_FIELDS.map((f) => (

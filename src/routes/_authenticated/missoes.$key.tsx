@@ -24,7 +24,7 @@ function Page() {
   const qc = useQueryClient();
   const q = useQuery({ queryKey: ["mission", user?.id, key], enabled: !!user, queryFn: async () => (await supabase.from("mission_progress").select("*").eq("user_id", user!.id).eq("mission_key", key).maybeSingle()).data });
   const [ev, setEv] = useState(""); const [refl, setRefl] = useState("");
-  useEffect(() => { if (q.data) { setEv(((q.data.answers as Record<string, string>)?.evidence) ?? ""); setRefl(q.data.reflection ?? ""); } }, [q.data]);
+  useEffect(() => { if (q.data) { setEv(((q.data.answers as Record<string, string>)?.["evidence"]) ?? ""); setRefl(q.data.reflection ?? ""); } }, [q.data]);
   const course = COURSES_ENGINE.find((c) => c.slug === m.course);
   async function save(complete: boolean | null) {
     const completed_at = complete === null ? (q.data?.completed_at ?? null) : complete ? new Date().toISOString() : null;
