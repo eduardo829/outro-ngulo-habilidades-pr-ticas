@@ -10,33 +10,297 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DiretrizesRouteImport } from './routes/diretrizes'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as TermosRouteImport } from './routes/termos'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
+import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as CursosIndexRouteImport } from './routes/cursos.index'
+import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
+import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
+import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
+import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
+import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
+import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authenticated/admin/cursos.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiretrizesRoute = DiretrizesRouteImport.update({
+  id: '/diretrizes',
+  path: '/diretrizes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
+  id: '/meus-cursos',
+  path: '/meus-cursos',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const CursosIndexRoute = CursosIndexRouteImport.update({
+  id: '/cursos/',
+  path: '/cursos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CursosSlugRoute = CursosSlugRouteImport.update({
+  id: '/cursos/$slug',
+  path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminAlunosRoute =
+  AuthenticatedAdminAlunosRouteImport.update({
+    id: '/alunos',
+    path: '/alunos',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminConfiguracoesRoute =
+  AuthenticatedAdminConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAulaLessonIdRoute =
+  AuthenticatedAulaLessonIdRouteImport.update({
+    id: '/aula/$lessonId',
+    path: '/aula/$lessonId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCursoSlugRoute = AuthenticatedCursoSlugRouteImport.update({
+  id: '/curso/$slug',
+  path: '/curso/$slug',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminCursosIndexRoute =
+  AuthenticatedAdminCursosIndexRouteImport.update({
+    id: '/cursos/',
+    path: '/cursos/',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminCursosIdRoute =
+  AuthenticatedAdminCursosIdRouteImport.update({
+    id: '/cursos/$id',
+    path: '/cursos/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/diretrizes': typeof DiretrizesRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/inicio': typeof AuthenticatedInicioRoute
+  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/cursos/': typeof CursosIndexRoute
+  '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/diretrizes': typeof DiretrizesRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
+  '/inicio': typeof AuthenticatedInicioRoute
+  '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/cursos': typeof CursosIndexRoute
+  '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/admin/cursos': typeof AuthenticatedAdminCursosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/diretrizes': typeof DiretrizesRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sobre': typeof SobreRoute
+  '/termos': typeof TermosRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/inicio': typeof AuthenticatedInicioRoute
+  '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/cursos/$slug': typeof CursosSlugRoute
+  '/cursos/': typeof CursosIndexRoute
+  '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/_authenticated/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/diretrizes'
+    | '/privacidade'
+    | '/recuperar-senha'
+    | '/reset-password'
+    | '/sobre'
+    | '/termos'
+    | '/admin'
+    | '/inicio'
+    | '/meus-cursos'
+    | '/perfil'
+    | '/cursos/$slug'
+    | '/cursos/'
+    | '/admin/alunos'
+    | '/admin/configuracoes'
+    | '/aula/$lessonId'
+    | '/curso/$slug'
+    | '/admin/'
+    | '/admin/cursos/$id'
+    | '/admin/cursos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/diretrizes'
+    | '/privacidade'
+    | '/recuperar-senha'
+    | '/reset-password'
+    | '/sobre'
+    | '/termos'
+    | '/inicio'
+    | '/meus-cursos'
+    | '/perfil'
+    | '/cursos/$slug'
+    | '/cursos'
+    | '/admin/alunos'
+    | '/admin/configuracoes'
+    | '/aula/$lessonId'
+    | '/curso/$slug'
+    | '/admin'
+    | '/admin/cursos/$id'
+    | '/admin/cursos'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/diretrizes'
+    | '/privacidade'
+    | '/recuperar-senha'
+    | '/reset-password'
+    | '/sobre'
+    | '/termos'
+    | '/_authenticated/admin'
+    | '/_authenticated/inicio'
+    | '/_authenticated/meus-cursos'
+    | '/_authenticated/perfil'
+    | '/cursos/$slug'
+    | '/cursos/'
+    | '/_authenticated/admin/alunos'
+    | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/aula/$lessonId'
+    | '/_authenticated/curso/$slug'
+    | '/_authenticated/admin/'
+    | '/_authenticated/admin/cursos/$id'
+    | '/_authenticated/admin/cursos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  DiretrizesRoute: typeof DiretrizesRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
+  RecuperarSenhaRoute: typeof RecuperarSenhaRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SobreRoute: typeof SobreRoute
+  TermosRoute: typeof TermosRoute
+  CursosSlugRoute: typeof CursosSlugRoute
+  CursosIndexRoute: typeof CursosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +312,211 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diretrizes': {
+      id: '/diretrizes'
+      path: '/diretrizes'
+      fullPath: '/diretrizes'
+      preLoaderRoute: typeof DiretrizesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inicio': {
+      id: '/_authenticated/inicio'
+      path: '/inicio'
+      fullPath: '/inicio'
+      preLoaderRoute: typeof AuthenticatedInicioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/meus-cursos': {
+      id: '/_authenticated/meus-cursos'
+      path: '/meus-cursos'
+      fullPath: '/meus-cursos'
+      preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/cursos/': {
+      id: '/cursos/'
+      path: '/cursos'
+      fullPath: '/cursos/'
+      preLoaderRoute: typeof CursosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cursos/$slug': {
+      id: '/cursos/$slug'
+      path: '/cursos/$slug'
+      fullPath: '/cursos/$slug'
+      preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/alunos': {
+      id: '/_authenticated/admin/alunos'
+      path: '/alunos'
+      fullPath: '/admin/alunos'
+      preLoaderRoute: typeof AuthenticatedAdminAlunosRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/configuracoes': {
+      id: '/_authenticated/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/aula/$lessonId': {
+      id: '/_authenticated/aula/$lessonId'
+      path: '/aula/$lessonId'
+      fullPath: '/aula/$lessonId'
+      preLoaderRoute: typeof AuthenticatedAulaLessonIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/curso/$slug': {
+      id: '/_authenticated/curso/$slug'
+      path: '/curso/$slug'
+      fullPath: '/curso/$slug'
+      preLoaderRoute: typeof AuthenticatedCursoSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/cursos/': {
+      id: '/_authenticated/admin/cursos/'
+      path: '/cursos'
+      fullPath: '/admin/cursos/'
+      preLoaderRoute: typeof AuthenticatedAdminCursosIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/cursos/$id': {
+      id: '/_authenticated/admin/cursos/$id'
+      path: '/cursos/$id'
+      fullPath: '/admin/cursos/$id'
+      preLoaderRoute: typeof AuthenticatedAdminCursosIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAlunosRoute: typeof AuthenticatedAdminAlunosRoute
+  AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAdminCursosIdRoute: typeof AuthenticatedAdminCursosIdRoute
+  AuthenticatedAdminCursosIndexRoute: typeof AuthenticatedAdminCursosIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminAlunosRoute: AuthenticatedAdminAlunosRoute,
+    AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+    AuthenticatedAdminCursosIdRoute: AuthenticatedAdminCursosIdRoute,
+    AuthenticatedAdminCursosIndexRoute: AuthenticatedAdminCursosIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
+  AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
+  AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedInicioRoute: AuthenticatedInicioRoute,
+  AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
+  AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  DiretrizesRoute: DiretrizesRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
+  RecuperarSenhaRoute: RecuperarSenhaRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SobreRoute: SobreRoute,
+  TermosRoute: TermosRoute,
+  CursosSlugRoute: CursosSlugRoute,
+  CursosIndexRoute: CursosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
