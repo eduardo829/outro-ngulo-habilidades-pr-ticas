@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Compass, Users, Mic, CalendarCheck, Handshake, Scale, Lightbulb, Cpu, ArrowRight,
+  ArrowRight,
 } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
@@ -23,14 +23,14 @@ export const Route = createFileRoute("/")({
 });
 
 const TEMAS = [
-  { icon: Compass, t: "O que vale aprender antes dos 25" },
-  { icon: Users, t: "Networking do zero" },
-  { icon: Mic, t: "Comunicar seu valor" },
-  { icon: CalendarCheck, t: "Planejamento que funciona" },
-  { icon: Handshake, t: "Negociação e conversas difíceis" },
-  { icon: Scale, t: "Avaliar oportunidades e decidir" },
-  { icon: Lightbulb, t: "Começar a empreender" },
-  { icon: Cpu, t: "Tecnologia e IA no dia a dia" },
+  { t: "O que vale aprender antes dos 25" },
+  { t: "Networking do zero" },
+  { t: "Comunicar seu valor" },
+  { t: "Planejamento que funciona" },
+  { t: "Negociação e conversas difíceis" },
+  { t: "Avaliar oportunidades e decidir" },
+  { t: "Começar a empreender" },
+  { t: "Tecnologia e IA no dia a dia" },
 ];
 
 const FAQ: [string, string][] = [
