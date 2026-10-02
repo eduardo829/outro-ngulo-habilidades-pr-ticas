@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { PERSONAS } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
   head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }] }),
@@ -26,7 +27,7 @@ const schema = z.object({
   link: z.union([z.literal(""), z.string().url("Link inválido").max(255)]).optional(),
 });
 
-type Form = { display_name: string; bio: string; city: string; area: string; interests: string; can_share: string; wants_learn: string; link: string; avatar_url: string; in_directory: boolean };
+type Form = { display_name: string; bio: string; city: string; area: string; interests: string; can_share: string; wants_learn: string; link: string; avatar_url: string; in_directory: boolean; persona: string; working_on: string; skills: string; learn_tags: string };
 
 function ProfilePage() {
   const { user } = useAuth();
@@ -40,6 +41,7 @@ function ProfilePage() {
         display_name: data.display_name, bio: data.bio ?? "", city: data.city ?? "", area: data.area ?? "",
         interests: data.interests.join(", "), can_share: data.can_share ?? "", wants_learn: data.wants_learn ?? "",
         link: data.link ?? "", avatar_url: data.avatar_url ?? "", in_directory: data.in_directory,
+        persona: data.persona ?? "", working_on: data.working_on ?? "", skills: data.skills.join(", "), learn_tags: data.learn_tags.join(", "),
       });
     });
   }, [user]);
@@ -56,7 +58,9 @@ function ProfilePage() {
       display_name: f!.display_name.trim(), bio: f!.bio || null, city: f!.city || null, area: f!.area || null,
       interests: f!.interests.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 12),
       can_share: f!.can_share || null, wants_learn: f!.wants_learn || null, link: f!.link || null,
-      in_directory: f!.in_directory, updated_at: new Date().toISOString(),
+      in_directory: f!.in_directory, persona: f!.persona || null, working_on: f!.working_on || null,
+      skills: f!.skills.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10),
+      learn_tags: f!.learn_tags.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10), updated_at: new Date().toISOString(),
     }).eq("id", user!.id);
     setBusy(false);
     error ? toast.error("Não foi possível salvar.") : toast.success("Perfil salvo.");
@@ -92,12 +96,18 @@ function ProfilePage() {
           <div><Label htmlFor="city">Cidade (opcional)</Label><Input id="city" value={f.city} onChange={set("city")} /></div>
           <div><Label htmlFor="area">Área de atuação</Label><Input id="area" value={f.area} onChange={set("area")} /></div>
         </div>
-        <div><Label htmlFor="int">Interesses (separados por vírgula)</Label><Input id="int" value={f.interests} onChange={set("interests")} /></div>
-        <div><Label htmlFor="share">O que posso compartilhar</Label><Textarea id="share" value={f.can_share} onChange={set("can_share")} maxLength={300} /></div>
-        <div><Label htmlFor="learn">O que quero aprender</Label><Textarea id="learn" value={f.wants_learn} onChange={set("wants_learn")} maxLength={300} /></div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div><Label htmlFor="persona">O que melhor descreve você</Label><select id="persona" value={f.persona} onChange={(e) => setF({ ...f, persona: e.target.value })} className="h-10 w-full rounded-md border bg-background px-3 text-sm"><option value="">—</option>{PERSONAS.map((p) => <option key={p}>{p}</option>)}</select></div>
+          <div><Label htmlFor="wo">No que está trabalhando</Label><Input id="wo" value={f.working_on} onChange={set("working_on")} maxLength={300} /></div>
+        </div>
+        <div><Label htmlFor="skills">Posso ajudar com (etiquetas, separadas por vírgula)</Label><Input id="skills" value={f.skills} onChange={set("skills")} placeholder="Vendas, Marketing, Excel" /></div>
+        <div><Label htmlFor="lt">Quero aprender (etiquetas, separadas por vírgula)</Label><Input id="lt" value={f.learn_tags} onChange={set("learn_tags")} placeholder="IA, Networking" /></div>
+        <div><Label htmlFor="int">O que quero desenvolver (separados por vírgula)</Label><Input id="int" value={f.interests} onChange={set("interests")} /></div>
+        <div><Label htmlFor="share">Em que eu poderia ajudar outra pessoa</Label><Textarea id="share" value={f.can_share} onChange={set("can_share")} maxLength={300} /></div>
+        <div><Label htmlFor="learn">Em que gostaria de receber ajuda</Label><Textarea id="learn" value={f.wants_learn} onChange={set("wants_learn")} maxLength={300} /></div>
         <div><Label htmlFor="link">LinkedIn ou link profissional (opcional)</Label><Input id="link" type="url" value={f.link} onChange={set("link")} placeholder="https://" /></div>
         <div className="flex items-center justify-between rounded-lg border bg-card p-4">
-          <div><Label htmlFor="dir">Aparecer no diretório de membros</Label><p className="text-xs text-muted-foreground">Opcional. Seu e-mail nunca é exibido.</p></div>
+          <div><Label htmlFor="dir">Aparecer em “Pessoas”</Label><p className="text-xs text-muted-foreground">Opcional. Seu e-mail nunca é exibido.</p></div>
           <Switch id="dir" checked={f.in_directory} onCheckedChange={(c) => setF({ ...f, in_directory: c })} />
         </div>
         <Button type="submit" disabled={busy}>{busy ? "Salvando…" : "Salvar perfil"}</Button>
