@@ -53,6 +53,11 @@ function Workspace() {
                 ))}
               </ul>
 
+              {p.modules === c.modules.length && (
+                <div className="mt-12 bg-ink p-8 text-ink-foreground">
+                  <p className="font-display text-2xl font-extrabold leading-tight md:text-3xl">Você não terminou apenas um curso.<br /><span className="text-highlight">Você construiu seu primeiro sistema de trabalho.</span></p>
+                </div>
+              )}
               <section className="mt-16 border-t-2 border-foreground pt-8">
                 <div className="flex flex-wrap items-baseline justify-between gap-4">
                   <h2 className="font-display text-2xl font-extrabold md:text-3xl">{c.finalPlan.title}</h2>

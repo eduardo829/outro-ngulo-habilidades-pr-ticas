@@ -3,6 +3,7 @@ import networking from "@/assets/photo-networking.jpg";
 import vendas from "@/assets/photo-vendas.jpg";
 import ia from "@/assets/photo-ia.jpg";
 import hero from "@/assets/photo-hero.jpg";
+import corretor from "@/assets/photo-corretor.jpg";
 
 /** Cinematic cover photo per engine course (fallback: desk by the window). */
 const COURSE_PHOTOS: Record<string, string> = {
@@ -10,6 +11,7 @@ const COURSE_PHOTOS: Record<string, string> = {
   "networking-do-zero": networking,
   "vendas-da-conversa-ao-cliente": vendas,
   "ia-no-trabalho": ia,
+  "corretor-do-zero": corretor,
 };
 
 export const coursePhoto = (slug: string) => COURSE_PHOTOS[slug] ?? hero;
