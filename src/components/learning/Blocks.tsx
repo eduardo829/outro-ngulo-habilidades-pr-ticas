@@ -81,7 +81,7 @@ function MultipleChoiceReflection({ b, ctx }: { b: Extract<Block, { type: "choic
 }
 
 /** Placeholder until an admin sets a video URL in course_videos; then it becomes the player automatically. */
-export function VideoLessonPlaceholder({ title, gestor, duration, thumbnail, n }: { title: string; gestor?: string | null; duration?: string | null; thumbnail?: string | null; n: string }) {
+export function VideoLessonPlaceholder({ title, gestor, duration, thumbnail, n }: { title: string; gestor?: string | null | undefined; duration?: string | null | undefined; thumbnail?: string | null | undefined; n: string }) {
   return (
     <div className="relative grid overflow-hidden bg-ink text-ink-foreground md:grid-cols-[1.4fr_1fr]">
       <div className="flex flex-col justify-between gap-6 p-6 md:p-8">
