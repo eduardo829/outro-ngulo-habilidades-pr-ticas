@@ -12,10 +12,10 @@ export function useEngineAccess(slug: string) {
     queryKey: ["engine-access", slug, user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: course } = await supabase.from("courses").select("id, title").eq("slug", slug).maybeSingle();
-      if (!course) return { courseId: null, allowed: false };
+      const { data: course } = await supabase.from("courses").select("id, title, preview_enabled, preview_module_key").eq("slug", slug).maybeSingle();
+      if (!course) return { courseId: null, allowed: false, previewKey: null as string | null };
       const { data: en } = await supabase.from("enrollments").select("status").eq("course_id", course.id).eq("user_id", user!.id).maybeSingle();
-      return { courseId: course.id, allowed: en?.status === "active" || isStaff };
+      return { courseId: course.id, allowed: en?.status === "active" || isStaff, previewKey: course.preview_enabled ? course.preview_module_key : null };
     },
   });
 }

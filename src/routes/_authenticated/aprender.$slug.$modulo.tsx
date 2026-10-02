@@ -14,8 +14,8 @@ export const Route = createFileRoute("/_authenticated/aprender/$slug/$modulo")({
 function ModulePage() {
   const { slug, modulo } = Route.useParams();
   return (
-    <CourseGate slug={slug}>
-      {(c, courseId, o) => {
+    <CourseGate slug={slug} moduleKey={modulo}>
+      {(c, courseId, o, preview) => {
         const i = c.modules.findIndex((m) => m.key === modulo);
         const m = c.modules[i];
         if (!m) return <p className="p-8">Módulo não encontrado.</p>;
@@ -25,7 +25,7 @@ function ModulePage() {
         const n = String(i + 1).padStart(2, "0");
         return (
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-8 md:grid-cols-[15rem_1fr] md:px-8">
-            <aside className="hidden md:block"><div className="sticky top-6"><CourseSidebar c={c} o={o} active={m.key} /></div></aside>
+            <aside className="hidden md:block"><div className="sticky top-6">{preview ? <Link to="/cursos/$slug" params={{ slug }} className="text-sm font-semibold underline">{c.title}</Link> : <CourseSidebar c={c} o={o} active={m.key} />}</div></aside>
             <div className="min-w-0 pb-24">
               <div className="flex items-center gap-3 md:hidden">
                 <Link to="/aprender/$slug" params={{ slug }} className="text-sm text-muted-foreground">{c.title}</Link>
@@ -49,7 +49,7 @@ function ModulePage() {
               <div className="mt-8"><CommunityPrompt prompt={m.community} courseId={courseId} moduleKey={m.key} gestorSlug={c.gestor} /></div>
               <div className="sticky bottom-16 z-10 mt-10 flex items-center justify-between gap-3 border-t bg-background/95 py-3 backdrop-blur md:bottom-0">
                 {prev ? <Button asChild variant="ghost"><Link to="/aprender/$slug/$modulo" params={{ slug, modulo: prev.key }}><ArrowLeft />Anterior</Link></Button> : <span />}
-                {next ? <Button asChild><Link to="/aprender/$slug/$modulo" params={{ slug, modulo: next.key }}>Continuar<ArrowRight /></Link></Button>
+                {preview ? <Button asChild><Link to="/cursos/$slug" params={{ slug }}>Conhecer o curso completo<ArrowRight /></Link></Button> : next ? <Button asChild><Link to="/aprender/$slug/$modulo" params={{ slug, modulo: next.key }}>Continuar<ArrowRight /></Link></Button>
                   : <Button asChild><Link to="/aprender/$slug/espaco" params={{ slug }}>Ver meu plano<ArrowRight /></Link></Button>}
               </div>
             </div>
