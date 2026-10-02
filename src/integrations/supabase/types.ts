@@ -1050,6 +1050,14 @@ export type Database = {
         Args: { _target: string; _viewer: string }
         Returns: boolean
       }
+      public_upcoming_events: {
+        Args: never
+        Returns: {
+          starts_at: string
+          theme: string
+          title: string
+        }[]
+      }
       start_conversation: {
         Args: { _other: string; _post?: string }
         Returns: string
