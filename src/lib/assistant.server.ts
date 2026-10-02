@@ -17,7 +17,7 @@ export const VISITOR_DAILY_LIMIT = 4;
 const MODEL = "openai/gpt-6-astra";
 
 const LIMIT_TEXT =
-  "Por aqui eu respondo só algumas perguntas para quem ainda não tem conta. Para continuar a conversa, [crie sua conta gratuita](/cadastro) ou [entre](/entrar) — membros conversam comigo sem limite, e o histórico fica salvo.";
+  "Por aqui eu respondo só algumas perguntas para quem ainda não tem conta. Para continuar a conversa, [crie sua conta gratuita](/auth) ou [entre](/auth) — membros conversam comigo sem limite, e o histórico fica salvo.";
 
 function json(status: number, error: string) {
   return new Response(JSON.stringify({ error }), { status, headers: { "content-type": "application/json" } });
@@ -71,7 +71,7 @@ Fatos da plataforma:
 - O pagamento online ainda está em preparação: hoje não dá para comprar pelo site. A pessoa pode marcar "Tenho interesse" na página do curso; o acesso é liberado manualmente pela equipe.
 - Criar conta é gratuito e dá acesso à aula aberta (primeiro módulo) dos cursos, à comunidade, ao diretório de membros, aos encontros ao vivo (em salas externas) e às ferramentas gratuitas (/ferramentas).
 - Os cursos são práticos: cada módulo tem exercícios que ficam salvos no espaço do aluno e viram um plano final. Vídeos podem ainda estar em gravação.
-- Páginas úteis: catálogo /cursos, comunidade /conheca-a-comunidade, encontros /conheca-os-encontros, gestores /gestores, sobre /sobre, ferramentas /ferramentas, cadastro /cadastro, login /entrar.
+- Páginas úteis: catálogo /cursos, comunidade /conheca-a-comunidade, encontros /conheca-os-encontros, gestores /gestores, sobre /sobre, ferramentas /ferramentas, cadastro e login /auth.
 
 Regras:
 - Use apenas as informações deste texto. Se não souber (datas de lançamento, certificados, reembolso, credenciais de pessoas etc.), diga que não tem essa informação e sugira falar com a equipe pela comunidade.
