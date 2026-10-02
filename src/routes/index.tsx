@@ -32,7 +32,7 @@ const TEMAS = [
   { icon: Cpu, t: "Tecnologia e IA no dia a dia" },
 ];
 
-const FAQ = [
+const FAQ: [string, string][] = [
   ["Para quem é o Outro Ângulo?", "Para jovens adultos que querem aprender o que a escola e a faculdade não cobrem. Se você tem mais de 25, também é bem-vindo — os temas valem para qualquer fase."],
   ["Criar uma conta já libera os cursos?", "Não. A conta dá acesso à sua área pessoal. Cada curso é liberado individualmente por matrícula."],
   ["Como funcionam as aulas?", "Cada curso é dividido em módulos com aulas em vídeo, materiais e uma atividade prática para aplicar o que você aprendeu."],
