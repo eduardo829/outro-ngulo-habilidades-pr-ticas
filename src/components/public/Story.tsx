@@ -8,7 +8,25 @@ import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 /** Large opening: two-line statement, second line indented and muted. */
-export function Opening({ label, a, b, intro, children }: { label: string; a: ReactNode; b: ReactNode; intro?: string; children?: ReactNode }) {
+export function Opening({ label, a, b, intro, children, photo }: { label: string; a: ReactNode; b: ReactNode; intro?: string; children?: ReactNode; photo?: string }) {
+  if (photo) {
+    return (
+      <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
+        <img src={photo} alt="" aria-hidden className="absolute inset-0 -z-10 h-full w-full object-cover" />
+        <div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" />
+        <div className="mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-end px-5 pb-16 pt-24 md:pb-24">
+          <SectionLabel>{label}</SectionLabel>
+          <h1 className="display-xl reveal mt-8 max-w-4xl">
+            {a}
+            <span className="mt-3 block pl-[8%] text-ink-foreground/60">{b}</span>
+          </h1>
+          {intro && <p className="mt-10 max-w-xl text-lg leading-relaxed text-ink-foreground/80 md:ml-[8%]">{intro}</p>}
+          {children}
+          <span aria-hidden className="mt-12 block h-px w-24 bg-highlight md:ml-[8%]" />
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="border-b">
       <div className="mx-auto max-w-6xl px-5 pb-16 pt-16 md:pb-24 md:pt-24">
