@@ -1,10 +1,11 @@
+import closePhoto from "@/assets/photo-close-sobre.jpg";
 import { createFileRoute } from "@tanstack/react-router";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Statements, Closing } from "@/components/public/Story";
 import { StickyStory } from "@/components/motion/Motion";
 import { cn } from "@/lib/utils";
 import { PhotoBand } from "@/components/PhotoBand";
-import bandPhoto from "@/assets/photo-comunidade.jpg";
+import bandPhoto from "@/assets/photo-sobre-band.jpg";
 
 const T = "Sobre — Outro Ângulo";
 const D = "O conhecimento nunca esteve tão disponível. Mas informação não é experiência. Por que estamos construindo uma rede, não apenas uma escola.";
@@ -91,7 +92,7 @@ function About() {
         }} />
       </section>
 
-      <Closing a="Talvez você entre para aprender alguma coisa." b="Talvez fique pelas pessoas que encontrar." />
+      <Closing photo={closePhoto} a="Talvez você entre para aprender alguma coisa." b="Talvez fique pelas pessoas que encontrar." />
     </PublicLayout>
   );
 }

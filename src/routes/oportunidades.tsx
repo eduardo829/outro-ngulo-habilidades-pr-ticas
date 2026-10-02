@@ -1,3 +1,4 @@
+import closePhoto from "@/assets/photo-close-oportunidades.jpg";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -6,8 +7,8 @@ import { Opening, RevealCard, Illustrative, Closing } from "@/components/public/
 import { SectionLabel } from "@/components/Angle";
 import { cn } from "@/lib/utils";
 import { PhotoBand } from "@/components/PhotoBand";
-import bandPhoto from "@/assets/photo-escada.jpg";
-import heroPhoto from "@/assets/photo-networking.jpg";
+import bandPhoto from "@/assets/photo-oportunidades-band.jpg";
+import heroPhoto from "@/assets/photo-oportunidades-hero.jpg";
 
 const T = "Oportunidades — Outro Ângulo";
 const D = "Às vezes a oportunidade não é uma vaga. É uma pessoa. Projetos, parcerias e trabalhos compartilhados entre membros.";
@@ -60,7 +61,7 @@ function Page() {
 
       <PhotoBand src={bandPhoto} title=<>Um passo leva a outro.<span className="block text-ink-foreground/60">Uma conversa, também.</span></> />
       <ItemGrid n="02" label="Como funciona" items={RULES} />
-      <Closing a="Algumas oportunidades" b="começam com uma conversa." />
+      <Closing photo={closePhoto} a="Algumas oportunidades" b="começam com uma conversa." />
     </PublicLayout>
   );
 }

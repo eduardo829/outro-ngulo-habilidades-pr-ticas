@@ -1,3 +1,4 @@
+import closePhoto from "@/assets/photo-close-gestores.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -7,7 +8,7 @@ import { ScrollReveal, StickyStory } from "@/components/motion/Motion";
 import { DoisAngulos, GestorPhoto, Txt } from "@/components/gestores/GestorParts";
 import { GESTORES } from "@/lib/gestores";
 import { cn } from "@/lib/utils";
-import heroPhoto from "@/assets/photo-fazer.jpg";
+import heroPhoto from "@/assets/photo-gestores-hero.jpg";
 
 const T = "Gestores — Outro Ângulo";
 const D = "Algumas coisas você aprende estudando. Outras, fazendo. Gestores trazem experiência real para dentro das conversas do Outro Ângulo.";
@@ -84,7 +85,7 @@ function Page() {
           <p className="mt-4 text-sm text-muted-foreground">Novos gestores entram conforme forem confirmados.</p>
         </div>
       </section>
-      <Closing a="Faça parte" b="da conversa." />
+      <Closing photo={closePhoto} a="Faça parte" b="da conversa." />
     </PublicLayout>
   );
 }
