@@ -54,7 +54,7 @@ function Home() {
             <SectionLabel>Habilidades para a vida que não veio com manual</SectionLabel>
             <h1 className="display-xl mt-8">
               Tem coisa que<br />muda sua vida.
-              <span className="mt-3 block pl-[8%] text-muted-foreground">
+              <span className="mt-3 block pl-[8%] text-muted-foreground lg:whitespace-nowrap">
                 E nunca entrou<br /> na{" "}
                 <span className="relative inline-block text-foreground">
                   grade.
@@ -73,8 +73,8 @@ function Home() {
             </div>
           </div>
           <div aria-hidden className="relative hidden md:block">
-            <div className="absolute inset-x-8 top-1/2 h-[380px] -translate-y-[calc(50%-20px)] translate-x-5 translate-y-5 border border-primary/40" />
-            <div className="absolute inset-x-8 top-1/2 h-[380px] -translate-y-1/2 -rotate-[4deg] bg-ink p-9 text-ink-foreground transition-transform duration-500 hover:-rotate-[2deg]">
+            <div className="absolute inset-x-8 top-1/2 h-[380px] -mt-[170px] ml-5 border border-primary/40" />
+            <div className="absolute inset-x-8 top-1/2 h-[380px] -mt-[190px] -rotate-[4deg] bg-ink p-9 text-ink-foreground transition-transform duration-500 hover:-rotate-[2deg]">
               <p className="eyebrow !text-ink-foreground/60">Aprender · Aplicar · Trocar</p>
               <p className="mt-10 font-display text-[2rem] font-bold leading-[1.08] tracking-tight">
                 Mudar o ângulo<br />é mudar o que<br />você enxerga.

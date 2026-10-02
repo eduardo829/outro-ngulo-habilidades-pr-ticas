@@ -153,7 +153,7 @@
   font-weight: 800;
   line-height: 0.98;
   letter-spacing: -0.045em;
-  font-size: clamp(2.6rem, 7vw, 5.6rem);
+  font-size: clamp(2.6rem, 6.4vw, 5.2rem);
 }
 
 /* Editorial link with an arrow that slides */
