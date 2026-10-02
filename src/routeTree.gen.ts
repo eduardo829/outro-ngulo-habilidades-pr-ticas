@@ -12,12 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ConhecaAComunidadeRouteImport } from './routes/conheca-a-comunidade'
+import { Route as ConhecaOsEncontrosRouteImport } from './routes/conheca-os-encontros'
 import { Route as DiretrizesRouteImport } from './routes/diretrizes'
+import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosRouteImport } from './routes/termos'
+import { Route as TrilhasRouteImport } from './routes/trilhas'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBoasVindasRouteImport } from './routes/_authenticated/boas-vindas'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
@@ -26,6 +30,7 @@ import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authent
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as GestoresIndexRouteImport } from './routes/gestores.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
 import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_authenticated/admin/comunidade'
@@ -60,9 +65,24 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConhecaAComunidadeRoute = ConhecaAComunidadeRouteImport.update({
+  id: '/conheca-a-comunidade',
+  path: '/conheca-a-comunidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConhecaOsEncontrosRoute = ConhecaOsEncontrosRouteImport.update({
+  id: '/conheca-os-encontros',
+  path: '/conheca-os-encontros',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiretrizesRoute = DiretrizesRouteImport.update({
   id: '/diretrizes',
   path: '/diretrizes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OportunidadesRoute = OportunidadesRouteImport.update({
+  id: '/oportunidades',
+  path: '/oportunidades',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
@@ -88,6 +108,11 @@ const SobreRoute = SobreRouteImport.update({
 const TermosRoute = TermosRouteImport.update({
   id: '/termos',
   path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrilhasRoute = TrilhasRouteImport.update({
+  id: '/trilhas',
+  path: '/trilhas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
@@ -129,6 +154,11 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
 const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GestoresIndexRoute = GestoresIndexRouteImport.update({
+  id: '/gestores/',
+  path: '/gestores/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
@@ -245,12 +275,16 @@ const AuthenticatedAdminCursosIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
+  '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/trilhas': typeof TrilhasRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
@@ -259,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
+  '/gestores/': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
@@ -282,12 +317,16 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
+  '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/trilhas': typeof TrilhasRoute
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
@@ -295,6 +334,7 @@ export interface FileRoutesByTo {
   '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos': typeof CursosIndexRoute
+  '/gestores': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
@@ -320,12 +360,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
+  '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
+  '/trilhas': typeof TrilhasRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
@@ -334,6 +378,7 @@ export interface FileRoutesById {
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
+  '/gestores/': typeof GestoresIndexRoute
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/_authenticated/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
@@ -359,12 +404,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/conheca-a-comunidade'
+    | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
     | '/sobre'
     | '/termos'
+    | '/trilhas'
     | '/admin'
     | '/boas-vindas'
     | '/inicio'
@@ -373,6 +422,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/cursos/$slug'
     | '/cursos/'
+    | '/gestores/'
     | '/admin/alunos'
     | '/admin/comunidade'
     | '/admin/configuracoes'
@@ -396,12 +446,16 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/conheca-a-comunidade'
+    | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
     | '/sobre'
     | '/termos'
+    | '/trilhas'
     | '/boas-vindas'
     | '/inicio'
     | '/meus-cursos'
@@ -409,6 +463,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/cursos/$slug'
     | '/cursos'
+    | '/gestores'
     | '/admin/alunos'
     | '/admin/comunidade'
     | '/admin/configuracoes'
@@ -433,12 +488,16 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/conheca-a-comunidade'
+    | '/conheca-os-encontros'
     | '/diretrizes'
+    | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
     | '/sobre'
     | '/termos'
+    | '/trilhas'
     | '/_authenticated/admin'
     | '/_authenticated/boas-vindas'
     | '/_authenticated/inicio'
@@ -447,6 +506,7 @@ export interface FileRouteTypes {
     | '/_authenticated/perfil'
     | '/cursos/$slug'
     | '/cursos/'
+    | '/gestores/'
     | '/_authenticated/admin/alunos'
     | '/_authenticated/admin/comunidade'
     | '/_authenticated/admin/configuracoes'
@@ -472,14 +532,19 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ConhecaAComunidadeRoute: typeof ConhecaAComunidadeRoute
+  ConhecaOsEncontrosRoute: typeof ConhecaOsEncontrosRoute
   DiretrizesRoute: typeof DiretrizesRoute
+  OportunidadesRoute: typeof OportunidadesRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
+  TrilhasRoute: typeof TrilhasRoute
   CursosSlugRoute: typeof CursosSlugRoute
   CursosIndexRoute: typeof CursosIndexRoute
+  GestoresIndexRoute: typeof GestoresIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -505,11 +570,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/conheca-a-comunidade': {
+      id: '/conheca-a-comunidade'
+      path: '/conheca-a-comunidade'
+      fullPath: '/conheca-a-comunidade'
+      preLoaderRoute: typeof ConhecaAComunidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conheca-os-encontros': {
+      id: '/conheca-os-encontros'
+      path: '/conheca-os-encontros'
+      fullPath: '/conheca-os-encontros'
+      preLoaderRoute: typeof ConhecaOsEncontrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/diretrizes': {
       id: '/diretrizes'
       path: '/diretrizes'
       fullPath: '/diretrizes'
       preLoaderRoute: typeof DiretrizesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oportunidades': {
+      id: '/oportunidades'
+      path: '/oportunidades'
+      fullPath: '/oportunidades'
+      preLoaderRoute: typeof OportunidadesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidade': {
@@ -545,6 +631,13 @@ declare module '@tanstack/react-router' {
       path: '/termos'
       fullPath: '/termos'
       preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trilhas': {
+      id: '/trilhas'
+      path: '/trilhas'
+      fullPath: '/trilhas'
+      preLoaderRoute: typeof TrilhasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -601,6 +694,13 @@ declare module '@tanstack/react-router' {
       path: '/cursos/$slug'
       fullPath: '/cursos/$slug'
       preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gestores/': {
+      id: '/gestores/'
+      path: '/gestores'
+      fullPath: '/gestores/'
+      preLoaderRoute: typeof GestoresIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/': {
@@ -814,14 +914,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ConhecaAComunidadeRoute: ConhecaAComunidadeRoute,
+  ConhecaOsEncontrosRoute: ConhecaOsEncontrosRoute,
   DiretrizesRoute: DiretrizesRoute,
+  OportunidadesRoute: OportunidadesRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
+  TrilhasRoute: TrilhasRoute,
   CursosSlugRoute: CursosSlugRoute,
   CursosIndexRoute: CursosIndexRoute,
+  GestoresIndexRoute: GestoresIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
