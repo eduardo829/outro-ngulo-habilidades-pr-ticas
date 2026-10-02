@@ -39,7 +39,7 @@ function Students() {
       { user_id: userId, course_id: courseId, status: "active", source: "manual", granted_by: user!.id },
       { onConflict: "user_id,course_id" },
     );
-    error ? toast.error("Não foi possível matricular.") : toast.success("Matrícula ativa.");
+    error ? toast.error("Não foi possível realizar a matrícula.") : toast.success("Matrícula ativa.");
     enrollments.refetch();
   }
   async function setEnrollment(id: string, status: "active" | "revoked") {
@@ -97,7 +97,7 @@ function Students() {
               {!self && (
                 <div className="mt-3 flex gap-2">
                   <Select value={pick[a.id] ?? ""} onValueChange={(v) => setPick({ ...pick, [a.id]: v })}>
-                    <SelectTrigger className="max-w-xs" aria-label="Curso para matricular"><SelectValue placeholder="Matricular em…" /></SelectTrigger>
+                    <SelectTrigger className="max-w-xs" aria-label="Curso para matrícula"><SelectValue placeholder="Matricular em…" /></SelectTrigger>
                     <SelectContent>{courses.data?.map((c) => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}</SelectContent>
                   </Select>
                   <Button size="sm" onClick={() => enroll(a.id)}>Matricular</Button>

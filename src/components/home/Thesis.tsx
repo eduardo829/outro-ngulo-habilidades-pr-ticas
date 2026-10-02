@@ -25,7 +25,7 @@ export function Manifesto() {
           <p className="mt-5 text-4xl font-extrabold leading-[1.02] md:text-5xl font-display">A escola ensina muita coisa.</p>
         </div>
         <div className="md:pt-16">
-          <p className="text-lg text-muted-foreground">Mas dificilmente ensina</p>
+          <p className="text-lg text-muted-foreground">Mas dificilmente ensina:</p>
           <ul className="mt-4 border-t">
             {LINES.map((l, i) => (
               <li key={l} className={`reveal border-b py-4 font-display text-2xl font-bold leading-snug md:text-3xl ${i % 2 ? "md:pl-[10%]" : ""}`}>{l}</li>
@@ -94,7 +94,7 @@ export function Acontecendo({ courses }: { courses: Course[] }) {
 }
 
 
-const PROBLEMA = ["Informação nunca foi tão acessível.", "Experiência continua sendo.", "E as pessoas certas continuam difíceis de encontrar."];
+const PROBLEMA = ["Informação nunca foi tão acessível.", "Experiência continua difícil de acessar.", "E as pessoas certas continuam difíceis de encontrar."];
 
 export function Problema() {
   return (

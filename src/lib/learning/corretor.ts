@@ -12,7 +12,7 @@ export const CORRETOR: Course = {
   outcomes: ["Meu ponto de partida", "Meu mercado inicial", "Minha primeira análise de imóvel", "Meu perfil de cliente", "Minha primeira base de contatos", "Meu mapa de relacionamentos", "Meu roteiro de qualificação", "Meu processo de visita", "Meu sistema de follow-up", "Meu playbook de objeções", "Meu sistema de indicações", "Meu plano de 90 dias como corretor"],
   tools: ["Mapa do mercado", "Lista das primeiras 50 conexões", "Checklist da visita", "Construtor de follow-up", "Simulador de objeções"],
   next: [
-    { slug: "networking-do-zero", why: "Na corretagem, quase tudo começa por relacionamento. Aprofunde como construir e manter sua rede." },
+    { slug: "networking-do-zero", why: "Na corretagem, quase tudo começa por relacionamento. Aprenda mais sobre como construir e manter sua rede." },
     { slug: "vendas-da-conversa-ao-cliente", why: "Leve o que você praticou nas objeções para qualquer conversa de venda." },
     { slug: "ia-no-trabalho", why: "Organize follow-ups, anúncios e rotina com ajuda de IA, sem perder o toque humano." },
   ],
@@ -44,7 +44,7 @@ export const CORRETOR: Course = {
           what: "Mercado imobiliário é a combinação de localização, tipo de imóvel (apartamento, casa, comercial, terreno), faixa de preço, perfil de comprador e de vendedor, lançamentos de construtoras, revenda, locação e imóveis para investimento.",
           why: "Quem tenta atender tudo não vira referência em nada. Começar por um recorte deixa você mais rápido para responder e mais confiável para o cliente.",
           example: "Em vez de “vendo imóveis em São Paulo”, algo como “apartamentos de 2 quartos na revenda, entre R$400 e R$700 mil, na zona oeste, para quem compra o primeiro imóvel”.",
-          mistake: "Escolher a região pelo preço mais alto, e não pela região que você consegue visitar, estudar e frequentar." },
+          mistake: "Escolher a região pelo preço mais alto, e não pela facilidade de visitar, estudar e frequentar o local." },
         { type: "video", title: "Como começar a entender uma região de verdade" },
         { type: "fields", key: "c02.mercado", title: "Mapa do meu mercado", fields: [
           { k: "regiao", l: "Região", ph: "Bairros ou cidade" },
@@ -61,10 +61,10 @@ export const CORRETOR: Course = {
       key: "c03", title: "Conheça o que você está vendendo", question: "Para quem esse imóvel serve, e para quem não serve?",
       blocks: [
         { type: "concept", title: "Produto, preço e comparação",
-          what: "Conhecer um imóvel é entender características, localização, preço, comparáveis da região, pontos fortes, pontos fracos e objeções prováveis. Também é saber, em linhas gerais, que documentação e financiamento vão aparecer na negociação.",
+          what: "Conhecer um imóvel é entender características, localização, preço, comparáveis da região, pontos fortes, pontos fracos e objeções prováveis. Também é saber, em linhas gerais, quais questões de documentação e financiamento vão surgir na negociação.",
           why: "O corretor que conhece o produto conversa diferente: responde com segurança, aponta alternativas e não promete o que o imóvel não entrega.",
           example: "Um apartamento sem vaga pode ser um problema para uma família e uma vantagem de preço para um estudante sem carro.",
-          mistake: "Esconder pontos fracos. O cliente descobre na visita, e a confiança vai junto. Dúvidas jurídicas ou documentais específicas devem ir para um profissional habilitado." },
+          mistake: "Esconder pontos fracos. O cliente descobre na visita, e a confiança se perde. Dúvidas jurídicas ou documentais específicas devem ir para um profissional habilitado." },
         { type: "video", title: "O corretor que conhece o produto conversa diferente" },
         { type: "fields", key: "c03.analise", title: "Analise um imóvel", help: "Escolha um anúncio real da sua região e analise.", fields: [
           { k: "anuncio", l: "Qual imóvel? (link ou descrição)" },
@@ -85,7 +85,7 @@ export const CORRETOR: Course = {
           what: "Primeiro imóvel, família, investidor, upgrade, downsize, mudança de cidade e locação: cada perfil tem motivação, urgência, orçamento e medos diferentes.",
           why: "Quando você entende o perfil, para de mandar imóveis aleatórios e passa a sugerir o que faz sentido.",
           example: "Um investidor olha rentabilidade e liquidez. Uma família olha escola, segurança e espaço. O mesmo imóvel pede conversas opostas.",
-          mistake: "Tratar todo cliente como “quer o melhor pelo menor preço”." },
+          mistake: "Tratar todo cliente como alguém que “quer o melhor pelo menor preço”." },
         { type: "fields", key: "c04.cliente", title: "Meu primeiro perfil de cliente", fields: [
           { k: "perfil", l: "Perfil", options: ["Primeiro imóvel", "Família", "Investidor", "Upgrade", "Downsize", "Mudança de cidade", "Locação"] },
           { k: "procura", l: "O que procura?", multiline: true },
@@ -135,7 +135,7 @@ export const CORRETOR: Course = {
       blocks: [
         { type: "question", key: "c07.antes", prompt: "O cliente diz: “Estou procurando um apartamento de até R$700 mil.” O que você perguntaria em seguida?" },
         { type: "concept", title: "Qualificar antes de oferecer",
-          what: "Um bom atendimento entende motivação, prazo, orçamento real, localização, o que é indispensável, o que é negociável, quem decide e se o financiamento está encaminhado.",
+          what: "Um bom atendimento busca entender motivação, prazo, orçamento real, localização, o que é indispensável, o que é negociável, quem decide e se o financiamento está encaminhado.",
           why: "Mandar 20 imóveis sem entender o cliente gasta o tempo dos dois e passa a impressão de que você não escutou.",
           example: "“O que te fez começar a procurar agora? Esse valor já considera financiamento? O que não pode faltar de jeito nenhum? Quem mais vai participar da decisão?”",
           mistake: "Responder com uma lista de links logo na primeira mensagem." },
@@ -171,7 +171,7 @@ export const CORRETOR: Course = {
       blocks: [
         { type: "concept", title: "A venda costuma estar no retorno",
           what: "Follow-up é voltar a falar com o cliente no momento certo, com algo útil: um resumo, uma alternativa, uma resposta, uma novidade da região.",
-          why: "Compra de imóvel é uma decisão longa. Quem some na segunda semana perde o cliente para quem continuou presente com respeito.",
+          why: "A compra de um imóvel é uma decisão que leva tempo. Quem some na segunda semana perde o cliente para quem continuou presente com respeito.",
           example: "Depois da visita: “Obrigado pelo tempo hoje. Anotei que a cozinha pequena pesou. Separei duas opções com cozinha maior na mesma rua. Quer que eu mande?”",
           mistake: "Mandar só “E aí, alguma novidade?”." },
         { type: "fields", key: "c09.followup", title: "Construtor de follow-up", help: "Escreva a mensagem que você mandaria em cada momento.", fields: [
@@ -190,13 +190,13 @@ export const CORRETOR: Course = {
       blocks: [
         { type: "question", key: "c10.antes", prompt: "O cliente diz: “Está caro.” Escreva como você responderia hoje." },
         { type: "concept", title: "Objeção é informação",
-          what: "Uma objeção mostra uma dúvida, um medo ou uma prioridade que ainda não foi resolvida. O papel do corretor é entender, não rebater.",
+          what: "Uma objeção mostra uma dúvida ainda não esclarecida, um medo ainda não superado ou uma prioridade ainda não atendida. O papel do corretor é entender, não rebater.",
           why: "Quem discute com a objeção perde a confiança. Quem pergunta descobre o que realmente impede a decisão.",
           example: "“Está caro comparado a quê? É o valor total ou a parcela que preocupa?” muda a conversa de preço para decisão.",
           mistake: "Baixar o preço ou insistir antes de entender o motivo." },
         { type: "scenarios", key: "c10.objecoes", title: "Simulador de objeções", intro: "Responda a cada objeção usando o roteiro.",
           items: ["Está caro.", "Vou pensar.", "Quero ver outros imóveis.", "Não gostei da localização.", "Vou esperar os juros baixarem.", "Preciso falar com meu parceiro."],
-          framework: ["Valide sem concordar: “Faz sentido querer…”.", "Pergunte o que está por trás.", "Reconecte com as prioridades que o cliente contou.", "Proponha um próximo passo concreto e sem pressão."] },
+          framework: ["Valide sem concordar: “Faz sentido querer…”.", "Pergunte o que está por trás.", "Reconecte a conversa às prioridades que o cliente compartilhou.", "Proponha um próximo passo concreto e sem pressão."] },
         { type: "compare", before: "c10.antes", after: "c10.objecoes", title: "Antes e depois" },
       ],
       output: { key: "c10.objecoes", title: "Meu playbook de objeções" },

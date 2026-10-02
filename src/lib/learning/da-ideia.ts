@@ -17,7 +17,7 @@ export const DA_IDEIA: Course = {
   ],
   modules: [
     {
-      key: "m01", title: "Sua ideia é uma hipótese", question: "O que você sabe de verdade, e o que só acredita?",
+      key: "m01", title: "Sua ideia é uma hipótese", question: "O que você sabe de verdade e em que só acredita?",
       blocks: [
         { type: "question", key: "m01.antes", prompt: "Descreva sua ideia em uma frase, do jeito que você contaria para um amigo." },
         { type: "concept", title: "Ideia, hipótese e evidência",
@@ -42,7 +42,7 @@ export const DA_IDEIA: Course = {
       blocks: [
         { type: "concept", title: "Cliente não é público-alvo",
           what: "Seu primeiro cliente é uma pessoa (ou empresa) específica que tem o problema, sente esse problema com frequência e tem como pagar pela solução.",
-          why: "Quanto mais específico o cliente, mais fácil encontrar, falar a língua dele e saber se a oferta faz sentido. “Mulheres de 25 a 40 anos” não diz onde encontrar ninguém.",
+          why: "Quanto mais específico o cliente, mais fácil encontrá-lo, falar a língua dele e saber se a oferta faz sentido. “Mulheres de 25 a 40 anos” não diz onde encontrar ninguém.",
           example: "Em vez de “pequenas empresas”, escreva “donos de oficina mecânica com 2 a 5 funcionários, que ainda fazem orçamento no papel”. Agora você sabe onde procurar e o que perguntar.",
           mistake: "Confundir quem usa com quem decide. Numa escola, quem usa é o aluno, mas quem decide e paga pode ser a coordenação ou os pais." },
         { type: "video", title: "Seu cliente provavelmente não é quem você imagina" },
@@ -55,7 +55,7 @@ export const DA_IDEIA: Course = {
           { k: "importancia", l: "Quanto esse problema importa?", options: ["Incômodo leve", "Atrapalha toda semana", "Custa dinheiro", "É urgente"] }] },
       ],
       output: { key: "m02.cliente", title: "Meu primeiro cliente" },
-      community: "Quem você imaginava como cliente, e quem você descobriu que é?",
+      community: "Quem você imaginava que seria seu cliente e quem descobriu que realmente é?",
       next: "Separar o que você observou do que está imaginando.",
     },
     {
@@ -85,7 +85,7 @@ export const DA_IDEIA: Course = {
       next: "Ver se a conta fecha antes de investir.",
     },
     {
-      key: "m04", title: "A matemática precisa fechar", question: "Quantas vendas você precisa para valer a pena?",
+      key: "m04", title: "A matemática precisa fechar", question: "De quantas vendas você precisa para valer a pena?",
       blocks: [
         { type: "concept", title: "Receita, margem, CAC e ponto de equilíbrio",
           what: "Receita é o que entra. Custo variável é o que sai a cada venda. Margem é a diferença. CAC é quanto custa conquistar um cliente. Custos fixos existem mesmo sem vender. Ponto de equilíbrio é o número de vendas que paga tudo isso.",
@@ -122,9 +122,9 @@ export const DA_IDEIA: Course = {
       key: "m06", title: "Teste antes de construir", question: "O que precisaria acontecer para essa ideia merecer mais investimento?",
       blocks: [
         { type: "concept", title: "Validação é tentar provar que você está errado",
-          what: "Um experimento de validação é um teste pequeno, com prazo e um número de sucesso definido antes de começar.",
+          what: "Um experimento de validação é um teste pequeno, com prazo e uma meta numérica definida antes de começar.",
           why: "Definir o número antes impede que você reinterprete qualquer resultado como positivo. E testes pequenos fazem o erro custar pouco.",
-          example: "“Em 7 dias, vou oferecer a 30 donos de salão. Se 3 pagarem o sinal, continuo. Se nenhum pagar, ajusto a oferta.”",
+          example: "“Em 7 dias, vou apresentar a oferta a 30 donos de salão. Se 3 pagarem o sinal, continuo. Se nenhum pagar, ajusto a oferta.”",
           mistake: "Construir o site, a marca e o produto inteiro antes de qualquer pessoa ter aceitado pagar." },
         { type: "video", title: "Como perder R$500 em vez de R$50.000 quando uma ideia estiver errada" },
         { type: "question", key: "m06.criterio", prompt: "O que precisaria acontecer para essa ideia merecer mais investimento?" },
@@ -132,10 +132,10 @@ export const DA_IDEIA: Course = {
       ],
       output: { key: "m06.teste", title: "Meu experimento" },
       community: "Qual número vai te dizer que o teste deu certo?",
-      next: "Listar as primeiras 20 pessoas para oferecer.",
+      next: "Listar as primeiras 20 pessoas a quem apresentar a oferta.",
     },
     {
-      key: "m07", title: "As primeiras 20 pessoas", question: "Para quem você vai oferecer primeiro?",
+      key: "m07", title: "As primeiras 20 pessoas", question: "Para quem você vai apresentar a oferta primeiro?",
       blocks: [
         { type: "concept", title: "Prospectar é escolher, não sair atirando",
           what: "Prospects são pessoas específicas, com nome, que provavelmente têm o problema e que você consegue alcançar.",
@@ -148,7 +148,7 @@ export const DA_IDEIA: Course = {
           fields: [{ k: "nome", l: "Nome" }, { k: "empresa", l: "Empresa" }, { k: "motivo", l: "Motivo" }, { k: "canal", l: "Canal" }, { k: "notas", l: "Notas" }] },
       ],
       output: { key: "m07.prospects", title: "Minha primeira lista" },
-      community: "Qual canal está funcionando melhor para chegar nas pessoas?",
+      community: "Qual canal está funcionando melhor para chegar às pessoas?",
       next: "Praticar a conversa de venda.",
     },
     {
@@ -157,11 +157,11 @@ export const DA_IDEIA: Course = {
         { type: "question", key: "m08.antes", prompt: "O cliente diz: “Está caro.” Escreva como você responderia hoje." },
         { type: "concept", title: "Venda é diagnóstico antes de persuasão",
           what: "Uma boa conversa segue: pergunta → problema → contexto → valor → oferta → objeção → próximo passo. Você fala menos do que ouve.",
-          why: "Objeções quase sempre aparecem quando a oferta veio antes de entender o problema. “Está caro” costuma significar “não ficou claro quanto isso vale para mim”.",
+          why: "Objeções quase sempre aparecem quando você apresenta a oferta antes de entender o problema. “Está caro” costuma significar “não ficou claro quanto isso vale para mim”.",
           example: "Em vez de dar desconto: “Faz sentido. Caro comparado a quê? … Você comentou que perde duas clientes por semana por falta de horário. Quanto isso representa no mês?”",
           mistake: "Responder à objeção na defensiva ou baixar o preço na primeira resistência." },
         { type: "video", title: "Venda é diagnóstico antes de persuasão" },
-        { type: "scenarios", key: "m08.script", intro: "Agora responda de novo usando o roteiro, e pratique as outras objeções.",
+        { type: "scenarios", key: "m08.script", intro: "Agora responda de novo usando o roteiro e pratique as respostas às outras objeções.",
           items: ["Está caro.", "Preciso pensar.", "Já tenho alguém.", "Agora não é prioridade.", "Me manda informações."],
           framework: ["Agradeça e entenda: pergunte o que está por trás da objeção.", "Reconecte com o problema que a pessoa disse ter.", "Mostre o valor ou o custo de não resolver.", "Proponha um próximo passo pequeno e concreto."] },
         { type: "compare", before: "m08.antes", after: "m08.script", title: "Antes e depois" },
@@ -174,10 +174,10 @@ export const DA_IDEIA: Course = {
       key: "m09", title: "O mercado respondeu. E agora?", question: "O que as evidências estão dizendo?",
       blocks: [
         { type: "concept", title: "Ler resultados sem se enganar",
-          what: "Compare o que aconteceu com o número de sucesso que você definiu no módulo 6. Olhe também onde as pessoas pararam: não responderam, conversaram mas não compraram, ou compraram.",
+          what: "Compare o que aconteceu com a meta numérica que você definiu no módulo 6. Olhe também onde as pessoas pararam: não responderam; conversaram, mas não compraram; ou compraram.",
           why: "Cada ponto de parada sugere um ajuste diferente. Pouca resposta: canal ou mensagem. Conversa sem compra: oferta ou preço. Compra sem retorno: entrega.",
           example: "30 abordados, 12 responderam, 6 conversaram, 0 compraram, e todos disseram “caro”. O problema existe; a oferta ou o preço precisa mudar.",
-          mistake: "Decidir pelo humor do dia, ou mudar tudo ao mesmo tempo e não saber o que funcionou." },
+          mistake: "Decidir pelo humor do dia ou mudar tudo ao mesmo tempo e não saber o que funcionou." },
         { type: "video", title: "Quando insistir e quando admitir que a ideia não funcionou" },
         { type: "fields", key: "m09.resultados", title: "Meus resultados", fields: [
           { k: "contatadas", l: "Pessoas contatadas" }, { k: "respostas", l: "Respostas" }, { k: "conversas", l: "Conversas" },

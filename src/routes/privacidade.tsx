@@ -13,7 +13,7 @@ export const Route = createFileRoute("/privacidade")({
   component: () => (
     <LegalPage title="Política de privacidade">
       <h2>Dados que coletamos</h2>
-      <p>E-mail e senha para acesso, e as informações de perfil que você decidir preencher (nome de exibição, foto, bio, cidade, área, interesses e link profissional). Não pedimos endereço residencial nem data de nascimento.</p>
+      <p>E-mail e senha para acesso e as informações de perfil que você decidir preencher (nome de exibição, foto, bio, cidade, área, interesses e link profissional). Não pedimos endereço residencial nem data de nascimento.</p>
       <h2>Como usamos</h2>
       <p>Para dar acesso aos cursos em que você está matriculado, registrar seu progresso e permitir a participação na comunidade.</p>
       <h2>Diretório de membros</h2>

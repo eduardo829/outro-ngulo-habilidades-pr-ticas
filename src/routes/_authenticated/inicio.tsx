@@ -149,7 +149,7 @@ function Dashboard() {
           <SectionTitle action={more("/pessoas")}>Pessoas para conhecer</SectionTitle>
           <ul className="grid gap-4">
             {people.data?.map((p) => <PersonCard key={p.id} p={p} />)}
-            {people.data && !people.data.length && <li className="text-muted-foreground">Assim que mais membros entrarem, sugerimos pessoas com interesses complementares aos seus.</li>}
+            {people.data && !people.data.length && <li className="text-muted-foreground">Assim que mais membros entrarem, sugeriremos pessoas com interesses complementares aos seus.</li>}
           </ul>
         </section>
       </div>

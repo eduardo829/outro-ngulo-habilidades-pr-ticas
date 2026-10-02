@@ -5,7 +5,7 @@ export const TRILHAS = [
   { title: "Avançar na carreira", body: "Entender onde você está, o que quer e como comunicar isso." },
   { title: "Comunicar melhor", body: "Apresentar ideias com clareza e lidar com conversas difíceis." },
   { title: "Aprender a vender", body: "Vender como quem resolve um problema, não como quem empurra." },
-  { title: "Organizar meus próximos passos", body: "Escolher uma prioridade e transformar em ações da semana." },
+  { title: "Organizar meus próximos passos", body: "Escolher uma prioridade e transformá-la em ações da semana." },
   { title: "Entender melhor meu dinheiro", body: "Organizar o básico para decidir com mais tranquilidade." },
   { title: "Usar IA no dia a dia", body: "Aplicar ferramentas de IA no trabalho e na organização pessoal." },
 ];

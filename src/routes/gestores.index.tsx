@@ -36,7 +36,7 @@ function Page() {
                 <p key={v} className={cn("absolute inset-0 font-display text-5xl font-extrabold tracking-tight transition-all duration-500 md:text-7xl", i === a ? "opacity-100 text-highlight" : i < a ? "-translate-y-6 opacity-0" : "translate-y-6 opacity-0")}>{v}.</p>
               ))}
             </div>
-            <p className="mt-6 max-w-xl text-ink-foreground/70">A autoridade aparece no que a pessoa construiu, decidiu e errou. Não em títulos.</p>
+            <p className="mt-6 max-w-xl text-ink-foreground/70">A autoridade aparece no que a pessoa construiu, nas decisões que tomou e nos erros que cometeu. Não em títulos.</p>
           </div>
         )} />
       </section>

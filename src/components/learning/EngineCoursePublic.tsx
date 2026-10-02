@@ -69,7 +69,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           <div className="bg-background p-4"><dt className="eyebrow">Você constrói</dt><dd className="mt-1 font-semibold">{c.project}</dd></div>
           <div className="bg-background p-4"><dt className="eyebrow">Investimento</dt><dd className="mt-1 font-display text-lg font-bold">{brl(prices?.[c.slug]) ?? "A definir"}</dd><dd className="text-xs text-muted-foreground">pagamento único</dd></div>
         </dl>
-        <div className="mt-8 flex flex-wrap items-center gap-4">{cta}<span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Lock className="h-3.5 w-3.5" />{state === "locked" ? (previewKey ? "Experimente o primeiro módulo de graça. O curso completo é liberado por curso, sem assinatura." : "Acesso por curso, sem assinatura.") : "Você tem acesso. Seu trabalho é privado."}</span></div>
+        <div className="mt-8 flex flex-wrap items-center gap-4">{cta}<span className="inline-flex items-center gap-1 text-sm text-muted-foreground"><Lock className="h-3.5 w-3.5" />{state === "locked" ? (previewKey ? "Experimente o primeiro módulo de graça. O acesso ao curso completo é avulso, sem assinatura." : "Acesso por curso, sem assinatura.") : "Você tem acesso. Seu trabalho é privado."}</span></div>
       </section>
 
       <section className="bg-ink text-ink-foreground">
@@ -77,7 +77,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           <div>
             <p className="eyebrow !text-highlight">Como funciona</p>
             <p className="mt-4 font-display text-2xl font-extrabold leading-snug md:text-3xl">O vídeo complementa a experiência. Não é o curso inteiro.</p>
-            <p className="mt-4 text-ink-foreground/70">Cada módulo segue: pergunta → conceito → exemplo → o ângulo do gestor em vídeo → exercício → resultado salvo no seu projeto → conversa com a comunidade. Os vídeos ainda estão sendo gravados; o texto e os exercícios já funcionam.</p>
+            <p className="mt-4 text-ink-foreground/70">Cada módulo segue esta sequência: pergunta → conceito → exemplo → o ângulo do gestor em vídeo → exercício → resultado salvo no seu projeto → conversa com a comunidade. Os vídeos ainda estão sendo gravados; o texto e os exercícios já funcionam.</p>
           </div>
           <div>
             <p className="eyebrow !text-ink-foreground/60">Ao final você terá</p>

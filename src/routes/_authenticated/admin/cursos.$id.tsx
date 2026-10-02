@@ -98,7 +98,7 @@ function CourseEditor() {
         <span className="text-xs text-muted-foreground">{enrollCount} matrícula(s)</span>
         <div className="ml-auto flex flex-wrap gap-2">
           {course.status !== "published" && <Confirm label="Publicar" title="Publicar curso?" desc="Ele ficará visível no catálogo. Apenas aulas publicadas aparecerão." onConfirm={() => setStatus("published")} />}
-          {course.status === "published" && <Button variant="outline" size="sm" onClick={() => setStatus("draft")}>Voltar a rascunho</Button>}
+          {course.status === "published" && <Button variant="outline" size="sm" onClick={() => setStatus("draft")}>Voltar ao rascunho</Button>}
           {course.status !== "archived" && <Confirm label="Arquivar" title="Arquivar curso?" desc="Sai do catálogo, mas alunos matriculados mantêm acesso e histórico." onConfirm={() => setStatus("archived")} />}
           {enrollCount === 0 && <Confirm destructive label={<><Trash2 /> Excluir</>} title="Excluir curso definitivamente?" desc="Módulos e aulas também serão apagados. Esta ação não pode ser desfeita." onConfirm={del} />}
         </div>
@@ -267,7 +267,7 @@ function LessonForm({ lesson, onDone }: { lesson: Lesson; onDone: () => void }) 
         <div className="flex items-center gap-2"><Switch id="lpr" checked={f.is_preview} onCheckedChange={(c) => setF({ ...f, is_preview: c })} /><Label htmlFor="lpr">Aula de apresentação (aberta a contas sem matrícula)</Label></div>
       </div>
       <div className="flex justify-between gap-2 pt-2">
-        <Confirm destructive label={<><Trash2 /> Excluir aula</>} title="Excluir aula?" desc="O progresso, anotações e respostas dos alunos nesta aula serão apagados." onConfirm={del} />
+        <Confirm destructive label={<><Trash2 /> Excluir aula</>} title="Excluir aula?" desc="O progresso, as anotações e as respostas dos alunos nesta aula serão apagados." onConfirm={del} />
         <Button type="submit">Salvar aula</Button>
       </div>
     </form>

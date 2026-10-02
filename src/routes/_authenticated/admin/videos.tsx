@@ -24,7 +24,7 @@ function AdminVideos() {
   return (
     <div>
       <h2 className="text-xl font-bold">Vídeos das aulas</h2>
-      <p className="mt-1 text-sm text-muted-foreground">Cole o link do YouTube ou Vimeo. Assim que o link for salvo, o aviso “Vídeo em preparação” vira o player para os alunos.</p>
+      <p className="mt-1 text-sm text-muted-foreground">Cole o link do YouTube ou Vimeo. Assim que o link for salvo, o aviso “Vídeo em preparação” será substituído pelo reprodutor de vídeo para os alunos.</p>
       <div className="mt-4 flex flex-wrap gap-2">{COURSES_ENGINE.map((x) => <Button key={x.slug} size="sm" variant={x.slug === slug ? "default" : "outline"} onClick={() => setSlug(x.slug)}>{x.title}</Button>)}</div>
       {videos.isLoading ? <p className="mt-6 text-muted-foreground">Carregando…</p> : (
         <ul className="mt-6 space-y-3">{c.modules.map((m, i) => <VideoRow key={`${slug}-${m.key}`} c={c} m={m} i={i} row={videos.data?.[m.key]} />)}</ul>

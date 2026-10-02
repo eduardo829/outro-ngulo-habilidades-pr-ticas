@@ -72,7 +72,7 @@ function Catalog() {
           <span className="absolute bottom-0 left-0 h-1 w-24 bg-highlight" />
         </div>
         <p className="eyebrow">Cursos</p>
-        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-6xl">Você não precisa mudar tudo.<br /><span className="text-muted-foreground">Às vezes precisa aprender a próxima coisa certa.</span></h1>
+        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-6xl">Você não precisa mudar tudo.<br /><span className="text-muted-foreground">Às vezes, precisa aprender a próxima coisa certa.</span></h1>
         <p className="mt-6 max-w-2xl lg:max-w-[55%] text-lg text-muted-foreground">Escolha pelo que você quer melhorar, não pelo que você acha que deveria saber.</p>
         <div className="relative mt-10 lg:max-w-[58%]">
           <p className="eyebrow">O que você quer melhorar?</p>

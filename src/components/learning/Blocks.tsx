@@ -252,7 +252,7 @@ function ProspectBuilder({ b, ctx }: { b: Extract<Block, { type: "list" }>; ctx:
   const won = d.v.filter((r) => r["status"] === "Comprou").length;
   return (
     <Shell label="Construir" title={b.title}>
-      <div className="flex items-center gap-4"><p className="font-display text-3xl font-extrabold">{d.v.length} / {b.max}</p><div className="h-1 flex-1 bg-border"><div className="h-1 bg-primary transition-all" style={{ width: `${(d.v.length / b.max) * 100}%` }} /></div>{won > 0 && <span className="text-sm">{won} comprou</span>}</div>
+      <div className="flex items-center gap-4"><p className="font-display text-3xl font-extrabold">{d.v.length} / {b.max}</p><div className="h-1 flex-1 bg-border"><div className="h-1 bg-primary transition-all" style={{ width: `${(d.v.length / b.max) * 100}%` }} /></div>{won > 0 && <span className="text-sm">{won} com compra realizada</span>}</div>
       <ul className="mt-6 space-y-4">
         {d.v.map((r, i) => (
           <li key={i} className="grid gap-3 border bg-card p-4 md:grid-cols-[repeat(4,1fr)_auto]">
@@ -357,7 +357,7 @@ export function CommunityPrompt({ prompt, courseId, moduleKey, gestorSlug }: { p
       </div>
       <div className="bg-background p-6">
         <p className="eyebrow">Pergunte ao gestor</p>
-        <p className="mt-2 text-sm text-muted-foreground">Sua pergunta vai para a fila de {g?.name ?? "equipe do Outro Ângulo"}. Algumas são escolhidas para encontros e conteúdos. Não há resposta automática.</p>
+        <p className="mt-2 text-sm text-muted-foreground">Sua pergunta entra na fila para {g?.name ?? "a equipe do Outro Ângulo"}. Algumas são escolhidas para encontros e conteúdos. Não há resposta automática.</p>
         <textarea value={q} onChange={(e) => setQ(e.target.value.slice(0, 1000))} rows={2} className={cn(inputCls, "mt-3 resize-y")} aria-label="Sua pergunta ao gestor" />
         <Button size="sm" className="mt-3" disabled={q.trim().length < 5 || send.isPending} onClick={() => send.mutate()}>Enviar pergunta</Button>
         {!!mine.data?.length && <ul className="mt-4 space-y-2 text-sm">{mine.data.map((x) => <li key={x.id} className="border-l-2 pl-3"><span className="eyebrow">{STATUS[x.status] ?? x.status}</span><p>{x.body}</p>{x.answer && <p className="mt-1 text-muted-foreground">{x.answer}</p>}</li>)}</ul>}
