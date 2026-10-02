@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function Avatar({ name, url, size = "md" }: { name: string; url?: string | null; size?: "sm" | "md" | "lg" }) {
+export function Avatar({ name, url, size = "md" }: { name: string; url?: string | null | undefined; size?: "sm" | "md" | "lg" }) {
   const cls = size === "sm" ? "h-8 w-8 text-xs" : size === "lg" ? "h-20 w-20 text-2xl" : "h-11 w-11 text-sm";
   return url ? (
     <img src={url} alt="" className={cn("shrink-0 rounded-full object-cover", cls)} />

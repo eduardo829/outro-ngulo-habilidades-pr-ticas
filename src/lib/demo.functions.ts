@@ -49,6 +49,7 @@ export const seedDemo = createServerFn({ method: "POST" })
     const { count } = await db.from("profiles").select("id", { count: "exact", head: true }).eq("is_demo", true);
     if ((count ?? 0) > 0) return { created: 0 };
     const ids: string[] = [];
+    const at = (i: number) => ids[i % ids.length]!;
     for (const [i, m] of MEMBERS.entries()) {
       const { data, error } = await db.auth.admin.createUser({
         email: `demo${i + 1}@demo.outroangulo.invalid`, password: crypto.randomUUID() + "Aa1!", email_confirm: true,
@@ -64,18 +65,18 @@ export const seedDemo = createServerFn({ method: "POST" })
     }
     const now = Date.now();
     const { data: posts } = await db.from("posts").insert(POSTS.map((p, i) => ({
-      author_id: ids[p.a], kind: p.kind, category: p.category, opportunity_type: p.opp ?? null, body: p.body,
+      author_id: at(p.a), kind: p.kind, category: p.category, opportunity_type: p.opp ?? null, body: p.body,
       created_at: new Date(now - (i + 1) * 3.7 * 3600000).toISOString(),
     }))).select("id, author_id, kind");
     const replies = ["Passei por isso. O que funcionou foi começar pequeno e pedir indicação de quem já confiava no meu trabalho.", "Posso ajudar. Me chama no privado que te mostro como fiz.", "Ótima pergunta, também quero saber.", "Faria um teste de uma semana e mediria o resultado antes de decidir."];
-    const comments = (posts ?? []).slice(0, 14).map((p, i) => ({ post_id: p.id, author_id: ids[(i + 3) % ids.length] === p.author_id ? ids[(i + 4) % ids.length] : ids[(i + 3) % ids.length], body: replies[i % replies.length], offers_help: p.kind === "ajuda" && i % 2 === 0 }));
+    const comments = (posts ?? []).slice(0, 14).map((p, i) => ({ post_id: p.id, author_id: at(i + 3) === p.author_id ? at(i + 4) : at(i + 3), body: replies[i % replies.length]!, offers_help: p.kind === "ajuda" && i % 2 === 0 }));
     await db.from("comments").insert(comments);
     await db.from("reactions").insert((posts ?? []).flatMap((p, i) => ids.slice(0, (i % 5) + 1).filter((u) => u !== p.author_id).map((u) => ({ post_id: p.id, user_id: u, kind: "like" }))));
     const { data: events } = await db.from("events").select("id, capacity").eq("is_demo", true);
     await db.from("event_bookings").insert((events ?? []).flatMap((e, i) => ids.slice(0, Math.min(e.capacity - 1, 3 + i)).map((u) => ({ event_id: e.id, user_id: u }))));
     if (events?.[0]) await db.from("event_questions").insert([
-      { event_id: events[0].id, user_id: ids[2], body: "Como abordar alguém mais experiente sem parecer interesseiro?" },
-      { event_id: events[0].id, user_id: ids[1], body: "Vale a pena ir a eventos sozinho? Como começar a conversa?" },
+      { event_id: events[0].id, user_id: at(2), body: "Como abordar alguém mais experiente sem parecer interesseiro?" },
+      { event_id: events[0].id, user_id: at(1), body: "Vale a pena ir a eventos sozinho? Como começar a conversa?" },
     ]);
     return { created: ids.length };
   });
