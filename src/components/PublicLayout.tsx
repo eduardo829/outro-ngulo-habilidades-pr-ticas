@@ -1,11 +1,24 @@
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { Menu } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/lib/auth";
+
+const NAV = [
+  { to: "/trilhas", label: "Trilhas" },
+  { to: "/cursos", label: "Cursos" },
+  { to: "/conheca-a-comunidade", label: "Comunidade" },
+  { to: "/conheca-os-encontros", label: "Encontros" },
+  { to: "/oportunidades", label: "Oportunidades" },
+  { to: "/gestores", label: "Gestores" },
+  { to: "/sobre", label: "Sobre" },
+] as const;
 
 export function PublicLayout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#conteudo" className="sr-only focus:not-sr-only focus:absolute focus:p-2">
@@ -16,13 +29,12 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <Link to="/" aria-label="Outro Ângulo — início">
             <Logo />
           </Link>
-          <nav className="hidden items-center gap-7 text-sm font-medium md:flex">
-            <Link to="/cursos" className="nav-line">
-              Cursos
-            </Link>
-            <Link to="/sobre" className="nav-line">
-              Sobre
-            </Link>
+          <nav className="hidden items-center gap-5 text-sm font-medium lg:flex" aria-label="Principal">
+            {NAV.map((n) => (
+              <Link key={n.to} to={n.to} className="nav-line" activeProps={{ className: "text-foreground font-semibold" }}>
+                {n.label}
+              </Link>
+            ))}
           </nav>
           <div className="flex items-center gap-2">
             {user ? (
@@ -31,14 +43,32 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               </Button>
             ) : (
               <>
-                <Button asChild variant="ghost" size="sm">
+                <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
                   <Link to="/auth">Entrar</Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link to="/auth" search={{ modo: "cadastro" }}>Criar conta</Link>
+                  <Link to="/auth" search={{ modo: "cadastro" }}>Fazer parte</Link>
                 </Button>
               </>
             )}
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Abrir menu">
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-72 bg-background">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <nav className="mt-8 flex flex-col" aria-label="Menu móvel">
+                  {NAV.map((n, i) => (
+                    <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="flex items-baseline gap-3 border-b py-3 font-display text-lg font-semibold">
+                      <span className="text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>{n.label}
+                    </Link>
+                  ))}
+                  {!user && <Link to="/auth" onClick={() => setOpen(false)} className="py-4 text-sm font-medium text-primary">Entrar</Link>}
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
@@ -51,7 +81,10 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             <p className="mt-2 max-w-xs text-sm opacity-65">Habilidades para a vida que não veio com manual.</p>
           </div>
           <nav className="flex flex-col gap-2 text-sm opacity-85">
+            <Link to="/trilhas">Trilhas</Link>
             <Link to="/cursos">Cursos</Link>
+            <Link to="/conheca-a-comunidade">Comunidade</Link>
+            <Link to="/conheca-os-encontros">Encontros</Link>
             <Link to="/sobre">Sobre o projeto</Link>
             <Link to="/diretrizes">Diretrizes da comunidade</Link>
           </nav>
