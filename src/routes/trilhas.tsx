@@ -7,6 +7,8 @@ import { Opening, Closing } from "@/components/public/Story";
 import { SectionLabel } from "@/components/Angle";
 import { TRILHAS } from "@/lib/trilhas";
 import { cn } from "@/lib/utils";
+import { PhotoBand } from "@/components/PhotoBand";
+import bandPhoto from "@/assets/photo-mirante.jpg";
 import heroPhoto from "@/assets/photo-ideia.jpg";
 
 const T = "Trilhas — Outro Ângulo";
@@ -70,6 +72,7 @@ function Trilhas() {
       </section>
 
       <TrilhaRecommender n="02" />
+      <PhotoBand src={bandPhoto} title=<>Mais perspectiva<span className="block text-ink-foreground/60">para as suas decisões.</span></> />
       <ItemGrid n="03" label="Todas as trilhas em preparação" items={TRILHAS} />
       <ItemGrid n="04" label="O que cada trilha reúne" items={PARTS} cols={2} />
       <Closing a="Toda trilha começa com uma pergunta." b="E termina em algo que você faz." />

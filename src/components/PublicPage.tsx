@@ -26,19 +26,35 @@ export function PublicPage({ label, title, intro, children, photo }: { label: st
   );
 }
 
-export function ItemGrid({ n, label, items, cols = 3 }: { n: string; label: string; items: Item[]; cols?: 2 | 3 }) {
+/** Asymmetric editorial list: first item as a large feature, the rest as compact rows with big numerals. */
+export function ItemGrid({ n, label, items, tone = "plain" }: { n: string; label: string; items: Item[]; cols?: 2 | 3; tone?: "plain" | "stone" }) {
+  const [first, ...rest] = items;
   return (
-    <section className="mx-auto max-w-6xl px-5 py-16">
-      <SectionLabel n={n}>{label}</SectionLabel>
-      <ol className={`mt-8 grid gap-px overflow-hidden rounded-md border bg-border sm:grid-cols-2 ${cols === 3 ? "lg:grid-cols-3" : ""}`}>
-        {items.map((it, i) => (
-          <li key={it.title} className="bg-background p-6">
-            <span className="font-display text-xs font-bold tracking-widest text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-            <h3 className="mt-3 text-lg font-bold">{it.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{it.body}</p>
-          </li>
-        ))}
-      </ol>
+    <section className={tone === "stone" ? "bg-card" : ""}>
+      <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-[1fr_1.25fr] md:gap-16 md:py-28">
+        <div className="md:sticky md:top-24 md:self-start">
+          <SectionLabel n={n}>{label}</SectionLabel>
+          {first && (
+            <div className="group relative mt-10 overflow-hidden">
+              <span aria-hidden className="pointer-events-none block font-display text-[7rem] font-extrabold leading-none text-foreground/[0.07] transition-colors duration-500 group-hover:text-highlight/60 md:text-[10rem]">01</span>
+              <h3 className="-mt-10 font-display text-3xl font-extrabold leading-tight md:-mt-14 md:text-4xl">{first.title}</h3>
+              <p className="mt-4 max-w-md text-lg leading-relaxed text-muted-foreground">{first.body}</p>
+            </div>
+          )}
+        </div>
+        <ol className="border-t">
+          {rest.map((it, i) => (
+            <li key={it.title} className="group relative grid grid-cols-[4.5rem_minmax(0,1fr)] items-baseline gap-4 border-b py-7 transition-colors duration-300 hover:bg-card/70 md:grid-cols-[6rem_minmax(0,1fr)]">
+              <span className="font-display text-4xl font-extrabold tabular-nums text-foreground/15 transition-all duration-300 group-hover:translate-x-1 group-hover:text-foreground md:text-5xl">{String(i + 2).padStart(2, "0")}</span>
+              <div className="min-w-0">
+                <h3 className="font-display text-xl font-bold">{it.title}</h3>
+                <p className="mt-2 max-w-lg leading-relaxed text-muted-foreground">{it.body}</p>
+              </div>
+              <span aria-hidden className="absolute bottom-[-1px] left-0 h-px w-0 bg-highlight transition-all duration-500 group-hover:w-full" />
+            </li>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }
