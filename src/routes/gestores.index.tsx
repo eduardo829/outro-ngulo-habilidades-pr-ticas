@@ -7,6 +7,7 @@ import { ScrollReveal, StickyStory } from "@/components/motion/Motion";
 import { DoisAngulos, GestorPhoto, Txt } from "@/components/gestores/GestorParts";
 import { GESTORES } from "@/lib/gestores";
 import { cn } from "@/lib/utils";
+import heroPhoto from "@/assets/photo-fazer.jpg";
 
 const T = "Gestores — Outro Ângulo";
 const D = "Algumas coisas você aprende estudando. Outras, fazendo. Gestores trazem experiência real para dentro das conversas do Outro Ângulo.";
@@ -21,7 +22,7 @@ const VERBOS = ["ensinar", "responder", "questionar", "compartilhar", "orientar 
 function Page() {
   return (
     <PublicLayout>
-      <Opening label="Gestores" a="Algumas coisas você aprende estudando." b="Outras, fazendo."
+      <Opening photo={heroPhoto} label="Gestores" a="Algumas coisas você aprende estudando." b="Outras, fazendo."
         intro="Gestores são pessoas que trazem experiência real para dentro das conversas do Outro Ângulo." />
 
       <section className="bg-ink text-ink-foreground">

@@ -7,6 +7,7 @@ import { Opening, Closing } from "@/components/public/Story";
 import { SectionLabel } from "@/components/Angle";
 import { TRILHAS } from "@/lib/trilhas";
 import { cn } from "@/lib/utils";
+import heroPhoto from "@/assets/photo-ideia.jpg";
 
 const T = "Trilhas — Outro Ângulo";
 const D = "Não comece pelo curso. Comece pela pergunta: trilhas que unem aulas, conversas, pessoas e encontros.";
@@ -38,7 +39,7 @@ function Trilhas() {
   const found = TRILHAS.filter((t) => PERGUNTAS[sel]!.t.includes(t.title));
   return (
     <PublicLayout>
-      <Opening label="Trilhas" a="Não comece pelo curso." b="Comece pela pergunta." intro="Trilhas organizam o aprendizado em torno de algo que você quer resolver. Elas estão em preparação e serão abertas aos poucos." />
+      <Opening photo={heroPhoto} label="Trilhas" a="Não comece pelo curso." b="Comece pela pergunta." intro="Trilhas organizam o aprendizado em torno de algo que você quer resolver. Elas estão em preparação e serão abertas aos poucos." />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
         <SectionLabel n="01">Escolha uma pergunta</SectionLabel>
