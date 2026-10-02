@@ -7,7 +7,7 @@ export type Outputs = Record<string, unknown>;
 
 /** Course row (RLS: visible when published, enrolled or admin) + enrollment/staff access. */
 export function useEngineAccess(slug: string) {
-  const { user, isStaff, roles } = useAuth();
+  const { user, isStaff } = useAuth();
   return useQuery({
     queryKey: ["engine-access", slug, user?.id],
     enabled: !!user,
@@ -15,7 +15,7 @@ export function useEngineAccess(slug: string) {
       const { data: course } = await supabase.from("courses").select("id, title").eq("slug", slug).maybeSingle();
       if (!course) return { courseId: null, allowed: false };
       const { data: en } = await supabase.from("enrollments").select("status").eq("course_id", course.id).eq("user_id", user!.id).maybeSingle();
-      return { courseId: course.id, allowed: en?.status === "active" || isStaff || roles.includes("gestor") };
+      return { courseId: course.id, allowed: en?.status === "active" || isStaff };
     },
   });
 }

@@ -141,7 +141,7 @@ type Row = Record<string, string>;
 function ProspectBuilder({ b, ctx }: { b: Extract<Block, { type: "list" }>; ctx: Ctx }) {
   const d = useDraft<Row[]>(ctx, b.key, []);
   const upd = (i: number, k: string, s: string) => d.setV(d.v.map((r, j) => (j === i ? { ...r, [k]: s } : r)));
-  const won = d.v.filter((r) => r.status === "Comprou").length;
+  const won = d.v.filter((r) => r["status"] === "Comprou").length;
   return (
     <Shell label="Construir" title={b.title}>
       <div className="flex items-center gap-4"><p className="font-display text-3xl font-extrabold">{d.v.length} / {b.max}</p><div className="h-1 flex-1 bg-border"><div className="h-1 bg-primary transition-all" style={{ width: `${(d.v.length / b.max) * 100}%` }} /></div>{won > 0 && <span className="text-sm">{won} comprou</span>}</div>
@@ -150,7 +150,7 @@ function ProspectBuilder({ b, ctx }: { b: Extract<Block, { type: "list" }>; ctx:
           <li key={i} className="grid gap-3 border bg-card p-4 md:grid-cols-[repeat(4,1fr)_auto]">
             {b.fields.map((f) => <FieldInput key={f.k} f={f} value={r[f.k] ?? ""} onChange={(s) => upd(i, f.k, s)} />)}
             <button type="button" onClick={() => d.setV(d.v.filter((_, j) => j !== i))} aria-label="Remover" className="justify-self-end p-2 text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
-            <select value={r.status ?? b.statuses[0]} onChange={(e) => upd(i, "status", e.target.value)} aria-label={b.statusLabel} className="border bg-background px-2 py-1.5 text-sm md:col-span-2">{b.statuses.map((s) => <option key={s}>{s}</option>)}</select>
+            <select value={r["status"] ?? b.statuses[0]} onChange={(e) => upd(i, "status", e.target.value)} aria-label={b.statusLabel} className="border bg-background px-2 py-1.5 text-sm md:col-span-2">{b.statuses.map((s) => <option key={s}>{s}</option>)}</select>
           </li>
         ))}
       </ul>
