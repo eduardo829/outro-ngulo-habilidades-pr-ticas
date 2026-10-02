@@ -48,7 +48,7 @@ export function Statements({ lines, label, dark }: { lines: string[]; label?: st
 }
 
 /** Card that reveals extra context on hover (desktop) or tap (mobile). */
-export function RevealCard({ eyebrow, title, sub, details, tone, cta }: { eyebrow: string; title: string; sub?: string; details: { k: string; v: string }[]; tone?: "highlight"; cta?: ReactNode }) {
+export function RevealCard({ eyebrow, title, sub, details, tone, cta }: { eyebrow: string; title: string; sub?: string; details: { k: string; v: string }[]; tone?: "highlight" | undefined; cta?: ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className={cn("group block w-full border-l-2 bg-card p-5 text-left transition-colors duration-300 hover:bg-background", tone === "highlight" ? "border-highlight" : "border-primary/30")}>
