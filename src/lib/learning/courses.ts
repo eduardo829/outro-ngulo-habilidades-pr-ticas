@@ -4,7 +4,9 @@ import { NETWORKING } from "./networking";
 import { VENDAS } from "./vendas";
 import { IA_TRABALHO } from "./ia";
 import { CORRETOR } from "./corretor";
+import { KIT_PROFISSIONAL, MAPA_CARREIRA, TRANSICAO, PROXIMO_PASSO, ENTREVISTA, PRESENCA } from "./carreira";
+import { COMUNICACAO, DINHEIRO } from "./comunicacao-dinheiro";
 
-export const COURSES_ENGINE: Course[] = [DA_IDEIA, NETWORKING, VENDAS, IA_TRABALHO, CORRETOR];
+export const COURSES_ENGINE: Course[] = [DA_IDEIA, NETWORKING, VENDAS, IA_TRABALHO, CORRETOR, KIT_PROFISSIONAL, MAPA_CARREIRA, TRANSICAO, PROXIMO_PASSO, ENTREVISTA, PRESENCA, COMUNICACAO, DINHEIRO];
 export const getEngineCourse = (slug: string) => COURSES_ENGINE.find((c) => c.slug === slug);
-export const CATEGORIES: ("Todos" | Category)[] = ["Todos", "Negócios", "Vendas", "Networking", "Tecnologia & IA", "Dinheiro", "Carreira", "Profissões"];
+export const CATEGORIES: ("Todos" | Category)[] = ["Todos", "Negócios", "Vendas", "Networking", "Tecnologia & IA", "Dinheiro", "Carreira", "Comunicação", "Profissões"];

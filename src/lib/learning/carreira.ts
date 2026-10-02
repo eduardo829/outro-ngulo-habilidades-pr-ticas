@@ -107,7 +107,7 @@ export const MAPA_CARREIRA: Course = {
     mod("m02", "Competências que você tem e as que faltam", "O que você sabe fazer bem, mais ou menos e ainda não sabe?", {
       title: "Técnicas, de relação e de autogestão",
       what: "Competências técnicas são o que você sabe fazer (uma ferramenta, uma análise). De relação, como você trabalha com pessoas. De autogestão, como você se organiza e decide.",
-      why: "Crescer raramente é aprender tudo; é identificar a uma ou duas lacunas que mais limitam o próximo passo.",
+      why: "Crescer raramente é aprender tudo; é identificar uma ou duas lacunas que mais limitam o próximo passo.",
       example: "Analista com boa técnica, mas que trava ao apresentar resultados: a lacuna prioritária é comunicação, não mais um curso técnico.",
       mistake: "Investir sempre no que já é forte porque é confortável.",
     }, null, [
