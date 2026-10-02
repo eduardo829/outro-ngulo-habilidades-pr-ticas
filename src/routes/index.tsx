@@ -138,7 +138,7 @@ function Home() {
         <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <SectionLabel n="03">Cursos</SectionLabel>
+              <SectionLabel n="03">Catálogo</SectionLabel>
               <h2 className="mt-5 text-4xl font-extrabold md:text-5xl">Cursos</h2>
             </div>
             <Link to="/cursos" className="link-arrow text-sm">Ver catálogo <ArrowRight className="h-4 w-4" /></Link>
@@ -161,7 +161,7 @@ function Home() {
 
       {/* Fundadores */}
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
-        <SectionLabel n="04">Quem está por trás</SectionLabel>
+        <SectionLabel n="04">Fundadores</SectionLabel>
         <h2 className="mt-5 text-4xl font-extrabold md:text-5xl">Quem está por trás</h2>
         <div className="mt-12 grid gap-12 md:grid-cols-2">
           {(settings.data?.founders ?? []).map((f, i) => (
