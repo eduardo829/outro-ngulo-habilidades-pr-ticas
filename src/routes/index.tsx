@@ -9,6 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { publishedCoursesQuery, settingsQuery } from "@/lib/queries";
 import { CourseCard } from "@/components/CourseCard";
 import { Angle, SectionLabel } from "@/components/Angle";
+import { Manifesto, Acontecendo, Ciclo } from "@/components/home/Thesis";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,7 +17,9 @@ export const Route = createFileRoute("/")({
       { title: "Outro Ângulo — Habilidades para a vida que não veio com manual" },
       { name: "description", content: "Aulas práticas, experiências reais e uma comunidade para aprender networking, planejamento, comunicação e decisões." },
       { property: "og:title", content: "Outro Ângulo" },
-      { property: "og:description", content: "Habilidades para a vida que não veio com manual." },
+      { property: "og:description", content: "Conhecimento, pessoas e oportunidades para quem quer construir alguma coisa." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Home,
@@ -51,25 +54,25 @@ function Home() {
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl gap-12 px-5 pb-20 pt-14 md:grid-cols-[1.45fr_1fr] md:pb-28 md:pt-24">
           <div className="reveal">
-            <SectionLabel>Habilidades para a vida que não veio com manual</SectionLabel>
+            <SectionLabel>Conhecimento · Pessoas · Oportunidades</SectionLabel>
             <h1 className="display-xl mt-8">
-              Tem coisa que<br />muda sua vida.
-              <span className="mt-3 block pl-[8%] text-muted-foreground lg:whitespace-nowrap">
-                E nunca entrou<br /> na{" "}
+              Existem coisas<br />importantes que
+              <span className="mt-3 block pl-[8%] text-muted-foreground">
+                ninguém te{" "}
                 <span className="relative inline-block text-foreground">
-                  grade.
+                  ensina.
                   <span aria-hidden className="absolute -right-3 top-1 h-3 w-3 rotate-12 bg-highlight md:h-4 md:w-4" />
                 </span>
               </span>
             </h1>
             <p className="mt-10 max-w-md text-lg leading-relaxed text-muted-foreground md:ml-[8%]">
-              Aprenda a construir relações, fazer planos que saem do papel e reconhecer oportunidades — com aulas práticas, experiências reais e uma comunidade para trocar e aplicar.
+              Conhecimento, pessoas e oportunidades para quem quer construir alguma coisa.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6 md:ml-[8%]">
               <Button asChild size="lg">
-                <Link to="/cursos">Conhecer os cursos <ArrowRight /></Link>
+                <Link to="/trilhas">Explorar a plataforma <ArrowRight /></Link>
               </Button>
-              <Link to="/auth" search={{ modo: "cadastro" }} className="link-arrow nav-line text-sm">Criar conta <ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/conheca-a-comunidade" className="link-arrow nav-line text-sm">Conhecer a comunidade <ArrowRight className="h-4 w-4" /></Link>
             </div>
           </div>
           <div aria-hidden className="relative hidden md:block">
@@ -85,6 +88,10 @@ function Home() {
         </div>
         <div className="angle-rule mx-auto max-w-6xl px-5" />
       </section>
+
+      <Manifesto />
+      <Acontecendo courses={courses.data ?? []} />
+      <Ciclo />
 
       {/* Temas */}
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
