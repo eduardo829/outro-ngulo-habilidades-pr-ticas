@@ -15,7 +15,7 @@ export function PublicPage({ label, title, intro, children, photo }: { label: st
       <section className={photo ? "relative isolate overflow-hidden bg-ink text-ink-foreground" : "border-b"}>
         {photo && <><img src={photo} alt="" aria-hidden className="absolute inset-0 -z-10 h-full w-full object-cover" /><div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" /></>}
         <div className={photo ? "mx-auto flex min-h-[60vh] max-w-6xl flex-col justify-end px-5 pb-16 pt-24 md:pb-24" : "mx-auto max-w-6xl px-5 py-16 md:py-24"}>
-          <SectionLabel n="01" className={photo ? "!text-ink-foreground/70" : undefined}>{label}</SectionLabel>
+          <SectionLabel n="01" className={photo ? "!text-ink-foreground/70" : ""}>{label}</SectionLabel>
           <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.05] md:text-6xl">{title}</h1>
           <p className={photo ? "mt-6 max-w-2xl text-lg leading-relaxed text-ink-foreground/80" : "mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"}>{intro}</p>
         </div>
