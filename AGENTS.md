@@ -18,3 +18,4 @@
 - Editable institutional content (founders, offer, support) lives in public.site_settings. Why: admins edit without code.
 - AI calls go through server functions (src/lib/*.functions.ts) to the AI Gateway Responses API, output validated against known data (e.g. trail titles). Why: keep keys server-side and avoid invented content.
 - Public gestor profiles use one typed template (src/lib/gestores.ts) rendered by /gestores and /gestor/$slug; "[...]" values are placeholders shown as unconfirmed. Why: add gestores without redesign and never invent facts.
+- Public tools (src/components/tools) are deterministic client-side calculators with no AI and no persistence. Why: transparent results, no fake certainty, visitor data never stored.
