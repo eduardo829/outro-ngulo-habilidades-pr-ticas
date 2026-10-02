@@ -17,7 +17,7 @@ Responda SOMENTE JSON: {"angles":[{"title":"2 a 4 palavras em maiúsculas","ques
       const res = await fetch("https://ai.gateway.lovable.dev/v1/responses", {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "openai/gpt-6-astra", instructions: system, input: `Situação:\n"""${data.situation}"""`, store: false, text: { format: { type: "json_object" } } }),
+        body: JSON.stringify({ model: "openai/gpt-6-astra", instructions: system, input: `Situação (responda em JSON):\n"""${data.situation}"""`, store: false, text: { format: { type: "json_object" } } }),
       });
       if (res.status === 429) return { ok: false, error: "Muitas pessoas pedindo ao mesmo tempo. Tente de novo em um minuto." };
       if (res.status === 402 || res.status === 403) return { ok: false, error: "Ferramenta temporariamente indisponível." };
