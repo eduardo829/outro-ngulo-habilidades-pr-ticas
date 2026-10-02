@@ -35,3 +35,12 @@
 - [ ] Perfil: "Hoje eu…", quero evoluir em, posso ajudar com, quero conhecer pessoas de, próximo passo
 - [ ] Comunidade: categorias amplas; Oportunidades: empregos, estágios, freelance, mentoria, eventos
 - [ ] Revisão de tom (homepage, trilhas, ferramentas, onboarding) e imagens
+
+## Fase de diferenciação (documento PHASE_DIFFERENTIATION)
+- [x] Fase 1 Meu Ângulo (Agora, Próximo, Plano, Evidências)
+- [x] Fase 2 Missões (10 missões, registro e reflexão)
+- [x] Fase 3 Me dê outro ângulo (simples, sem salvar)
+- [ ] Fase 4 Perfil "Preciso de alguém que… / Posso ajudar com…" e conexão básica
+- [ ] Fase 5 Contribuições e reputação por utilidade
+- [ ] Fase 6 Assistente usando Meu Ângulo, missões e recursos
+- [ ] Missões dentro dos cursos; fim de curso com "próximo passo"; painel inicial mais pessoal
