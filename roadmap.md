@@ -19,3 +19,8 @@
 - [ ] Notificações internas e preferências; solicitação de exclusão de conta
 - [ ] Pagamentos (aguarda escolha do provedor e dados do vendedor)
 - [ ] Testes com contas de diferentes papéis; revisão mobile/acessibilidade
+
+## Fase 2 — experiência logada (feito)
+- [x] Navegação nova, onboarding, feed, pessoas, mensagens, encontros, gestores, notificações, ações práticas
+- [x] Admin: encontros, gestores, moderação, dados de demonstração removíveis
+- [ ] Verificação ponta a ponta com conta real (aguarda primeiro administrador)
