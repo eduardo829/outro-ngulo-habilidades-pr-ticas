@@ -38,6 +38,97 @@ export type Database = {
         }
         Relationships: []
       }
+      comments: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          offers_help: boolean
+          post_id: string
+        }
+        Insert: {
+          author_id?: string
+          body: string
+          created_at?: string
+          id?: string
+          offers_help?: boolean
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          offers_help?: boolean
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          context_post_id: string | null
+          created_at: string
+          id: string
+          last_message_at: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          context_post_id?: string | null
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          context_post_id?: string | null
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_context_post_id_fkey"
+            columns: ["context_post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_user_a_fkey"
+            columns: ["user_a"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_user_b_fkey"
+            columns: ["user_b"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           access_policy: string
@@ -149,6 +240,173 @@ export type Database = {
           },
         ]
       }
+      event_bookings: {
+        Row: {
+          created_at: string
+          event_id: string
+          reminded: boolean
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          reminded?: boolean
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          reminded?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_bookings_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_question_votes: {
+        Row: {
+          question_id: string
+          user_id: string
+        }
+        Insert: {
+          question_id: string
+          user_id?: string
+        }
+        Update: {
+          question_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_question_votes_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "event_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_question_votes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_questions: {
+        Row: {
+          body: string
+          created_at: string
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          event_id: string
+          id?: string
+          user_id?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_questions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_questions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          capacity: number
+          created_at: string
+          description: string | null
+          duration_min: number
+          expert_id: string | null
+          id: string
+          is_demo: boolean
+          materials: string | null
+          meeting_url: string | null
+          recording_url: string | null
+          starts_at: string
+          status: string
+          summary: string | null
+          theme: string
+          title: string
+        }
+        Insert: {
+          capacity?: number
+          created_at?: string
+          description?: string | null
+          duration_min?: number
+          expert_id?: string | null
+          id?: string
+          is_demo?: boolean
+          materials?: string | null
+          meeting_url?: string | null
+          recording_url?: string | null
+          starts_at: string
+          status?: string
+          summary?: string | null
+          theme?: string
+          title: string
+        }
+        Update: {
+          capacity?: number
+          created_at?: string
+          description?: string | null
+          duration_min?: number
+          expert_id?: string | null
+          id?: string
+          is_demo?: boolean
+          materials?: string | null
+          meeting_url?: string | null
+          recording_url?: string | null
+          starts_at?: string
+          status?: string
+          summary?: string | null
+          theme?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_expert_id_fkey"
+            columns: ["expert_id"]
+            isOneToOne: false
+            referencedRelation: "experts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       exercise_answers: {
         Row: {
           answer: string
@@ -177,6 +435,59 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      experts: {
+        Row: {
+          active: boolean
+          area: string | null
+          created_at: string
+          experience: string | null
+          headline: string | null
+          id: string
+          is_demo: boolean
+          name: string
+          photo_url: string | null
+          position: number
+          topics: string[]
+          user_id: string | null
+        }
+        Insert: {
+          active?: boolean
+          area?: string | null
+          created_at?: string
+          experience?: string | null
+          headline?: string | null
+          id?: string
+          is_demo?: boolean
+          name: string
+          photo_url?: string | null
+          position?: number
+          topics?: string[]
+          user_id?: string | null
+        }
+        Update: {
+          active?: boolean
+          area?: string | null
+          created_at?: string
+          experience?: string | null
+          headline?: string | null
+          id?: string
+          is_demo?: boolean
+          name?: string
+          photo_url?: string | null
+          position?: number
+          topics?: string[]
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -315,6 +626,48 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          read_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modules: {
         Row: {
           activity: string | null
@@ -353,6 +706,136 @@ export type Database = {
           },
         ]
       }
+      next_actions: {
+        Row: {
+          body: string
+          created_at: string
+          done_at: string | null
+          event_id: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          done_at?: string | null
+          event_id?: string | null
+          id?: string
+          user_id?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          done_at?: string | null
+          event_id?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "next_actions_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "next_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          link: string | null
+          read_at: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          link?: string | null
+          read_at?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          author_id: string
+          body: string
+          category: string
+          created_at: string
+          featured: boolean
+          id: string
+          image_url: string | null
+          kind: string
+          link_url: string | null
+          opportunity_type: string | null
+          removed: boolean
+        }
+        Insert: {
+          author_id?: string
+          body: string
+          category?: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          kind?: string
+          link_url?: string | null
+          opportunity_type?: string | null
+          removed?: boolean
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          category?: string
+          created_at?: string
+          featured?: boolean
+          id?: string
+          image_url?: string | null
+          kind?: string
+          link_url?: string | null
+          opportunity_type?: string | null
+          removed?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           area: string | null
@@ -365,9 +848,16 @@ export type Database = {
           id: string
           in_directory: boolean
           interests: string[]
+          is_demo: boolean
+          learn_tags: string[]
           link: string | null
+          onboarded: boolean
+          persona: string | null
+          skills: string[]
+          suspended: boolean
           updated_at: string
           wants_learn: string | null
+          working_on: string | null
         }
         Insert: {
           area?: string | null
@@ -380,9 +870,16 @@ export type Database = {
           id: string
           in_directory?: boolean
           interests?: string[]
+          is_demo?: boolean
+          learn_tags?: string[]
           link?: string | null
+          onboarded?: boolean
+          persona?: string | null
+          skills?: string[]
+          suspended?: boolean
           updated_at?: string
           wants_learn?: string | null
+          working_on?: string | null
         }
         Update: {
           area?: string | null
@@ -395,11 +892,54 @@ export type Database = {
           id?: string
           in_directory?: boolean
           interests?: string[]
+          is_demo?: boolean
+          learn_tags?: string[]
           link?: string | null
+          onboarded?: boolean
+          persona?: string | null
+          skills?: string[]
+          suspended?: boolean
           updated_at?: string
           wants_learn?: string | null
+          working_on?: string | null
         }
         Relationships: []
+      }
+      reactions: {
+        Row: {
+          created_at: string
+          kind: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          kind: string
+          post_id: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          kind?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reactions_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       site_settings: {
         Row: {
@@ -478,6 +1018,7 @@ export type Database = {
     }
     Functions: {
       admin_metrics: { Args: never; Returns: Json }
+      book_event: { Args: { _event: string }; Returns: undefined }
       course_outline: {
         Args: { _course: string }
         Returns: {
@@ -489,6 +1030,8 @@ export type Database = {
           title: string
         }[]
       }
+      ensure_event_reminders: { Args: never; Returns: undefined }
+      event_join_url: { Args: { _event: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -496,9 +1039,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      in_conversation: { Args: { _c: string; _u: string }; Returns: boolean }
+      is_active_member: { Args: { _u: string }; Returns: boolean }
       is_enrolled: {
         Args: { _course: string; _user: string }
         Returns: boolean
+      }
+      is_staff: { Args: { _u: string }; Returns: boolean }
+      start_conversation: {
+        Args: { _other: string; _post?: string }
+        Returns: string
       }
       touch_last_lesson: { Args: { _lesson: string }; Returns: undefined }
     }

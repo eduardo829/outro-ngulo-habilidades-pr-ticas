@@ -22,6 +22,13 @@
       "when": 1790959256544,
       "tag": "0002_add_gestor_role",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790959403366,
+      "tag": "0003_community_events",
+      "breakpoints": true
     }
   ]
 }
