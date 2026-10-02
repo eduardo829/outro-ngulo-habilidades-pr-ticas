@@ -38,6 +38,69 @@ export type Database = {
         }
         Relationships: []
       }
+      bundle_courses: {
+        Row: {
+          bundle_id: string
+          course_id: string
+        }
+        Insert: {
+          bundle_id: string
+          course_id: string
+        }
+        Update: {
+          bundle_id?: string
+          course_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bundle_courses_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bundle_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bundles: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          is_published: boolean
+          price_cents: number | null
+          slug: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          price_cents?: number | null
+          slug: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          price_cents?: number | null
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           author_id: string
@@ -129,6 +192,90 @@ export type Database = {
           },
         ]
       }
+      coupons: {
+        Row: {
+          active: boolean
+          amount: number
+          bundle_id: string | null
+          code: string
+          course_id: string | null
+          created_at: string
+          ends_at: string | null
+          kind: string
+          starts_at: string | null
+        }
+        Insert: {
+          active?: boolean
+          amount: number
+          bundle_id?: string | null
+          code: string
+          course_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          kind: string
+          starts_at?: string | null
+        }
+        Update: {
+          active?: boolean
+          amount?: number
+          bundle_id?: string | null
+          code?: string
+          course_id?: string | null
+          created_at?: string
+          ends_at?: string | null
+          kind?: string
+          starts_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coupons_bundle_id_fkey"
+            columns: ["bundle_id"]
+            isOneToOne: false
+            referencedRelation: "bundles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "coupons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_interest: {
+        Row: {
+          course_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_interest_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_interest_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_videos: {
         Row: {
           captions_url: string | null
@@ -179,15 +326,23 @@ export type Database = {
           access_policy: string
           cover_url: string | null
           created_at: string
+          currency: string
           description: string | null
           duration_text: string | null
           id: string
           instructor: string | null
+          is_free: boolean
           is_public: boolean
+          is_purchasable: boolean
           level: string | null
           objectives: string[]
           position: number
+          preview_enabled: boolean
+          preview_module_key: string | null
           price_cents: number | null
+          sale_end: string | null
+          sale_price_cents: number | null
+          sale_start: string | null
           slug: string
           status: Database["public"]["Enums"]["content_status"]
           subtitle: string | null
@@ -198,15 +353,23 @@ export type Database = {
           access_policy?: string
           cover_url?: string | null
           created_at?: string
+          currency?: string
           description?: string | null
           duration_text?: string | null
           id?: string
           instructor?: string | null
+          is_free?: boolean
           is_public?: boolean
+          is_purchasable?: boolean
           level?: string | null
           objectives?: string[]
           position?: number
+          preview_enabled?: boolean
+          preview_module_key?: string | null
           price_cents?: number | null
+          sale_end?: string | null
+          sale_price_cents?: number | null
+          sale_start?: string | null
           slug: string
           status?: Database["public"]["Enums"]["content_status"]
           subtitle?: string | null
@@ -217,15 +380,23 @@ export type Database = {
           access_policy?: string
           cover_url?: string | null
           created_at?: string
+          currency?: string
           description?: string | null
           duration_text?: string | null
           id?: string
           instructor?: string | null
+          is_free?: boolean
           is_public?: boolean
+          is_purchasable?: boolean
           level?: string | null
           objectives?: string[]
           position?: number
+          preview_enabled?: boolean
+          preview_module_key?: string | null
           price_cents?: number | null
+          sale_end?: string | null
+          sale_price_cents?: number | null
+          sale_start?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["content_status"]
           subtitle?: string | null
@@ -236,34 +407,40 @@ export type Database = {
       }
       enrollments: {
         Row: {
+          access_granted_at: string
           course_id: string
           created_at: string
           granted_by: string | null
           id: string
           last_accessed_at: string | null
           last_lesson_id: string | null
+          purchase_id: string | null
           source: string
           status: string
           user_id: string
         }
         Insert: {
+          access_granted_at?: string
           course_id: string
           created_at?: string
           granted_by?: string | null
           id?: string
           last_accessed_at?: string | null
           last_lesson_id?: string | null
+          purchase_id?: string | null
           source?: string
           status?: string
           user_id: string
         }
         Update: {
+          access_granted_at?: string
           course_id?: string
           created_at?: string
           granted_by?: string | null
           id?: string
           last_accessed_at?: string | null
           last_lesson_id?: string | null
+          purchase_id?: string | null
           source?: string
           status?: string
           user_id?: string
@@ -281,6 +458,13 @@ export type Database = {
             columns: ["last_lesson_id"]
             isOneToOne: false
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "purchases"
             referencedColumns: ["id"]
           },
         ]
@@ -1040,6 +1224,69 @@ export type Database = {
         }
         Relationships: []
       }
+      purchases: {
+        Row: {
+          amount_cents: number | null
+          bundle_id: string | null
+          coupon_code: string | null
+          course_id: string | null
+          created_at: string
+          currency: string
+          id: string
+          payment_provider: string | null
+          payment_status: string
+          refund_status: string | null
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents?: number | null
+          bundle_id?: string | null
+          coupon_code?: string | null
+          course_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_provider?: string | null
+          payment_status?: string
+          refund_status?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number | null
+          bundle_id?: string | null
+          coupon_code?: string | null
+          course_id?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_provider?: string | null
+          payment_status?: string
+          refund_status?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reactions: {
         Row: {
           created_at: string
@@ -1178,6 +1425,10 @@ export type Database = {
       is_active_member: { Args: { _u: string }; Returns: boolean }
       is_enrolled: {
         Args: { _course: string; _user: string }
+        Returns: boolean
+      }
+      is_preview_key: {
+        Args: { _course: string; _key: string }
         Returns: boolean
       }
       is_staff: { Args: { _u: string }; Returns: boolean }
