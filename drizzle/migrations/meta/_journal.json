@@ -36,6 +36,13 @@
       "when": 1790959872347,
       "tag": "0004_tighten_profile_visibility",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790970408264,
+      "tag": "0005_public_upcoming_events",
+      "breakpoints": true
     }
   ]
 }
