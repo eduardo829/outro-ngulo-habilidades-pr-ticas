@@ -20,8 +20,11 @@ import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
+import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -77,6 +80,11 @@ const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
   path: '/meus-cursos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const CursosIndexRoute = CursosIndexRouteImport.update({
   id: '/cursos/',
   path: '/cursos/',
@@ -86,6 +94,17 @@ const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAulaLessonIdRoute =
+  AuthenticatedAulaLessonIdRouteImport.update({
+    id: '/aula/$lessonId',
+    path: '/aula/$lessonId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCursoSlugRoute = AuthenticatedCursoSlugRouteImport.update({
+  id: '/curso/$slug',
+  path: '/curso/$slug',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -99,8 +118,11 @@ export interface FileRoutesByFullPath {
   '/termos': typeof TermosRoute
   '/inicio': typeof AuthenticatedInicioRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
+  '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/curso/$slug': typeof AuthenticatedCursoSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,8 +135,11 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/inicio': typeof AuthenticatedInicioRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos': typeof CursosIndexRoute
+  '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/curso/$slug': typeof AuthenticatedCursoSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -129,8 +154,11 @@ export interface FileRoutesById {
   '/termos': typeof TermosRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
+  '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -145,8 +173,11 @@ export interface FileRouteTypes {
     | '/termos'
     | '/inicio'
     | '/meus-cursos'
+    | '/perfil'
     | '/cursos/$slug'
     | '/cursos/'
+    | '/aula/$lessonId'
+    | '/curso/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -159,8 +190,11 @@ export interface FileRouteTypes {
     | '/termos'
     | '/inicio'
     | '/meus-cursos'
+    | '/perfil'
     | '/cursos/$slug'
     | '/cursos'
+    | '/aula/$lessonId'
+    | '/curso/$slug'
   id:
     | '__root__'
     | '/'
@@ -174,8 +208,11 @@ export interface FileRouteTypes {
     | '/termos'
     | '/_authenticated/inicio'
     | '/_authenticated/meus-cursos'
+    | '/_authenticated/perfil'
     | '/cursos/$slug'
     | '/cursos/'
+    | '/_authenticated/aula/$lessonId'
+    | '/_authenticated/curso/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -271,6 +308,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/cursos/': {
       id: '/cursos/'
       path: '/cursos'
@@ -285,17 +329,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CursosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/aula/$lessonId': {
+      id: '/_authenticated/aula/$lessonId'
+      path: '/aula/$lessonId'
+      fullPath: '/aula/$lessonId'
+      preLoaderRoute: typeof AuthenticatedAulaLessonIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/curso/$slug': {
+      id: '/_authenticated/curso/$slug'
+      path: '/curso/$slug'
+      fullPath: '/curso/$slug'
+      preLoaderRoute: typeof AuthenticatedCursoSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
   AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
+  AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedInicioRoute: AuthenticatedInicioRoute,
   AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
+  AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
