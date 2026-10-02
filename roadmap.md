@@ -24,3 +24,14 @@
 - [x] Navegação nova, onboarding, feed, pessoas, mensagens, encontros, gestores, notificações, ações práticas
 - [x] Admin: encontros, gestores, moderação, dados de demonstração removíveis
 - [ ] Verificação ponta a ponta com conta real (aguarda primeiro administrador)
+
+## Rebalanceamento além do empreendedorismo
+- [x] Pergunta "O que você quer mudar agora?" + caminho "Ainda não sei"
+- [x] /cursos por área ("O que você quer melhorar?") + 8 cursos de carreira/comunicação/dinheiro em preparação
+- [x] Sobre: "Ninguém precisa aprender tudo…"
+- [ ] Conteúdo dos novos cursos (carreira, comunicação, dinheiro) no motor de aprendizado
+- [ ] Ampliar exemplos de Networking do zero e IA no trabalho
+- [ ] Ferramentas de carreira: mapa de carreira, mapa de competências, plano 90 dias, preparador de entrevista, transição
+- [ ] Perfil: "Hoje eu…", quero evoluir em, posso ajudar com, quero conhecer pessoas de, próximo passo
+- [ ] Comunidade: categorias amplas; Oportunidades: empregos, estágios, freelance, mentoria, eventos
+- [ ] Revisão de tom (homepage, trilhas, ferramentas, onboarding) e imagens
