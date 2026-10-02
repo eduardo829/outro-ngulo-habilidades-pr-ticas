@@ -39,8 +39,8 @@ function Onboarding() {
     { q: "O que melhor descreve você?", ok: !!persona, body: <div className="flex flex-wrap gap-2">{PERSONAS.map((p) => <Chip key={p} on={persona === p} onClick={() => setPersona(p)}>{p}</Chip>)}</div> },
     { q: "Em que você está trabalhando atualmente?", ok: working.trim().length > 2, body: <Textarea value={working} onChange={(e) => setWorking(e.target.value)} maxLength={300} placeholder="Ex.: abrindo uma agência de marketing, terminando a faculdade de engenharia…" className="min-h-28" /> },
     { q: "O que você quer desenvolver?", hint: "Escolha até 3.", ok: goals.length > 0, body: <div className="flex flex-wrap gap-2">{GOALS.map((g) => <Chip key={g} on={goals.includes(g)} onClick={() => setGoals(goals.includes(g) ? goals.filter((x) => x !== g) : goals.length < 3 ? [...goals, g] : goals)}>{g}</Chip>)}</div> },
-    { q: "Em que você poderia ajudar outra pessoa?", hint: "Separe por vírgulas. Vale experiência de trabalho, hobby ou estudo.", ok: canHelp.trim().length > 1, body: <Textarea value={canHelp} onChange={(e) => setCanHelp(e.target.value)} maxLength={300} placeholder="Ex.: Vendas, Excel, Atendimento ao cliente" className="min-h-28" /> },
-    { q: "Em que você gostaria de receber ajuda?", hint: "Separe por vírgulas.", ok: wantHelp.trim().length > 1, body: <Textarea value={wantHelp} onChange={(e) => setWantHelp(e.target.value)} maxLength={300} placeholder="Ex.: Networking, Precificação, Falar em público" className="min-h-28" /> },
+    { q: "Em que você poderia ajudar outra pessoa?", hint: "Separe por vírgulas. Vale experiência de trabalho, hobby ou estudo.", ok: canHelp.trim().length > 1, body: <Textarea value={canHelp} onChange={(e) => setCanHelp(e.target.value)} maxLength={300} placeholder="Ex.: vendas, Excel, atendimento ao cliente" className="min-h-28" /> },
+    { q: "Em que você gostaria de receber ajuda?", hint: "Separe por vírgulas.", ok: wantHelp.trim().length > 1, body: <Textarea value={wantHelp} onChange={(e) => setWantHelp(e.target.value)} maxLength={300} placeholder="Ex.: networking, precificação, falar em público" className="min-h-28" /> },
   ];
   const s = steps[step]!;
 
@@ -76,7 +76,7 @@ function Onboarding() {
           <Button onClick={finish} disabled={!s.ok || busy}>{busy ? "Salvando…" : "Entrar na plataforma"}</Button>
         )}
       </div>
-      <p className="mt-4 text-xs text-muted-foreground">Suas respostas aparecem no seu perfil para outros membros. Você pode editar ou se ocultar de “Pessoas” a qualquer momento.</p>
+      <p className="mt-4 text-xs text-muted-foreground">Suas respostas aparecem no seu perfil para outros membros. Você pode editar suas respostas ou ocultar seu perfil da seção “Pessoas” a qualquer momento.</p>
     </div>
   );
 }

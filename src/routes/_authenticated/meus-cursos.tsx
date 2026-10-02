@@ -65,7 +65,7 @@ function MyCourses() {
             <Section title="Concluídos" rows={completed} />
             {legacyRows.length > 0 && (
               <section className="mb-10">
-                <p className="eyebrow">Outros cursos matriculados</p>
+                <p className="eyebrow">Outros cursos em que você está matriculado</p>
                 <ul className="mt-4 grid gap-6 sm:grid-cols-2">
                   {legacyRows.map((c) => (
                     <li key={c.id}><Link to="/curso/$slug" params={{ slug: c.slug }} className="block overflow-hidden border bg-card hover:border-primary">
@@ -108,7 +108,7 @@ function Section({ title, rows }: { title: string; rows: Row[] }) {
             <div className="flex flex-1 flex-col p-5">
               <p className="font-display text-lg font-extrabold leading-tight">{r.c.title}</p>
               <div className="mt-3 flex items-center gap-3"><div className="h-1 flex-1 bg-border"><div className="h-1 bg-primary" style={{ width: `${(r.done / r.c.modules.length) * 100}%` }} /></div><span className="text-xs">{r.done}/{r.c.modules.length} módulos</span></div>
-              <p className="mt-2 text-xs text-muted-foreground">Projeto: {r.c.project}{r.last ? ` · último salvamento ${new Date(r.last).toLocaleDateString("pt-BR")}` : ""}</p>
+              <p className="mt-2 text-xs text-muted-foreground">Projeto: {r.c.project}{r.last ? ` · último salvamento: ${new Date(r.last).toLocaleDateString("pt-BR")}` : ""}</p>
               <div className="mt-auto flex flex-wrap gap-2 pt-4">
                 <Button asChild size="sm"><Link to={r.state === "completed" ? "/aprender/$slug" : "/aprender/$slug/$modulo"} params={{ slug: r.c.slug, modulo: r.nextKey }}>{ctaLabel[r.state]}<ArrowRight /></Link></Button>
                 <Button asChild size="sm" variant="ghost"><Link to="/aprender/$slug/espaco" params={{ slug: r.c.slug }}>Meu projeto</Link></Button>

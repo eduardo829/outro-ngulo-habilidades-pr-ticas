@@ -37,9 +37,9 @@ export const VENDAS: Course = {
       blocks: [
         { type: "concept", title: "Perguntas de descoberta",
           what: "Perguntas abertas que ajudam o cliente a explicar a situação atual, o problema, o impacto e o que já tentou.",
-          why: "Quem pergunta bem entende o problema melhor do que o próprio cliente explicaria sozinho, e consegue apresentar a solução nas palavras dele.",
+          why: "Quem pergunta bem entende o problema melhor do que o próprio cliente explicaria sozinho e consegue apresentar a solução nas palavras dele.",
           example: "“Como vocês fazem isso hoje?”, “O que acontece quando dá errado?”, “Quanto tempo isso toma por semana?”, “O que já tentaram?”",
-          mistake: "Perguntas que só servem para chegar no seu produto (“Você não gostaria de economizar tempo?”)." },
+          mistake: "Perguntas que só servem para chegar ao seu produto (“Você não gostaria de economizar tempo?”)." },
         { type: "video", title: "A pergunta certa vende mais que o argumento certo" },
         { type: "fields", key: "v02.perguntas", title: "Minhas perguntas de descoberta", fields: [
           { k: "situacao", l: "Sobre a situação atual", multiline: true }, { k: "problema", l: "Sobre o problema", multiline: true },
@@ -51,13 +51,13 @@ export const VENDAS: Course = {
       next: "Entender o problema de verdade.",
     },
     {
-      key: "v03", title: "Entender o problema", question: "O problema que o cliente fala é o problema real?",
+      key: "v03", title: "Entender o problema", question: "O problema de que o cliente fala é o problema real?",
       blocks: [
         { type: "concept", title: "Sintoma e causa",
-          what: "O cliente costuma descrever um sintoma. O problema real está um ou dois “por quês” abaixo.",
+          what: "O cliente costuma descrever um sintoma. O problema real está um ou dois “porquês” abaixo.",
           why: "Resolver o sintoma gera cliente insatisfeito. Resolver a causa gera indicação.",
-          example: "“Preciso de mais seguidores” (sintoma). Por quê? “Para vender mais.” Por que não vende? “Quem chega no perfil não entende o que eu faço.” O problema é clareza, não alcance.",
-          mistake: "Aceitar o primeiro problema que o cliente diz e já apresentar a solução." },
+          example: "“Preciso de mais seguidores” (sintoma). Por quê? “Para vender mais.” Por que não vende? “Quem chega ao perfil não entende o que eu faço.” O problema é clareza, não alcance.",
+          mistake: "Aceitar o primeiro problema que o cliente relata e já apresentar a solução." },
         { type: "classify", key: "v03.cenarios", prompt: "Cada cliente disse uma frase. É sintoma ou causa?", categories: ["Sintoma", "Causa"], items: [
           { t: "“Minhas vendas caíram.”", a: "Sintoma", why: "Falta descobrir por quê." },
           { t: "“Nosso vendedor sênior saiu e ninguém faz follow-up.”", a: "Causa" },
@@ -66,7 +66,7 @@ export const VENDAS: Course = {
           { t: "“A equipe vive apagando incêndio.”", a: "Sintoma" }] },
         { type: "video", title: "O problema por trás do problema" },
         { type: "fields", key: "v03.diagnostico", title: "Diagnóstico de um cliente real", fields: [
-          { k: "disse", l: "O que o cliente disse" }, { k: "porques", l: "Os “por quês” que perguntei", multiline: true },
+          { k: "disse", l: "O que o cliente disse" }, { k: "porques", l: "Os “porquês” que perguntei", multiline: true },
           { k: "real", l: "Qual parece ser o problema real" }, { k: "custo", l: "Quanto esse problema custa para ele" }] },
       ],
       output: { key: "v03.diagnostico", title: "Diagnóstico do problema" },
@@ -78,7 +78,7 @@ export const VENDAS: Course = {
       blocks: [
         { type: "concept", title: "Característica, benefício, resultado",
           what: "Característica é o que o produto tem. Benefício é o que isso permite. Resultado é a mudança concreta na vida ou no negócio do cliente.",
-          why: "Clientes pagam por resultados. Quanto mais concreto e mensurável, mais fácil perceber valor.",
+          why: "Clientes pagam por resultados. Quanto mais concretos e mensuráveis forem os resultados, mais fácil será perceber valor.",
           example: "Característica: agenda online. Benefício: o cliente marca sozinho. Resultado: a recepcionista ganha 2 horas por dia e o salão para de perder horários por telefone ocupado.",
           mistake: "Listar funcionalidades e esperar que o cliente faça a tradução." },
         { type: "video", title: "Valor é o que o cliente percebe" },
@@ -116,24 +116,24 @@ export const VENDAS: Course = {
           why: "Tratar objeção como ataque gera discussão. Tratar como informação gera conversa.",
           example: "“Não tenho orçamento” pode significar “não vejo valor suficiente” ou “quem tem orçamento é meu sócio”. Pergunte antes de responder.",
           mistake: "Ter uma frase pronta para cada objeção e usá-la sem entender o contexto." },
-        { type: "video", title: "Como responder objeções sem pressionar" },
+        { type: "video", title: "Como responder a objeções sem pressionar" },
         { type: "scenarios", key: "v06.objecoes", title: "Simulador de objeções", intro: "Responda a cada objeção usando o roteiro.",
           items: ["Está caro.", "Preciso pensar.", "Vou comparar.", "Não tenho orçamento.", "Agora não."],
           framework: ["Valide sem concordar: “Faz sentido querer…”.", "Pergunte o que está por trás.", "Reconecte com o problema e o valor.", "Proponha um passo que reduza o risco."] },
         { type: "compare", before: "v06.antes", after: "v06.objecoes", title: "Antes e depois" },
       ],
       output: { key: "v06.objecoes", title: "Minhas respostas a objeções" },
-      community: "Qual objeção você ainda não sabe responder bem?",
+      community: "A qual objeção você ainda não sabe responder bem?",
       next: "Fazer follow-up sem perseguir.",
     },
     {
-      key: "v07", title: "Follow-up sem perseguir", question: "Como lembrar o cliente sem incomodar?",
+      key: "v07", title: "Follow-up sem perseguir", question: "Como retomar o contato com o cliente sem incomodar?",
       blocks: [
         { type: "concept", title: "Cada contato precisa trazer algo",
           what: "Um follow-up bom traz algo novo: um resumo, uma resposta, um exemplo, uma pergunta útil. Não só “e aí, pensou?”.",
           why: "A maioria das vendas não acontece no primeiro contato. E a maioria das pessoas desiste depois do primeiro silêncio.",
           example: "Dia 1: resumo da conversa. Dia 3: um caso parecido. Dia 7: uma pergunta sobre a decisão. Dia 14: encerramento educado, deixando a porta aberta.",
-          mistake: "Sumir depois do primeiro “vou ver”, ou mandar a mesma mensagem cinco vezes." },
+          mistake: "Sumir depois do primeiro “vou ver” ou mandar a mesma mensagem cinco vezes." },
         { type: "video", title: "A venda acontece no follow-up" },
         { type: "fields", key: "v07.sequencia", title: "Minha sequência de follow-up", fields: [
           { k: "d1", l: "Dia 1", multiline: true }, { k: "d3", l: "Dia 3", multiline: true },
@@ -148,7 +148,7 @@ export const VENDAS: Course = {
       blocks: [
         { type: "concept", title: "Um playbook é seu jeito de vender, escrito",
           what: "O playbook reúne perguntas, proposta de valor, estrutura de oferta, objeções, respostas e follow-up num só lugar.",
-          why: "Escrito, ele pode ser melhorado a cada conversa, e um dia ensinado a outra pessoa.",
+          why: "Escrito, ele pode ser melhorado a cada conversa e um dia ensinado a outra pessoa.",
           example: "Depois de 10 conversas, você percebe que a pergunta 3 sempre gera a melhor resposta e passa a usá-la primeiro.",
           mistake: "Escrever uma vez e nunca revisar." },
         { type: "video", title: "Vender como processo" },

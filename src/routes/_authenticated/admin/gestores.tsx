@@ -25,7 +25,7 @@ function Experts() {
   async function save(e: React.FormEvent) {
     e.preventDefault();
     if (!f || f.name.trim().length < 2) return toast.error("Informe o nome.");
-    if (f.photo_url && !/^https:\/\//.test(f.photo_url)) return toast.error("Foto deve ser um link https.");
+    if (f.photo_url && !/^https:\/\//.test(f.photo_url)) return toast.error("Informe um link HTTPS para a foto.");
     const row = { name: f.name.trim(), headline: f.headline || null, experience: f.experience || null, area: f.area || null, topics: tagsFrom(f.topics), photo_url: f.photo_url || null, active: f.active };
     const { error } = f.id ? await supabase.from("experts").update(row).eq("id", f.id) : await supabase.from("experts").insert({ ...row, position: (list.data?.length ?? 0) + 1 });
     if (error) return toast.error("Não foi possível salvar.");
@@ -41,7 +41,7 @@ function Experts() {
             <div><Label>Nome</Label><Input value={f.name} onChange={set("name")} /></div>
             <div><Label>Título curto</Label><Input value={f.headline} onChange={set("headline")} placeholder="Empreendedor" /></div>
             <div><Label>Área de atuação</Label><Input value={f.area} onChange={set("area")} /></div>
-            <div><Label>Foto (link https)</Label><Input value={f.photo_url} onChange={set("photo_url")} /></div>
+            <div><Label>Foto (link HTTPS)</Label><Input value={f.photo_url} onChange={set("photo_url")} /></div>
           </div>
           <div><Label>Experiência real</Label><Textarea value={f.experience} onChange={set("experience")} placeholder="12+ anos empreendendo fora do Brasil." /></div>
           <div><Label>Temas (separados por vírgula)</Label><Input value={f.topics} onChange={set("topics")} /></div>

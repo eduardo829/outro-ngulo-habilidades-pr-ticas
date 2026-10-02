@@ -36,15 +36,15 @@ function People() {
       <h1 className="text-3xl font-extrabold">Pessoas</h1>
       <p className="mt-1 text-muted-foreground">Quem está aqui dentro, o que faz e em que pode ajudar.</p>
       <div className="mt-6 grid gap-2 sm:grid-cols-4">
-        <select className={sel} value={q.area} onChange={(e) => setQ({ ...q, area: e.target.value })} aria-label="Área"><option value="">Toda área</option>{opts.area.map((a) => <option key={a}>{a}</option>)}</select>
-        <select className={sel} value={q.interest} onChange={(e) => setQ({ ...q, interest: e.target.value })} aria-label="Interesse"><option value="">Todo interesse</option>{opts.interest.map((a) => <option key={a}>{a}</option>)}</select>
+        <select className={sel} value={q.area} onChange={(e) => setQ({ ...q, area: e.target.value })} aria-label="Área"><option value="">Todas as áreas</option>{opts.area.map((a) => <option key={a}>{a}</option>)}</select>
+        <select className={sel} value={q.interest} onChange={(e) => setQ({ ...q, interest: e.target.value })} aria-label="Interesse"><option value="">Todos os interesses</option>{opts.interest.map((a) => <option key={a}>{a}</option>)}</select>
         <Input placeholder="Cidade" value={q.city} onChange={(e) => setQ({ ...q, city: e.target.value })} />
         <Input placeholder="Pode me ajudar com…" value={q.help} onChange={(e) => setQ({ ...q, help: e.target.value })} />
       </div>
       {list.isLoading ? <p className="mt-8 text-muted-foreground">Carregando…</p> : (
         <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => <PersonCard key={p.id} p={p} />)}
-          {!filtered.length && <li className="text-muted-foreground">Ninguém com esses filtros ainda.</li>}
+          {!filtered.length && <li className="text-muted-foreground">Ainda não há ninguém que corresponda a esses filtros.</li>}
         </ul>
       )}
     </Page>

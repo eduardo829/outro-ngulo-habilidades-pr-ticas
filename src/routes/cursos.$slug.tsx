@@ -140,7 +140,7 @@ function CourseDetail() {
           ) : isDraft ? (
             <>
               <h2 className="text-lg font-bold">Este curso ainda está em preparação</h2>
-              <p className="mt-2 text-sm text-muted-foreground">Ele não está disponível para compra. Entre na lista para saber quando abrir.</p>
+              <p className="mt-2 text-sm text-muted-foreground">Ele não está disponível para compra. Entre na lista de interesse para saber quando as inscrições abrirem.</p>
               <div className="mt-4"><WaitlistForm courseId={course.id} /></div>
             </>
           ) : (

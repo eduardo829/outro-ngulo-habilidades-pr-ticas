@@ -18,7 +18,7 @@ export const Route = createFileRoute("/conheca-a-comunidade")({
 const PERGUNTAS = [
   { e: "Pergunta · Tecnologia", t: "Como encontrar um sócio técnico?", d: [{ k: "Temas", v: "Tecnologia, Startups" }, { k: "Tipo de resposta", v: "Experiências de quem já procurou" }] },
   { e: "Pedido de ajuda · Vendas", t: "Alguém revisa minha primeira proposta comercial?", d: [{ k: "Temas", v: "Vendas, Freelance" }, { k: "Como ajudar", v: "Responder ou chamar no privado" }] },
-  { e: "Discussão · Negócios", t: "Empreender com sócio ou sozinho?", d: [{ k: "Temas", v: "Negócios, Decisões" }, { k: "Formato", v: "Prós e contras vividos" }] },
+  { e: "Discussão · Negócios", t: "Empreender com sócio ou sozinho?", d: [{ k: "Temas", v: "Negócios, Decisões" }, { k: "Formato", v: "Prós e contras na prática" }] },
   { e: "Experiência · Carreira", t: "O que aprendi negociando meu primeiro salário", d: [{ k: "Temas", v: "Carreira, Negociação" }, { k: "Formato", v: "Relato + perguntas" }] },
 ];
 

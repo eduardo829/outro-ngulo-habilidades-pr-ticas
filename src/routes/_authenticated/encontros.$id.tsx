@@ -93,7 +93,7 @@ function EventPage() {
     const { error } = await supabase.from("next_actions").insert({ user_id: user!.id, body: action.trim(), event_id: id });
     if (error) return toast.error("Não foi possível salvar.");
     setAction(""); myActions.refetch(); qc.invalidateQueries({ queryKey: ["actions"] });
-    toast.success("Salvo no seu início, em “Meu próximo passo”.");
+    toast.success("Salvo na página inicial, em “Meu próximo passo”.");
   }
 
   return (
@@ -124,7 +124,7 @@ function EventPage() {
             <p className="flex items-center gap-2 font-semibold"><CheckCircle2 className="h-5 w-5 text-primary" />Vaga reservada.</p>
             {phase === "live" ? (
               join.data ? <Button asChild className="mt-3"><a href={join.data} target="_blank" rel="noopener noreferrer"><Video />Entrar no encontro</a></Button>
-                : <p className="mt-2 text-sm text-muted-foreground">O link da sala ainda não foi adicionado pela equipe. Atualize em instantes.</p>
+                : <p className="mt-2 text-sm text-muted-foreground">O link da sala ainda não foi adicionado pela equipe. Atualize a página em instantes.</p>
             ) : <p className="mt-1 text-sm text-muted-foreground">O botão “Entrar no encontro” aparece aqui 15 minutos antes do início.</p>}
             {phase === "upcoming" && <button onClick={cancel} className="mt-3 text-xs text-muted-foreground underline">Cancelar reserva</button>}
           </div>
@@ -161,7 +161,7 @@ function EventPage() {
 
       {!!qs.data?.length && (
         <section className="mt-8">
-          <SectionTitle>Perguntas mais pedidas</SectionTitle>
+          <SectionTitle>Perguntas mais votadas</SectionTitle>
           <ul className="space-y-2">
             {qs.data.map((q) => (
               <li key={q.id} className="flex items-start gap-3 rounded-lg border bg-card p-3">

@@ -8,7 +8,7 @@ import { PhotoBand } from "@/components/PhotoBand";
 import bandPhoto from "@/assets/photo-sobre-band.jpg";
 
 const T = "Sobre — Outro Ângulo";
-const D = "O conhecimento nunca esteve tão disponível. Mas informação não é experiência. Por que estamos construindo uma rede, não apenas uma escola.";
+const D = "O conhecimento nunca esteve tão disponível. Mas informação não é experiência. Por que estamos construindo uma rede, não apenas uma escola?";
 
 export const Route = createFileRoute("/sobre")({
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
@@ -77,7 +77,7 @@ function About() {
                 <ul className="mt-6 flex flex-wrap gap-4 text-xs text-ink-foreground/60">
                   {KINDS.map((k, i) => <li key={k} className="flex items-center gap-2"><span className={cn("h-2 w-2", i === 3 ? "bg-highlight" : "bg-ink-foreground")} style={{ opacity: 1 - i * 0.2 }} />{k}</li>)}
                 </ul>
-                <p className="mt-4 text-xs text-ink-foreground/45">Visualização conceitual, não representa membros reais.</p>
+                <p className="mt-4 text-xs text-ink-foreground/45">Visualização conceitual: não representa membros reais.</p>
               </div>
               <svg viewBox="0 0 300 300" className="mx-auto w-full max-w-sm" aria-hidden>
                 {EDGES.map(([s, t], i) => (

@@ -100,9 +100,9 @@ function ProfilePage() {
           <div><Label htmlFor="persona">O que melhor descreve você</Label><select id="persona" value={f.persona} onChange={(e) => setF({ ...f, persona: e.target.value })} className="h-10 w-full rounded-md border bg-background px-3 text-sm"><option value="">—</option>{PERSONAS.map((p) => <option key={p}>{p}</option>)}</select></div>
           <div><Label htmlFor="wo">No que está trabalhando</Label><Input id="wo" value={f.working_on} onChange={set("working_on")} maxLength={300} /></div>
         </div>
-        <div><Label htmlFor="skills">Posso ajudar com (etiquetas, separadas por vírgula)</Label><Input id="skills" value={f.skills} onChange={set("skills")} placeholder="Vendas, Marketing, Excel" /></div>
-        <div><Label htmlFor="lt">Quero aprender (etiquetas, separadas por vírgula)</Label><Input id="lt" value={f.learn_tags} onChange={set("learn_tags")} placeholder="IA, Networking" /></div>
-        <div><Label htmlFor="int">O que quero desenvolver (separados por vírgula)</Label><Input id="int" value={f.interests} onChange={set("interests")} /></div>
+        <div><Label htmlFor="skills">Posso ajudar com (etiquetas separadas por vírgula)</Label><Input id="skills" value={f.skills} onChange={set("skills")} placeholder="Vendas, Marketing, Excel" /></div>
+        <div><Label htmlFor="lt">Quero aprender (etiquetas separadas por vírgula)</Label><Input id="lt" value={f.learn_tags} onChange={set("learn_tags")} placeholder="IA, Networking" /></div>
+        <div><Label htmlFor="int">O que quero desenvolver (separe por vírgula)</Label><Input id="int" value={f.interests} onChange={set("interests")} /></div>
         <div><Label htmlFor="share">Em que eu poderia ajudar outra pessoa</Label><Textarea id="share" value={f.can_share} onChange={set("can_share")} maxLength={300} /></div>
         <div><Label htmlFor="learn">Em que gostaria de receber ajuda</Label><Textarea id="learn" value={f.wants_learn} onChange={set("wants_learn")} maxLength={300} /></div>
         <div><Label htmlFor="link">LinkedIn ou link profissional (opcional)</Label><Input id="link" type="url" value={f.link} onChange={set("link")} placeholder="https://" /></div>

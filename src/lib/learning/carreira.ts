@@ -26,11 +26,11 @@ export const KIT_PROFISSIONAL: Course = {
     }, "O que conta como experiência", [
       { type: "list", key: "k01.inventario", title: "Inventário de experiências", max: 10, statusLabel: "Tipo", statuses: ["Trabalho", "Estudo", "Projeto", "Voluntariado", "Pessoal"], fields: [
         { k: "o", l: "O que foi" }, { k: "fiz", l: "O que eu fazia, na prática" }, { k: "aprendi", l: "O que aprendi" }] },
-    ], "Meu inventário de experiências", "Qual experiência você quase esqueceu de contar, mas ensinou muito?", "Transformar experiências em provas."),
+    ], "Meu inventário de experiências", "Qual experiência você quase esqueceu de contar, mas que ensinou muito a você?", "Transformar experiências em provas."),
     mod("k02", "De tarefa a prova", "Como mostrar o que você sabe fazer, e não só dizer?", {
       title: "Situação, ação, resultado",
-      what: "Uma prova de competência conta uma situação real, o que você fez e o que mudou. Pode ser pequeno: o importante é ser concreto.",
-      why: "Quem avalia candidatos lê muitas listas de adjetivos. Um exemplo concreto é mais fácil de lembrar e de acreditar.",
+      what: "Uma prova de competência conta uma situação real, o que você fez e o que mudou. O resultado pode ser pequeno: o importante é ser concreto.",
+      why: "Quem avalia candidatos lê muitas listas de adjetivos. Um exemplo concreto é mais fácil de lembrar e mais convincente.",
       example: "Em vez de “sou organizado”: “Criei uma planilha de entregas para o grupo da faculdade e paramos de perder prazos no semestre”.",
       mistake: "Inventar ou inflar resultados. Se não houve número, descreva o que mudou com honestidade.",
     }, null, [
@@ -46,7 +46,7 @@ export const KIT_PROFISSIONAL: Course = {
       why: "Essa pergunta aparece em entrevistas, eventos e conversas informais. Ter uma base pronta evita respostas longas e confusas.",
       example: "“Estou no último ano de Administração. Nos últimos dois anos cuidei do atendimento na loja da família e organizei o estoque. Agora procuro uma primeira vaga em operações.”",
       mistake: "Contar a vida desde o ensino fundamental ou decorar um texto que soa artificial.",
-    }, "Como responder “me fala sobre você”", [
+    }, "Como responder a “me fala sobre você”", [
       { type: "fields", key: "k03.pitch", title: "Minha apresentação", fields: [
         { k: "hoje", l: "Hoje eu…" }, { k: "antes", l: "Antes, eu…", multiline: ML }, { k: "procuro", l: "Agora procuro…" },
         { k: "teste", l: "Falei em voz alta e cronometrei. O que vou cortar?", multiline: ML }] },
@@ -95,18 +95,18 @@ export const MAPA_CARREIRA: Course = {
   modules: [
     mod("m01", "Onde você está hoje", "Se alguém descrevesse seu trabalho com honestidade, o que diria?", {
       title: "Retrato antes de plano",
-      what: "Um retrato atual junta o que você faz, o que gosta, o que drena sua energia e o que o mercado reconhece em você.",
+      what: "Um retrato atual junta o que você faz, do que gosta, o que drena sua energia e o que o mercado reconhece em você.",
       why: "Planos de carreira falham quando partem de onde a pessoa gostaria de estar, e não de onde ela realmente está.",
-      example: "“Faço relatórios e atendo clientes internos. Gosto de resolver problemas, me cansa repetir tarefas manuais. Me pedem ajuda com planilhas.”",
+      example: "“Faço relatórios e atendo clientes internos. Gosto de resolver problemas, mas repetir tarefas manuais me cansa. Me pedem ajuda com planilhas.”",
       mistake: "Confundir cargo com competência. O título diz pouco sobre o que você sabe fazer.",
     }, "Como fazer um retrato honesto da sua carreira", [
       { type: "fields", key: "m01.retrato", title: "Meu retrato atual", fields: [
         { k: "faco", l: "O que eu faço na maior parte do tempo", multiline: ML }, { k: "gosto", l: "O que me dá energia" },
         { k: "drena", l: "O que me drena" }, { k: "pedem", l: "No que as pessoas me pedem ajuda" }] },
     ], "Meu retrato atual", "No que as pessoas mais te pedem ajuda no trabalho?", "Mapear competências."),
-    mod("m02", "Competências que você tem e as que faltam", "O que você sabe fazer bem, mais ou menos e ainda não sabe?", {
+    mod("m02", "Competências que você tem e as que faltam", "O que você sabe fazer bem, o que faz mais ou menos e o que ainda não sabe fazer?", {
       title: "Técnicas, de relação e de autogestão",
-      what: "Competências técnicas são o que você sabe fazer (uma ferramenta, uma análise). De relação, como você trabalha com pessoas. De autogestão, como você se organiza e decide.",
+      what: "Competências técnicas são o que você sabe fazer (usar uma ferramenta, fazer uma análise). De relação, como você trabalha com pessoas. De autogestão, como você se organiza e decide.",
       why: "Crescer raramente é aprender tudo; é identificar uma ou duas lacunas que mais limitam o próximo passo.",
       example: "Analista com boa técnica, mas que trava ao apresentar resultados: a lacuna prioritária é comunicação, não mais um curso técnico.",
       mistake: "Investir sempre no que já é forte porque é confortável.",
@@ -128,7 +128,7 @@ export const MAPA_CARREIRA: Course = {
       title: "Uma lacuna por vez",
       what: "Compare suas direções com seu mapa de competências e escolha a lacuna que aparece em mais caminhos.",
       why: "Foco gera progresso visível em poucos meses, o que alimenta a confiança para o próximo passo.",
-      example: "Se “apresentar dados” aparece em liderança e em produto, é por ela que vale começar.",
+      example: "Se “apresentar dados” aparece em liderança e em produto, é por essa competência que vale começar.",
       mistake: "Montar uma lista de dez cursos e não terminar nenhum.",
     }, null, [
       { type: "fields", key: "m04.lacuna", title: "Minha lacuna prioritária", fields: [
@@ -173,11 +173,11 @@ export const TRANSICAO: Course = {
       example: "Quem odeia o trabalho por causa de um chefe ruim talvez precise de outra empresa, não de outra profissão.",
       mistake: "Decidir no pior dia da semana.",
     }, "Antes de mudar, entenda o que incomoda", [
-      { type: "classify", key: "t01.motivos", prompt: "Para cada incômodo, onde ele mora?", categories: ["Área", "Empresa", "Condições"], items: [
+      { type: "classify", key: "t01.motivos", prompt: "Onde se encaixa cada incômodo?", categories: ["Área", "Empresa", "Condições"], items: [
         { t: "Não gosto do que faço em nenhum dia", a: "Área" }, { t: "Minha liderança não reconhece meu trabalho", a: "Empresa", why: "Pode mudar trocando de time ou empresa." },
         { t: "Ganho menos do que preciso", a: "Condições", why: "Às vezes se resolve negociando ou mudando de empresa na mesma área." },
         { t: "Não me vejo fazendo isso daqui a 10 anos", a: "Área" }, { t: "A cultura é tóxica", a: "Empresa" }, { t: "O horário não cabe na minha vida", a: "Condições" }] },
-      { type: "question", key: "t01.meu", prompt: "No meu caso, o que eu quero deixar para trás e para o que eu quero ir?" },
+      { type: "question", key: "t01.meu", prompt: "No meu caso, o que eu quero deixar para trás e aonde quero chegar?" },
     ], "Meus motivos", "Você já confundiu um problema de empresa com um problema de área?", "Descobrir o que vai com você."),
     mod("t02", "O que vai com você", "Que partes da sua trajetória servem na nova área?", {
       title: "Habilidades transferíveis",
@@ -204,7 +204,7 @@ export const TRANSICAO: Course = {
       title: "Experimentos de baixo risco",
       what: "Um curso curto, um projeto voluntário, um freelance pequeno, acompanhar alguém por um dia: formas de sentir a área com pouco custo.",
       why: "O experimento mostra se você gosta da rotina real e gera algo para mostrar depois.",
-      example: "Quem pensa em marketing faz as redes de um pequeno negócio de um conhecido por um mês.",
+      example: "Quem pensa em marketing cuida, por um mês, das redes sociais de um pequeno negócio de um conhecido.",
       mistake: "Pedir demissão antes de ter testado nada.",
     }, null, [
       { type: "fields", key: "t04.experimento", title: "Meu experimento", fields: [
@@ -213,11 +213,11 @@ export const TRANSICAO: Course = {
       { type: "decision", key: "t04.decisao", ask: "Depois do experimento, qual caminho faz mais sentido?", paths: [
         { k: "Continuar", when: "Gostei da rotina e vi sinais de que consigo entrar." }, { k: "Ajustar", when: "Gostei de parte; quero testar uma variação da área." }, { k: "Ficar", when: "Percebi que o problema não era a área." }] },
     ], "Meu experimento pequeno", "Que experimento barato você poderia fazer este mês?", "Montar o plano de transição."),
-    mod("t05", "O plano de transição", "Qual é o caminho e o prazo realista?", {
+    mod("t05", "O plano de transição", "Qual é o caminho e qual é o prazo realista?", {
       title: "Ponte, não salto",
-      what: "Um plano de transição define etapas, prazo, o que aprender, quem conhecer e quanto de reserva financeira você precisa para atravessar.",
+      what: "Um plano de transição define etapas, prazo, o que aprender, quem conhecer e de quanto você precisa em reserva financeira para atravessar essa fase.",
       why: "Transições costumam levar meses. Saber disso evita desistir no meio ou se apertar financeiramente.",
-      example: "Meses 1-3 estudando à noite; meses 4-6 com dois projetos para portfólio; a partir do 6, candidaturas com reserva para alguns meses.",
+      example: "Meses 1-3 estudando à noite; meses 4-6 com dois projetos para portfólio; a partir do mês 6, candidaturas com reserva para alguns meses.",
       mistake: "Ignorar que pode haver uma fase com renda menor.",
     }, null, [
       { type: "fields", key: "t05.plano", title: "Meu plano de transição", fields: [
@@ -258,9 +258,9 @@ export const PROXIMO_PASSO: Course = {
       why: "Sem critérios explícitos, a decisão vai para quem fala mais alto: o medo ou a empolgação.",
       example: "Para quem quer aprender rápido, um time exigente pode valer mais que um aumento pequeno.",
       mistake: "Usar os critérios de outra pessoa.",
-    }, null, [{ type: "choices", key: "p02.criterios", prompt: "Escolha até três critérios mais importantes agora.", multi: true, options: ["Aprendizado", "Dinheiro", "Estabilidade", "Tempo livre", "Reconhecimento", "Propósito", "Flexibilidade", "Perto de casa"] }],
+    }, null, [{ type: "choices", key: "p02.criterios", prompt: "Escolha até três dos critérios mais importantes agora.", multi: true, options: ["Aprendizado", "Dinheiro", "Estabilidade", "Tempo livre", "Reconhecimento", "Propósito", "Flexibilidade", "Perto de casa"] }],
     "Meus critérios", "Quais são seus três critérios desta fase?", "Comparar e decidir."),
-    mod("p03", "Comparar e decidir", "Qual opção atende melhor seus critérios?", {
+    mod("p03", "Comparar e decidir", "Qual opção atende melhor aos seus critérios?", {
       title: "Matriz simples",
       what: "Dê uma nota de 1 a 5 para cada opção em cada critério. A matriz não decide por você, mas mostra o que você está sentindo.",
       why: "Ver lado a lado reduz a sensação de que tudo é igualmente importante.",
@@ -287,7 +287,7 @@ export const PROXIMO_PASSO: Course = {
 export const ENTREVISTA: Course = {
   slug: "entrevista-sem-resposta-decorada",
   title: "Entrevista sem resposta decorada",
-  thesis: "Aprenda a entender o que a empresa está procurando e comunicar melhor o que você pode entregar.",
+  thesis: "Aprenda a entender o que a empresa está procurando e a comunicar melhor o que você pode entregar.",
   category: "Carreira", difficulty: "Iniciante", commitment: "4 módulos · cerca de 25 min de prática cada",
   project: "Minha preparação de entrevista",
   outcomes: ["Minha leitura da vaga", "Minhas histórias", "Minhas respostas difíceis", "Minhas perguntas e follow-up"],
@@ -307,7 +307,7 @@ export const ENTREVISTA: Course = {
     mod("e02", "Histórias, não frases prontas", "Que situações reais você pode contar?", {
       title: "Banco de histórias",
       what: "Prepare 4 ou 5 histórias reais (situação, o que você fez, resultado, o que aprendeu) que podem responder a várias perguntas.",
-      why: "Decorar respostas soa artificial e quebra quando a pergunta muda. Histórias se adaptam.",
+      why: "Respostas decoradas soam artificiais e deixam de funcionar quando a pergunta muda. Histórias se adaptam.",
       example: "A mesma história de um prazo apertado responde a “trabalho sob pressão”, “organização” e “um desafio que você superou”.",
       mistake: "Contar só histórias em que tudo deu certo. Erros com aprendizado mostram maturidade.",
     }, "Como contar uma boa história de trabalho", [{ type: "list", key: "e02.historias", title: "Meu banco de histórias", max: 5, statusLabel: "Mostra", statuses: ["Organização", "Pessoas", "Problema", "Erro e aprendizado", "Iniciativa"], fields: [
@@ -323,12 +323,12 @@ export const ENTREVISTA: Course = {
     "Minhas respostas difíceis", "Como você responde à pergunta sobre pretensão salarial?", "Fechar bem a entrevista."),
     mod("e04", "Perguntar e fazer follow-up", "O que você pergunta no final e o que faz depois?", {
       title: "A entrevista é uma conversa",
-      what: "Suas perguntas mostram interesse e ajudam você a avaliar a empresa. O follow-up educado depois mantém você lembrado.",
+      what: "Suas perguntas mostram interesse e ajudam você a avaliar a empresa. Um follow-up educado depois da entrevista ajuda o entrevistador a se lembrar de você.",
       why: "Você também está escolhendo. Saber como é o dia a dia evita aceitar algo que não combina.",
       example: "“Como seria um bom primeiro trimestre nessa função?” e, no dia seguinte, uma mensagem curta agradecendo.",
       mistake: "Dizer “não tenho perguntas”.",
     }, null, [{ type: "fields", key: "e04.perguntas", title: "Minhas perguntas e follow-up", fields: [
-      { k: "p", l: "Três perguntas que vou fazer", multiline: ML }, { k: "follow", l: "Minha mensagem de agradecimento", multiline: ML }, { k: "depois", l: "Depois da entrevista: o que fui bem e o que ajustar", multiline: ML }] }],
+      { k: "p", l: "Três perguntas que vou fazer", multiline: ML }, { k: "follow", l: "Minha mensagem de agradecimento", multiline: ML }, { k: "depois", l: "Depois da entrevista: em que fui bem e o que ajustar", multiline: ML }] }],
     "Minhas perguntas e follow-up", "Qual pergunta você já fez a um entrevistador e foi boa?", "Revisar sua preparação no seu espaço."),
   ],
   finalPlan: { title: "Minha preparação de entrevista", sections: [
@@ -358,7 +358,7 @@ export const PRESENCA: Course = {
       title: "Resultado antes de tarefa",
       what: "Cada experiência começa por verbos de ação e, quando possível, pelo que mudou com seu trabalho. Uma página costuma bastar para quem está começando.",
       why: "Quem seleciona lê rápido. Tarefas genéricas parecem iguais em todos os currículos.",
-      example: "“Responsável pelo atendimento” vira “Atendi cerca de 40 clientes por dia e criei respostas padrão que reduziram reclamações repetidas”.",
+      example: "“Responsável pelo atendimento” vira “Atendi cerca de 40 clientes por dia e criei respostas-padrão que reduziram reclamações repetidas”.",
       mistake: "Incluir dados pessoais desnecessários ou inventar números.",
     }, null, [
       { type: "compare", before: "Responsável por planilhas e relatórios.", after: "Automatizei o relatório semanal de vendas, que passou a sair na segunda de manhã." },
@@ -368,7 +368,7 @@ export const PRESENCA: Course = {
     mod("l03", "O perfil que trabalha por você", "Seu perfil responde às perguntas de quem o abre?", {
       title: "Sobre, experiência e provas",
       what: "O “Sobre” conta em poucas linhas o que você faz e o que procura. Projetos, certificados e posts mostram provas.",
-      why: "O perfil é consultado antes de entrevistas e depois de conhecer você em um evento.",
+      why: "As pessoas consultam seu perfil antes de entrevistas e depois de conhecer você em um evento.",
       example: "Um “Sobre” com três parágrafos curtos: o que faço, um exemplo do meu trabalho, o que procuro agora.",
       mistake: "Copiar o currículo inteiro no “Sobre”.",
     }, null, [{ type: "choices", key: "l03.checklist", prompt: "O que seu perfil já tem?", multi: true, options: ["Foto clara e atual", "Título com função e especialidade", "Sobre com o que procuro", "Experiências com resultados", "Um projeto ou trabalho para mostrar", "Localização e formato de trabalho"] },
@@ -377,7 +377,7 @@ export const PRESENCA: Course = {
     mod("l04", "Presença sem virar influenciador", "Como ser lembrado sem postar todo dia?", {
       title: "Contribuir, não performar",
       what: "Presença profissional pode ser comentar com qualidade, compartilhar algo que aprendeu ou mostrar um projeto de vez em quando.",
-      why: "Pessoas lembram de quem ajuda e de quem mostra trabalho real.",
+      why: "Pessoas se lembram de quem ajuda e de quem mostra trabalho real.",
       example: "Um post por mês contando algo que você aprendeu num projeto, com o que funcionou e o que não funcionou.",
       mistake: "Copiar o tom de posts motivacionais que não têm a ver com você.",
     }, null, [{ type: "fields", key: "l04.presenca", title: "Meu plano de presença", fields: [

@@ -30,7 +30,7 @@ function AdminCourses() {
     e.preventDefault();
     if (title.trim().length < 3) return toast.error("Informe um título.");
     const { data: c, error } = await supabase.from("courses").insert({ title: title.trim(), slug: `${slugify(title)}-${Date.now().toString(36).slice(-4)}`, position: (data?.length ?? 0) + 1 }).select("id").single();
-    if (error) return toast.error("Não foi possível criar.");
+    if (error) return toast.error("Não foi possível criar o curso.");
     setTitle("");
     refetch();
     navigate({ to: "/admin/cursos/$id", params: { id: c.id } });
