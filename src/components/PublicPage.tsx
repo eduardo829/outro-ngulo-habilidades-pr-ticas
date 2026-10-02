@@ -5,7 +5,7 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { SectionLabel } from "@/components/Angle";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
-import ctaPhoto from "@/assets/photo-networking.jpg";
+import ctaPhoto from "@/assets/photo-cta.jpg";
 
 export type Item = { title: string; body: string };
 

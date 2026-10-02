@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import dashPhoto from "@/assets/photo-mirante.jpg";
-import { heroPhoto } from "@/lib/photos";
+import heroPhoto from "@/assets/photo-inicio-card.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";

@@ -1,3 +1,4 @@
+import closePhoto from "@/assets/photo-close-trilhas.jpg";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -8,8 +9,8 @@ import { SectionLabel } from "@/components/Angle";
 import { TRILHAS } from "@/lib/trilhas";
 import { cn } from "@/lib/utils";
 import { PhotoBand } from "@/components/PhotoBand";
-import bandPhoto from "@/assets/photo-mirante.jpg";
-import heroPhoto from "@/assets/photo-ideia.jpg";
+import bandPhoto from "@/assets/photo-trilhas-band.jpg";
+import heroPhoto from "@/assets/photo-trilhas-hero.jpg";
 
 const T = "Trilhas — Outro Ângulo";
 const D = "Não comece pelo curso. Comece pela pergunta: trilhas que unem aulas, conversas, pessoas e encontros.";
@@ -75,7 +76,7 @@ function Trilhas() {
       <PhotoBand src={bandPhoto} title=<>Mais perspectiva<span className="block text-ink-foreground/60">para as suas decisões.</span></> />
       <ItemGrid n="03" label="Todas as trilhas em preparação" items={TRILHAS} />
       <ItemGrid n="04" label="O que cada trilha reúne" items={PARTS} cols={2} />
-      <Closing a="Toda trilha começa com uma pergunta." b="E termina em algo que você faz." />
+      <Closing photo={closePhoto} a="Toda trilha começa com uma pergunta." b="E termina em algo que você faz." />
     </PublicLayout>
   );
 }

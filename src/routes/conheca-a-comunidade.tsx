@@ -1,5 +1,6 @@
+import closePhoto from "@/assets/photo-close-comunidade.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroPhoto from "@/assets/photo-comunidade.jpg";
+import heroPhoto from "@/assets/photo-comunidade-publica.jpg";
 import { PublicLayout } from "@/components/PublicLayout";
 import { ItemGrid } from "@/components/PublicPage";
 import { Opening, RevealCard, Illustrative, Closing } from "@/components/public/Story";
@@ -68,7 +69,7 @@ function Page() {
       </section>
 
       <ItemGrid n="03" label="O que acontece por lá" items={WHAT} cols={2} />
-      <Closing a="Todo mundo sabe alguma coisa" b="que pode ser útil para outra pessoa." />
+      <Closing photo={closePhoto} a="Todo mundo sabe alguma coisa" b="que pode ser útil para outra pessoa." />
     </PublicLayout>
   );
 }

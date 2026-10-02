@@ -1,3 +1,4 @@
+import closePhoto from "@/assets/photo-close-ferramentas.jpg";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -39,7 +40,7 @@ function Page() {
         </div>
         <div key={t} role="tabpanel" className="reveal is-visible border-x border-b p-6 md:p-10"><tool.C /></div>
       </section>
-      <Closing a="Use, discuta," b="ajuste com outras pessoas." />
+      <Closing photo={closePhoto} a="Use, discuta," b="ajuste com outras pessoas." />
     </PublicLayout>
   );
 }

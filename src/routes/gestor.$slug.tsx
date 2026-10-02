@@ -1,3 +1,4 @@
+import closePhoto from "@/assets/photo-close-gestor.jpg";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -91,7 +92,7 @@ function Profile() {
           <span>Itens tracejados aguardam informação confirmada.</span>
         </div>
       </section>
-      <Closing a="Decida você" b="se essa experiência te serve." />
+      <Closing photo={closePhoto} a="Decida você" b="se essa experiência te serve." />
     </PublicLayout>
   );
 }

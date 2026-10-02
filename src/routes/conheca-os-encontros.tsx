@@ -6,7 +6,7 @@ import { PhotoBand } from "@/components/PhotoBand";
 import { SectionLabel } from "@/components/Angle";
 import { StickyStory, ScrollReveal } from "@/components/motion/Motion";
 import { cn } from "@/lib/utils";
-import heroPhoto from "@/assets/photo-comunidade.jpg";
+import heroPhoto from "@/assets/photo-encontros.jpg";
 import stairsPhoto from "@/assets/photo-escada.jpg";
 
 const T = "Encontros ao vivo — Outro Ângulo";
