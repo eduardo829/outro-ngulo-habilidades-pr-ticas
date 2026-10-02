@@ -9,6 +9,7 @@ import { getGestor } from "@/lib/gestores";
 import type { Course } from "@/lib/learning/types";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { coursePhoto } from "@/lib/photos";
 
 export const Route = createFileRoute("/cursos/")({
   head: () => ({
@@ -29,7 +30,11 @@ const gestorName = (c: Course) => (c.gestor ? getGestor(c.gestor)?.name : undefi
 function CourseCard({ c, i }: { c: Course; i: number }) {
   return (
     <Link to="/cursos/$slug" params={{ slug: c.slug }} className="group relative flex h-full flex-col bg-background p-6 transition-colors duration-300 hover:bg-card focus-visible:bg-card">
-      <span aria-hidden className="absolute right-0 top-0 h-6 w-6 border-r-2 border-t-2 border-transparent transition-colors duration-300 group-hover:border-highlight" />
+      <div className="photo-zoom relative -mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden bg-ink">
+        <img src={coursePhoto(c.slug)} alt="" loading="lazy" width={1200} height={800} className="h-full w-full object-cover opacity-90" />
+        <div aria-hidden className="photo-scrim-b absolute inset-0 opacity-60" />
+      </div>
+      <span aria-hidden className="absolute right-0 top-0 z-10 h-6 w-6 border-r-2 border-t-2 border-transparent transition-colors duration-300 group-hover:border-highlight" />
       <div className="flex items-baseline justify-between gap-3"><p className="eyebrow">{String(i + 1).padStart(2, "0")} / {c.category}</p><p className="text-xs text-muted-foreground">{c.difficulty}</p></div>
       <h3 className="mt-4 font-display text-2xl font-extrabold leading-tight">{c.title}</h3>
       <p className="mt-3 text-muted-foreground">{c.thesis}</p>
@@ -72,7 +77,9 @@ function Catalog() {
         </section>
       )}
 
-      <section className="bg-ink text-ink-foreground">
+      <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
+        <img src={coursePhoto(featured.slug)} alt="" aria-hidden loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70" />
+        <div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" />
         <Link to="/cursos/$slug" params={{ slug: featured.slug }} className="group mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr] md:py-20">
           <div>
             <p className="eyebrow !text-highlight">Comece por aqui</p>

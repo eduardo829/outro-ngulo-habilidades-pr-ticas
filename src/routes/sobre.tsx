@@ -3,6 +3,8 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { Statements, Closing } from "@/components/public/Story";
 import { StickyStory } from "@/components/motion/Motion";
 import { cn } from "@/lib/utils";
+import { PhotoBand } from "@/components/PhotoBand";
+import bandPhoto from "@/assets/photo-comunidade.jpg";
 
 const T = "Sobre — Outro Ângulo";
 const D = "O conhecimento nunca esteve tão disponível. Mas informação não é experiência. Por que estamos construindo uma rede, não apenas uma escola.";
@@ -27,6 +29,8 @@ function About() {
     <PublicLayout>
       <h1 className="sr-only">Sobre o Outro Ângulo</h1>
       <Statements label="Agora" lines={["O conhecimento nunca esteve tão disponível.", "Mas informação não é experiência.", "E acesso às pessoas certas ainda muda trajetórias."]} />
+
+      <PhotoBand src={bandPhoto} eyebrow="Por que existimos" title={<>Informação está em todo lugar.<span className="block text-ink-foreground/60">Gente para conversar, nem tanto.</span></>} />
 
       <section className="border-y bg-card">
         <StickyStory steps={DURANTE.length + 1} render={(a) => (

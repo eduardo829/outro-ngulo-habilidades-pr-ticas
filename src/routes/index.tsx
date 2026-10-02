@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { heroPhoto } from "@/lib/photos";
 import { useQuery } from "@tanstack/react-query";
 import {
   ArrowRight,
@@ -83,7 +84,9 @@ function Home() {
           </div>
           <div aria-hidden className="relative hidden md:block">
             <div className="absolute inset-x-8 top-1/2 h-[380px] -mt-[170px] ml-5 border border-primary/40" />
-            <div className="absolute inset-x-8 top-1/2 h-[380px] -mt-[190px] -rotate-[4deg] bg-ink p-9 text-ink-foreground transition-transform duration-500 hover:-rotate-[2deg]">
+            <div className="absolute inset-x-8 top-1/2 isolate h-[380px] -mt-[190px] -rotate-[4deg] overflow-hidden bg-ink p-9 text-ink-foreground transition-transform duration-500 hover:-rotate-[2deg]">
+              <img src={heroPhoto} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-80" width={1600} height={1008} />
+              <div aria-hidden className="photo-scrim-b absolute inset-0 -z-10" />
               <p className="eyebrow !text-ink-foreground/60">Aprender · Aplicar · Trocar</p>
               <p className="mt-10 font-display text-[2rem] font-bold leading-[1.08] tracking-tight">
                 Mudar o ângulo<br />é mudar o que<br />você enxerga.

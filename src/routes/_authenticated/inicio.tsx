@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { heroPhoto } from "@/lib/photos";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -96,8 +97,9 @@ function Dashboard() {
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         {courses.isLoading ? <div className="h-48 animate-pulse rounded-xl bg-secondary" /> : cont ? (
-          <section className="relative overflow-hidden rounded-xl bg-ink p-6 text-ink-foreground md:p-8">
-            <span aria-hidden className="absolute -right-10 -top-10 h-40 w-40 rotate-12 rounded-2xl border-2 border-primary" />
+          <section className="relative isolate overflow-hidden rounded-xl bg-ink p-6 text-ink-foreground md:p-8">
+            <img src={heroPhoto} alt="" aria-hidden className="absolute inset-0 -z-10 h-full w-full object-cover opacity-60" />
+            <div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" />
             <p className="text-xs font-semibold uppercase tracking-[0.14em] opacity-60">Continuar aprendendo</p>
             <h2 className="mt-2 text-2xl font-bold">{cont.title}</h2>
             {cont.lastLesson && <p className="mt-1 opacity-80">Última aula: {cont.lastLesson.title}</p>}

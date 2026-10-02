@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PublicPage, ItemGrid } from "@/components/PublicPage";
+import heroPhoto from "@/assets/photo-comunidade.jpg";
 
 const T = "Encontros ao vivo — Outro Ângulo";
 const D = "Aulas ao vivo, plantões de dúvidas, workshops e encontros de networking com vagas limitadas e perguntas enviadas antes.";
@@ -24,7 +25,7 @@ const HOW = [
 
 function Page() {
   return (
-    <PublicPage label="Encontros" title={<>Aprender junto, ao vivo.</>} intro="Os encontros acontecem em salas externas de videochamada. A agenda fica disponível para membros dentro da plataforma.">
+    <PublicPage photo={heroPhoto} label="Encontros" title={<>Aprender junto, ao vivo.</>} intro="Os encontros acontecem em salas externas de videochamada. A agenda fica disponível para membros dentro da plataforma.">
       <ItemGrid n="02" label="Formatos" items={FORMATS} cols={2} />
       <ItemGrid n="03" label="Como funciona" items={HOW} cols={2} />
     </PublicPage>
