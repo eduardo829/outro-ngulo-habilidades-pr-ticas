@@ -28,7 +28,10 @@ import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
+import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_authenticated/admin/comunidade'
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
+import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
+import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
@@ -139,10 +142,28 @@ const AuthenticatedAdminAlunosRoute =
     path: '/alunos',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminComunidadeRoute =
+  AuthenticatedAdminComunidadeRouteImport.update({
+    id: '/comunidade',
+    path: '/comunidade',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminConfiguracoesRoute =
   AuthenticatedAdminConfiguracoesRouteImport.update({
     id: '/configuracoes',
     path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminEncontrosRoute =
+  AuthenticatedAdminEncontrosRouteImport.update({
+    id: '/encontros',
+    path: '/encontros',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminGestoresRoute =
+  AuthenticatedAdminGestoresRouteImport.update({
+    id: '/gestores',
+    path: '/gestores',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAulaLessonIdRoute =
@@ -239,7 +260,10 @@ export interface FileRoutesByFullPath {
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
+  '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -272,7 +296,10 @@ export interface FileRoutesByTo {
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos': typeof CursosIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
+  '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -308,7 +335,10 @@ export interface FileRoutesById {
   '/cursos/$slug': typeof CursosSlugRoute
   '/cursos/': typeof CursosIndexRoute
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
+  '/_authenticated/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
+  '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -344,7 +374,10 @@ export interface FileRouteTypes {
     | '/cursos/$slug'
     | '/cursos/'
     | '/admin/alunos'
+    | '/admin/comunidade'
     | '/admin/configuracoes'
+    | '/admin/encontros'
+    | '/admin/gestores'
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
@@ -377,7 +410,10 @@ export interface FileRouteTypes {
     | '/cursos/$slug'
     | '/cursos'
     | '/admin/alunos'
+    | '/admin/comunidade'
     | '/admin/configuracoes'
+    | '/admin/encontros'
+    | '/admin/gestores'
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
@@ -412,7 +448,10 @@ export interface FileRouteTypes {
     | '/cursos/$slug'
     | '/cursos/'
     | '/_authenticated/admin/alunos'
+    | '/_authenticated/admin/comunidade'
     | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/admin/encontros'
+    | '/_authenticated/admin/gestores'
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/comunidade/$postId'
     | '/_authenticated/curso/$slug'
@@ -578,11 +617,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAlunosRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/comunidade': {
+      id: '/_authenticated/admin/comunidade'
+      path: '/comunidade'
+      fullPath: '/admin/comunidade'
+      preLoaderRoute: typeof AuthenticatedAdminComunidadeRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/configuracoes': {
       id: '/_authenticated/admin/configuracoes'
       path: '/configuracoes'
       fullPath: '/admin/configuracoes'
       preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/encontros': {
+      id: '/_authenticated/admin/encontros'
+      path: '/encontros'
+      fullPath: '/admin/encontros'
+      preLoaderRoute: typeof AuthenticatedAdminEncontrosRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/gestores': {
+      id: '/_authenticated/admin/gestores'
+      path: '/gestores'
+      fullPath: '/admin/gestores'
+      preLoaderRoute: typeof AuthenticatedAdminGestoresRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/aula/$lessonId': {
@@ -681,7 +741,10 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAlunosRoute: typeof AuthenticatedAdminAlunosRoute
+  AuthenticatedAdminComunidadeRoute: typeof AuthenticatedAdminComunidadeRoute
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
+  AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminCursosIdRoute: typeof AuthenticatedAdminCursosIdRoute
   AuthenticatedAdminCursosIndexRoute: typeof AuthenticatedAdminCursosIndexRoute
@@ -690,7 +753,10 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminAlunosRoute: AuthenticatedAdminAlunosRoute,
+    AuthenticatedAdminComunidadeRoute: AuthenticatedAdminComunidadeRoute,
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+    AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
+    AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminCursosIdRoute: AuthenticatedAdminCursosIdRoute,
     AuthenticatedAdminCursosIndexRoute: AuthenticatedAdminCursosIndexRoute,
