@@ -71,6 +71,13 @@
       "when": 1790977847297,
       "tag": "0009_courses_carreira_comunicacao_dinheiro",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790977980018,
+      "tag": "0010_course_price_default",
+      "breakpoints": true
     }
   ]
 }
