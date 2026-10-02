@@ -42,7 +42,7 @@ function Onboarding() {
     { q: "Em que você poderia ajudar outra pessoa?", hint: "Separe por vírgulas. Vale experiência de trabalho, hobby ou estudo.", ok: canHelp.trim().length > 1, body: <Textarea value={canHelp} onChange={(e) => setCanHelp(e.target.value)} maxLength={300} placeholder="Ex.: Vendas, Excel, Atendimento ao cliente" className="min-h-28" /> },
     { q: "Em que você gostaria de receber ajuda?", hint: "Separe por vírgulas.", ok: wantHelp.trim().length > 1, body: <Textarea value={wantHelp} onChange={(e) => setWantHelp(e.target.value)} maxLength={300} placeholder="Ex.: Networking, Precificação, Falar em público" className="min-h-28" /> },
   ];
-  const s = steps[step];
+  const s = steps[step]!;
 
   async function finish() {
     setBusy(true);

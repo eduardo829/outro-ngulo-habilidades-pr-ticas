@@ -27,7 +27,7 @@ export function useConversations() {
       ]);
       return list.map((c, i) => {
         const mine = (msgs ?? []).filter((m) => m.conversation_id === c.id);
-        return { ...c, other: people.get(others[i]), last: mine[0], unread: mine.some((m) => m.sender_id !== user!.id && !m.read_at) };
+        return { ...c, other: people.get(others[i] ?? ""), last: mine[0], unread: mine.some((m) => m.sender_id !== user!.id && !m.read_at) };
       });
     },
   });

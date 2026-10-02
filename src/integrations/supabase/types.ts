@@ -1046,6 +1046,10 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _u: string }; Returns: boolean }
+      profile_visible: {
+        Args: { _target: string; _viewer: string }
+        Returns: boolean
+      }
       start_conversation: {
         Args: { _other: string; _post?: string }
         Returns: string

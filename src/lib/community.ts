@@ -23,7 +23,7 @@ export async function fetchProfiles(ids: string[]) {
 }
 
 export async function openConversation(otherId: string, postId?: string) {
-  const { data, error } = await supabase.rpc("start_conversation", { _other: otherId, _post: postId ?? undefined });
+  const { data, error } = await supabase.rpc("start_conversation", (postId ? { _other: otherId, _post: postId } : { _other: otherId }));
   if (error) throw error;
   return data as string;
 }
