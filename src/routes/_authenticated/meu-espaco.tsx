@@ -23,9 +23,9 @@ function MyProjects() {
         </div>
       )}
       {!!q.data?.length && (
-        <ul className="mt-10 grid gap-px border bg-border md:grid-cols-2">
+        <ul className="mt-10 grid gap-4 md:grid-cols-2">
           {q.data.map((p) => (
-            <li key={p.course.slug} className="bg-background p-6">
+            <li key={p.course.slug} className="border bg-background p-6">
               <p className="eyebrow">{p.course.title}</p>
               <p className="mt-2 font-display text-2xl font-extrabold">{p.course.project}</p>
               <p className="mt-2 text-sm text-muted-foreground">{p.outputs} de {p.total} resultados salvos · {p.done} módulos concluídos</p>
