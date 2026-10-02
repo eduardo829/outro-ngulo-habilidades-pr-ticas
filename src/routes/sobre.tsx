@@ -32,6 +32,22 @@ function About() {
 
       <PhotoBand src={bandPhoto} eyebrow="Por que existimos" title={<>Informação está em todo lugar.<span className="block text-ink-foreground/60">Gente para conversar, nem tanto.</span></>} />
 
+      <section className="paper-light border-b">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 md:grid-cols-[1fr_1.1fr] md:py-28">
+          <div>
+            <p className="eyebrow">O que ninguém ensinou</p>
+            <p className="mt-5 font-display text-3xl font-extrabold leading-tight md:text-4xl">Muitas habilidades importantes são cobradas das pessoas sem nunca terem sido ensinadas.</p>
+          </div>
+          <div>
+            <ul className="grid grid-cols-1 gap-x-6 border-t sm:grid-cols-2">
+              {["Como escolher uma direção.", "Como se comunicar.", "Como negociar.", "Como cuidar do dinheiro.", "Como construir relações.", "Como usar tecnologia.", "Como mudar de carreira.", "Como entender oportunidades.", "Como começar algo."].map((t) => <li key={t} className="border-b py-3 font-medium">{t}</li>)}
+            </ul>
+            <p className="mt-8 font-display text-2xl font-extrabold leading-snug">Ninguém precisa aprender tudo.<span className="block text-muted-foreground">Só precisa descobrir o que pode ajudar no próximo passo.</span></p>
+          </div>
+        </div>
+      </section>
+
+
       <section className="border-y bg-card">
         <StickyStory steps={DURANTE.length + 1} render={(a) => (
           <div className="mx-auto w-full max-w-6xl px-5">
