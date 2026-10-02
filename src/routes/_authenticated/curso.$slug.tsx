@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
+import { getEngineCourse } from "@/lib/learning/da-ideia";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -14,6 +15,11 @@ export const Route = createFileRoute("/_authenticated/curso/$slug")({
 
 function CoursePage() {
   const { slug } = Route.useParams();
+  if (getEngineCourse(slug)) return <Navigate to="/aprender/$slug" params={{ slug }} replace />;
+  return <LegacyCourse slug={slug} />;
+}
+
+function LegacyCourse({ slug }: { slug: string }) {
   const { user } = useAuth();
   const { data, isLoading } = useQuery({
     queryKey: ["course-app", slug, user?.id],
