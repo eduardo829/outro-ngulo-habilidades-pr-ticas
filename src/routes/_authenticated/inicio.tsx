@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import dashPhoto from "@/assets/photo-mirante.jpg";
 import { heroPhoto } from "@/lib/photos";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
@@ -92,8 +93,16 @@ function Dashboard() {
 
   return (
     <Page>
-      <h1 className="text-3xl font-extrabold md:text-4xl">Olá{first ? `, ${first}` : ""}.</h1>
-      <p className="mt-1 text-lg text-muted-foreground">O que você quer desenvolver agora?</p>
+      <header className="relative isolate -mx-1 overflow-hidden rounded-md bg-ink text-ink-foreground">
+        <img src={dashPhoto} alt="" aria-hidden className="absolute inset-0 -z-10 h-full w-full object-cover object-[30%_60%] opacity-75" />
+        <div aria-hidden className="photo-scrim-r absolute inset-0 -z-10" />
+        <div className="flex min-h-[200px] flex-col justify-end p-6 md:min-h-[240px] md:items-end md:p-10 md:text-right">
+          <p className="eyebrow !text-ink-foreground/70">Seu ponto de vista de hoje</p>
+          <h1 className="mt-3 text-3xl font-extrabold md:text-5xl">Olá{first ? `, ${first}` : ""}.</h1>
+          <p className="mt-2 text-lg text-ink-foreground/80">O que você quer desenvolver agora?</p>
+          <span aria-hidden className="mt-5 block h-px w-16 bg-highlight" />
+        </div>
+      </header>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         {courses.isLoading ? <div className="h-48 animate-pulse rounded-xl bg-secondary" /> : cont ? (

@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import communityPhoto from "@/assets/photo-comunidade.jpg";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -115,8 +116,14 @@ function Community() {
 
   return (
     <Page narrow>
-      <h1 className="text-3xl font-extrabold">Comunidade</h1>
-      <p className="mt-1 text-muted-foreground">Pergunte, conte o que aprendeu, peça ajuda. Gente real, sem palco.</p>
+      <header className="grid items-stretch gap-0 overflow-hidden rounded-md border bg-card sm:grid-cols-[1fr_1.1fr]">
+        <div className="flex flex-col justify-center p-6">
+          <p className="eyebrow">Mesa aberta</p>
+          <h1 className="mt-3 text-3xl font-extrabold md:text-4xl">Comunidade</h1>
+          <p className="mt-2 text-muted-foreground">Pergunte, conte o que aprendeu, peça ajuda. Gente real, sem palco.</p>
+        </div>
+        <div className="relative h-40 sm:h-auto"><img src={communityPhoto} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" /><span aria-hidden className="absolute left-0 top-0 h-full w-1 bg-highlight" /></div>
+      </header>
       <div className="mt-6"><Composer onDone={() => qc.invalidateQueries({ queryKey: ["feed"] })} /></div>
       <div className="mt-6 flex gap-5 overflow-x-auto border-b text-sm">
         {VIEWS.map((v) => (

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import catalogPhoto from "@/assets/photo-fazer.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -56,10 +57,14 @@ function Catalog() {
   const list = COURSES_ENGINE.filter((c) => cat === "Todos" || c.category === cat);
   return (
     <PublicLayout>
-      <section className="mx-auto max-w-6xl px-5 pb-12 pt-16 md:pt-24">
+      <section className="relative mx-auto max-w-6xl px-5 pb-12 pt-16 md:pt-24">
+        <div aria-hidden className="photo-zoom absolute right-[-1.25rem] top-10 hidden h-[420px] w-[38%] overflow-hidden lg:block xl:right-[calc((100vw-72rem)/-2)]">
+          <img src={catalogPhoto} alt="" className="h-full w-full object-cover" />
+          <span className="absolute bottom-0 left-0 h-1 w-24 bg-highlight" />
+        </div>
         <p className="eyebrow">Cursos</p>
-        <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">Menos conteúdo para assistir.<br /><span className="text-muted-foreground">Mais conhecimento para usar.</span></h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula.</p>
+        <h1 className="relative mt-4 max-w-4xl lg:max-w-[58%] font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">Menos conteúdo para assistir.<br /><span className="text-muted-foreground">Mais conhecimento para usar.</span></h1>
+        <p className="mt-6 max-w-2xl lg:max-w-[55%] text-lg text-muted-foreground">Aprenda um conceito, coloque em prática e construa algo que continua útil depois da última aula.</p>
       </section>
 
       {user && !!mine.data?.length && (
