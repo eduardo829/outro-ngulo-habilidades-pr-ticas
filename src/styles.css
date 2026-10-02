@@ -227,3 +227,20 @@
 .photo-scrim-b { background: linear-gradient(0deg, color-mix(in oklab, var(--ink) 95%, transparent) 0%, color-mix(in oklab, var(--ink) 55%, transparent) 55%, color-mix(in oklab, var(--ink) 15%, transparent) 100%); }
 .photo-zoom img { transition: transform 700ms var(--ease-out, ease); }
 .photo-zoom:hover img { transform: scale(1.04); }
+
+/* Light paper with soft window/plant shadows — gives life to light sections */
+.paper-light { position: relative; isolation: isolate; }
+.paper-light::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(90deg, var(--background) 0%, color-mix(in oklab, var(--background) 55%, transparent) 55%, transparent 100%), url("./assets/photo-sombra.jpg") right center / cover no-repeat;
+  opacity: 0.9;
+}
+/* Living text card: warm tint, soft depth, lime corner on hover */
+.card-live {
+  background: linear-gradient(160deg, color-mix(in oklab, var(--card) 92%, var(--highlight) 8%), var(--secondary));
+  border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--foreground) 4%, transparent), 0 18px 40px -28px color-mix(in oklab, var(--ink) 45%, transparent);
+  transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+}
+.card-live:hover { transform: translateY(-2px); box-shadow: 0 24px 50px -28px color-mix(in oklab, var(--ink) 55%, transparent); }
+.card-ink { background: linear-gradient(160deg, var(--ink), color-mix(in oklab, var(--ink) 80%, var(--foreground))); color: var(--ink-foreground); border-color: transparent; }
