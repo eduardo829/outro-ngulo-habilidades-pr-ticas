@@ -5,7 +5,7 @@ export const PEOPLE_COLS = "id, display_name, avatar_url, city, area, persona, w
 
 export function PersonCard({ p }: { p: { id: string; display_name: string; avatar_url: string | null; city: string | null; persona: string | null; working_on: string | null; skills: string[]; learn_tags: string[] } }) {
   return (
-    <li className="flex flex-col rounded-xl border bg-card p-5">
+    <li className="flex flex-col border bg-card p-5 transition-colors hover:border-foreground">
       <div className="flex items-center gap-3">
         <Avatar name={p.display_name} url={p.avatar_url} />
         <div className="min-w-0">
