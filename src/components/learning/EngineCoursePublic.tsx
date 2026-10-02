@@ -8,6 +8,7 @@ import { getGestor } from "@/lib/gestores";
 import { useAuth } from "@/lib/auth";
 import type { Course } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";
+import { coursePhoto } from "@/lib/photos";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -26,7 +27,12 @@ export function EngineCoursePublic({ c }: { c: Course }) {
   return (
     <PublicLayout>
       <div aria-hidden className="fixed left-0 top-0 z-50 h-0.5 bg-highlight transition-[width] duration-150" style={{ width: `${scroll * 100}%` }} />
-      <section className="mx-auto max-w-6xl px-5 pb-12 pt-14 md:pt-20">
+      <div className="relative h-56 overflow-hidden bg-ink md:h-80">
+        <img src={coursePhoto(c.slug)} alt="" className="h-full w-full object-cover opacity-85" />
+        <div aria-hidden className="photo-scrim-b absolute inset-0 opacity-70" />
+        <span aria-hidden className="absolute bottom-0 left-1/2 block h-1 w-24 -translate-x-1/2 bg-highlight md:left-[max(1.25rem,calc(50%-36rem+1.25rem))] md:translate-x-0" />
+      </div>
+      <section className="mx-auto max-w-6xl px-5 pb-12 pt-10 md:pt-14">
         <Link to="/cursos" className="text-sm text-muted-foreground hover:text-foreground">← Cursos</Link>
         <p className="eyebrow mt-8">{c.category} · {c.difficulty}</p>
         <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">{c.title}</h1>

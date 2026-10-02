@@ -5,6 +5,7 @@ import { ItemGrid } from "@/components/PublicPage";
 import { Opening, RevealCard, Illustrative, Closing } from "@/components/public/Story";
 import { SectionLabel } from "@/components/Angle";
 import { cn } from "@/lib/utils";
+import heroPhoto from "@/assets/photo-networking.jpg";
 
 const T = "Oportunidades — Outro Ângulo";
 const D = "Às vezes a oportunidade não é uma vaga. É uma pessoa. Projetos, parcerias e trabalhos compartilhados entre membros.";
@@ -34,7 +35,7 @@ function Page() {
   const items = FEED.filter((i) => f === "Todos" || i.k === f);
   return (
     <PublicLayout>
-      <Opening label="Oportunidades" a="Às vezes a oportunidade não é uma vaga." b="É uma pessoa." intro="Na comunidade, membros publicam o que procuram e o que podem oferecer. As oportunidades ficam visíveis apenas para quem tem conta." />
+      <Opening photo={heroPhoto} label="Oportunidades" a="Às vezes a oportunidade não é uma vaga." b="É uma pessoa." intro="Na comunidade, membros publicam o que procuram e o que podem oferecer. As oportunidades ficam visíveis apenas para quem tem conta." />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
         <div className="flex flex-wrap items-end justify-between gap-4">

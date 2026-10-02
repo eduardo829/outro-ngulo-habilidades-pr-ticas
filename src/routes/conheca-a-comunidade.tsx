@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import heroPhoto from "@/assets/photo-comunidade.jpg";
 import { PublicLayout } from "@/components/PublicLayout";
 import { ItemGrid } from "@/components/PublicPage";
 import { Opening, RevealCard, Illustrative, Closing } from "@/components/public/Story";
@@ -36,7 +37,7 @@ const WHAT = [
 function Page() {
   return (
     <PublicLayout>
-      <Opening label="Comunidade" a="Você não precisa ter a resposta." b="Pode começar pela pergunta." intro="A comunidade é onde o que você aprende vira conversa, troca e, às vezes, parceria. Ela é aberta a membros com conta criada." />
+      <Opening photo={heroPhoto} label="Comunidade" a="Você não precisa ter a resposta." b="Pode começar pela pergunta." intro="A comunidade é onde o que você aprende vira conversa, troca e, às vezes, parceria. Ela é aberta a membros com conta criada." />
 
       <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
         <div className="flex flex-wrap items-end justify-between gap-4">

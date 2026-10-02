@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { coursePhoto } from "@/lib/photos";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CourseGate, courseProgress } from "@/components/learning/CourseFrame";
@@ -22,6 +23,11 @@ function Home() {
         const started = Object.keys(o).length > 0;
         return (
           <div className="mx-auto max-w-5xl px-5 py-10 md:px-8">
+            <div className="relative mb-8 h-44 overflow-hidden rounded-md bg-ink md:h-60">
+              <img src={coursePhoto(c.slug)} alt="" className="h-full w-full object-cover opacity-85" />
+              <div aria-hidden className="photo-scrim-b absolute inset-0 opacity-60" />
+              <span aria-hidden className="absolute bottom-0 left-0 h-1 w-20 bg-highlight" />
+            </div>
             <p className="eyebrow">Curso · {c.category} · vídeos em preparação</p>
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">{c.title}</h1>
             <p className="mt-6 max-w-2xl text-xl leading-snug text-muted-foreground">{c.thesis}</p>
