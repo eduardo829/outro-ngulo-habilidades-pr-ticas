@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      angulo_snapshot: {
+        Row: {
+          explore: Json
+          now: Json
+          objective_key: string | null
+          objective_text: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          explore?: Json
+          now?: Json
+          objective_key?: string | null
+          objective_text?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          explore?: Json
+          now?: Json
+          objective_key?: string | null
+          objective_text?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "angulo_snapshot_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       announcements: {
         Row: {
           body: string
@@ -683,6 +718,44 @@ export type Database = {
           },
         ]
       }
+      evidences: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          link_url: string | null
+          note: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          link_url?: string | null
+          note?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          link_url?: string | null
+          note?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       exercise_answers: {
         Row: {
           answer: string
@@ -1034,6 +1107,41 @@ export type Database = {
           },
         ]
       }
+      mission_progress: {
+        Row: {
+          answers: Json
+          completed_at: string | null
+          mission_key: string
+          reflection: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          completed_at?: string | null
+          mission_key: string
+          reflection?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          completed_at?: string | null
+          mission_key?: string
+          reflection?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mission_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       modules: {
         Row: {
           activity: string | null
@@ -1145,6 +1253,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      plan_actions: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          evidence: string | null
+          id: string
+          notes: string | null
+          position: number
+          resource_ref: string | null
+          resource_type: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          evidence?: string | null
+          id?: string
+          notes?: string | null
+          position?: number
+          resource_ref?: string | null
+          resource_type?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          evidence?: string | null
+          id?: string
+          notes?: string | null
+          position?: number
+          resource_ref?: string | null
+          resource_type?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "plan_actions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
