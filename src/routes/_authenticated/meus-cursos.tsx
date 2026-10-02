@@ -19,6 +19,7 @@ function MyCourses() {
     <>
       <PageHeader title="Meus cursos" />
       <div className="mx-auto max-w-5xl px-5 py-8 md:px-8">
+        <Link to="/meu-espaco" className="mb-6 flex items-center justify-between border-l-2 border-highlight bg-card p-4 text-sm hover:underline"><span><b>Meu espaço → Meus projetos</b> · tudo o que você construiu nos cursos</span><span aria-hidden>→</span></Link>
         {isLoading ? <p className="text-muted-foreground">Carregando…</p> : !data?.length ? (
           <div className="rounded-lg border border-dashed bg-card p-8 text-center">
             <p className="font-semibold">Nenhuma matrícula ativa.</p>

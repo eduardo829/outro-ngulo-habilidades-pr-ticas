@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Check, FolderOpen, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getEngineCourse } from "@/lib/learning/da-ideia";
+import { getEngineCourse } from "@/lib/learning/courses";
 import { hasValue, useEngineAccess, useOutputs, type Outputs } from "@/lib/learning/store";
 import { requiredKeys, type Course, type Module } from "@/lib/learning/types";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ export function CourseGate({ slug, children }: { slug: string; children: (c: Cou
     <div className="mx-auto max-w-xl px-5 py-16">
       <Lock className="h-6 w-6 text-muted-foreground" />
       <h1 className="mt-4 font-display text-2xl font-extrabold">{course.title}</h1>
-      <p className="mt-2 text-muted-foreground">Este curso está em preparação e aberto só para quem foi matriculado pela equipe.</p>
+      <p className="mt-2 text-muted-foreground">O acesso a este curso é liberado por matrícula. Enquanto o pagamento on-line não está ativo, a equipe libera manualmente.</p>
       <Button asChild className="mt-6"><Link to="/meus-cursos">Meus cursos</Link></Button>
     </div>
   );
@@ -51,7 +51,7 @@ export function CourseSidebar({ c, o, active }: { c: Course; o: Outputs; active?
           </Link>
         );
       })}
-      <Link to="/aprender/$slug/espaco" params={{ slug: c.slug }} className={cn("mt-4 flex items-center gap-2 border-t pt-4 text-sm font-semibold", active === "espaco" && "text-primary")}><FolderOpen className="h-4 w-4" />Meu espaço</Link>
+      <Link to="/aprender/$slug/espaco" params={{ slug: c.slug }} className={cn("mt-4 flex items-center gap-2 border-t pt-4 text-sm font-semibold", active === "espaco" && "text-primary")}><FolderOpen className="h-4 w-4" />{c.project}</Link>
     </nav>
   );
 }

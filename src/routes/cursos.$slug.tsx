@@ -8,18 +8,24 @@ import { WaitlistForm } from "@/components/WaitlistForm";
 import { Button } from "@/components/ui/button";
 import { formatBRL, settingsQuery } from "@/lib/queries";
 import { useAuth } from "@/lib/auth";
+import { getEngineCourse } from "@/lib/learning/courses";
+import { EngineCoursePublic } from "@/components/learning/EngineCoursePublic";
 
 export const Route = createFileRoute("/cursos/$slug")({
-  head: () => ({
-    meta: [
-      { title: "Curso — Outro Ângulo" },
-      { name: "description", content: "Detalhes do curso, módulos e forma de acesso." },
-      { property: "og:title", content: "Curso — Outro Ângulo" },
-      { property: "og:description", content: "Detalhes do curso, módulos e forma de acesso." },
-    ],
-  }),
-  component: CourseDetail,
+  head: ({ params }) => {
+    const c = getEngineCourse(params.slug);
+    const title = c ? `${c.title} — Curso Outro Ângulo` : "Curso — Outro Ângulo";
+    const desc = c?.thesis ?? "Detalhes do curso, módulos e forma de acesso.";
+    return { meta: [{ title }, { name: "description", content: desc }, { property: "og:title", content: title }, { property: "og:description", content: desc }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] };
+  },
+  component: CoursePage,
 });
+
+function CoursePage() {
+  const { slug } = Route.useParams();
+  const engine = getEngineCourse(slug);
+  return engine ? <EngineCoursePublic c={engine} /> : <CourseDetail />;
+}
 
 function CourseDetail() {
   const { slug } = Route.useParams();

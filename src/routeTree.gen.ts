@@ -26,6 +26,7 @@ import { Route as TrilhasRouteImport } from './routes/trilhas'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBoasVindasRouteImport } from './routes/_authenticated/boas-vindas'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
+import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authenticated/meu-espaco'
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
@@ -39,6 +40,7 @@ import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
 import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
+import { Route as AuthenticatedAdminVideosRouteImport } from './routes/_authenticated/admin/videos'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
@@ -140,6 +142,11 @@ const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
   path: '/inicio',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMeuEspacoRoute = AuthenticatedMeuEspacoRouteImport.update({
+  id: '/meu-espaco',
+  path: '/meu-espaco',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
   id: '/meus-cursos',
   path: '/meus-cursos',
@@ -209,6 +216,12 @@ const AuthenticatedAdminGestoresRoute =
   AuthenticatedAdminGestoresRouteImport.update({
     id: '/gestores',
     path: '/gestores',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminVideosRoute =
+  AuthenticatedAdminVideosRouteImport.update({
+    id: '/videos',
+    path: '/videos',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAulaLessonIdRoute =
@@ -322,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
@@ -334,6 +348,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -368,6 +383,7 @@ export interface FileRoutesByTo {
   '/trilhas': typeof TrilhasRoute
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/inicio': typeof AuthenticatedInicioRoute
+  '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
@@ -380,6 +396,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -417,6 +434,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/boas-vindas': typeof AuthenticatedBoasVindasRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
+  '/_authenticated/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
@@ -429,6 +447,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/_authenticated/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
@@ -466,6 +485,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
@@ -478,6 +498,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/videos'
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
@@ -512,6 +533,7 @@ export interface FileRouteTypes {
     | '/trilhas'
     | '/boas-vindas'
     | '/inicio'
+    | '/meu-espaco'
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
@@ -524,6 +546,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/videos'
     | '/aula/$lessonId'
     | '/comunidade/$postId'
     | '/curso/$slug'
@@ -560,6 +583,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/boas-vindas'
     | '/_authenticated/inicio'
+    | '/_authenticated/meu-espaco'
     | '/_authenticated/meus-cursos'
     | '/_authenticated/notificacoes'
     | '/_authenticated/perfil'
@@ -572,6 +596,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/configuracoes'
     | '/_authenticated/admin/encontros'
     | '/_authenticated/admin/gestores'
+    | '/_authenticated/admin/videos'
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/comunidade/$postId'
     | '/_authenticated/curso/$slug'
@@ -733,6 +758,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedInicioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/meu-espaco': {
+      id: '/_authenticated/meu-espaco'
+      path: '/meu-espaco'
+      fullPath: '/meu-espaco'
+      preLoaderRoute: typeof AuthenticatedMeuEspacoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/meus-cursos': {
       id: '/_authenticated/meus-cursos'
       path: '/meus-cursos'
@@ -822,6 +854,13 @@ declare module '@tanstack/react-router' {
       path: '/gestores'
       fullPath: '/admin/gestores'
       preLoaderRoute: typeof AuthenticatedAdminGestoresRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/videos': {
+      id: '/_authenticated/admin/videos'
+      path: '/videos'
+      fullPath: '/admin/videos'
+      preLoaderRoute: typeof AuthenticatedAdminVideosRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/aula/$lessonId': {
@@ -945,6 +984,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
   AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
   AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
+  AuthenticatedAdminVideosRoute: typeof AuthenticatedAdminVideosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminCursosIdRoute: typeof AuthenticatedAdminCursosIdRoute
   AuthenticatedAdminCursosIndexRoute: typeof AuthenticatedAdminCursosIndexRoute
@@ -957,6 +997,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
     AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
     AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
+    AuthenticatedAdminVideosRoute: AuthenticatedAdminVideosRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminCursosIdRoute: AuthenticatedAdminCursosIdRoute,
     AuthenticatedAdminCursosIndexRoute: AuthenticatedAdminCursosIndexRoute,
@@ -971,6 +1012,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedBoasVindasRoute: typeof AuthenticatedBoasVindasRoute
   AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
+  AuthenticatedMeuEspacoRoute: typeof AuthenticatedMeuEspacoRoute
   AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
   AuthenticatedNotificacoesRoute: typeof AuthenticatedNotificacoesRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
@@ -994,6 +1036,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedBoasVindasRoute: AuthenticatedBoasVindasRoute,
   AuthenticatedInicioRoute: AuthenticatedInicioRoute,
+  AuthenticatedMeuEspacoRoute: AuthenticatedMeuEspacoRoute,
   AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
   AuthenticatedNotificacoesRoute: AuthenticatedNotificacoesRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,

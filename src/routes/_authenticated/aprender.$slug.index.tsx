@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { CourseGate, courseProgress } from "@/components/learning/CourseFrame";
 import { getGestor } from "@/lib/gestores";
 import { hasValue } from "@/lib/learning/store";
+import { NextCourses } from "@/components/learning/NextCourses";
 
 export const Route = createFileRoute("/_authenticated/aprender/$slug/")({
   head: () => ({ meta: [{ title: "Curso — Outro Ângulo" }, { name: "description", content: "Aprender, aplicar e construir algo útil em cada módulo." }] }),
@@ -16,12 +17,12 @@ function Home() {
     <CourseGate slug={slug}>
       {(c, _id, o) => {
         const p = courseProgress(c, o);
-        const g = getGestor(c.gestor);
+        const g = c.gestor ? getGestor(c.gestor) : undefined;
         const next = c.modules.find((_, i) => !p.states[i]!.complete) ?? c.modules[0]!;
         const started = Object.keys(o).length > 0;
         return (
           <div className="mx-auto max-w-5xl px-5 py-10 md:px-8">
-            <p className="eyebrow">Curso · em preparação</p>
+            <p className="eyebrow">Curso · {c.category} · vídeos em preparação</p>
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">{c.title}</h1>
             <p className="mt-6 max-w-2xl text-xl leading-snug text-muted-foreground">{c.thesis}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
@@ -34,7 +35,7 @@ function Home() {
               <div><p className="font-display text-3xl font-extrabold">{p.outputs} / {c.modules.length}</p><p className="text-sm text-muted-foreground">resultados no seu espaço</p></div>
               <div className="ml-auto flex gap-3">
                 <Button asChild size="lg"><Link to="/aprender/$slug/$modulo" params={{ slug, modulo: next.key }}>{started ? "Continuar" : "Começar"}<ArrowRight /></Link></Button>
-                <Button asChild size="lg" variant="outline"><Link to="/aprender/$slug/espaco" params={{ slug }}>Meu espaço</Link></Button>
+                <Button asChild size="lg" variant="outline"><Link to="/aprender/$slug/espaco" params={{ slug }}>{c.project}</Link></Button>
               </div>
             </div>
 
@@ -53,6 +54,7 @@ function Home() {
                 ))}
               </ol>
             </section>
+            <NextCourses c={c} done={p.modules === c.modules.length} />
           </div>
         );
       }}
