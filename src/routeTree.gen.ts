@@ -30,6 +30,7 @@ import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authent
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as GestorSlugRouteImport } from './routes/gestor.$slug'
 import { Route as GestoresIndexRouteImport } from './routes/gestores.index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
@@ -154,6 +155,11 @@ const CursosIndexRoute = CursosIndexRouteImport.update({
 const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GestorSlugRoute = GestorSlugRouteImport.update({
+  id: '/gestor/$slug',
+  path: '/gestor/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GestoresIndexRoute = GestoresIndexRouteImport.update({
@@ -292,6 +298,7 @@ export interface FileRoutesByFullPath {
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/gestor/$slug': typeof GestorSlugRoute
   '/cursos/': typeof CursosIndexRoute
   '/gestores/': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -333,6 +340,7 @@ export interface FileRoutesByTo {
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/gestor/$slug': typeof GestorSlugRoute
   '/cursos': typeof CursosIndexRoute
   '/gestores': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -377,6 +385,7 @@ export interface FileRoutesById {
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/gestor/$slug': typeof GestorSlugRoute
   '/cursos/': typeof CursosIndexRoute
   '/gestores/': typeof GestoresIndexRoute
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -421,6 +430,7 @@ export interface FileRouteTypes {
     | '/notificacoes'
     | '/perfil'
     | '/cursos/$slug'
+    | '/gestor/$slug'
     | '/cursos/'
     | '/gestores/'
     | '/admin/alunos'
@@ -462,6 +472,7 @@ export interface FileRouteTypes {
     | '/notificacoes'
     | '/perfil'
     | '/cursos/$slug'
+    | '/gestor/$slug'
     | '/cursos'
     | '/gestores'
     | '/admin/alunos'
@@ -505,6 +516,7 @@ export interface FileRouteTypes {
     | '/_authenticated/notificacoes'
     | '/_authenticated/perfil'
     | '/cursos/$slug'
+    | '/gestor/$slug'
     | '/cursos/'
     | '/gestores/'
     | '/_authenticated/admin/alunos'
@@ -543,6 +555,7 @@ export interface RootRouteChildren {
   TermosRoute: typeof TermosRoute
   TrilhasRoute: typeof TrilhasRoute
   CursosSlugRoute: typeof CursosSlugRoute
+  GestorSlugRoute: typeof GestorSlugRoute
   CursosIndexRoute: typeof CursosIndexRoute
   GestoresIndexRoute: typeof GestoresIndexRoute
 }
@@ -694,6 +707,13 @@ declare module '@tanstack/react-router' {
       path: '/cursos/$slug'
       fullPath: '/cursos/$slug'
       preLoaderRoute: typeof CursosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gestor/$slug': {
+      id: '/gestor/$slug'
+      path: '/gestor/$slug'
+      fullPath: '/gestor/$slug'
+      preLoaderRoute: typeof GestorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gestores/': {
@@ -925,6 +945,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermosRoute: TermosRoute,
   TrilhasRoute: TrilhasRoute,
   CursosSlugRoute: CursosSlugRoute,
+  GestorSlugRoute: GestorSlugRoute,
   CursosIndexRoute: CursosIndexRoute,
   GestoresIndexRoute: GestoresIndexRoute,
 }
