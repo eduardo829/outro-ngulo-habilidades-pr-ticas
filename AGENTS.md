@@ -16,3 +16,4 @@
 - Video is stored as provider + id/url, parsed in src/lib/video.ts into an allowlisted embed; never raw HTML. Why: XSS safety.
 - Accessing user e-mails is admin-only via src/lib/admin.functions.ts (service role loaded inside handler after role check). Why: e-mails never exposed to members.
 - Editable institutional content (founders, offer, support) lives in public.site_settings. Why: admins edit without code.
+- AI calls go through server functions (src/lib/*.functions.ts) to the AI Gateway Responses API, output validated against known data (e.g. trail titles). Why: keep keys server-side and avoid invented content.
