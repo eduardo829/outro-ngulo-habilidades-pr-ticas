@@ -1,3 +1,4 @@
+import { useCoursePrices, brl } from "@/lib/coursePrices";
 import { useState } from "react";
 import catalogPhoto from "@/assets/photo-fazer.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
