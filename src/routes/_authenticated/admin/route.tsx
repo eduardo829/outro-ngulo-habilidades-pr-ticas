@@ -9,6 +9,9 @@ const TABS = [
   { to: "/admin", label: "Visão geral", exact: true },
   { to: "/admin/cursos", label: "Cursos" },
   { to: "/admin/alunos", label: "Alunos e matrículas" },
+  { to: "/admin/encontros", label: "Encontros" },
+  { to: "/admin/gestores", label: "Gestores" },
+  { to: "/admin/comunidade", label: "Comunidade" },
   { to: "/admin/configuracoes", label: "Configurações" },
 ] as const;
 
