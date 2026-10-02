@@ -30,7 +30,7 @@ export type Module = {
   next: string;
 };
 
-export type Category = "Negócios" | "Vendas" | "Networking" | "Tecnologia & IA" | "Dinheiro" | "Carreira";
+export type Category = "Negócios" | "Vendas" | "Networking" | "Tecnologia & IA" | "Dinheiro" | "Carreira" | "Profissões";
 
 export type Course = {
   slug: string;
