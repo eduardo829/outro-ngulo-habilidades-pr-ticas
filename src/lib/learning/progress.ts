@@ -5,7 +5,7 @@ import { COURSES_ENGINE } from "./courses";
 import { hasValue, type Outputs } from "./store";
 import { requiredKeys, type Course } from "./types";
 
-export type CourseProgress = { course: Course; done: number; total: number; outputs: number; nextKey: string };
+export type CourseProgress = { course: Course; done: number; total: number; outputs: number; nextKey: string; started: boolean };
 
 /** The signed-in member's saved work across all engine courses (own rows only, RLS). */
 export function useMyProjects() {
