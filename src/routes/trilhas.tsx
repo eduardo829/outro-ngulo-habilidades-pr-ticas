@@ -31,10 +31,10 @@ const PERGUNTAS: { q: string; t: string[] }[] = [
 ];
 
 const PARTS = [
-  { title: "Aulas e exercícios", body: "Conteúdo curto, com uma atividade concreta em cada etapa." },
-  { title: "Conversas na comunidade", body: "Perguntas e experiências de quem está no mesmo caminho." },
-  { title: "Pessoas e encontros", body: "Gente com habilidades complementares e encontros ao vivo sobre o tema." },
-  { title: "Próximas ações", body: "Cada trilha termina em algo que você faz, não só em algo a que você assiste." },
+  { title: "Aulas e exercícios", course: "da-ideia-aos-primeiros-clientes", cta: "Ver um exemplo", body: "Conteúdo curto, com uma atividade concreta em cada etapa." },
+  { title: "Conversas na comunidade", course: "networking-do-zero", cta: "Ver um exemplo", body: "Perguntas e experiências de quem está no mesmo caminho." },
+  { title: "Pessoas e encontros", course: "comunicacao-profissional", cta: "Ver um exemplo", body: "Gente com habilidades complementares e encontros ao vivo sobre o tema." },
+  { title: "Próximas ações", course: "o-proximo-passo", cta: "Ver um exemplo", body: "Cada trilha termina em algo que você faz, não só em algo a que você assiste." },
 ];
 
 function Trilhas() {
