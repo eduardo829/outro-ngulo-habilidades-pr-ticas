@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import ctaPhoto from "@/assets/photo-cta.jpg";
 
-export type Item = { title: string; body: string };
+export type Item = { title: string; body: string; course?: string; cta?: string };
 
 export function PublicPage({ label, title, intro, children, photo }: { label: string; title: ReactNode; intro: string; children: ReactNode; photo?: string }) {
   return (
@@ -40,6 +40,7 @@ export function ItemGrid({ n, label, items, tone = "plain" }: { n: string; label
               <h3 className="-mt-10 font-display text-3xl font-extrabold leading-tight md:-mt-14 md:text-4xl">{first.title}</h3>
               <p className="mt-4 max-w-md text-lg leading-relaxed text-ink-foreground/75">{first.body}</p>
               <span aria-hidden className="mt-6 block h-px w-16 bg-highlight" />
+              {first.course && <Link to="/cursos/$slug" params={{ slug: first.course }} className="mt-5 inline-flex items-center gap-2 font-semibold text-highlight after:absolute after:inset-0">{first.cta ?? "Ver curso"}<ArrowRight className="h-4 w-4" /></Link>}
             </div>
           )}
         </div>
@@ -50,6 +51,7 @@ export function ItemGrid({ n, label, items, tone = "plain" }: { n: string; label
               <div className="min-w-0">
                 <h3 className="font-display text-xl font-bold">{it.title}</h3>
                 <p className="mt-2 max-w-lg leading-relaxed text-muted-foreground">{it.body}</p>
+                {it.course && <Link to="/cursos/$slug" params={{ slug: it.course }} className="mt-3 inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 group-hover:underline after:absolute after:inset-0">{it.cta ?? "Ver curso"}<ArrowRight className="h-4 w-4" /></Link>}
               </div>
               <span aria-hidden className="absolute bottom-0 left-0 h-0.5 w-0 bg-highlight transition-all duration-500 group-hover:w-full" />
             </li>
