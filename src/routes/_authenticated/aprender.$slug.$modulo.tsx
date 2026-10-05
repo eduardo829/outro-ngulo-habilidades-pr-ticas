@@ -23,26 +23,38 @@ function ModulePage() {
         const s = moduleState(m, o);
         const gestor = c.gestor ? getGestor(c.gestor) : undefined;
         const n = String(i + 1).padStart(2, "0");
+        const ctx = { courseId, outputs: o, moduleKey: m.key, slug, ...(gestor ? { gestorName: gestor.name } : {}) };
+        const video = m.blocks.find((b) => b.type === "video");
+        const rest = m.blocks.filter((b) => b !== video);
         return (
+          <>
+          <section className="bg-ink text-ink-foreground">
+            <div className="mx-auto max-w-6xl px-5 py-8 md:px-8 md:py-10">
+              <div className="flex items-center gap-3 text-sm text-ink-foreground/70">
+                <Link to={preview ? "/cursos/$slug" : "/aprender/$slug"} params={{ slug }} className="hover:text-ink-foreground">{c.title}</Link>
+                <span className="ml-auto">Módulo {n} / {String(c.modules.length).padStart(2, "0")}</span>
+              </div>
+              <div className="mt-3 flex gap-0.5" aria-hidden>{c.modules.map((x) => <span key={x.key} className={`h-1 flex-1 ${moduleState(x, o).complete ? "bg-ink-foreground/70" : x.key === m.key ? "bg-highlight" : "bg-ink-foreground/15"}`} />)}</div>
+              <div className={`mt-8 grid gap-8 ${video ? "lg:grid-cols-[1fr_1.6fr] lg:items-center" : ""}`}>
+                <div>
+                  <h1 className="font-display text-3xl font-extrabold leading-tight md:text-4xl">{m.title}</h1>
+                  <p className="mt-5 border-l-2 border-highlight pl-4 font-display text-lg font-bold text-ink-foreground/90 md:text-xl">“{m.question}”</p>
+                  <p className="mt-5 text-sm text-ink-foreground/70">Você produz: <b className="text-ink-foreground">{m.output.title}</b></p>
+                </div>
+                {video && <VideoLesson b={video as Extract<typeof video, { type: "video" }>} ctx={ctx} n={n} stage />}
+              </div>
+            </div>
+          </section>
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-8 md:grid-cols-[15rem_1fr] md:px-8">
             <aside className="hidden md:block"><div className="sticky top-6">{preview ? <Link to="/cursos/$slug" params={{ slug }} className="text-sm font-semibold underline">{c.title}</Link> : <CourseSidebar c={c} o={o} active={m.key} />}</div></aside>
             <div className="min-w-0 pb-24">
-              <div className="flex items-center gap-3 md:hidden">
-                <Link to="/aprender/$slug" params={{ slug }} className="text-sm text-muted-foreground">{c.title}</Link>
-                <span className="ml-auto text-xs">{n} / {c.modules.length}</span>
-              </div>
-              <div className="mt-2 flex gap-0.5 md:hidden" aria-hidden>{c.modules.map((x) => <span key={x.key} className={`h-1 flex-1 ${moduleState(x, o).complete ? "bg-primary" : x.key === m.key ? "bg-highlight" : "bg-border"}`} />)}</div>
-              <p className="eyebrow mt-6 md:mt-0">Módulo {n}</p>
-              <h1 className="mt-3 font-display text-3xl font-extrabold leading-tight md:text-5xl">{m.title}</h1>
-              <p className="mt-6 border-l-2 border-highlight pl-4 font-display text-xl font-bold md:text-2xl">“{m.question}”</p>
-              <dl className="mt-6 grid gap-px border bg-border text-sm sm:grid-cols-2 lg:grid-cols-4">
-                <div className="bg-background p-3"><dt className="eyebrow">Você produz</dt><dd className="mt-1 font-semibold">{m.output.title}</dd></div>
+              <dl className="grid gap-px border bg-border text-sm sm:grid-cols-3">
                 <div className="bg-background p-3"><dt className="eyebrow">Exercícios</dt><dd className="mt-1 font-semibold">{s.done} de {s.total} salvos</dd></div>
                 <div className="bg-background p-3"><dt className="eyebrow">Resultado</dt><dd className="mt-1 font-semibold">{hasValue(o[m.output.key]) ? "Salvo no projeto" : "A construir"}</dd></div>
                 <div className="bg-background p-3"><dt className="eyebrow">Vídeo</dt><dd className="mt-1">{hasValue(o[`${m.key}.video`]) ? "Assistido" : "Opcional"}</dd></div>
               </dl>
               <div className="mt-6">
-                {m.blocks.map((b, j) => <LearningBlock key={`${m.key}-${j}`} b={b} n={n} ctx={{ courseId, outputs: o, moduleKey: m.key, slug, ...(gestor ? { gestorName: gestor.name } : {}) }} />)}
+                {rest.map((b, j) => <LearningBlock key={`${m.key}-${j}`} b={b} n={n} ctx={ctx} />)}
               </div>
               {s.complete && <div className="reveal is-visible my-6 flex items-center gap-3 border-l-2 border-highlight bg-card p-5"><Check className="h-5 w-5" /><p><b>{m.output.title}</b> está salvo em {c.project}. {next ? `Próximo: ${next.title}.` : "Seu projeto está pronto para ser revisado."}</p></div>}
               <p className="mt-6 text-sm text-muted-foreground"><span className="eyebrow mr-2">Próximo passo</span>{m.next}</p>
