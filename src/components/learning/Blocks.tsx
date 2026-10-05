@@ -102,7 +102,7 @@ export function VideoLessonPlaceholder({ title, gestor, duration, thumbnail, n }
   );
 }
 
-function VideoLesson({ b, ctx, n }: { b: Extract<Block, { type: "video" }>; ctx: Ctx; n: string }) {
+export function VideoLesson({ b, ctx, n, stage }: { b: Extract<Block, { type: "video" }>; ctx: Ctx; n: string; stage?: boolean }) {
   const videos = useCourseVideos(ctx.slug);
   const row = videos.data?.[ctx.moduleKey];
   const src = parseVideo(row?.provider ?? null, row?.video_url ?? null);
@@ -111,18 +111,18 @@ function VideoLesson({ b, ctx, n }: { b: Extract<Block, { type: "video" }>; ctx:
   const m = useSaveOutput(ctx.courseId);
   const key = `${ctx.moduleKey}.video`;
   return (
-    <section className="border-t py-8">
-      <p className="eyebrow">O ângulo do gestor</p>
-      <div className="mt-4">
+    <section className={stage ? "" : "border-t py-8"}>
+      {!stage && <p className="eyebrow">O ângulo do gestor</p>}
+      <div className={stage ? "" : "mt-4"}>
         {src ? (
-          <div className="overflow-hidden bg-ink"><div className="aspect-video"><iframe src={src} title={title} className="h-full w-full" allow="encrypted-media; picture-in-picture; fullscreen" allowFullScreen /></div></div>
-        ) : <VideoLessonPlaceholder title={title} gestor={gestor} duration={row?.duration_text} thumbnail={row?.thumbnail_url} n={n} />}
+          <div className="overflow-hidden bg-ink shadow-2xl"><div className="aspect-video"><iframe src={src} title={title} className="h-full w-full" allow="encrypted-media; picture-in-picture; fullscreen" allowFullScreen /></div></div>
+        ) : <div className={stage ? "border border-ink-foreground/15" : ""}><VideoLessonPlaceholder title={title} gestor={gestor} duration={row?.duration_text} thumbnail={row?.thumbnail_url} n={n} /></div>}
       </div>
       {src && (
         <div className="mt-3 space-y-3">
           <div className="flex flex-wrap items-center gap-3">
             <p className="font-display font-bold">{title}</p>
-            <span className="text-sm text-muted-foreground">{[gestor, row?.duration_text].filter(Boolean).join(" · ")}</span>
+            <span className={cn("text-sm", stage ? "text-ink-foreground/70" : "text-muted-foreground")}>{[gestor, row?.duration_text].filter(Boolean).join(" · ")}</span>
             <Button size="sm" variant="outline" className="ml-auto" disabled={hasValue(ctx.outputs[key]) || m.isPending} onClick={() => m.mutate({ key, value: true })}>{hasValue(ctx.outputs[key]) ? <><Check />Assistido</> : "Marcar como assistido"}</Button>
           </div>
           {row?.description && <p className="text-muted-foreground">{row.description}</p>}
