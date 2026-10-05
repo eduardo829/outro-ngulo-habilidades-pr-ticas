@@ -3,6 +3,8 @@
  * placeholders awaiting verified information and are rendered as such.
  * Only facts from the gestor's own public sources or the project go here.
  */
+import viniPhoto from "@/assets/gestor-vinicius-silva.jpg.asset.json";
+
 export type GestorLink = { label: string; url: string };
 export type GestorVenture = { name: string; area: string; role?: string; years?: string; note?: string; url?: string };
 export type GestorItem = { title: string; href?: string; note?: string };
@@ -82,24 +84,36 @@ export const GESTORES: GestorProfile[] = [
   {
     slug: "vinicius-silva",
     name: "Vinicius Silva",
-    location: "[cidade]",
-    positioning: "[área de experiência]",
-    tagline: "[o que está construindo]",
-    biography: ["[trajetória]"],
-    areas_of_experience: ["[área de experiência]"],
-    ventures: [{ name: "[empresas / projetos]", area: "[área]" }],
-    knowledge_topics: ["[o que pode ensinar]"],
+    photo: viniPhoto.url,
+    photoAlt: "Vinicius Silva, consultor imobiliário",
+    location: "Itapema · Porto Belo, SC",
+    positioning: "Consultor imobiliário · Mercado de alto padrão",
+    tagline: "Trabalho que vai além da venda: análise, visão de valorização e atendimento de perto.",
+    biography: [
+      "Atua no mercado imobiliário de alto padrão no litoral catarinense, com foco em Itapema e Porto Belo.",
+      "Conecta clientes a oportunidades de investimento. O trabalho envolve análise estratégica, leitura de valorização e atendimento personalizado para quem busca patrimônio, qualidade de vida e rentabilidade.",
+    ],
+    areas_of_experience: ["Mercado imobiliário", "Alto padrão", "Investimento em imóveis", "Análise de oportunidades", "Negociação", "Atendimento ao cliente", "Litoral catarinense"],
+    ventures: [{ name: "Vinicius Silva Consultor Imobiliário", area: "Consultoria imobiliária em Itapema e Porto Belo", role: "Consultor" }],
+    knowledge_topics: [
+      "Como entender o perfil e o objetivo de um cliente",
+      "Como selecionar imóveis que fazem sentido para cada pessoa",
+      "Como avaliar viabilidade, retorno e potencial de valorização",
+      "Como conduzir uma negociação com transparência",
+      "Como acompanhar o cliente depois da venda",
+      "Como ler o movimento de uma região",
+    ],
     learning_tracks: [],
-    courses: [],
+    courses: [{ title: "Corretor do zero", href: "/cursos/corretor-do-zero" }],
     tools: [{ title: "[ferramentas]" }],
     discussions: [{ title: "[discussões]" }],
     events: [{ title: "[encontros]" }],
     recommended_reading: [],
     social_links: [{ label: "Instagram", url: "https://www.instagram.com/sillvaviniicius" }],
     what_i_am_building: ["Outro Ângulo"],
-    what_i_can_help_with: ["[o que pode ensinar]"],
+    what_i_can_help_with: ["Começar como corretor", "Analisar um imóvel antes de comprar ou investir", "Atender e negociar com clientes"],
     what_i_am_learning: ["[o que está aprendendo]"],
-    sources: [{ label: "Instagram @sillvaviniicius", url: "https://www.instagram.com/sillvaviniicius" }],
+    sources: [{ label: "Apresentação Vinicius Silva 2026", url: "https://www.instagram.com/sillvaviniicius" }],
   },
 ];
 
