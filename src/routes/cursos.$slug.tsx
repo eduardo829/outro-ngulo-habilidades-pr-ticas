@@ -81,7 +81,7 @@ function CourseDetail() {
             )}
           </div>
           <div className="overflow-hidden rounded-lg border border-ink-foreground/10">
-            <CourseCover title={course.title} cover={course.cover_url} />
+            <CourseCover title={course.title} cover={course.cover_url} slug={course.slug} />
           </div>
         </div>
       </section>

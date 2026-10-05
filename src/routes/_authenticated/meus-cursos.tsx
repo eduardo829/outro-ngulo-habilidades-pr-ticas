@@ -69,7 +69,7 @@ function MyCourses() {
                 <ul className="mt-4 grid gap-6 sm:grid-cols-2">
                   {legacyRows.map((c) => (
                     <li key={c.id}><Link to="/curso/$slug" params={{ slug: c.slug }} className="block overflow-hidden border bg-card hover:border-primary">
-                      <CourseCover title={c.title} cover={c.cover_url} />
+                      <CourseCover title={c.title} cover={c.cover_url} slug={c.slug} />
                       <div className="p-5"><p className="font-display text-lg font-bold">{c.title}</p><Progress value={c.pct} className="mt-3" aria-label={`Progresso ${c.pct}%`} /><p className="mt-1 text-xs text-muted-foreground">{c.pct}% concluído</p></div>
                     </Link></li>
                   ))}
