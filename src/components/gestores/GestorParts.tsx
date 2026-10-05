@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /** Text that may be a placeholder awaiting verified info. */
 export function Txt({ v, className }: { v: string; className?: string }) {
   if (!isPending(v)) return <span className={className}>{v}</span>;
-  return <span className={cn("inline-block border border-dashed border-muted-foreground/40 px-1.5 text-muted-foreground", className)} title="Informação a confirmar">{v}</span>;
+  return <span className={cn("inline-block border border-dashed border-muted-foreground/40 px-1.5 text-muted-foreground", className)} title="Informação a confirmar">Em breve</span>;
 }
 
 /** Photo: profile photo, else founder photo from site settings, else initials. */
@@ -80,7 +80,7 @@ export function KnowledgeGraph({ g }: { g: GestorProfile }) {
               <li key={n.k} className={cn("grid grid-cols-[8rem_1fr] items-baseline gap-4 transition-all duration-500 ease-[var(--ease-out)] md:grid-cols-[12rem_1fr]", i <= a ? "opacity-100" : "translate-y-2 opacity-15")} style={{ paddingLeft: `${i * 2.5}%` }}>
                 <span className={cn("font-display text-sm font-bold uppercase tracking-[0.14em]", i === a ? "text-highlight" : "text-ink-foreground/60")}>{String(i + 1).padStart(2, "0")} {n.k}</span>
                 <span className={cn("font-display font-bold transition-all", i === a ? "text-xl md:text-2xl" : "text-base")}>
-                  {n.items.map((t, j) => <span key={t}>{j > 0 && <span className="text-ink-foreground/40"> · </span>}{isPending(t) ? <span className="text-ink-foreground/50">{t}</span> : t}</span>)}
+                  {n.items.map((t, j) => <span key={t}>{j > 0 && <span className="text-ink-foreground/40"> · </span>}{isPending(t) ? <span className="text-ink-foreground/50">Em breve</span> : t}</span>)}
                 </span>
               </li>
             ))}
