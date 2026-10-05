@@ -37,7 +37,7 @@ export type GestorProfile = {
 
 export const isPending = (s: string) => s.trim().startsWith("[");
 
-export const GESTORES: GestorProfile[] = [
+const BASE: GestorProfile[] = [
   {
     slug: "eduardo-araujo",
     name: "Eduardo Araújo",
@@ -116,6 +116,9 @@ export const GESTORES: GestorProfile[] = [
     sources: [{ label: "Apresentação Vinicius Silva 2026", url: "https://www.instagram.com/sillvaviniicius" }],
   },
 ];
+
+/** Display order: Vinicius first, then Eduardo. */
+export const GESTORES: GestorProfile[] = ["vinicius-silva", "eduardo-araujo"].map((s) => BASE.find((g) => g.slug === s)!);
 
 export const getGestor = (slug: string) => GESTORES.find((g) => g.slug === slug);
 
