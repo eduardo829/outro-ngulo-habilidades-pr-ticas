@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CourseGate, CourseSidebar, moduleState } from "@/components/learning/CourseFrame";
-import { CommunityPrompt, LearningBlock } from "@/components/learning/Blocks";
+import { CommunityPrompt, LearningBlock, VideoLesson } from "@/components/learning/Blocks";
 import { getGestor } from "@/lib/gestores";
 import { hasValue } from "@/lib/learning/store";
 
@@ -66,6 +66,7 @@ function ModulePage() {
               </div>
             </div>
           </div>
+          </>
         );
       }}
     </CourseGate>
