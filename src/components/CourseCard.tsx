@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import { coursePhoto } from "@/lib/photos";
 
 type C = { slug: string; title: string; subtitle: string | null; cover_url: string | null; level?: string | null; duration_text?: string | null };
 
-export function CourseCover({ title, cover }: { title: string; cover: string | null }) {
+export function CourseCover({ title, cover, slug }: { title: string; cover: string | null; slug?: string }) {
+  if (!cover && slug) cover = coursePhoto(slug);
   if (cover) return <img src={cover} alt="" className="aspect-[16/9] w-full object-cover saturate-[0.85] transition duration-500 group-hover:scale-[1.02] group-hover:saturate-100" />;
   return (
     <div className="relative flex aspect-[16/9] w-full items-end overflow-hidden bg-ink p-4" aria-hidden>
@@ -16,7 +18,7 @@ export function CourseCover({ title, cover }: { title: string; cover: string | n
 export function CourseCard({ course, to }: { course: C; to?: "app" }) {
   const inner = (
     <>
-      <CourseCover title={course.title} cover={course.cover_url} />
+      <CourseCover title={course.title} cover={course.cover_url} slug={course.slug} />
       <div className="border-t pt-4 pb-1">
         <h3 className="font-display text-lg font-bold leading-snug ">{course.title}</h3>
         {course.subtitle && <p className="mt-1 text-sm text-muted-foreground">{course.subtitle}</p>}

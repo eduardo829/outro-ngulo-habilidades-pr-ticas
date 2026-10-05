@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { publishedCoursesQuery, settingsQuery } from "@/lib/queries";
 import { CourseCard } from "@/components/CourseCard";
+import { GESTORES } from "@/lib/gestores";
 import { Angle, SectionLabel } from "@/components/Angle";
 import { RotatingWord } from "@/components/motion/Motion";
 import { Entrada } from "@/components/home/Entrada";
@@ -184,23 +185,28 @@ function Home() {
         <SectionLabel n="04">Fundadores</SectionLabel>
         <h2 className="mt-5 text-4xl font-extrabold md:text-5xl">Quem está por trás</h2>
         <div className="mt-12 grid gap-12 md:grid-cols-2">
-          {(settings.data?.founders ?? []).map((f, i) => (
-            <article key={f.name} className={`flex gap-6 ${i === 1 ? "md:mt-16" : ""}`}>
+          {GESTORES.map((g, i) => {
+            const saved = (settings.data?.founders ?? []).find((f) => f.name.split(" ")[0] === g.name.split(" ")[0]);
+            const photo = g.photo ?? saved?.photo_url;
+            const bio = g.biography.join(" ") || saved?.bio;
+            return (
+            <article key={g.slug} className={`flex gap-6 ${i === 1 ? "md:mt-16" : ""}`}>
               <div className="frame-offset shrink-0">
-                {f.photo_url ? (
-                  <img src={f.photo_url} alt={`Foto de ${f.name}`} className="h-28 w-24 object-cover grayscale-[35%] transition duration-500 hover:grayscale-0" />
+                {photo ? (
+                  <img src={photo} alt={g.photoAlt ?? `Foto de ${g.name}`} loading="lazy" className="h-36 w-28 object-cover grayscale-[35%] transition duration-500 hover:grayscale-0" />
                 ) : (
-                  <div className="flex h-28 w-24 items-center justify-center bg-secondary font-display text-3xl font-extrabold text-muted-foreground" aria-hidden>
-                    {f.name[0]}
-                  </div>
+                  <div className="flex h-36 w-28 items-center justify-center bg-secondary font-display text-3xl font-extrabold text-muted-foreground" aria-hidden>{g.name[0]}</div>
                 )}
               </div>
               <div className="border-t pt-4">
-                <h3 className="text-2xl font-bold">{f.name}</h3>
-                <p className="mt-2 leading-relaxed text-muted-foreground">{f.bio}</p>
+                <h3 className="text-2xl font-bold">{g.name}</h3>
+                <p className="eyebrow mt-1">{g.positioning}</p>
+                <p className="mt-3 leading-relaxed text-muted-foreground">{bio}</p>
+                <Link to="/gestor/$slug" params={{ slug: g.slug }} className="link-arrow mt-4 text-sm">Ver perfil<ArrowRight className="h-4 w-4" /></Link>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </section>
 
