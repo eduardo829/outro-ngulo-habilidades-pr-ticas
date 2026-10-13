@@ -31,6 +31,7 @@ import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authentica
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as ApiAiUsageRouteImport } from './routes/api/ai-usage'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
@@ -171,6 +172,11 @@ const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiAiUsageRoute = ApiAiUsageRouteImport.update({
+  id: '/api/ai-usage',
+  path: '/api/ai-usage',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAssistantRoute = ApiAssistantRouteImport.update({
   id: '/api/assistant',
@@ -365,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
@@ -417,6 +424,7 @@ export interface FileRoutesByTo {
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
@@ -472,6 +480,7 @@ export interface FileRoutesById {
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
@@ -527,6 +536,7 @@ export interface FileRouteTypes {
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
+    | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
@@ -579,6 +589,7 @@ export interface FileRouteTypes {
     | '/meus-cursos'
     | '/notificacoes'
     | '/perfil'
+    | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
@@ -633,6 +644,7 @@ export interface FileRouteTypes {
     | '/_authenticated/meus-cursos'
     | '/_authenticated/notificacoes'
     | '/_authenticated/perfil'
+    | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
@@ -680,6 +692,7 @@ export interface RootRouteChildren {
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   TrilhasRoute: typeof TrilhasRoute
+  ApiAiUsageRoute: typeof ApiAiUsageRoute
   ApiAssistantRoute: typeof ApiAssistantRoute
   CursosSlugRoute: typeof CursosSlugRoute
   GestorSlugRoute: typeof GestorSlugRoute
@@ -842,6 +855,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/perfil'
       preLoaderRoute: typeof AuthenticatedPerfilRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/ai-usage': {
+      id: '/api/ai-usage'
+      path: '/api/ai-usage'
+      fullPath: '/api/ai-usage'
+      preLoaderRoute: typeof ApiAiUsageRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/assistant': {
       id: '/api/assistant'
@@ -1158,6 +1178,7 @@ const rootRouteChildren: RootRouteChildren = {
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   TrilhasRoute: TrilhasRoute,
+  ApiAiUsageRoute: ApiAiUsageRoute,
   ApiAssistantRoute: ApiAssistantRoute,
   CursosSlugRoute: CursosSlugRoute,
   GestorSlugRoute: GestorSlugRoute,
