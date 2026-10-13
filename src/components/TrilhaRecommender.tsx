@@ -1,3 +1,4 @@
+import { AiUsageBadge } from "@/components/AiUsageBadge";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowRight, Loader2 } from "lucide-react";
@@ -40,7 +41,7 @@ export function TrilhaRecommender({ n }: { n: string }) {
           <Textarea id="goal" value={goal} onChange={(e) => setGoal(e.target.value)} maxLength={1000} rows={5}
             placeholder="Ex.: quero sair do meu emprego para trabalhar como freelancer, mas não sei como achar clientes." />
           <div className="flex items-center justify-between gap-4">
-            <span className="text-xs text-muted-foreground">Sugestão gerada por IA. Seu texto não é salvo.</span>
+            <span className="text-xs text-muted-foreground">Sugestão gerada por IA. Seu texto não é salvo.{user && <AiUsageBadge refreshKey={loading} />}</span>
             {!user ? <Button asChild><Link to="/auth">Entrar para recomendar<ArrowRight /></Link></Button> : <Button type="submit" disabled={loading || goal.trim().length < 10}>
               {loading ? <><Loader2 className="animate-spin" />Pensando…</> : <>Recomendar<ArrowRight /></>}
             </Button>}

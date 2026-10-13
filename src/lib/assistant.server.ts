@@ -6,6 +6,7 @@ import {
   streamText,
   type UIMessage,
 } from "ai";
+import { aiQuota, quotaMessage } from "@/lib/ai-limits.server";
 import { COURSES_ENGINE } from "@/lib/learning/courses";
 import {
   createLovableAiGatewayRunIdFetch,
@@ -13,7 +14,6 @@ import {
   withLovableAiGatewayRunIdHeader,
 } from "./assistant-run-id.server";
 
-export const VISITOR_DAILY_LIMIT = 4;
 const MODEL = "openai/gpt-6-astra";
 
 const LIMIT_TEXT =
@@ -111,8 +111,9 @@ export async function handleAssistant(request: Request) {
     userId = data.user?.id ?? null;
   }
 
-  // Members only: visitors are asked to sign in, and no AI call is made.
-  if (!userId) return fixedReply(messages, "Para conversar com o assistente, crie sua conta gratuita ou entre. Assim que estiver logado, é só perguntar.");
+  // Server-side allowance (visitors and members), atomic and fail-closed.
+  const quota = await aiQuota(request, userId, "assistant", true);
+  if (!quota.allowed) return fixedReply(messages, quotaMessage(quota));
 
   const { data: rows } = await supabaseAdmin
     .from("courses").select("slug, price_cents, is_free, preview_enabled, status");

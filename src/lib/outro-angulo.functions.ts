@@ -8,7 +8,11 @@ export type AngleResult = { ok: true; angles: Angle[]; discover: string[] } | { 
 export const outroAngulo = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ situation: z.string().trim().min(10).max(1500) }).parse(d))
-  .handler(async ({ data }): Promise<AngleResult> => {
+  .handler(async ({ data, context }): Promise<AngleResult> => {
+    const { getRequest } = await import("@tanstack/react-start/server");
+    const { aiQuota, quotaMessage } = await import("./ai-limits.server");
+    const quota = await aiQuota(getRequest(), context.userId, "outro_angulo", true);
+    if (!quota.allowed) return { ok: false, error: quotaMessage(quota).replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") };
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false, error: "Indisponível no momento." };
     const system = `Você é a ferramenta "Me dê outro ângulo" da Outro Ângulo, plataforma brasileira de habilidades para a vida adulta.

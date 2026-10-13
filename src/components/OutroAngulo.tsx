@@ -1,3 +1,4 @@
+import { AiUsageBadge } from "@/components/AiUsageBadge";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ export function OutroAngulo({ initial = "" }: { initial?: string }) {
       <Textarea id="oa" className="mt-2" rows={3} maxLength={1500} value={text} onChange={(e) => setText(e.target.value)} placeholder="Ex.: Estou pensando em pedir demissão para mudar de carreira." />
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <Button onClick={go} disabled={busy || text.trim().length < 10}>{busy ? "Pensando…" : "Me dê outro ângulo"}</Button>
+        <AiUsageBadge refreshKey={busy} />
         <p className="text-xs text-muted-foreground">Não decidimos por você. Mostramos caminhos e perguntas. O texto não fica salvo.</p>
       </div>
       {r && !r.ok && <p role="alert" className="mt-4 text-sm text-destructive">{r.error}</p>}

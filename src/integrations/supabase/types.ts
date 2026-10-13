@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_settings: {
+        Row: {
+          daily_spend_limit_cents: number
+          est_cost_cents_per_message: number
+          id: number
+          ip_daily_messages: number
+          member_daily_messages: number
+          per_minute_limit: number
+          session_minutes: number
+          updated_at: string
+          visitor_daily_messages: number
+        }
+        Insert: {
+          daily_spend_limit_cents?: number
+          est_cost_cents_per_message?: number
+          id?: number
+          ip_daily_messages?: number
+          member_daily_messages?: number
+          per_minute_limit?: number
+          session_minutes?: number
+          updated_at?: string
+          visitor_daily_messages?: number
+        }
+        Update: {
+          daily_spend_limit_cents?: number
+          est_cost_cents_per_message?: number
+          id?: number
+          ip_daily_messages?: number
+          member_daily_messages?: number
+          per_minute_limit?: number
+          session_minutes?: number
+          updated_at?: string
+          visitor_daily_messages?: number
+        }
+        Relationships: []
+      }
+      ai_spend: {
+        Row: {
+          day: string
+          est_cost_cents: number
+          feature: string
+          requests: number
+        }
+        Insert: {
+          day: string
+          est_cost_cents?: number
+          feature: string
+          requests?: number
+        }
+        Update: {
+          day?: string
+          est_cost_cents?: number
+          feature?: string
+          requests?: number
+        }
+        Relationships: []
+      }
+      ai_usage: {
+        Row: {
+          day: string
+          first_at: string | null
+          messages: number
+          minute_count: number
+          minute_start: string | null
+          subject: string
+        }
+        Insert: {
+          day: string
+          first_at?: string | null
+          messages?: number
+          minute_count?: number
+          minute_start?: string | null
+          subject: string
+        }
+        Update: {
+          day?: string
+          first_at?: string | null
+          messages?: number
+          minute_count?: number
+          minute_start?: string | null
+          subject?: string
+        }
+        Relationships: []
+      }
       angulo_snapshot: {
         Row: {
           explore: Json
@@ -1608,6 +1692,15 @@ export type Database = {
     }
     Functions: {
       admin_metrics: { Args: never; Returns: Json }
+      ai_consume: {
+        Args: {
+          _commit: boolean
+          _feature: string
+          _ip_hash: string
+          _user: string
+        }
+        Returns: Json
+      }
       book_event: { Args: { _event: string }; Returns: undefined }
       course_outline: {
         Args: { _course: string }

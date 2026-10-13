@@ -10,7 +10,11 @@ export type Recommendation =
 export const recommendTrilha = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ goal: z.string().trim().min(10).max(1000) }).parse(d))
-  .handler(async ({ data }): Promise<Recommendation> => {
+  .handler(async ({ data, context }): Promise<Recommendation> => {
+    const { getRequest } = await import("@tanstack/react-start/server");
+    const { aiQuota, quotaMessage } = await import("./ai-limits.server");
+    const quota = await aiQuota(getRequest(), context.userId, "trilhas", true);
+    if (!quota.allowed) return { ok: false, error: quotaMessage(quota).replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") };
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) return { ok: false, error: "Recomendação indisponível no momento (configuração ausente)." };
     const { createOpenAI } = await import("@ai-sdk/openai");
