@@ -1,0 +1,3 @@
+INSERT INTO public.courses (slug, title, subtitle, instructor, level, status, is_public, access_policy, position, price_cents, preview_enabled, preview_module_key)
+VALUES ('corretor-na-pratica', 'Corretor na prática', 'Como começar com foco e conduzir vendas de imóveis de até R$ 500 mil.', 'Vinicius Silva', 'Iniciante', 'published', true, 'enrollment', 14, 9700, true, 'cp01')
+ON CONFLICT (slug) DO NOTHING;
