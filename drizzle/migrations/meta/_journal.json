@@ -120,6 +120,13 @@
       "when": 1791899860323,
       "tag": "0016_restrict_videos_bookings_comments",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1791900934616,
+      "tag": "0017_ai_usage_limits",
+      "breakpoints": true
     }
   ]
 }
