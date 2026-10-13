@@ -1,10 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type Angle = { title: string; questions: string[] };
 export type AngleResult = { ok: true; angles: Angle[]; discover: string[] } | { ok: false; error: string };
 
 export const outroAngulo = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ situation: z.string().trim().min(10).max(1500) }).parse(d))
   .handler(async ({ data }): Promise<AngleResult> => {
     const apiKey = process.env["LOVABLE_API_KEY"];
