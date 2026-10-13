@@ -56,7 +56,7 @@ function MyCourses() {
             {!rows.length && !legacyRows.length && (
               <div className="border border-dashed bg-card p-8 text-center">
                 <p className="font-semibold">Você ainda não tem cursos.</p>
-                <p className="mt-1 text-sm text-muted-foreground">Cada curso é liberado separadamente. Dá para experimentar a aula aberta de qualquer curso antes.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Cada curso é liberado separadamente, após a compra.</p>
                 <Button asChild className="mt-4"><Link to="/cursos">Conhecer cursos</Link></Button>
               </div>
             )}
