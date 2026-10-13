@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { TRILHAS } from "./trilhas";
 
 export type Recommendation =
@@ -7,6 +8,7 @@ export type Recommendation =
   | { ok: false; error: string };
 
 export const recommendTrilha = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ goal: z.string().trim().min(10).max(1000) }).parse(d))
   .handler(async ({ data }): Promise<Recommendation> => {
     const apiKey = process.env["LOVABLE_API_KEY"];

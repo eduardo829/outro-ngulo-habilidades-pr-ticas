@@ -111,16 +111,8 @@ export async function handleAssistant(request: Request) {
     userId = data.user?.id ?? null;
   }
 
-  if (!userId) {
-    const ip = request.headers.get("cf-connecting-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-    const ipHash = await sha(`oa-assistant:${ip}`);
-    const day = new Date().toISOString().slice(0, 10);
-    const { data: row } = await supabaseAdmin
-      .from("assistant_visitor_usage").select("count").eq("ip_hash", ipHash).eq("day", day).maybeSingle();
-    const used = row?.count ?? 0;
-    if (used >= VISITOR_DAILY_LIMIT) return fixedReply(messages, LIMIT_TEXT);
-    await supabaseAdmin.from("assistant_visitor_usage").upsert({ ip_hash: ipHash, day, count: used + 1 });
-  }
+  // Members only: visitors are asked to sign in, and no AI call is made.
+  if (!userId) return fixedReply(messages, "Para conversar com o assistente, crie sua conta gratuita ou entre. Assim que estiver logado, é só perguntar.");
 
   const { data: rows } = await supabaseAdmin
     .from("courses").select("slug, price_cents, is_free, preview_enabled, status");

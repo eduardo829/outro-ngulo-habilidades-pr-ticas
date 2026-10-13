@@ -5,10 +5,13 @@ import { SectionLabel } from "@/components/Angle";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/lib/auth";
 import { recommendTrilha, type Recommendation } from "@/lib/recommend.functions";
 
 export function TrilhaRecommender({ n }: { n: string }) {
   const run = useServerFn(recommendTrilha);
+  const { user } = useAuth();
   const [goal, setGoal] = useState("");
   const [loading, setLoading] = useState(false);
   const [res, setRes] = useState<Recommendation | null>(null);
@@ -38,9 +41,9 @@ export function TrilhaRecommender({ n }: { n: string }) {
             placeholder="Ex.: quero sair do meu emprego para trabalhar como freelancer, mas não sei como achar clientes." />
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-muted-foreground">Sugestão gerada por IA. Seu texto não é salvo.</span>
-            <Button type="submit" disabled={loading || goal.trim().length < 10}>
+            {!user ? <Button asChild><Link to="/auth">Entrar para recomendar<ArrowRight /></Link></Button> : <Button type="submit" disabled={loading || goal.trim().length < 10}>
               {loading ? <><Loader2 className="animate-spin" />Pensando…</> : <>Recomendar<ArrowRight /></>}
-            </Button>
+            </Button>}
           </div>
         </form>
         <div aria-live="polite" className="frame-offset rounded-md border bg-card p-6">
