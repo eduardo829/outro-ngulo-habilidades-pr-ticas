@@ -4,6 +4,7 @@ import vendas from "@/assets/photo-vendas.jpg";
 import ia from "@/assets/photo-ia.jpg";
 import hero from "@/assets/photo-hero.jpg";
 import corretor from "@/assets/photo-corretor.jpg";
+import corretorPratica from "@/assets/photo-c-corretor-pratica.jpg";
 import kit from "@/assets/photo-c-kit.jpg";
 import carreira from "@/assets/photo-c-carreira.jpg";
 import transicao from "@/assets/photo-c-transicao.jpg";
@@ -20,6 +21,7 @@ const COURSE_PHOTOS: Record<string, string> = {
   "vendas-da-conversa-ao-cliente": vendas,
   "ia-no-trabalho": ia,
   "corretor-do-zero": corretor,
+  "corretor-na-pratica": corretorPratica,
   "chegue-forte-ao-mercado": kit,
   "carreira-nao-emprego": carreira,
   "mudar-de-carreira": transicao,
