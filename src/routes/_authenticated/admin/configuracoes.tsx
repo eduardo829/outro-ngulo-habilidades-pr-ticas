@@ -8,6 +8,7 @@ import { settingsQuery, type Founder } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AiSettingsPanel } from "@/components/admin/AiSettingsPanel";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
@@ -47,6 +48,7 @@ function Settings() {
 
   return (
     <div className="space-y-10">
+      <AiSettingsPanel />
       <section className="rounded-lg border bg-card p-5">
         <h2 className="text-lg font-bold">Fundadores</h2>
         <div className="mt-4 space-y-5">
