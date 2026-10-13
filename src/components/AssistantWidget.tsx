@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from "@/components/ai-elements/conversation";
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
+import { AiUsageBadge } from "@/components/AiUsageBadge";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 
 const SUGGESTIONS = ["Como funcionam os cursos?", "Qual curso combina com quem quer mudar de carreira?", "Quanto custa?"];
@@ -100,7 +101,7 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
             <PromptInputSubmit status={status} onStop={stop} />
           </PromptInputFooter>
         </PromptInput>
-        {!userId && <p className="mt-2 text-[11px] text-muted-foreground">Sem conta, você pode fazer algumas perguntas por dia.</p>}
+        <AiUsageBadge className="mt-2" refreshKey={busy ? -1 : messages.length} />
       </div>
     </div>
   );
