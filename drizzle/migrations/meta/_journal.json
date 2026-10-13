@@ -127,6 +127,13 @@
       "when": 1791900934616,
       "tag": "0017_ai_usage_limits",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1791901138425,
+      "tag": "0018_site_settings_public_keys_only",
+      "breakpoints": true
     }
   ]
 }
