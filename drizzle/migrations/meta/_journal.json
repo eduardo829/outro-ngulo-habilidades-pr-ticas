@@ -113,6 +113,13 @@
       "when": 1791899765091,
       "tag": "0015_tighten_open_policies",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1791899860323,
+      "tag": "0016_restrict_videos_bookings_comments",
+      "breakpoints": true
     }
   ]
 }
