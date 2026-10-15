@@ -5,6 +5,7 @@ import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
 import { getCheckout, getPurchaseStatus, payWithBrick } from "@/lib/checkout.functions";
+import { canStartNewAttempt, phaseAfterPay } from "@/lib/checkout-logic";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
   head: () => ({
@@ -29,6 +30,7 @@ type Phase =
   | { k: "paid" }
   | { k: "pix"; pix: Pix }
   | { k: "pending" }
+  | { k: "verifying" }
   | { k: "rejected" };
 
 declare global {
@@ -67,7 +69,20 @@ function CheckoutPage() {
 
   useEffect(() => {
     getCheckout({ data: { slug } })
-      .then(setInfo)
+      .then((i) => {
+        setInfo(i);
+        // An open payment (Pix awaiting, in analysis, or unconfirmed) is shown again; no new form.
+        if (i.state === "ready" && i.existing) {
+          const e = i.existing;
+          setPhase(
+            e.phase === "pix" && e.pix
+              ? { k: "pix", pix: e.pix }
+              : e.phase === "pix"
+                ? { k: "pending" }
+                : { k: e.phase },
+          );
+        }
+      })
       .catch(() => setErr("Não foi possível carregar o pagamento."));
   }, [slug]);
 
@@ -103,14 +118,10 @@ function CheckoutPage() {
                 const r = await payWithBrick({
                   data: { purchaseId: ready.purchaseId, attemptId: attempt.current, formData },
                 });
-                if (r.status === "paid") {
-                  qc.invalidateQueries({ queryKey: ["my-learning"] });
-                  setPhase({ k: "paid" });
-                } else if ("pix" in r && r.pix) setPhase({ k: "pix", pix: r.pix });
-                else if (r.status === "pending") setPhase({ k: "pending" });
-                else setPhase({ k: "rejected" });
+                applyResult(r);
               } catch {
-                setPhase({ k: "rejected" });
+                // Transport error after submit: a charge may exist. Verify; keep the same attempt key.
+                setPhase({ k: "verifying" });
               }
             },
           },
@@ -126,23 +137,44 @@ function CheckoutPage() {
     };
   }, [ready, phase.k, brickKey, qc]);
 
-  // Pix / pending: poll this specific purchase; only the server confirms approval.
+  // Pix / pending / verifying: poll this specific purchase; only the server confirms the outcome.
   useEffect(() => {
-    if (!ready || (phase.k !== "pix" && phase.k !== "pending")) return;
-    const t = setInterval(async () => {
+    if (!ready || (phase.k !== "pix" && phase.k !== "pending" && phase.k !== "verifying")) return;
+    const check = async () => {
       try {
         const r = await getPurchaseStatus({ data: { purchaseId: ready.purchaseId } });
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
           setPhase({ k: "paid" });
-        }
+        } else if (phase.k === "verifying") {
+          if (r.status === "none") {
+            // Confirmed: no payment exists. Form again, SAME attempt key (idempotent resend).
+            setBrickKey((k) => k + 1);
+            setPhase({ k: "form" });
+          } else if (r.status === "pending")
+            setPhase(r.pix ? { k: "pix", pix: r.pix } : { k: "pending" });
+          else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
+        } else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
       } catch {
         /* keep waiting */
       }
-    }, 5000);
+    };
+    if (phase.k === "verifying") check();
+    const t = setInterval(check, 5000);
     return () => clearInterval(t);
   }, [ready, phase.k, qc]);
 
+  function applyResult(r: { status: string; pix?: Pix | null }) {
+    const next = phaseAfterPay(r);
+    if (next === "paid") {
+      qc.invalidateQueries({ queryKey: ["my-learning"] });
+      setPhase({ k: "paid" });
+    } else if (next === "pix" && r.pix) setPhase({ k: "pix", pix: r.pix });
+    else if (next === "pix") setPhase({ k: "pending" });
+    else setPhase({ k: next });
+  }
+
+  // New attempt key only after a server-confirmed rejection.
   const retry = () => {
     attempt.current = crypto.randomUUID();
     setBrickKey((k) => k + 1);
@@ -221,6 +253,15 @@ function CheckoutPage() {
               <Button className="mt-4" onClick={retry}>
                 Tentar novamente
               </Button>
+            </div>
+          )}
+          {phase.k === "verifying" && (
+            <div className="mt-6" aria-live="polite">
+              <h2 className="font-display text-xl font-bold">Verificando seu pagamento…</h2>
+              <p className="mt-2 text-muted-foreground">
+                Estamos confirmando com o Mercado Pago se a cobrança foi feita. Aguarde aqui e não
+                pague de novo; esta página atualiza sozinha.
+              </p>
             </div>
           )}
           {phase.k === "pending" && (

@@ -5,6 +5,10 @@ import {
   idempotencyKey,
   mapPaymentStatus,
   returnView,
+  buyTarget,
+  phaseAfterPay,
+  canStartNewAttempt,
+  attemptPolicy,
 } from "@/lib/checkout-logic";
 
 const purchase = { id: "11111111-1111-4111-8111-111111111111", amount_cents: 12700 };
@@ -59,5 +63,44 @@ describe("checkout rules", () => {
     expect(returnView("unknown")).toBe("checking");
     expect(returnView("failed")).toBe("failed");
     expect(returnView("paid")).toBe("paid");
+  });
+});
+
+describe("checkout review regressions", () => {
+  const uuidA = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  const uuidB = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+
+  it("(1) X-Idempotency-Key fits Mercado Pago's 64-char limit", () => {
+    const k = idempotencyKey(uuidA, uuidB);
+    expect(k.length).toBeLessThanOrEqual(64);
+    expect(k).toBe(idempotencyKey(uuidA, uuidB));
+    expect(k).not.toBe(idempotencyKey(uuidA, uuidA));
+  });
+
+  it("(2) buy CTA always targets the checkout route directly", () => {
+    expect(buyTarget("corretor-na-pratica")).toEqual({
+      to: "/checkout/$slug",
+      params: { slug: "corretor-na-pratica" },
+    });
+  });
+
+  it("(3) network/unknown result after POST never shows rejection", () => {
+    expect(phaseAfterPay(null)).toBe("verifying");
+    expect(phaseAfterPay({ status: "unknown" })).toBe("verifying");
+    expect(phaseAfterPay({ status: "failed" })).toBe("rejected");
+    expect(phaseAfterPay({ status: "pending" })).toBe("pending");
+    expect(phaseAfterPay({ status: "pending", pix: { qr_code: "x" } })).toBe("pix");
+    expect(phaseAfterPay({ status: "paid" })).toBe("paid");
+    expect(canStartNewAttempt("unknown")).toBe(false);
+    expect(canStartNewAttempt("pending")).toBe(false);
+    expect(canStartNewAttempt("failed")).toBe(true);
+  });
+
+  it("(4) existing non-terminal payment blocks a new charge", () => {
+    expect(attemptPolicy(null)).toBe("same_key");
+    for (const s of ["pending", "in_process", "authorized", "in_mediation", "approved"])
+      expect(attemptPolicy(s)).toBe("block");
+    expect(attemptPolicy("rejected")).toBe("new_attempt");
+    expect(attemptPolicy("cancelled")).toBe("new_attempt");
   });
 });
