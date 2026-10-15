@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-/** Data the Payment Brick sends. Strict: raw card data (number, CVV) is rejected — only the Brick token is accepted. */
+/**
+ * Data the Payment Brick sends. Unknown fields (e.g. amount, raw card data) are accepted and STRIPPED by zod;
+ * buildPaymentBody copies only allowlisted fields, so nothing extra ever reaches Mercado Pago. Card needs a token; Pix does not.
+ */
 export const brickSchema = z
   .object({
     payment_method_id: z
@@ -14,25 +17,25 @@ export const brickSchema = z
     transaction_amount: z.number().optional(), // ignored: amount always comes from the database
     payment_method_option_id: z.string().max(80).optional(),
     processing_mode: z.string().max(40).optional(),
-    payer: z
-      .object({
-        email: z.string().email().max(255),
-        identification: z
-          .object({
-            type: z.string().max(10),
-            number: z
-              .string()
-              .max(20)
-              .regex(/^[0-9A-Za-z.\-/]*$/),
-          })
-          .strict()
-          .optional(),
-        first_name: z.string().max(80).optional(),
-        last_name: z.string().max(80).optional(),
-      })
-      .strict(),
+    payer: z.object({
+      email: z.string().email().max(255),
+      identification: z
+        .object({
+          type: z.string().max(10),
+          number: z
+            .string()
+            .max(20)
+            .regex(/^[0-9A-Za-z.\-/]*$/),
+        })
+        .optional(),
+      first_name: z.string().max(80).optional(),
+      last_name: z.string().max(80).optional(),
+    }),
   })
-  .strict();
+  .superRefine((d, ctx) => {
+    if (d.payment_method_id !== "pix" && !d.token)
+      ctx.addIssue({ code: "custom", path: ["token"], message: "token obrigatório para cartão" });
+  });
 export type BrickData = z.infer<typeof brickSchema>;
 
 export function buildPaymentBody(
