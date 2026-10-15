@@ -136,3 +136,16 @@ describe("reload while MP search is still empty (eventual consistency)", () => {
     expect(viewForReload(none, { state: null, startedAt: null }, now)).toBe("none");
   });
 });
+
+import { legacyGate } from "@/lib/brick-flow";
+describe("legacy Checkout Pro purchase gate", () => {
+  it("open legacy payment: wait, never open Brick", () =>
+    expect(legacyGate("pending")).toBe("wait"));
+  it("MP unavailable for legacy: verify, never open Brick", () => {
+    expect(legacyGate("unknown")).toBe("verify");
+  });
+  it("legacy approved: course released", () => expect(legacyGate("paid")).toBe("paid"));
+  it("legacy failed/cancelled or no payment: Brick opens", () => {
+    for (const s of ["failed", "cancelled", "none", null]) expect(legacyGate(s)).toBe("open");
+  });
+});
