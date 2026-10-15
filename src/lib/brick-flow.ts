@@ -88,7 +88,14 @@ export function viewForReload(
  * absent or confirmed failed/cancelled; unknown (MP unavailable) never allows a new charge.
  */
 export function legacyGate(status: string | null): "open" | "wait" | "verify" | "paid" {
-  if (status == null || status === "none" || status === "failed" || status === "cancelled" || status === "refunded") return "open";
+  if (
+    status == null ||
+    status === "none" ||
+    status === "failed" ||
+    status === "cancelled" ||
+    status === "refunded"
+  )
+    return "open";
   if (status === "paid") return "paid";
   if (status === "pending") return "wait";
   return "verify";

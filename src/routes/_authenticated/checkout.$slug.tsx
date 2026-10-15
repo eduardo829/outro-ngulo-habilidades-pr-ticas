@@ -223,11 +223,14 @@ function CheckoutPage() {
         <div className="mt-4" aria-live="polite">
           <h1 className="font-display text-3xl font-extrabold">{legacy.title}</h1>
           <h2 className="mt-6 font-display text-xl font-bold">
-            {legacy.phase === "pending" ? "Você já tem um pagamento em análise" : "Verificando seu pagamento…"}
+            {legacy.phase === "pending"
+              ? "Você já tem um pagamento em análise"
+              : "Verificando seu pagamento…"}
           </h2>
           <p className="mt-2 text-muted-foreground">
-            Encontramos um pagamento anterior deste curso ainda sem resposta final do Mercado Pago. Não pague de
-            novo: esta página atualiza sozinha e libera o curso assim que ele for confirmado.
+            Encontramos um pagamento anterior deste curso ainda sem resposta final do Mercado Pago.
+            Não pague de novo: esta página atualiza sozinha e libera o curso assim que ele for
+            confirmado.
           </p>
         </div>
       )}
