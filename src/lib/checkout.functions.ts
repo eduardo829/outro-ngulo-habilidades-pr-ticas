@@ -35,9 +35,9 @@ export const createCheckout = createServerFn({ method: "POST" })
       external_reference: p.id,
       notification_url: "https://outroangulo.com/api/public/mercadopago-webhook",
       back_urls: {
-        success: `${origin}/pagamento/sucesso?curso=${c.slug}`,
-        failure: `${origin}/pagamento/falha?curso=${c.slug}`,
-        pending: `${origin}/pagamento/pendente?curso=${c.slug}`,
+        success: `${origin}/pagamento/sucesso?curso=${c.slug}&compra=${p.id}`,
+        failure: `${origin}/pagamento/falha?curso=${c.slug}&compra=${p.id}`,
+        pending: `${origin}/pagamento/pendente?curso=${c.slug}&compra=${p.id}`,
       },
       auto_return: "approved",
       statement_descriptor: "OUTRO ANGULO",

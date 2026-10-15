@@ -48,6 +48,7 @@ import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
 import { Route as AuthenticatedAdminVideosRouteImport } from './routes/_authenticated/admin/videos'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
+import { Route as AuthenticatedCheckoutSlugRouteImport } from './routes/_authenticated/checkout.$slug'
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
 import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
@@ -269,6 +270,12 @@ const AuthenticatedAulaLessonIdRoute =
     path: '/aula/$lessonId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCheckoutSlugRoute =
+  AuthenticatedCheckoutSlugRouteImport.update({
+    id: '/checkout/$slug',
+    path: '/checkout/$slug',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedComunidadeIndexRoute =
   AuthenticatedComunidadeIndexRouteImport.update({
     id: '/comunidade/',
@@ -412,6 +419,7 @@ export interface FileRoutesByFullPath {
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
@@ -469,6 +477,7 @@ export interface FileRoutesByTo {
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
@@ -529,6 +538,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/_authenticated/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
+  '/_authenticated/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
@@ -589,6 +599,7 @@ export interface FileRouteTypes {
     | '/admin/gestores'
     | '/admin/videos'
     | '/aula/$lessonId'
+    | '/checkout/$slug'
     | '/comunidade/$postId'
     | '/curso/$slug'
     | '/encontros/$id'
@@ -646,6 +657,7 @@ export interface FileRouteTypes {
     | '/admin/gestores'
     | '/admin/videos'
     | '/aula/$lessonId'
+    | '/checkout/$slug'
     | '/comunidade/$postId'
     | '/curso/$slug'
     | '/encontros/$id'
@@ -705,6 +717,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/gestores'
     | '/_authenticated/admin/videos'
     | '/_authenticated/aula/$lessonId'
+    | '/_authenticated/checkout/$slug'
     | '/_authenticated/comunidade/$postId'
     | '/_authenticated/curso/$slug'
     | '/_authenticated/encontros/$id'
@@ -1028,6 +1041,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAulaLessonIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/checkout/$slug': {
+      id: '/_authenticated/checkout/$slug'
+      path: '/checkout/$slug'
+      fullPath: '/checkout/$slug'
+      preLoaderRoute: typeof AuthenticatedCheckoutSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/comunidade/': {
       id: '/_authenticated/comunidade/'
       path: '/comunidade'
@@ -1197,6 +1217,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotificacoesRoute: typeof AuthenticatedNotificacoesRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
   AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
+  AuthenticatedCheckoutSlugRoute: typeof AuthenticatedCheckoutSlugRoute
   AuthenticatedComunidadePostIdRoute: typeof AuthenticatedComunidadePostIdRoute
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
@@ -1224,6 +1245,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotificacoesRoute: AuthenticatedNotificacoesRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
   AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
+  AuthenticatedCheckoutSlugRoute: AuthenticatedCheckoutSlugRoute,
   AuthenticatedComunidadePostIdRoute: AuthenticatedComunidadePostIdRoute,
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
