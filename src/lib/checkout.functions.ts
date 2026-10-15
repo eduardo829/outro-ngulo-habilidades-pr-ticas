@@ -183,27 +183,34 @@ async function viewOf(p: { id: string; transaction_id: string | null } & Attempt
   };
 }
 
-/** Latest legacy Checkout Pro purchase (last 30 days) reconciled with MP, mapped to a gate. */
+/** ALL pending legacy Checkout Pro purchases of this user/course (paginated), each reconciled with MP, combined into one gate. */
 async function legacyState(userId: string, courseId: string) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { legacyGate } = await import("./brick-flow");
-  const since = new Date(Date.now() - 30 * 86400_000).toISOString();
-  const { data: legacy, error } = await supabaseAdmin
-    .from("purchases")
-    .select("id, transaction_id")
-    .eq("user_id", userId)
-    .eq("course_id", courseId)
-    .eq("payment_provider", "mercadopago")
-    .eq("checkout_kind", "pro")
-    .eq("payment_status", "pending")
-    .gte("created_at", since)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  if (error) return { gate: "verify" as const, id: null };
-  if (!legacy) return { gate: "open" as const, id: null };
-  const r = await reconcile(legacy.id, legacy.transaction_id);
-  return { gate: legacyGate(r.status), id: legacy.id };
+  const { combineLegacy } = await import("./brick-flow");
+  const PAGE = 50;
+  const rows: { id: string; transaction_id: string | null }[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await supabaseAdmin
+      .from("purchases")
+      .select("id, transaction_id")
+      .eq("user_id", userId)
+      .eq("course_id", courseId)
+      .eq("payment_provider", "mercadopago")
+      .eq("checkout_kind", "pro")
+      .eq("payment_status", "pending")
+      .order("created_at", { ascending: false })
+      .range(from, from + PAGE - 1);
+    if (error) return { gate: "verify" as const, id: null };
+    rows.push(...(data ?? []));
+    if (!data || data.length < PAGE) break;
+  }
+  const items: { id: string; status: string | null }[] = [];
+  for (const r of rows) {
+    const rec = await reconcile(r.id, r.transaction_id);
+    items.push({ id: r.id, status: rec.status });
+    if (rec.status === "paid") break; // access already exists; enrollment checked by caller
+  }
+  return combineLegacy(items);
 }
 
 /** Checkout summary for the in-site Payment Brick: course, server price, the Brick purchase for this user, any unresolved attempt, and the public key. */
