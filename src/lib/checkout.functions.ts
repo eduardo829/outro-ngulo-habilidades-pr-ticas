@@ -46,6 +46,7 @@ export const createCheckout = createServerFn({ method: "POST" })
         user_id: context.userId,
         course_id: c.id,
         amount_cents: cents,
+        checkout_kind: "pro",
         currency: "BRL",
         payment_provider: "mercadopago",
         payment_status: "pending",
@@ -172,7 +173,17 @@ async function reconcile(purchaseId: string, transactionId: string | null) {
   }
 }
 
-/** Checkout summary for the in-site Payment Brick: course, server price, an open purchase for this user, any open payment, and the public key. */
+type AttemptRow = { attempt_state: string | null; attempt_started_at: string | null };
+async function viewOf(p: { id: string; transaction_id: string | null } & AttemptRow) {
+  const { viewForReload } = await import("./brick-flow");
+  const r = await reconcile(p.id, p.transaction_id);
+  return {
+    view: viewForReload(r, { state: p.attempt_state, startedAt: p.attempt_started_at }, Date.now()),
+    pix: r.pix,
+  };
+}
+
+/** Checkout summary for the in-site Payment Brick: course, server price, the Brick purchase for this user, any unresolved attempt, and the public key. */
 export const getCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
@@ -190,28 +201,43 @@ export const getCheckout = createServerFn({ method: "POST" })
       return en?.status === "active";
     };
     if (await owned()) return { state: "owned" as const, slug: c.slug, title: c.title };
-    // Reuse the latest open purchase at the same price, so reloads never create duplicate orders.
-    const { data: open } = await supabaseAdmin
-      .from("purchases")
-      .select("id, payment_status, amount_cents, transaction_id")
-      .eq("user_id", context.userId)
-      .eq("course_id", c.id)
-      .eq("payment_provider", "mercadopago")
-      .in("payment_status", ["pending", "failed"])
-      .order("created_at", { ascending: false })
-      .limit(1)
+    const base = () =>
+      supabaseAdmin
+        .from("purchases")
+        .select(
+          "id, payment_status, amount_cents, transaction_id, checkout_kind, attempt_state, attempt_started_at, created_at",
+        )
+        .eq("user_id", context.userId)
+        .eq("course_id", c.id)
+        .eq("payment_provider", "mercadopago")
+        .in("payment_status", ["pending", "failed"])
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+    let existing: { phase: "pix" | "pending" | "verifying"; pix: Pix | null } | null = null;
+    // Legacy Checkout Pro purchase (never mixed with Brick): if it still has an open MP payment (Pix/boleto), wait for it.
+    const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+    const { data: legacy } = await base()
+      .eq("checkout_kind", "pro")
+      .gte("created_at", since)
       .maybeSingle();
-    let purchaseId = open && open.amount_cents === c.cents ? open.id : null;
-    // Existing payment for this purchase (e.g. Pix awaiting payment) is shown again instead of a new form.
-    let existing: { phase: "pix" | "pending" | "verifying" | "rejected"; pix: Pix | null } | null =
-      null;
-    if (purchaseId && open) {
-      const r = await reconcile(purchaseId, open.transaction_id);
+    if (legacy) {
+      const r = await reconcile(legacy.id, legacy.transaction_id);
       if (r.status === "paid" && (await owned()))
         return { state: "owned" as const, slug: c.slug, title: c.title };
-      if (r.status === "unknown" || r.status === "paid")
+      if (r.status === "pending" || r.status === "paid") existing = { phase: "pending", pix: null };
+    }
+
+    // Reuse the latest Brick purchase at the same price, so reloads never create duplicate purchases.
+    const { data: open } = await base().eq("checkout_kind", "brick").maybeSingle();
+    let purchaseId = open && open.amount_cents === c.cents ? open.id : null;
+    if (purchaseId && open && !existing) {
+      const v = await viewOf(open);
+      if (v.view === "paid" && (await owned()))
+        return { state: "owned" as const, slug: c.slug, title: c.title };
+      if (v.view === "pending") existing = { phase: v.pix ? "pix" : "pending", pix: v.pix };
+      else if (v.view === "unknown" || v.view === "paid")
         existing = { phase: "verifying", pix: null };
-      else if (r.status === "pending") existing = { phase: r.pix ? "pix" : "pending", pix: r.pix };
     }
     if (!purchaseId) {
       const { data: p, error } = await supabaseAdmin
@@ -223,6 +249,7 @@ export const getCheckout = createServerFn({ method: "POST" })
           currency: "BRL",
           payment_provider: "mercadopago",
           payment_status: "pending",
+          checkout_kind: "brick",
         })
         .select("id")
         .single();
@@ -245,32 +272,33 @@ export const getCheckout = createServerFn({ method: "POST" })
 
 /**
  * Processes the Payment Brick token/Pix request server-side. Amount comes from the purchase row.
- * Before charging, any existing open payment for the purchase blocks a new charge. After POST, the payment is re-read from the API before applying.
+ * One attempt per purchase is reserved atomically in the database (checkout_reserve_attempt); the attempt id —
+ * and so the X-Idempotency-Key — is server-owned. Concurrent submits get "unknown" (verifying), never a second charge.
  */
 export const payWithBrick = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z
-      .object({
-        purchaseId: z.string().uuid(),
-        attemptId: z.string().uuid(),
-        formData: z.unknown(),
-      })
-      .parse(d),
+    z.object({ purchaseId: z.string().uuid(), formData: z.unknown() }).parse(d),
   )
   .handler(async ({ data, context }) => {
-    const { brickSchema, buildPaymentBody, idempotencyKey, attemptPolicy } =
-      await import("./checkout-logic");
+    const { brickSchema, buildPaymentBody, idempotencyKey } = await import("./checkout-logic");
+    const { runBrickAttempt } = await import("./brick-flow");
     const fd = brickSchema.safeParse(data.formData);
     if (!fd.success) throw new Error("Dados de pagamento inválidos.");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { mpCreatePayment, applyPayment, mpGetPayment } = await import("./mercadopago.server");
     const { data: p } = await supabaseAdmin
       .from("purchases")
-      .select("id, user_id, course_id, amount_cents, payment_status, transaction_id")
+      .select("id, user_id, course_id, amount_cents, payment_status, transaction_id, checkout_kind")
       .eq("id", data.purchaseId)
       .maybeSingle();
-    if (!p || p.user_id !== context.userId || !p.course_id || !p.amount_cents)
+    if (
+      !p ||
+      p.user_id !== context.userId ||
+      !p.course_id ||
+      !p.amount_cents ||
+      p.checkout_kind !== "brick"
+    )
       throw new Error("Compra não encontrada.");
     if (p.payment_status === "paid") return { status: "paid" as const, pix: null };
     const { data: c } = await supabaseAdmin
@@ -281,50 +309,46 @@ export const payWithBrick = createServerFn({ method: "POST" })
     const sellable = c ? await loadSellable(c.slug) : null;
     if (!sellable || sellable.cents !== p.amount_cents)
       throw new Error("O preço deste curso mudou. Recarregue a página.");
+    const amount = p.amount_cents;
 
-    // Never create a concurrent charge: reconcile first.
-    const prior = await reconcile(p.id, p.transaction_id);
-    if (prior.status === "unknown") return { status: "unknown" as const, pix: null };
-    if (prior.status !== "none" && attemptPolicy(prior.mp) === "block") {
-      return {
-        status:
-          prior.status === "paid"
-            ? ("paid" as const)
-            : prior.status === "pending"
-              ? ("pending" as const)
-              : ("unknown" as const),
-        pix: prior.pix,
-      };
-    }
-
-    let created: Awaited<ReturnType<typeof mpCreatePayment>>;
-    try {
-      created = await mpCreatePayment(
-        buildPaymentBody({ id: p.id, amount_cents: p.amount_cents }, fd.data, {
-          title: sellable.title,
-          notificationUrl: NOTIFY_URL,
-        }),
-        idempotencyKey(p.id, data.attemptId),
-      );
-    } catch {
-      return { status: "unknown" as const, pix: null }; // network error after send: a charge may exist
-    }
-    if (created.kind === "refused") return { status: "failed" as const, pix: null };
-    if (created.kind !== "created") return { status: "unknown" as const, pix: null };
-    try {
-      const fresh = await mpGetPayment(String(created.payment.id));
-      if (!fresh) return { status: "unknown" as const, pix: null };
-      const status = (await applyPayment(fresh)) ?? "unknown";
-      return {
-        status,
-        pix: status === "pending" ? (pixOf(fresh) ?? pixOf(created.payment)) : null,
-      };
-    } catch {
-      return { status: "unknown" as const, pix: null }; // re-read or DB write failed: do not claim paid
-    }
+    return runBrickAttempt({
+      reconcile: () => reconcile(p.id, p.transaction_id),
+      reserve: async () => {
+        const { data: r, error } = await supabaseAdmin.rpc("checkout_reserve_attempt", {
+          _purchase: p.id,
+        });
+        if (error) throw new Error("reserve failed");
+        return r as { action: "send" | "busy" | "paid" | "missing"; attempt_id?: string };
+      },
+      mark: async (attemptId, state) => {
+        const { error } = await supabaseAdmin.rpc("checkout_mark_attempt", {
+          _purchase: p.id,
+          _attempt: attemptId,
+          _state: state,
+        });
+        if (error) throw new Error("mark failed");
+      },
+      key: (attemptId) => idempotencyKey(p.id, attemptId),
+      create: async (key) => {
+        const r = await mpCreatePayment(
+          buildPaymentBody({ id: p.id, amount_cents: amount }, fd.data, {
+            title: sellable.title,
+            notificationUrl: NOTIFY_URL,
+          }),
+          key,
+        );
+        return r.kind === "created" ? { kind: "created", paymentId: String(r.payment.id) } : r;
+      },
+      readAndApply: async (paymentId) => {
+        const fresh = await mpGetPayment(paymentId); // re-read before applying
+        if (!fresh) return null;
+        const status = (await applyPayment(fresh)) ?? "unknown";
+        return { status, pix: pixOf(fresh) };
+      },
+    });
   });
 
-/** Status of one specific purchase owned by the caller, always re-confirmed with Mercado Pago. "none" = no payment exists yet. */
+/** Status of one specific purchase owned by the caller, always re-confirmed with Mercado Pago. "none" = safe to submit again (same server key). */
 export const getPurchaseStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ purchaseId: z.string().uuid() }).parse(d))
@@ -332,7 +356,9 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: p } = await supabaseAdmin
       .from("purchases")
-      .select("id, user_id, course_id, payment_status, transaction_id")
+      .select(
+        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at",
+      )
       .eq("id", data.purchaseId)
       .maybeSingle();
     if (!p || p.user_id !== context.userId) return { status: "unknown", pix: null };
@@ -345,6 +371,6 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
         .maybeSingle();
       if (en?.status === "active") return { status: "paid", pix: null };
     }
-    const r = await reconcile(p.id, p.transaction_id);
-    return { status: r.status as string, pix: r.pix };
+    const v = await viewOf(p);
+    return { status: v.view as string, pix: v.view === "pending" ? v.pix : null };
   });
