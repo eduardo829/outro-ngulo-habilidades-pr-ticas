@@ -36,8 +36,7 @@ export function PaymentReturn({ kind, slug }: { kind: Kind; slug?: string | unde
         <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight">{paid ? "Seu curso está liberado" : c.title}</h1>
         <p className="mt-4 text-lg text-muted-foreground">{paid ? "O pagamento foi confirmado pelo Mercado Pago. Bom estudo." : c.text}</p>
         {status === "checking" && kind !== "falha" && <p className="mt-4 text-sm text-muted-foreground">Confirmando…</p>}
-        <p className="mt-3 text-xs text-muted-foreground">Ambiente de testes: nenhum valor real é cobrado.</p>
-        <div className="mt-8 flex flex-wrap gap-3">
+                <div className="mt-8 flex flex-wrap gap-3">
           {paid && slug ? <Button asChild size="lg"><Link to="/aprender/$slug" params={{ slug }}>Começar o curso</Link></Button>
             : slug ? <Button asChild size="lg" variant={kind === "falha" ? "default" : "outline"}><Link to="/cursos/$slug" params={{ slug }}>Voltar ao curso</Link></Button> : null}
           <Button asChild variant="outline" size="lg"><Link to="/meus-cursos">Meus cursos</Link></Button>
