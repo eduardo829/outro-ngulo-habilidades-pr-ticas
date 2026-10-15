@@ -183,6 +183,29 @@ async function viewOf(p: { id: string; transaction_id: string | null } & Attempt
   };
 }
 
+/** Latest legacy Checkout Pro purchase (last 30 days) reconciled with MP, mapped to a gate. */
+async function legacyState(userId: string, courseId: string) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { legacyGate } = await import("./brick-flow");
+  const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+  const { data: legacy, error } = await supabaseAdmin
+    .from("purchases")
+    .select("id, transaction_id")
+    .eq("user_id", userId)
+    .eq("course_id", courseId)
+    .eq("payment_provider", "mercadopago")
+    .eq("checkout_kind", "pro")
+    .eq("payment_status", "pending")
+    .gte("created_at", since)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) return { gate: "verify" as const, id: null };
+  if (!legacy) return { gate: "open" as const, id: null };
+  const r = await reconcile(legacy.id, legacy.transaction_id);
+  return { gate: legacyGate(r.status), id: legacy.id };
+}
+
 /** Checkout summary for the in-site Payment Brick: course, server price, the Brick purchase for this user, any unresolved attempt, and the public key. */
 export const getCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -215,17 +238,20 @@ export const getCheckout = createServerFn({ method: "POST" })
         .limit(1);
 
     let existing: { phase: "pix" | "pending" | "verifying"; pix: Pix | null } | null = null;
-    // Legacy Checkout Pro purchase (never mixed with Brick): if it still has an open MP payment (Pix/boleto), wait for it.
-    const since = new Date(Date.now() - 30 * 86400_000).toISOString();
-    const { data: legacy } = await base()
-      .eq("checkout_kind", "pro")
-      .gte("created_at", since)
-      .maybeSingle();
-    if (legacy) {
-      const r = await reconcile(legacy.id, legacy.transaction_id);
-      if (r.status === "paid" && (await owned()))
-        return { state: "owned" as const, slug: c.slug, title: c.title };
-      if (r.status === "pending" || r.status === "paid") existing = { phase: "pending", pix: null };
+    // Legacy Checkout Pro purchase (never mixed with Brick): while its MP payment is open or unknown, the page
+    // polls THAT purchase and no Brick charge is allowed.
+    const lg = await legacyState(context.userId, c.id);
+    if (lg.gate === "paid" && (await owned()))
+      return { state: "owned" as const, slug: c.slug, title: c.title };
+    if (lg.gate !== "open") {
+      return {
+        state: "legacy" as const,
+        slug: c.slug,
+        title: c.title,
+        amount_cents: c.cents,
+        legacyPurchaseId: lg.id!,
+        phase: lg.gate === "wait" ? ("pending" as const) : ("verifying" as const),
+      };
     }
 
     // Reuse the latest Brick purchase at the same price, so reloads never create duplicate purchases.
@@ -310,6 +336,10 @@ export const payWithBrick = createServerFn({ method: "POST" })
     if (!sellable || sellable.cents !== p.amount_cents)
       throw new Error("O preço deste curso mudou. Recarregue a página.");
     const amount = p.amount_cents;
+    // Never charge via Brick while a legacy Checkout Pro payment is open or its state is unknown.
+    const lg = await legacyState(context.userId, p.course_id);
+    if (lg.gate === "wait") return { status: "pending" as const, pix: null };
+    if (lg.gate !== "open") return { status: "unknown" as const, pix: null };
 
     return runBrickAttempt({
       reconcile: () => reconcile(p.id, p.transaction_id),
