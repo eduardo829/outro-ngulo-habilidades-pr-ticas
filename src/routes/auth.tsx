@@ -11,8 +11,10 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { modo?: "cadastro" } =>
-    s["modo"] === "cadastro" ? { modo: "cadastro" } : {},
+  validateSearch: (s: Record<string, unknown>): { modo?: "cadastro"; redirect?: string } => {
+    const r = typeof s["redirect"] === "string" && /^\/(?!\/)/.test(s["redirect"]) && !s["redirect"].startsWith("/auth") ? s["redirect"] : undefined;
+    return { ...(s["modo"] === "cadastro" ? { modo: "cadastro" as const } : {}), ...(r ? { redirect: r } : {}) };
+  },
   head: () => ({
     meta: [
       { title: "Entrar — Outro Ângulo" },
@@ -31,7 +33,8 @@ const signupSchema = z.object({
 });
 
 function AuthPage() {
-  const { modo } = Route.useSearch();
+  const { modo, redirect } = Route.useSearch();
+  const dest = redirect ?? "/inicio";
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [mode, setMode] = useState<"login" | "cadastro">(modo === "cadastro" ? "cadastro" : "login");
@@ -42,8 +45,8 @@ function AuthPage() {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/inicio", replace: true });
-  }, [user, loading, navigate]);
+    if (!loading && user) navigate({ href: dest, replace: true });
+  }, [user, loading, navigate, dest]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,7 +58,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email: p.data.email,
           password: p.data.password,
-          options: { emailRedirectTo: window.location.origin + "/inicio", data: { display_name: p.data.name } },
+          options: { emailRedirectTo: window.location.origin + dest, data: { display_name: p.data.name } },
         });
         if (error) return toast.error(error.message.includes("registered") ? "Este e-mail já tem conta." : "Não foi possível criar a conta.");
         setSent(true);
@@ -69,7 +72,7 @@ function AuthPage() {
   }
 
   async function google() {
-    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
+    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" + (redirect ? `?redirect=${encodeURIComponent(redirect)}` : "") });
     if (r.error) toast.error("Não foi possível entrar com o Google.");
   }
 

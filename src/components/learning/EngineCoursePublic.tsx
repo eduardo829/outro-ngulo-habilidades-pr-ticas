@@ -14,7 +14,7 @@ import { courseState, ctaLabel } from "@/lib/learning/ownership";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createCheckout } from "@/lib/checkout.functions";
+import { createCheckout, refreshMyPurchase } from "@/lib/checkout.functions";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -40,6 +40,17 @@ export function EngineCoursePublic({ c }: { c: Course }) {
     else await supabase.from("course_interest").insert({ user_id: user.id, course_id: info.id });
     qc.invalidateQueries({ queryKey: ["my-learning"] });
   };
+  // After paying (e.g. Pix in another tab), re-check with Mercado Pago when the visitor comes back to this page.
+  useEffect(() => {
+    if (!user || state !== "locked" || !info?.is_purchasable) return;
+    const check = async () => {
+      try { const r = await refreshMyPurchase({ data: { slug: c.slug } }); if (r.status === "paid") { qc.invalidateQueries({ queryKey: ["my-learning"] }); toast.success("Pagamento confirmado. Seu curso está liberado."); } } catch { /* ignore */ }
+    };
+    check();
+    const onVis = () => { if (document.visibilityState === "visible") check(); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [user, state, info?.is_purchasable, c.slug, qc]);
   const [buying, setBuying] = useState(false);
   const buy = async () => {
     setBuying(true);
@@ -58,7 +69,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
         {info?.is_purchasable
           ? (user
             ? <Button size="lg" onClick={buy} disabled={buying}>{buying ? "Abrindo Mercado Pago…" : `Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Button>
-            : <Button asChild size="lg"><Link to="/auth">Entrar para comprar<ArrowRight /></Link></Button>)
+            : <Button asChild size="lg"><Link to="/auth" search={{ redirect: `/cursos/${c.slug}` }}>Entrar para comprar<ArrowRight /></Link></Button>)
           : user && <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>{interested ? "Na minha lista de interesse" : "Tenho interesse"}</Button>}
       </>;
   return (
