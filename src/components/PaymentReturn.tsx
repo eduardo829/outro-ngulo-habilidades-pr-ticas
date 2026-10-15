@@ -13,7 +13,7 @@ const COPY: Record<Kind, { eyebrow: string; title: string; text: string }> = {
   falha: { eyebrow: "Pagamento não concluído", title: "O pagamento não foi aprovado", text: "Nenhum valor foi confirmado. Você pode tentar de novo com outra forma de pagamento." },
 };
 
-export function PaymentReturn({ kind, slug }: { kind: Kind; slug?: string }) {
+export function PaymentReturn({ kind, slug }: { kind: Kind; slug?: string | undefined }) {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [status, setStatus] = useState<string>("checking");
