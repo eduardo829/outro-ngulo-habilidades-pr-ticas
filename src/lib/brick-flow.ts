@@ -43,7 +43,7 @@ export async function runBrickAttempt(d: BrickDeps): Promise<FlowResult> {
     await d.mark(r.attempt_id, "rejected");
     return { status: "failed", pix: null };
   }
-  if (created.kind === "unknown") {
+  if (created.kind !== "created") {
     await d.mark(r.attempt_id, "unknown").catch(() => {});
     return { status: "unknown", pix: null };
   }
