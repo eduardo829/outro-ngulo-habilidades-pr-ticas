@@ -149,3 +149,50 @@ describe("legacy Checkout Pro purchase gate", () => {
     for (const s of ["failed", "cancelled", "none", null]) expect(legacyGate(s)).toBe("open");
   });
 });
+
+import { combineLegacy } from "@/lib/brick-flow";
+describe("all legacy purchases are examined", () => {
+  it("newest none, older pending: Brick blocked, polls the older one", () => {
+    expect(
+      combineLegacy([
+        { id: "new", status: "none" },
+        { id: "old", status: "pending" },
+      ]),
+    ).toEqual({ gate: "wait", id: "old" });
+  });
+  it("newest failed, older pending: Brick blocked, polls the older one", () => {
+    expect(
+      combineLegacy([
+        { id: "new", status: "failed" },
+        { id: "old", status: "pending" },
+      ]),
+    ).toEqual({ gate: "wait", id: "old" });
+  });
+  it("any MP-unavailable purchase blocks", () => {
+    expect(
+      combineLegacy([
+        { id: "a", status: "none" },
+        { id: "b", status: "unknown" },
+        { id: "c", status: "pending" },
+      ]),
+    ).toEqual({ gate: "verify", id: "b" });
+  });
+  it("any paid purchase means existing access", () => {
+    expect(
+      combineLegacy([
+        { id: "a", status: "pending" },
+        { id: "b", status: "paid" },
+      ]),
+    ).toEqual({ gate: "paid", id: "b" });
+  });
+  it("all resolved or absent: Brick opens", () => {
+    expect(
+      combineLegacy([
+        { id: "a", status: "none" },
+        { id: "b", status: "cancelled" },
+        { id: "c", status: "failed" },
+      ]).gate,
+    ).toBe("open");
+    expect(combineLegacy([]).gate).toBe("open");
+  });
+});

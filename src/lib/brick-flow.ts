@@ -100,3 +100,19 @@ export function legacyGate(status: string | null): "open" | "wait" | "verify" | 
   if (status === "pending") return "wait";
   return "verify";
 }
+
+/**
+ * Combines ALL legacy purchases of a user/course. Any paid -> paid; any unknown -> verify; any open -> wait
+ * (returning that purchase id for polling). Brick opens only when every legacy purchase is resolved/absent.
+ */
+export function combineLegacy(items: { id: string; status: string | null }[]): {
+  gate: "open" | "wait" | "verify" | "paid";
+  id: string | null;
+} {
+  const g = items.map((i) => ({ id: i.id, gate: legacyGate(i.status) }));
+  for (const want of ["paid", "verify", "wait"] as const) {
+    const hit = g.find((x) => x.gate === want);
+    if (hit) return { gate: want, id: hit.id };
+  }
+  return { gate: "open", id: null };
+}
