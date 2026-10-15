@@ -67,7 +67,8 @@ export function viewForReload(
   if (r.status === "unknown") return "unknown";
   if (r.status === "failed" || r.status === "cancelled") return "failed";
   // MP returned nothing. If the server recorded an attempt that may have reached MP, keep verifying until stale.
-  if (attempt.state === "in_flight" || attempt.state === "unknown" || attempt.state === "open") {
+  if (attempt.state === "open") return "unknown"; // MP reported it open; never reopen the form on an empty search
+  if (attempt.state === "in_flight" || attempt.state === "unknown") {
     const started = attempt.startedAt ? Date.parse(attempt.startedAt) : 0;
     return now - started < staleMs ? "unknown" : "none"; // stale: form may resend with the SAME server key
   }
