@@ -177,7 +177,10 @@ type AttemptRow = { attempt_state: string | null; attempt_started_at: string | n
 async function viewOf(p: { id: string; transaction_id: string | null } & AttemptRow) {
   const { viewForReload } = await import("./brick-flow");
   const r = await reconcile(p.id, p.transaction_id);
-  return { view: viewForReload(r, { state: p.attempt_state, startedAt: p.attempt_started_at }, Date.now()), pix: r.pix };
+  return {
+    view: viewForReload(r, { state: p.attempt_state, startedAt: p.attempt_started_at }, Date.now()),
+    pix: r.pix,
+  };
 }
 
 /** Checkout summary for the in-site Payment Brick: course, server price, the Brick purchase for this user, any unresolved attempt, and the public key. */
@@ -201,7 +204,9 @@ export const getCheckout = createServerFn({ method: "POST" })
     const base = () =>
       supabaseAdmin
         .from("purchases")
-        .select("id, payment_status, amount_cents, transaction_id, checkout_kind, attempt_state, attempt_started_at, created_at")
+        .select(
+          "id, payment_status, amount_cents, transaction_id, checkout_kind, attempt_state, attempt_started_at, created_at",
+        )
         .eq("user_id", context.userId)
         .eq("course_id", c.id)
         .eq("payment_provider", "mercadopago")
@@ -212,10 +217,14 @@ export const getCheckout = createServerFn({ method: "POST" })
     let existing: { phase: "pix" | "pending" | "verifying"; pix: Pix | null } | null = null;
     // Legacy Checkout Pro purchase (never mixed with Brick): if it still has an open MP payment (Pix/boleto), wait for it.
     const since = new Date(Date.now() - 30 * 86400_000).toISOString();
-    const { data: legacy } = await base().eq("checkout_kind", "pro").gte("created_at", since).maybeSingle();
+    const { data: legacy } = await base()
+      .eq("checkout_kind", "pro")
+      .gte("created_at", since)
+      .maybeSingle();
     if (legacy) {
       const r = await reconcile(legacy.id, legacy.transaction_id);
-      if (r.status === "paid" && (await owned())) return { state: "owned" as const, slug: c.slug, title: c.title };
+      if (r.status === "paid" && (await owned()))
+        return { state: "owned" as const, slug: c.slug, title: c.title };
       if (r.status === "pending" || r.status === "paid") existing = { phase: "pending", pix: null };
     }
 
@@ -224,9 +233,11 @@ export const getCheckout = createServerFn({ method: "POST" })
     let purchaseId = open && open.amount_cents === c.cents ? open.id : null;
     if (purchaseId && open && !existing) {
       const v = await viewOf(open);
-      if (v.view === "paid" && (await owned())) return { state: "owned" as const, slug: c.slug, title: c.title };
+      if (v.view === "paid" && (await owned()))
+        return { state: "owned" as const, slug: c.slug, title: c.title };
       if (v.view === "pending") existing = { phase: v.pix ? "pix" : "pending", pix: v.pix };
-      else if (v.view === "unknown" || v.view === "paid") existing = { phase: "verifying", pix: null };
+      else if (v.view === "unknown" || v.view === "paid")
+        existing = { phase: "verifying", pix: null };
     }
     if (!purchaseId) {
       const { data: p, error } = await supabaseAdmin
@@ -266,7 +277,9 @@ export const getCheckout = createServerFn({ method: "POST" })
  */
 export const payWithBrick = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d) => z.object({ purchaseId: z.string().uuid(), formData: z.unknown() }).parse(d))
+  .inputValidator((d) =>
+    z.object({ purchaseId: z.string().uuid(), formData: z.unknown() }).parse(d),
+  )
   .handler(async ({ data, context }) => {
     const { brickSchema, buildPaymentBody, idempotencyKey } = await import("./checkout-logic");
     const { runBrickAttempt } = await import("./brick-flow");
@@ -279,10 +292,20 @@ export const payWithBrick = createServerFn({ method: "POST" })
       .select("id, user_id, course_id, amount_cents, payment_status, transaction_id, checkout_kind")
       .eq("id", data.purchaseId)
       .maybeSingle();
-    if (!p || p.user_id !== context.userId || !p.course_id || !p.amount_cents || p.checkout_kind !== "brick")
+    if (
+      !p ||
+      p.user_id !== context.userId ||
+      !p.course_id ||
+      !p.amount_cents ||
+      p.checkout_kind !== "brick"
+    )
       throw new Error("Compra não encontrada.");
     if (p.payment_status === "paid") return { status: "paid" as const, pix: null };
-    const { data: c } = await supabaseAdmin.from("courses").select("slug, title").eq("id", p.course_id).maybeSingle();
+    const { data: c } = await supabaseAdmin
+      .from("courses")
+      .select("slug, title")
+      .eq("id", p.course_id)
+      .maybeSingle();
     const sellable = c ? await loadSellable(c.slug) : null;
     if (!sellable || sellable.cents !== p.amount_cents)
       throw new Error("O preço deste curso mudou. Recarregue a página.");
@@ -291,18 +314,27 @@ export const payWithBrick = createServerFn({ method: "POST" })
     return runBrickAttempt({
       reconcile: () => reconcile(p.id, p.transaction_id),
       reserve: async () => {
-        const { data: r, error } = await supabaseAdmin.rpc("checkout_reserve_attempt", { _purchase: p.id });
+        const { data: r, error } = await supabaseAdmin.rpc("checkout_reserve_attempt", {
+          _purchase: p.id,
+        });
         if (error) throw new Error("reserve failed");
         return r as { action: "send" | "busy" | "paid" | "missing"; attempt_id?: string };
       },
       mark: async (attemptId, state) => {
-        const { error } = await supabaseAdmin.rpc("checkout_mark_attempt", { _purchase: p.id, _attempt: attemptId, _state: state });
+        const { error } = await supabaseAdmin.rpc("checkout_mark_attempt", {
+          _purchase: p.id,
+          _attempt: attemptId,
+          _state: state,
+        });
         if (error) throw new Error("mark failed");
       },
       key: (attemptId) => idempotencyKey(p.id, attemptId),
       create: async (key) => {
         const r = await mpCreatePayment(
-          buildPaymentBody({ id: p.id, amount_cents: amount }, fd.data, { title: sellable.title, notificationUrl: NOTIFY_URL }),
+          buildPaymentBody({ id: p.id, amount_cents: amount }, fd.data, {
+            title: sellable.title,
+            notificationUrl: NOTIFY_URL,
+          }),
           key,
         );
         return r.kind === "created" ? { kind: "created", paymentId: String(r.payment.id) } : r;
@@ -324,7 +356,9 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: p } = await supabaseAdmin
       .from("purchases")
-      .select("id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at")
+      .select(
+        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at",
+      )
       .eq("id", data.purchaseId)
       .maybeSingle();
     if (!p || p.user_id !== context.userId) return { status: "unknown", pix: null };

@@ -5,7 +5,10 @@ export type Pix = { qr_code: string; qr_code_base64: string | null; ticket_url: 
 export type Reconciled = { status: string; mp: string | null; pix: Pix | null };
 export type Reservation = { action: "send" | "busy" | "paid" | "missing"; attempt_id?: string };
 export type CreateResult = { kind: "created"; paymentId: string } | { kind: "refused" | "unknown" };
-export type FlowResult = { status: "paid" | "pending" | "failed" | "cancelled" | "refunded" | "unknown"; pix: Pix | null };
+export type FlowResult = {
+  status: "paid" | "pending" | "failed" | "cancelled" | "refunded" | "unknown";
+  pix: Pix | null;
+};
 
 export interface BrickDeps {
   reconcile: () => Promise<Reconciled>;
@@ -17,7 +20,9 @@ export interface BrickDeps {
 }
 
 const known = (s: string): FlowResult["status"] =>
-  (["paid", "pending", "failed", "cancelled", "refunded"].includes(s) ? s : "unknown") as FlowResult["status"];
+  (["paid", "pending", "failed", "cancelled", "refunded"].includes(s)
+    ? s
+    : "unknown") as FlowResult["status"];
 
 export async function runBrickAttempt(d: BrickDeps): Promise<FlowResult> {
   const prior = await d.reconcile();
@@ -48,7 +53,10 @@ export async function runBrickAttempt(d: BrickDeps): Promise<FlowResult> {
       await d.mark(r.attempt_id, "unknown").catch(() => {});
       return { status: "unknown", pix: null };
     }
-    return { status: known(applied.status), pix: applied.status === "pending" ? applied.pix : null };
+    return {
+      status: known(applied.status),
+      pix: applied.status === "pending" ? applied.pix : null,
+    };
   } catch {
     await d.mark(r.attempt_id, "unknown").catch(() => {});
     return { status: "unknown", pix: null }; // re-read or DB write failed: never claim paid
