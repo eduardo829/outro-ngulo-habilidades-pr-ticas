@@ -65,6 +65,7 @@ function CheckoutPage() {
   const [phase, setPhase] = useState<Phase>({ k: "form" });
   const [brickKey, setBrickKey] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => {
     getCheckout({ data: { slug } })
@@ -83,7 +84,27 @@ function CheckoutPage() {
         }
       })
       .catch(() => setErr("Não foi possível carregar o pagamento."));
-  }, [slug]);
+  }, [slug, reload]);
+
+  // Legacy Checkout Pro payment still open/unknown: poll THAT purchase; reload the checkout once it resolves.
+  const legacy = info?.state === "legacy" ? info : null;
+  useEffect(() => {
+    if (!legacy) return;
+    const t = setInterval(async () => {
+      try {
+        if (!legacy.legacyPurchaseId) return setReload((n) => n + 1);
+        const r = await getPurchaseStatus({ data: { purchaseId: legacy.legacyPurchaseId } });
+        if (r.status === "paid") {
+          qc.invalidateQueries({ queryKey: ["my-learning"] });
+          setPhase({ k: "paid" });
+          setInfo({ state: "owned", slug: legacy.slug, title: legacy.title });
+        } else if (r.status !== "pending" && r.status !== "unknown") setReload((n) => n + 1);
+      } catch {
+        /* keep waiting */
+      }
+    }, 5000);
+    return () => clearInterval(t);
+  }, [legacy, qc]);
 
   const ready = info?.state === "ready" && info.publicKey ? info : null;
 
@@ -197,6 +218,18 @@ function CheckoutPage() {
       )}
       {info?.state === "unavailable" && (
         <p className="mt-4">Este curso não está à venda no momento.</p>
+      )}
+      {legacy && (
+        <div className="mt-4" aria-live="polite">
+          <h1 className="font-display text-3xl font-extrabold">{legacy.title}</h1>
+          <h2 className="mt-6 font-display text-xl font-bold">
+            {legacy.phase === "pending" ? "Você já tem um pagamento em análise" : "Verificando seu pagamento…"}
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            Encontramos um pagamento anterior deste curso ainda sem resposta final do Mercado Pago. Não pague de
+            novo: esta página atualiza sozinha e libera o curso assim que ele for confirmado.
+          </p>
+        </div>
       )}
       {info?.state === "owned" && (
         <div className="mt-4">

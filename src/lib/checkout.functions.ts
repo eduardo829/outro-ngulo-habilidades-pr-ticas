@@ -249,7 +249,7 @@ export const getCheckout = createServerFn({ method: "POST" })
         slug: c.slug,
         title: c.title,
         amount_cents: c.cents,
-        legacyPurchaseId: lg.id!,
+        legacyPurchaseId: lg.id,
         phase: lg.gate === "wait" ? ("pending" as const) : ("verifying" as const),
       };
     }
