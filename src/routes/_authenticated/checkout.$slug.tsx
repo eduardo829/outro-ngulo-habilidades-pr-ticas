@@ -65,7 +65,6 @@ function CheckoutPage() {
   const [phase, setPhase] = useState<Phase>({ k: "form" });
   const [brickKey, setBrickKey] = useState(0);
   const [copied, setCopied] = useState(false);
-  const attempt = useRef<string>(crypto.randomUUID());
 
   useEffect(() => {
     getCheckout({ data: { slug } })
@@ -120,7 +119,7 @@ function CheckoutPage() {
                 });
                 applyResult(r);
               } catch {
-                // Transport error after submit: a charge may exist. Verify; keep the same attempt key.
+                // Transport error after submit: a charge may exist. Verify; the server keeps the same attempt key.
                 setPhase({ k: "verifying" });
               }
             },
@@ -174,9 +173,8 @@ function CheckoutPage() {
     else setPhase({ k: next });
   }
 
-  // New attempt key only after a server-confirmed rejection.
+  // Shown only after a server-confirmed rejection; the server issues the new attempt key.
   const retry = () => {
-    attempt.current = crypto.randomUUID();
     setBrickKey((k) => k + 1);
     setPhase({ k: "form" });
   };
