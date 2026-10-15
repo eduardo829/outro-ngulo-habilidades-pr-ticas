@@ -123,59 +123,33 @@ export async function mpCreatePayment(
   return { kind: "created" as const, payment: json as unknown as MpPayment };
 }
 
-/** Applies a payment (re-read from Mercado Pago) to its purchase; grants access only when approved with the exact amount. */
+/**
+ * Applies a payment (re-read from Mercado Pago) to its purchase; grants access only when approved with the exact amount.
+ * Purchase + enrollment are written in ONE database transaction (checkout_apply_payment RPC); any error throws.
+ */
 export async function applyPayment(pay: MpPayment) {
   if (!pay.external_reference) return null;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { mapPaymentStatus } = await import("./checkout-logic");
-  const { data: p } = await supabaseAdmin
+  const { data: p, error: re } = await supabaseAdmin
     .from("purchases")
-    .select("*")
+    .select("id, payment_provider, amount_cents")
     .eq("id", pay.external_reference)
     .maybeSingle();
+  if (re) throw new Error("purchase read failed");
   if (!p || p.payment_provider !== "mercadopago") return null;
-  const payment_status = mapPaymentStatus(pay, p.amount_cents ?? -1);
-  // A paid purchase is never downgraded by a later rejected/pending attempt.
-  if (p.payment_status === "paid" && payment_status !== "refunded") return "paid";
-  // Enrollment first, then purchase: "paid" is only ever recorded/returned after access was actually written.
-  if (payment_status === "paid" && p.course_id) {
-    const { error: e1 } = await supabaseAdmin.from("enrollments").upsert(
-      {
-        user_id: p.user_id,
-        course_id: p.course_id,
-        status: "active",
-        source: "purchase",
-        purchase_id: p.id,
-      },
-      { onConflict: "user_id,course_id" },
-    );
-    if (e1) {
-      console.error("[mp] enrollment write failed", p.id);
-      throw new Error("enrollment write failed");
-    }
-  } else if (payment_status === "refunded") {
-    const { error: e2 } = await supabaseAdmin
-      .from("enrollments")
-      .update({ status: "revoked" })
-      .eq("purchase_id", p.id);
-    if (e2) {
-      console.error("[mp] revoke failed", p.id);
-      throw new Error("revoke failed");
-    }
+  const status = mapPaymentStatus(pay, p.amount_cents ?? -1);
+  const { data, error } = await supabaseAdmin.rpc("checkout_apply_payment", {
+    _purchase: p.id,
+    _status: status,
+    _transaction_id: String(pay.id),
+    _provider_status: `${pay.status}/${pay.status_detail ?? ""}`,
+  });
+  if (error) {
+    console.error("[mp] apply payment failed", p.id);
+    throw new Error("apply payment failed");
   }
-  const { error: e3 } = await supabaseAdmin
-    .from("purchases")
-    .update({
-      payment_status,
-      transaction_id: String(pay.id),
-      provider_status: `${pay.status}/${pay.status_detail ?? ""}`,
-    })
-    .eq("id", p.id);
-  if (e3) {
-    console.error("[mp] purchase update failed", p.id);
-    throw new Error("purchase update failed");
-  }
-  return payment_status;
+  return (data as string | null) ?? null;
 }
 
 export async function mpSyncPayment(paymentId: string) {
