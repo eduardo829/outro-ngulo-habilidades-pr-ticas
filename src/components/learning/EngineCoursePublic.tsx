@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { refreshMyPurchase } from "@/lib/checkout.functions";
+import { buyTarget } from "@/lib/checkout-logic";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -60,8 +61,8 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           : <Button asChild size="lg"><Link to="/auth">Criar conta e experimentar<ArrowRight /></Link></Button>)}
         {info?.is_purchasable
           ? (user
-            ? <Button asChild size="lg"><Link to="/checkout/$slug" params={{ slug: c.slug }}>{`Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Link></Button>
-            : <Button asChild size="lg"><Link to="/auth" search={{ redirect: `/checkout/${c.slug}` }}>Entrar para comprar<ArrowRight /></Link></Button>)
+            ? <Button asChild size="lg"><Link {...buyTarget(c.slug)}>{`Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Link></Button>
+            : <Button asChild size="lg"><Link {...buyTarget(c.slug)}>Entrar para comprar<ArrowRight /></Link></Button>)
           : user && <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>{interested ? "Na minha lista de interesse" : "Tenho interesse"}</Button>}
       </>;
   return (
