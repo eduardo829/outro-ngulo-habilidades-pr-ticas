@@ -116,7 +116,7 @@ function CheckoutPage() {
               setPhase({ k: "processing" });
               try {
                 const r = await payWithBrick({
-                  data: { purchaseId: ready.purchaseId, attemptId: attempt.current, formData },
+                  data: { purchaseId: ready.purchaseId, formData },
                 });
                 applyResult(r);
               } catch {
