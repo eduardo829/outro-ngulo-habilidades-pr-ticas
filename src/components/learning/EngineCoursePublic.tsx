@@ -14,7 +14,7 @@ import { courseState, ctaLabel } from "@/lib/learning/ownership";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { createCheckout, refreshMyPurchase } from "@/lib/checkout.functions";
+import { refreshMyPurchase } from "@/lib/checkout.functions";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -51,14 +51,6 @@ export function EngineCoursePublic({ c }: { c: Course }) {
     document.addEventListener("visibilitychange", onVis);
     return () => document.removeEventListener("visibilitychange", onVis);
   }, [user, state, info?.is_purchasable, c.slug, qc]);
-  const [buying, setBuying] = useState(false);
-  const buy = async () => {
-    setBuying(true);
-    try {
-      const r = await createCheckout({ data: { slug: c.slug, origin: window.location.origin } });
-      window.location.href = r.checkout_url;
-    } catch (e) { toast.error(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento."); setBuying(false); }
-  };
   const previewKey = info?.preview_enabled ? info.preview_module_key : null;
   const cta = state !== "locked"
     ? <Button asChild size="lg"><Link to="/aprender/$slug" params={{ slug: c.slug }}>{ctaLabel[state]}<ArrowRight /></Link></Button>
@@ -68,8 +60,8 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           : <Button asChild size="lg"><Link to="/auth">Criar conta e experimentar<ArrowRight /></Link></Button>)}
         {info?.is_purchasable
           ? (user
-            ? <Button size="lg" onClick={buy} disabled={buying}>{buying ? "Abrindo Mercado Pago…" : `Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Button>
-            : <Button asChild size="lg"><Link to="/auth" search={{ redirect: `/cursos/${c.slug}` }}>Entrar para comprar<ArrowRight /></Link></Button>)
+            ? <Button asChild size="lg"><Link to="/checkout/$slug" params={{ slug: c.slug }}>{`Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Link></Button>
+            : <Button asChild size="lg"><Link to="/auth" search={{ redirect: `/checkout/${c.slug}` }}>Entrar para comprar<ArrowRight /></Link></Button>)
           : user && <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>{interested ? "Na minha lista de interesse" : "Tenho interesse"}</Button>}
       </>;
   return (

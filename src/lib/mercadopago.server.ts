@@ -55,18 +55,26 @@ export async function mpVerifySignature(req: Request, dataId: string) {
   return diff === 0;
 }
 
+/** Creates a payment via Payments API (Payment Brick). Body built by buildPaymentBody; never logged. */
+export async function mpCreatePayment(body: unknown, idempotencyKey: string) {
+  const res = await fetch(`${BASE}/v1/payments`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json", "X-Idempotency-Key": idempotencyKey },
+    body: JSON.stringify(body),
+  });
+  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  if (!res.ok) { console.error("[mp] create payment failed", res.status, String(json["message"] ?? "").slice(0, 200)); return null; }
+  return json as MpPayment & { point_of_interaction?: { transaction_data?: { qr_code?: string; qr_code_base64?: string; ticket_url?: string } } };
+}
+
 /** Applies a payment (re-read from Mercado Pago) to its purchase; grants access only when approved with the exact amount. */
-async function applyPayment(pay: MpPayment) {
+export async function applyPayment(pay: MpPayment) {
   if (!pay.external_reference) return null;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { mapPaymentStatus } = await import("./checkout-logic");
   const { data: p } = await supabaseAdmin.from("purchases").select("*").eq("id", pay.external_reference).maybeSingle();
   if (!p || p.payment_provider !== "mercadopago") return null;
-  const amountOk = pay.transaction_amount != null && Math.round(pay.transaction_amount * 100) === p.amount_cents;
-  const payment_status =
-    pay.status === "approved" && amountOk ? "paid"
-    : pay.status === "refunded" || pay.status === "charged_back" ? "refunded"
-    : pay.status === "rejected" ? "failed"
-    : pay.status === "cancelled" ? "cancelled" : "pending";
+  const payment_status = mapPaymentStatus(pay, p.amount_cents ?? -1);
   // A paid purchase is never downgraded by a later rejected/pending attempt.
   if (p.payment_status === "paid" && payment_status !== "refunded") return "paid";
   await supabaseAdmin.from("purchases").update({ payment_status, transaction_id: String(pay.id), provider_status: `${pay.status}/${pay.status_detail ?? ""}` }).eq("id", p.id);
