@@ -27,15 +27,55 @@ describe("checkout rules", () => {
     expect(body.external_reference).toBe(purchase.id);
   });
 
-  it("rejects raw card data fields", () => {
-    expect(() =>
-      brickSchema.parse({
-        payment_method_id: "visa",
-        token: "t",
-        card_number: "4111111111111111",
-        payer: { email: "a@b.co" },
-      }),
-    ).toThrow();
+  it("accepts extra Brick fields but never forwards them (incl. raw card data)", () => {
+    const fd = brickSchema.parse({
+      payment_method_id: "visa",
+      token: "tok",
+      installments: 1,
+      amount: 999, // benign extra from the Brick
+      transaction_amount: 999,
+      card_number: "4111111111111111",
+      security_code: "123",
+      payer: {
+        email: "a@b.co",
+        identification: { type: "CPF", number: "123", extra: "x" },
+        phone: "1",
+      },
+    });
+    const body = buildPaymentBody(purchase, fd, { title: "Curso", notificationUrl: "https://x/y" });
+    const json = JSON.stringify(body);
+    for (const bad of [
+      "card_number",
+      "4111111111111111",
+      "security_code",
+      'amount":999',
+      "phone",
+      "extra",
+    ])
+      expect(json).not.toContain(bad);
+    expect(body.transaction_amount).toBe(127);
+    expect(Object.keys(body).sort()).toEqual([
+      "description",
+      "external_reference",
+      "installments",
+      "notification_url",
+      "payer",
+      "payment_method_id",
+      "statement_descriptor",
+      "token",
+      "transaction_amount",
+    ]);
+    expect(Object.keys(body.payer).sort()).toEqual(["email", "identification"]);
+    expect(Object.keys(body.payer.identification!).sort()).toEqual(["number", "type"]);
+  });
+
+  it("card requires token; Pix does not", () => {
+    expect(
+      brickSchema.safeParse({ payment_method_id: "visa", payer: { email: "a@b.co" } }).success,
+    ).toBe(false);
+    expect(
+      brickSchema.safeParse({ payment_method_id: "pix", payer: { email: "a@b.co" } }).success,
+    ).toBe(true);
   });
 
   it("builds a Pix payment without token", () => {
