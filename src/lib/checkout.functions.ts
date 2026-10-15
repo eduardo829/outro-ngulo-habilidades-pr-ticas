@@ -9,7 +9,7 @@ export const createCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ slug: z.string().min(1).max(120), origin: z.string().url().max(200) }).parse(d))
   .handler(async ({ data, context }) => {
-    const { mpCreateOrder } = await import("./mercadopago.server");
+    const { mpCreatePreference } = await import("./mercadopago.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
 
