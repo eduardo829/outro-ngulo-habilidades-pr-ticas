@@ -74,7 +74,13 @@ function CheckoutPage() {
         // An open payment (Pix awaiting, in analysis, or unconfirmed) is shown again; no new form.
         if (i.state === "ready" && i.existing) {
           const e = i.existing;
-          setPhase(e.phase === "pix" && e.pix ? { k: "pix", pix: e.pix } : e.phase === "pix" ? { k: "pending" } : { k: e.phase });
+          setPhase(
+            e.phase === "pix" && e.pix
+              ? { k: "pix", pix: e.pix }
+              : e.phase === "pix"
+                ? { k: "pending" }
+                : { k: e.phase },
+          );
         }
       })
       .catch(() => setErr("Não foi possível carregar o pagamento."));
@@ -145,7 +151,8 @@ function CheckoutPage() {
             // Confirmed: no payment exists. Form again, SAME attempt key (idempotent resend).
             setBrickKey((k) => k + 1);
             setPhase({ k: "form" });
-          } else if (r.status === "pending") setPhase(r.pix ? { k: "pix", pix: r.pix } : { k: "pending" });
+          } else if (r.status === "pending")
+            setPhase(r.pix ? { k: "pix", pix: r.pix } : { k: "pending" });
           else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
         } else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
       } catch {
@@ -252,8 +259,8 @@ function CheckoutPage() {
             <div className="mt-6" aria-live="polite">
               <h2 className="font-display text-xl font-bold">Verificando seu pagamento…</h2>
               <p className="mt-2 text-muted-foreground">
-                Estamos confirmando com o Mercado Pago se a cobrança foi feita. Aguarde aqui e não pague
-                de novo; esta página atualiza sozinha.
+                Estamos confirmando com o Mercado Pago se a cobrança foi feita. Aguarde aqui e não
+                pague de novo; esta página atualiza sozinha.
               </p>
             </div>
           )}

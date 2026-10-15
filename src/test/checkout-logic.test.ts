@@ -78,7 +78,10 @@ describe("checkout review regressions", () => {
   });
 
   it("(2) buy CTA always targets the checkout route directly", () => {
-    expect(buyTarget("corretor-na-pratica")).toEqual({ to: "/checkout/$slug", params: { slug: "corretor-na-pratica" } });
+    expect(buyTarget("corretor-na-pratica")).toEqual({
+      to: "/checkout/$slug",
+      params: { slug: "corretor-na-pratica" },
+    });
   });
 
   it("(3) network/unknown result after POST never shows rejection", () => {
@@ -95,7 +98,8 @@ describe("checkout review regressions", () => {
 
   it("(4) existing non-terminal payment blocks a new charge", () => {
     expect(attemptPolicy(null)).toBe("same_key");
-    for (const s of ["pending", "in_process", "authorized", "in_mediation", "approved"]) expect(attemptPolicy(s)).toBe("block");
+    for (const s of ["pending", "in_process", "authorized", "in_mediation", "approved"])
+      expect(attemptPolicy(s)).toBe("block");
     expect(attemptPolicy("rejected")).toBe("new_attempt");
     expect(attemptPolicy("cancelled")).toBe("new_attempt");
   });
