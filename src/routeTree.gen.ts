@@ -37,6 +37,9 @@ import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as GestorSlugRouteImport } from './routes/gestor.$slug'
 import { Route as GestoresIndexRouteImport } from './routes/gestores.index'
+import { Route as PagamentoFalhaRouteImport } from './routes/pagamento.falha'
+import { Route as PagamentoPendenteRouteImport } from './routes/pagamento.pendente'
+import { Route as PagamentoSucessoRouteImport } from './routes/pagamento.sucesso'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
 import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_authenticated/admin/comunidade'
@@ -57,6 +60,7 @@ import { Route as AuthenticatedMissoesIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedMissoesKeyRouteImport } from './routes/_authenticated/missoes.$key'
 import { Route as AuthenticatedPessoasIndexRouteImport } from './routes/_authenticated/pessoas.index'
 import { Route as AuthenticatedPessoasIdRouteImport } from './routes/_authenticated/pessoas.$id'
+import { Route as ApiPublicMercadopagoWebhookRouteImport } from './routes/api/public/mercadopago-webhook'
 import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
 import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authenticated/admin/cursos.$id'
 import { Route as AuthenticatedAprenderSlugIndexRouteImport } from './routes/_authenticated/aprender.$slug.index'
@@ -203,6 +207,21 @@ const GestoresIndexRoute = GestoresIndexRouteImport.update({
   path: '/gestores/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PagamentoFalhaRoute = PagamentoFalhaRouteImport.update({
+  id: '/pagamento/falha',
+  path: '/pagamento/falha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagamentoPendenteRoute = PagamentoPendenteRouteImport.update({
+  id: '/pagamento/pendente',
+  path: '/pagamento/pendente',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagamentoSucessoRoute = PagamentoSucessoRouteImport.update({
+  id: '/pagamento/sucesso',
+  path: '/pagamento/sucesso',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -318,6 +337,12 @@ const AuthenticatedPessoasIdRoute = AuthenticatedPessoasIdRouteImport.update({
   path: '/pessoas/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicMercadopagoWebhookRoute =
+  ApiPublicMercadopagoWebhookRouteImport.update({
+    id: '/api/public/mercadopago-webhook',
+    path: '/api/public/mercadopago-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminCursosIndexRoute =
   AuthenticatedAdminCursosIndexRouteImport.update({
     id: '/cursos/',
@@ -375,6 +400,9 @@ export interface FileRoutesByFullPath {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/falha': typeof PagamentoFalhaRoute
+  '/pagamento/pendente': typeof PagamentoPendenteRoute
+  '/pagamento/sucesso': typeof PagamentoSucessoRoute
   '/cursos/': typeof CursosIndexRoute
   '/gestores/': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -391,6 +419,7 @@ export interface FileRoutesByFullPath {
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
+  '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
@@ -428,6 +457,9 @@ export interface FileRoutesByTo {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/falha': typeof PagamentoFalhaRoute
+  '/pagamento/pendente': typeof PagamentoPendenteRoute
+  '/pagamento/sucesso': typeof PagamentoSucessoRoute
   '/cursos': typeof CursosIndexRoute
   '/gestores': typeof GestoresIndexRoute
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -444,6 +476,7 @@ export interface FileRoutesByTo {
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
+  '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
@@ -484,6 +517,9 @@ export interface FileRoutesById {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/falha': typeof PagamentoFalhaRoute
+  '/pagamento/pendente': typeof PagamentoPendenteRoute
+  '/pagamento/sucesso': typeof PagamentoSucessoRoute
   '/cursos/': typeof CursosIndexRoute
   '/gestores/': typeof GestoresIndexRoute
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
@@ -500,6 +536,7 @@ export interface FileRoutesById {
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/_authenticated/pessoas/$id': typeof AuthenticatedPessoasIdRoute
+  '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
@@ -540,6 +577,9 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/falha'
+    | '/pagamento/pendente'
+    | '/pagamento/sucesso'
     | '/cursos/'
     | '/gestores/'
     | '/admin/alunos'
@@ -556,6 +596,7 @@ export interface FileRouteTypes {
     | '/mensagens/$id'
     | '/missoes/$key'
     | '/pessoas/$id'
+    | '/api/public/mercadopago-webhook'
     | '/admin/'
     | '/comunidade/'
     | '/encontros/'
@@ -593,6 +634,9 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/falha'
+    | '/pagamento/pendente'
+    | '/pagamento/sucesso'
     | '/cursos'
     | '/gestores'
     | '/admin/alunos'
@@ -609,6 +653,7 @@ export interface FileRouteTypes {
     | '/mensagens/$id'
     | '/missoes/$key'
     | '/pessoas/$id'
+    | '/api/public/mercadopago-webhook'
     | '/admin'
     | '/comunidade'
     | '/encontros'
@@ -648,6 +693,9 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/falha'
+    | '/pagamento/pendente'
+    | '/pagamento/sucesso'
     | '/cursos/'
     | '/gestores/'
     | '/_authenticated/admin/alunos'
@@ -664,6 +712,7 @@ export interface FileRouteTypes {
     | '/_authenticated/mensagens/$id'
     | '/_authenticated/missoes/$key'
     | '/_authenticated/pessoas/$id'
+    | '/api/public/mercadopago-webhook'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
     | '/_authenticated/encontros/'
@@ -696,8 +745,12 @@ export interface RootRouteChildren {
   ApiAssistantRoute: typeof ApiAssistantRoute
   CursosSlugRoute: typeof CursosSlugRoute
   GestorSlugRoute: typeof GestorSlugRoute
+  PagamentoFalhaRoute: typeof PagamentoFalhaRoute
+  PagamentoPendenteRoute: typeof PagamentoPendenteRoute
+  PagamentoSucessoRoute: typeof PagamentoSucessoRoute
   CursosIndexRoute: typeof CursosIndexRoute
   GestoresIndexRoute: typeof GestoresIndexRoute
+  ApiPublicMercadopagoWebhookRoute: typeof ApiPublicMercadopagoWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -898,6 +951,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GestoresIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pagamento/falha': {
+      id: '/pagamento/falha'
+      path: '/pagamento/falha'
+      fullPath: '/pagamento/falha'
+      preLoaderRoute: typeof PagamentoFalhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pagamento/pendente': {
+      id: '/pagamento/pendente'
+      path: '/pagamento/pendente'
+      fullPath: '/pagamento/pendente'
+      preLoaderRoute: typeof PagamentoPendenteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pagamento/sucesso': {
+      id: '/pagamento/sucesso'
+      path: '/pagamento/sucesso'
+      fullPath: '/pagamento/sucesso'
+      preLoaderRoute: typeof PagamentoSucessoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/'
@@ -1037,6 +1111,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/pessoas/$id'
       preLoaderRoute: typeof AuthenticatedPessoasIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/public/mercadopago-webhook': {
+      id: '/api/public/mercadopago-webhook'
+      path: '/api/public/mercadopago-webhook'
+      fullPath: '/api/public/mercadopago-webhook'
+      preLoaderRoute: typeof ApiPublicMercadopagoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/cursos/': {
       id: '/_authenticated/admin/cursos/'
@@ -1182,8 +1263,12 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAssistantRoute: ApiAssistantRoute,
   CursosSlugRoute: CursosSlugRoute,
   GestorSlugRoute: GestorSlugRoute,
+  PagamentoFalhaRoute: PagamentoFalhaRoute,
+  PagamentoPendenteRoute: PagamentoPendenteRoute,
+  PagamentoSucessoRoute: PagamentoSucessoRoute,
   CursosIndexRoute: CursosIndexRoute,
   GestoresIndexRoute: GestoresIndexRoute,
+  ApiPublicMercadopagoWebhookRoute: ApiPublicMercadopagoWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

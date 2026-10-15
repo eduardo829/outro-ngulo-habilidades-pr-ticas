@@ -13,6 +13,8 @@ import { useCoursePrices, useCourseCommerce, useMyLearning, brl } from "@/lib/co
 import { courseState, ctaLabel } from "@/lib/learning/ownership";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { createCheckout } from "@/lib/checkout.functions";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
@@ -38,6 +40,14 @@ export function EngineCoursePublic({ c }: { c: Course }) {
     else await supabase.from("course_interest").insert({ user_id: user.id, course_id: info.id });
     qc.invalidateQueries({ queryKey: ["my-learning"] });
   };
+  const [buying, setBuying] = useState(false);
+  const buy = async () => {
+    setBuying(true);
+    try {
+      const r = await createCheckout({ data: { slug: c.slug, origin: window.location.origin } });
+      window.location.href = r.checkout_url;
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento."); setBuying(false); }
+  };
   const previewKey = info?.preview_enabled ? info.preview_module_key : null;
   const cta = state !== "locked"
     ? <Button asChild size="lg"><Link to="/aprender/$slug" params={{ slug: c.slug }}>{ctaLabel[state]}<ArrowRight /></Link></Button>
@@ -46,7 +56,9 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           ? <Button asChild size="lg"><Link to="/aprender/$slug/$modulo" params={{ slug: c.slug, modulo: previewKey }}>Começar aula aberta<ArrowRight /></Link></Button>
           : <Button asChild size="lg"><Link to="/auth">Criar conta e experimentar<ArrowRight /></Link></Button>)}
         {info?.is_purchasable
-          ? <Button size="lg" variant="outline" disabled title="Pagamento on-line em preparação">Adquirir curso</Button>
+          ? (user
+            ? <Button size="lg" onClick={buy} disabled={buying}>{buying ? "Abrindo Mercado Pago…" : `Comprar por ${brl(prices?.[c.slug]) ?? ""}`}<ArrowRight /></Button>
+            : <Button asChild size="lg"><Link to="/auth">Entrar para comprar<ArrowRight /></Link></Button>)
           : user && <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>{interested ? "Na minha lista de interesse" : "Tenho interesse"}</Button>}
       </>;
   return (
