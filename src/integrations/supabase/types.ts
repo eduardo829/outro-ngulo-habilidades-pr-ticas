@@ -1519,7 +1519,11 @@ export type Database = {
       purchases: {
         Row: {
           amount_cents: number | null
+          attempt_id: string | null
+          attempt_started_at: string | null
+          attempt_state: string | null
           bundle_id: string | null
+          checkout_kind: string | null
           coupon_code: string | null
           course_id: string | null
           created_at: string
@@ -1535,7 +1539,11 @@ export type Database = {
         }
         Insert: {
           amount_cents?: number | null
+          attempt_id?: string | null
+          attempt_started_at?: string | null
+          attempt_state?: string | null
           bundle_id?: string | null
+          checkout_kind?: string | null
           coupon_code?: string | null
           course_id?: string | null
           created_at?: string
@@ -1551,7 +1559,11 @@ export type Database = {
         }
         Update: {
           amount_cents?: number | null
+          attempt_id?: string | null
+          attempt_started_at?: string | null
+          attempt_state?: string | null
           bundle_id?: string | null
+          checkout_kind?: string | null
           coupon_code?: string | null
           course_id?: string | null
           created_at?: string
@@ -1705,6 +1717,23 @@ export type Database = {
         Returns: Json
       }
       book_event: { Args: { _event: string }; Returns: undefined }
+      checkout_apply_payment: {
+        Args: {
+          _provider_status: string
+          _purchase: string
+          _status: string
+          _transaction_id: string
+        }
+        Returns: string
+      }
+      checkout_mark_attempt: {
+        Args: { _attempt: string; _purchase: string; _state: string }
+        Returns: undefined
+      }
+      checkout_reserve_attempt: {
+        Args: { _purchase: string; _stale_seconds?: number }
+        Returns: Json
+      }
       course_outline: {
         Args: { _course: string }
         Returns: {

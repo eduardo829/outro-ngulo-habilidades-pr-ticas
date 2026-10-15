@@ -141,6 +141,13 @@
       "when": 1792027259293,
       "tag": "0019_mercadopago_test_checkout",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792082331133,
+      "tag": "0020_checkout_attempt_lock",
+      "breakpoints": true
     }
   ]
 }
