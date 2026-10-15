@@ -1527,6 +1527,7 @@ export type Database = {
           id: string
           payment_provider: string | null
           payment_status: string
+          provider_status: string | null
           refund_status: string | null
           transaction_id: string | null
           updated_at: string
@@ -1542,6 +1543,7 @@ export type Database = {
           id?: string
           payment_provider?: string | null
           payment_status?: string
+          provider_status?: string | null
           refund_status?: string | null
           transaction_id?: string | null
           updated_at?: string
@@ -1557,6 +1559,7 @@ export type Database = {
           id?: string
           payment_provider?: string | null
           payment_status?: string
+          provider_status?: string | null
           refund_status?: string | null
           transaction_id?: string | null
           updated_at?: string
