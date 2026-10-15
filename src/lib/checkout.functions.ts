@@ -297,7 +297,7 @@ export const payWithBrick = createServerFn({ method: "POST" })
       };
     }
 
-    let created;
+    let created: Awaited<ReturnType<typeof mpCreatePayment>>;
     try {
       created = await mpCreatePayment(
         buildPaymentBody({ id: p.id, amount_cents: p.amount_cents }, fd.data, {
@@ -310,7 +310,7 @@ export const payWithBrick = createServerFn({ method: "POST" })
       return { status: "unknown" as const, pix: null }; // network error after send: a charge may exist
     }
     if (created.kind === "refused") return { status: "failed" as const, pix: null };
-    if (created.kind === "unknown") return { status: "unknown" as const, pix: null };
+    if (created.kind !== "created") return { status: "unknown" as const, pix: null };
     try {
       const fresh = await mpGetPayment(String(created.payment.id));
       if (!fresh) return { status: "unknown" as const, pix: null };

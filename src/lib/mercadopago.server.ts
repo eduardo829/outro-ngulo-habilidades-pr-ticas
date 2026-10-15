@@ -139,18 +139,16 @@ export async function applyPayment(pay: MpPayment) {
   if (p.payment_status === "paid" && payment_status !== "refunded") return "paid";
   // Enrollment first, then purchase: "paid" is only ever recorded/returned after access was actually written.
   if (payment_status === "paid" && p.course_id) {
-    const { error: e1 } = await supabaseAdmin
-      .from("enrollments")
-      .upsert(
-        {
-          user_id: p.user_id,
-          course_id: p.course_id,
-          status: "active",
-          source: "purchase",
-          purchase_id: p.id,
-        },
-        { onConflict: "user_id,course_id" },
-      );
+    const { error: e1 } = await supabaseAdmin.from("enrollments").upsert(
+      {
+        user_id: p.user_id,
+        course_id: p.course_id,
+        status: "active",
+        source: "purchase",
+        purchase_id: p.id,
+      },
+      { onConflict: "user_id,course_id" },
+    );
     if (e1) {
       console.error("[mp] enrollment write failed", p.id);
       throw new Error("enrollment write failed");
