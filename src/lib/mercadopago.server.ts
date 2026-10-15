@@ -1,5 +1,6 @@
-// Mercado Pago (Checkout Pro via Orders API). Server-only: the access token never reaches the browser.
-const API = "https://api.mercadopago.com/v1/orders";
+// Mercado Pago Checkout Pro (Preferences API — Orders-based Checkout Pro is not enabled for Brazilian accounts).
+// Server-only: the access token never reaches the browser.
+const BASE = "https://api.mercadopago.com";
 
 function token() {
   const t = process.env["MERCADO_PAGO_ACCESS_TOKEN"];
@@ -7,21 +8,29 @@ function token() {
   return t;
 }
 
-export async function mpCreateOrder(body: unknown, idempotencyKey: string) {
-  const res = await fetch(API, {
+export async function mpCreatePreference(body: unknown, idempotencyKey: string) {
+  const res = await fetch(`${BASE}/checkout/preferences`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token()}`, "Content-Type": "application/json", "X-Idempotency-Key": idempotencyKey },
     body: JSON.stringify(body),
   });
   const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-  if (!res.ok) { console.error("[mp] create order failed", res.status, JSON.stringify(json).slice(0, 500)); throw new Error("Não foi possível iniciar o pagamento."); }
-  return json as { id: string; checkout_url?: string; status?: string };
+  if (!res.ok) { console.error("[mp] create preference failed", res.status, JSON.stringify(json).slice(0, 500)); throw new Error("Não foi possível iniciar o pagamento."); }
+  return json as { id: string; init_point?: string; sandbox_init_point?: string };
 }
 
-export async function mpGetOrder(id: string) {
-  const res = await fetch(`${API}/${encodeURIComponent(id)}`, { headers: { Authorization: `Bearer ${token()}` } });
+type MpPayment = { id: number; status: string; status_detail?: string; external_reference?: string; transaction_amount?: number };
+
+export async function mpGetPayment(id: string) {
+  const res = await fetch(`${BASE}/v1/payments/${encodeURIComponent(id)}`, { headers: { Authorization: `Bearer ${token()}` } });
+  return res.ok ? ((await res.json()) as MpPayment) : null;
+}
+
+async function mpLatestPaymentFor(externalRef: string) {
+  const res = await fetch(`${BASE}/v1/payments/search?sort=date_created&criteria=desc&limit=1&external_reference=${encodeURIComponent(externalRef)}`, { headers: { Authorization: `Bearer ${token()}` } });
   if (!res.ok) return null;
-  return (await res.json()) as { id: string; status: string; status_detail?: string; external_reference?: string; total_amount?: string };
+  const j = (await res.json()) as { results?: MpPayment[] };
+  return j.results?.[0] ?? null;
 }
 
 /** Validates x-signature: HMAC-SHA256 over "id:<data.id>;request-id:<x-request-id>;ts:<ts>;". */
@@ -46,26 +55,38 @@ export async function mpVerifySignature(req: Request, dataId: string) {
   return diff === 0;
 }
 
-/** Re-reads the order from Mercado Pago and applies it to the purchase; grants access only when processed/accredited. */
-export async function mpSyncOrder(orderId: string) {
-  const order = await mpGetOrder(orderId);
-  if (!order) return null;
+/** Applies a payment (re-read from Mercado Pago) to its purchase; grants access only when approved with the exact amount. */
+async function applyPayment(pay: MpPayment) {
+  if (!pay.external_reference) return null;
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { data: p } = await supabaseAdmin.from("purchases").select("*").eq("transaction_id", order.id).maybeSingle();
-  if (!p || p.id !== order.external_reference) return null;
-  const paid = order.status === "processed" && (!order.status_detail || order.status_detail === "accredited");
-  const amountOk = order.total_amount != null && Math.round(Number(order.total_amount) * 100) === p.amount_cents;
-  const refunded = order.status === "refunded" || order.status_detail === "refunded";
-  const failed = ["failed", "canceled", "expired"].includes(order.status);
-  const payment_status = paid && amountOk ? "paid" : refunded ? "refunded" : failed ? "failed" : "pending";
-  await supabaseAdmin.from("purchases").update({ payment_status, provider_status: `${order.status}/${order.status_detail ?? ""}` }).eq("id", p.id);
+  const { data: p } = await supabaseAdmin.from("purchases").select("*").eq("id", pay.external_reference).maybeSingle();
+  if (!p || p.payment_provider !== "mercadopago") return null;
+  const amountOk = pay.transaction_amount != null && Math.round(pay.transaction_amount * 100) === p.amount_cents;
+  const payment_status =
+    pay.status === "approved" && amountOk ? "paid"
+    : pay.status === "refunded" || pay.status === "charged_back" ? "refunded"
+    : pay.status === "rejected" ? "failed"
+    : pay.status === "cancelled" ? "cancelled" : "pending";
+  // A paid purchase is never downgraded by a later rejected/pending attempt.
+  if (p.payment_status === "paid" && payment_status !== "refunded") return "paid";
+  await supabaseAdmin.from("purchases").update({ payment_status, transaction_id: String(pay.id), provider_status: `${pay.status}/${pay.status_detail ?? ""}` }).eq("id", p.id);
   if (payment_status === "paid" && p.course_id) {
     await supabaseAdmin.from("enrollments").upsert(
       { user_id: p.user_id, course_id: p.course_id, status: "active", source: "purchase", purchase_id: p.id },
       { onConflict: "user_id,course_id" },
     );
-  } else if (payment_status === "refunded" && p.course_id) {
+  } else if (payment_status === "refunded") {
     await supabaseAdmin.from("enrollments").update({ status: "revoked" }).eq("purchase_id", p.id);
   }
   return payment_status;
+}
+
+export async function mpSyncPayment(paymentId: string) {
+  const pay = await mpGetPayment(paymentId);
+  return pay ? applyPayment(pay) : null;
+}
+
+export async function mpSyncPurchase(purchaseId: string) {
+  const pay = await mpLatestPaymentFor(purchaseId);
+  return pay ? applyPayment(pay) : null;
 }

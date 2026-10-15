@@ -9,7 +9,7 @@ export const createCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ slug: z.string().min(1).max(120), origin: z.string().url().max(200) }).parse(d))
   .handler(async ({ data, context }) => {
-    const { mpCreateOrder } = await import("./mercadopago.server");
+    const { mpCreatePreference } = await import("./mercadopago.server");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
 
@@ -30,44 +30,37 @@ export const createCheckout = createServerFn({ method: "POST" })
       .select("id").single();
     if (error || !p) throw new Error("Não foi possível iniciar o pagamento.");
 
-    const amount = (cents / 100).toFixed(2);
-    const email = (context.claims as { email?: string }).email;
-    const order = await mpCreateOrder({
-      type: "online",
-      processing_mode: "manual",
-      total_amount: amount,
+    const pref = await mpCreatePreference({
+      items: [{ id: c.slug, title: c.title.slice(0, 120), quantity: 1, unit_price: cents / 100, currency_id: "BRL" }],
       external_reference: p.id,
-      ...(email ? { payer: { email } } : {}),
-      transactions: { payments: [{ amount }] },
-      items: [{ title: c.title.slice(0, 120), unit_price: amount, quantity: 1, external_code: c.slug }],
-      checkout_pro: {
-        back_urls: {
-          success: `${origin}/pagamento/sucesso?curso=${c.slug}`,
-          failure: `${origin}/pagamento/falha?curso=${c.slug}`,
-          pending: `${origin}/pagamento/pendente?curso=${c.slug}`,
-        },
-        auto_return: "approved",
+      notification_url: "https://outroangulo.com/api/public/mercadopago-webhook",
+      back_urls: {
+        success: `${origin}/pagamento/sucesso?curso=${c.slug}`,
+        failure: `${origin}/pagamento/falha?curso=${c.slug}`,
+        pending: `${origin}/pagamento/pendente?curso=${c.slug}`,
       },
+      auto_return: "approved",
+      statement_descriptor: "OUTRO ANGULO",
     }, p.id);
 
-    await supabaseAdmin.from("purchases").update({ transaction_id: order.id }).eq("id", p.id);
-    if (!order.checkout_url) throw new Error("Não foi possível iniciar o pagamento.");
-    return { checkout_url: order.checkout_url };
+    await supabaseAdmin.from("purchases").update({ provider_status: `preference/${pref.id}` }).eq("id", p.id);
+    if (!pref.init_point) throw new Error("Não foi possível iniciar o pagamento.");
+    return { checkout_url: pref.init_point };
   });
 
-/** Lets the buyer re-check their own latest order on the return pages (status always confirmed with Mercado Pago). */
+/** Lets the buyer re-check their own latest purchase on the return pages (status always confirmed with Mercado Pago). */
 export const refreshMyPurchase = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => z.object({ slug: z.string().min(1).max(120) }).parse(d))
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { mpSyncOrder } = await import("./mercadopago.server");
+    const { mpSyncPurchase } = await import("./mercadopago.server");
     const { data: c } = await supabaseAdmin.from("courses").select("id").eq("slug", data.slug).maybeSingle();
     if (!c) return { status: "unknown" };
-    const { data: p } = await supabaseAdmin.from("purchases").select("transaction_id, payment_status")
+    const { data: p } = await supabaseAdmin.from("purchases").select("id, payment_status")
       .eq("user_id", context.userId).eq("course_id", c.id).eq("payment_provider", "mercadopago")
       .order("created_at", { ascending: false }).limit(1).maybeSingle();
-    if (!p?.transaction_id) return { status: "unknown" };
+    if (!p) return { status: "unknown" };
     if (p.payment_status === "paid") return { status: "paid" };
-    return { status: (await mpSyncOrder(p.transaction_id)) ?? p.payment_status };
+    return { status: (await mpSyncPurchase(p.id)) ?? p.payment_status };
   });
