@@ -19,16 +19,21 @@ export async function mpCreatePreference(body: unknown, idempotencyKey: string) 
   return json as { id: string; init_point?: string; sandbox_init_point?: string };
 }
 
-type MpPayment = { id: number; status: string; status_detail?: string; external_reference?: string; transaction_amount?: number };
+type PixData = { qr_code?: string; qr_code_base64?: string; ticket_url?: string };
+export type MpPayment = { id: number; status: string; status_detail?: string; external_reference?: string; transaction_amount?: number; payment_method_id?: string; point_of_interaction?: { transaction_data?: PixData } };
 
+/** Re-reads one payment. Throws on transport/server errors so callers never mistake "unknown" for "not found". */
 export async function mpGetPayment(id: string) {
   const res = await fetch(`${BASE}/v1/payments/${encodeURIComponent(id)}`, { headers: { Authorization: `Bearer ${token()}` } });
-  return res.ok ? ((await res.json()) as MpPayment) : null;
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`mp get payment ${res.status}`);
+  return (await res.json()) as MpPayment;
 }
 
-async function mpLatestPaymentFor(externalRef: string) {
+/** Latest payment for a purchase (external_reference). null = none exists; throws if Mercado Pago could not be asked. */
+export async function mpLatestPaymentFor(externalRef: string) {
   const res = await fetch(`${BASE}/v1/payments/search?sort=date_created&criteria=desc&limit=1&external_reference=${encodeURIComponent(externalRef)}`, { headers: { Authorization: `Bearer ${token()}` } });
-  if (!res.ok) return null;
+  if (!res.ok) throw new Error(`mp search ${res.status}`);
   const j = (await res.json()) as { results?: MpPayment[] };
   return j.results?.[0] ?? null;
 }
@@ -63,8 +68,12 @@ export async function mpCreatePayment(body: unknown, idempotencyKey: string) {
     body: JSON.stringify(body),
   });
   const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-  if (!res.ok) { console.error("[mp] create payment failed", res.status, String(json["message"] ?? "").slice(0, 200)); return null; }
-  return json as MpPayment & { point_of_interaction?: { transaction_data?: { qr_code?: string; qr_code_base64?: string; ticket_url?: string } } };
+  // 4xx (except 409/429) = request refused, no payment created. 5xx/409/429 = outcome unknown: caller must reconcile.
+  if (!res.ok) {
+    console.error("[mp] create payment failed", res.status, String(json["message"] ?? "").slice(0, 200));
+    return { kind: res.status >= 500 || res.status === 409 || res.status === 429 ? ("unknown" as const) : ("refused" as const) };
+  }
+  return { kind: "created" as const, payment: json as unknown as MpPayment };
 }
 
 /** Applies a payment (re-read from Mercado Pago) to its purchase; grants access only when approved with the exact amount. */
@@ -77,15 +86,19 @@ export async function applyPayment(pay: MpPayment) {
   const payment_status = mapPaymentStatus(pay, p.amount_cents ?? -1);
   // A paid purchase is never downgraded by a later rejected/pending attempt.
   if (p.payment_status === "paid" && payment_status !== "refunded") return "paid";
-  await supabaseAdmin.from("purchases").update({ payment_status, transaction_id: String(pay.id), provider_status: `${pay.status}/${pay.status_detail ?? ""}` }).eq("id", p.id);
+  // Enrollment first, then purchase: "paid" is only ever recorded/returned after access was actually written.
   if (payment_status === "paid" && p.course_id) {
-    await supabaseAdmin.from("enrollments").upsert(
+    const { error: e1 } = await supabaseAdmin.from("enrollments").upsert(
       { user_id: p.user_id, course_id: p.course_id, status: "active", source: "purchase", purchase_id: p.id },
       { onConflict: "user_id,course_id" },
     );
+    if (e1) { console.error("[mp] enrollment write failed", p.id); throw new Error("enrollment write failed"); }
   } else if (payment_status === "refunded") {
-    await supabaseAdmin.from("enrollments").update({ status: "revoked" }).eq("purchase_id", p.id);
+    const { error: e2 } = await supabaseAdmin.from("enrollments").update({ status: "revoked" }).eq("purchase_id", p.id);
+    if (e2) { console.error("[mp] revoke failed", p.id); throw new Error("revoke failed"); }
   }
+  const { error: e3 } = await supabaseAdmin.from("purchases").update({ payment_status, transaction_id: String(pay.id), provider_status: `${pay.status}/${pay.status_detail ?? ""}` }).eq("id", p.id);
+  if (e3) { console.error("[mp] purchase update failed", p.id); throw new Error("purchase update failed"); }
   return payment_status;
 }
 

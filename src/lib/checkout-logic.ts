@@ -62,8 +62,32 @@ export function buildPaymentBody(
   };
 }
 
+/** X-Idempotency-Key: two dash-less UUIDs = 64 chars (Mercado Pago limit is 64). */
 export const idempotencyKey = (purchaseId: string, attemptId: string) =>
-  `oa-${purchaseId}-${attemptId}`;
+  `${purchaseId.replace(/-/g, "")}${attemptId.replace(/-/g, "")}`.slice(0, 64);
+
+/** Buy CTA: always the checkout route itself; the _authenticated gate sends visitors to login with the full return URL. */
+export const buyTarget = (slug: string) => ({ to: "/checkout/$slug" as const, params: { slug } });
+
+/** Mercado Pago payment statuses that are still open (or already successful): no new charge may be created. */
+const OPEN_MP = new Set(["pending", "in_process", "authorized", "in_mediation", "approved"]);
+/** Given the latest MP payment for a purchase (or none), decide how a new submit may proceed. */
+export function attemptPolicy(latestMpStatus: string | null): "same_key" | "block" | "new_attempt" {
+  if (latestMpStatus == null) return "same_key";
+  return OPEN_MP.has(latestMpStatus) ? "block" : "new_attempt";
+}
+
+export type PayResult = { status: string; pix?: { qr_code: string } | null } | null;
+/** UI phase after a pay call. null = request failed in transit: a charge may exist, so we verify instead of claiming rejection. */
+export function phaseAfterPay(r: PayResult): "paid" | "pix" | "pending" | "rejected" | "verifying" {
+  if (!r) return "verifying";
+  if (r.status === "paid") return "paid";
+  if (r.status === "pending") return r.pix?.qr_code ? "pix" : "pending";
+  if (r.status === "failed" || r.status === "cancelled") return "rejected";
+  return "verifying";
+}
+/** A fresh attemptId (new idempotency key) is allowed only after a confirmed rejection. */
+export const canStartNewAttempt = (status: string) => status === "failed" || status === "cancelled";
 
 export type PayStatus = "paid" | "pending" | "failed" | "cancelled" | "refunded";
 export function mapPaymentStatus(
