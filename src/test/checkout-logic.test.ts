@@ -91,8 +91,8 @@ describe("checkout rules", () => {
   });
 
   it("grants paid only when approved with the exact amount", () => {
-    expect(mapPaymentStatus({ status: "approved", transaction_amount: 127 }, 12700)).toBe("paid");
-    expect(mapPaymentStatus({ status: "approved", transaction_amount: 1 }, 12700)).toBe("pending");
+    expect(mapPaymentStatus({ status: "approved", transaction_amount: 127, currency_id: "BRL" }, 12700)).toBe("paid");
+    expect(mapPaymentStatus({ status: "approved", transaction_amount: 1, currency_id: "BRL" }, 12700)).toBe("pending");
     expect(mapPaymentStatus({ status: "rejected" }, 12700)).toBe("failed");
     expect(mapPaymentStatus({ status: "in_process" }, 12700)).toBe("pending");
     expect(mapPaymentStatus({ status: "refunded" }, 12700)).toBe("refunded");

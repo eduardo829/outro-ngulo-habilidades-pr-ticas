@@ -366,11 +366,12 @@ export const payWithBrick = createServerFn({ method: "POST" })
         if (error) throw new Error("mark failed");
       },
       key: (attemptId) => idempotencyKey(p.id, attemptId),
-      create: async (key) => {
+      create: async (key, attemptId) => {
         const r = await mpCreatePayment(
           buildPaymentBody({ id: p.id, amount_cents: amount }, fd.data, {
             title: sellable.title,
             notificationUrl: NOTIFY_URL,
+            attemptId,
           }),
           key,
         );

@@ -10,6 +10,7 @@ class TestIntersectionObserver {
   readonly rootMargin = "0px";
   readonly thresholds = [0];
 }
+if (typeof window !== "undefined") {
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
   value: TestIntersectionObserver,
@@ -33,3 +34,4 @@ Object.defineProperty(window, "matchMedia", {
     dispatchEvent: () => {},
   }),
 });
+}

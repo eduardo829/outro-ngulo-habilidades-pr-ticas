@@ -1726,6 +1726,16 @@ export type Database = {
         }
         Returns: string
       }
+      checkout_apply_verified_payment: {
+        Args: {
+          _attempt: string
+          _provider_status: string
+          _purchase: string
+          _status: string
+          _transaction_id: string
+        }
+        Returns: string
+      }
       checkout_mark_attempt: {
         Args: { _attempt: string; _purchase: string; _state: string }
         Returns: undefined
