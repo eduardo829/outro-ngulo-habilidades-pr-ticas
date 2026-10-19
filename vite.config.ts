@@ -9,7 +9,7 @@ import { loadEnv } from "vite";
 import { fileURLToPath } from "node:url";
 
 // Server-only settings never enter the client define values.
-Object.assign(process.env, loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), ""));
+Object.assign(process.env, loadEnv(process.env['NODE_ENV'] ?? "development", process.cwd(), ""));
 const entitiesPath = fileURLToPath(new URL("./node_modules/entities", import.meta.url));
 
 export default defineConfig({
