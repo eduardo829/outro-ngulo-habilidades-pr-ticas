@@ -1,5 +1,9 @@
 # Outro Ângulo — Roadmap
 
+## E-mails de autenticação
+- [x] Modelos e remetente personalizados; domínio de envio vinculado
+- [ ] Ativar e verificar envio real — aguarda DNS do domínio e publicação dos modelos
+
 ## Feito (etapa 1–3)
 - [x] Design system, logo, navegação pública e autenticada (lateral desktop / inferior mobile)
 - [x] Login, cadastro, Google, recuperação de senha
