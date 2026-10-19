@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { MemberLink } from "@/components/MemberLink";
 import closePhoto from "@/assets/photo-close-comunidade.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroPhoto from "@/assets/photo-comunidade-publica.jpg";

@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { useReturnSearch } from "@/components/MemberLink";
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu } from "lucide-react";

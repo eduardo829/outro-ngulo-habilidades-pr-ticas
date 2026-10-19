@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { MemberLink } from "@/components/MemberLink";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CalendarDays, MessageCircleQuestion, PenLine, Users } from "lucide-react";

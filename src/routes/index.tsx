@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { MemberLink } from "@/components/MemberLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { heroPhoto } from "@/lib/photos";
 import { useQuery } from "@tanstack/react-query";

@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { useReturnSearch } from "@/components/MemberLink";
 import { AiUsageBadge } from "@/components/AiUsageBadge";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
@@ -14,6 +14,7 @@ import { recommendTrilha, type Recommendation } from "@/lib/recommend.functions"
 export function TrilhaRecommender({ n }: { n: string }) {
   const run = useServerFn(recommendTrilha);
   const { user } = useAuth();
+  const ret = useReturnSearch();
   const [goal, setGoal] = useState("");
   const [loading, setLoading] = useState(false);
   const [res, setRes] = useState<Recommendation | null>(null);

@@ -1,4 +1,4 @@
-import { MemberLink, useReturnSearch } from "@/components/MemberLink";
+import { useReturnSearch } from "@/components/MemberLink";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Lock } from "lucide-react";
@@ -21,6 +21,7 @@ import { buyTarget } from "@/lib/checkout-logic";
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
   const { user } = useAuth();
+  const ret = useReturnSearch();
   const { data: prices } = useCoursePrices();
   const g = c.gestor ? getGestor(c.gestor) : undefined;
   const [scroll, setScroll] = useState(0);
