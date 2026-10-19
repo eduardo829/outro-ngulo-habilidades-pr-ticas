@@ -9,7 +9,9 @@ import { Route as RootRoute } from "@/routes/__root";
 
 // The production shell renders a full HTML document. Mount only its children
 // inside Testing Library's div; document shells are verified in the browser.
-RootRoute.options.shellComponent = ({ children }: { children: ReactNode }) => <>{children}</>;
+Object.assign(RootRoute.options, {
+  shellComponent: ({ children }: { children: ReactNode }) => <>{children}</>,
+});
 
 function renderAt(path: string) {
   const queryClient = new QueryClient();
