@@ -58,6 +58,21 @@ function loadSdk() {
   });
 }
 
+/** Mercado Pago device fingerprint (antifraud). Optional: payment proceeds without it if blocked. */
+function loadSecurity() {
+  if (document.getElementById("mp-security")) return;
+  const s = document.createElement("script");
+  s.id = "mp-security";
+  s.src = "https://www.mercadopago.com/v2/security.js";
+  s.setAttribute("view", "checkout");
+  s.setAttribute("output", "MP_DEVICE_SESSION_ID");
+  document.head.appendChild(s);
+}
+const deviceId = () => {
+  const v = (window as unknown as { MP_DEVICE_SESSION_ID?: unknown }).MP_DEVICE_SESSION_ID;
+  return typeof v === "string" && v ? v : undefined;
+};
+
 function CheckoutPage() {
   const { slug } = Route.useParams();
   const qc = useQueryClient();
@@ -113,31 +128,11 @@ function CheckoutPage() {
     if (!ready || phase.k !== "form") return;
     let ctrl: { unmount: () => void } | null = null;
     let dead = false;
+    loadSecurity();
     loadSdk()
-      .then(async () => {
-        if (dead || !window.MercadoPago) return;
-        const mp = new window.MercadoPago(ready.publicKey!, { locale: "pt-BR" });
-        ctrl = await mp.bricks().create("payment", "payment-brick", {
-          initialization: {
-            amount: ready.amount_cents / 100,
-            ...(ready.email ? { payer: { email: ready.email } } : {}),
-          },
-          customization: {
-            paymentMethods: {
-              creditCard: "all",
-              debitCard: "all",
-              bankTransfer: ["pix"],
-              maxInstallments: 12,
-            },
-          },
-          callbacks: {
-            onReady: () => {},
-            onError: () => {},
-            onSubmit: async ({ formData }: { formData: unknown }) => {
-              setPhase({ k: "processing" });
-              try {
+...
                 const r = await payWithBrick({
-                  data: { purchaseId: ready.purchaseId, formData },
+                  data: { purchaseId: ready.purchaseId, formData, deviceId: deviceId() },
                 });
                 applyResult(r);
               } catch {
