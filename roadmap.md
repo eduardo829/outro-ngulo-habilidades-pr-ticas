@@ -1,5 +1,10 @@
 # Outro Ângulo — Roadmap
 
+## Teste do gateway — 19/10/2026
+- [x] Confirmar conexão autenticada com Mercado Pago e disponibilidade de Pix/cartão, sem cobrar
+- [x] Consultar pagamentos recentes e confirmar preço de R$127; executar 42 testes de pagamento
+- [ ] Concluir nova compra pelo formulário com conta sem matrícula — conta disponível já possui o curso; nenhuma cobrança criada
+
 ## Revisão de segurança — 19/10/2026
 - [x] Verificar dependências, permissões do banco e acessos sem login
 - [x] Revisar pagamentos, autorização e limites de IA; corrigir falhas confirmadas
