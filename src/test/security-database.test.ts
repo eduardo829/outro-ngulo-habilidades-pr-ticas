@@ -1,10 +1,11 @@
 import { readFileSync } from "node:fs";
+import { Blob } from "node:buffer";
 import { PGlite } from "@electric-sql/pglite";
 import { beforeAll, afterAll, describe, it, expect } from "vitest";
 let db: PGlite;
 const purchase="11111111-1111-4111-8111-111111111111",attempt="aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",oldAttempt="bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 beforeAll(async()=>{
- db=new PGlite();
+ db=new PGlite({ fsBundle: new Blob([readFileSync("node_modules/@electric-sql/pglite/dist/pglite.data")]) });
  await db.exec(`CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role;
  CREATE TABLE messages(id integer,body text,read_at timestamptz); GRANT UPDATE ON messages TO authenticated;
  CREATE TABLE purchases(id uuid PRIMARY KEY,user_id uuid,course_id uuid,payment_provider text,payment_status text,transaction_id text,provider_status text,checkout_kind text,attempt_id uuid,attempt_state text,updated_at timestamptz);
