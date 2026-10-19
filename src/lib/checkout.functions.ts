@@ -311,13 +311,17 @@ export const getCheckout = createServerFn({ method: "POST" })
 export const payWithBrick = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({ purchaseId: z.string().uuid(), formData: z.unknown() }).parse(d),
+    z
+      .object({ purchaseId: z.string().uuid(), formData: z.unknown(), deviceId: z.unknown().optional() })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
-    const { brickSchema, buildPaymentBody, idempotencyKey } = await import("./checkout-logic");
+    const { brickSchema, buildPaymentBody, idempotencyKey, deviceIdSchema } = await import("./checkout-logic");
     const { runBrickAttempt } = await import("./brick-flow");
     const fd = brickSchema.safeParse(data.formData);
     if (!fd.success) throw new Error("Dados de pagamento inválidos.");
+    const dev = deviceIdSchema.safeParse(data.deviceId);
+    const deviceId = dev.success ? (dev.data ?? null) : null;
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { mpCreatePayment, applyPayment, mpGetPayment } = await import("./mercadopago.server");
     const { data: p } = await supabaseAdmin
@@ -366,6 +370,12 @@ export const payWithBrick = createServerFn({ method: "POST" })
       }
     }
 
+    const { data: prof } = await supabaseAdmin
+      .from("profiles")
+      .select("display_name, created_at")
+      .eq("id", context.userId)
+      .maybeSingle();
+
     return runBrickAttempt({
       reconcile: () => reconcile(p.id, p.transaction_id),
       reserve: async () => {
@@ -390,8 +400,12 @@ export const payWithBrick = createServerFn({ method: "POST" })
             title: sellable.title,
             notificationUrl: NOTIFY_URL,
             attemptId,
+            slug: sellable.slug,
+            payerName: prof?.display_name ?? null,
+            registeredAt: prof?.created_at ?? null,
           }),
           key,
+          deviceId,
         );
         return r.kind === "created" ? { kind: "created", paymentId: String(r.payment.id) } : r;
       },
