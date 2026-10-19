@@ -9,6 +9,7 @@ import {
   phaseAfterPay,
   canStartNewAttempt,
   attemptPolicy,
+  deviceIdSchema,
 } from "@/lib/checkout-logic";
 
 const purchase = { id: "11111111-1111-4111-8111-111111111111", amount_cents: 12700 };
@@ -55,6 +56,7 @@ describe("checkout rules", () => {
       expect(json).not.toContain(bad);
     expect(body.transaction_amount).toBe(127);
     expect(Object.keys(body).sort()).toEqual([
+      "additional_info",
       "description",
       "external_reference",
       "installments",
@@ -67,6 +69,30 @@ describe("checkout rules", () => {
     ]);
     expect(Object.keys(body.payer).sort()).toEqual(["email", "identification"]);
     expect(Object.keys(body.payer.identification!).sort()).toEqual(["number", "type"]);
+  });
+
+  it("sends buyer name, course item and registration date for antifraud", () => {
+    const fd = brickSchema.parse({ payment_method_id: "visa", token: "tok", payer: { email: "a@b.co" } });
+    const body = buildPaymentBody(purchase, fd, {
+      title: "Corretor na prática",
+      notificationUrl: "https://x/y",
+      slug: "corretor-na-pratica",
+      payerName: "Geraldo  Aguiar Silva",
+      registeredAt: "2026-10-19T17:12:35Z",
+    });
+    expect(body.payer).toMatchObject({ first_name: "Geraldo", last_name: "Aguiar Silva" });
+    expect(body.additional_info.items[0]).toMatchObject({
+      id: "corretor-na-pratica",
+      quantity: 1,
+      unit_price: 127,
+      category_id: "learnings",
+    });
+    expect(body.additional_info.payer.registration_date).toBe("2026-10-19T17:12:35Z");
+  });
+
+  it("rejects malformed device ids", () => {
+    expect(deviceIdSchema.safeParse("armor.abc123").success).toBe(true);
+    expect(deviceIdSchema.safeParse('x"><script>').success).toBe(false);
   });
 
   it("card requires token; Pix does not", () => {
