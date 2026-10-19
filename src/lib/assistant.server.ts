@@ -7,6 +7,7 @@ import {
   type UIMessage,
 } from "ai";
 import { aiQuota, quotaMessage } from "@/lib/ai-limits.server";
+import { readAssistantInput } from "./assistant-input";
 import { COURSES_ENGINE } from "@/lib/learning/courses";
 import {
   createLovableAiGatewayRunIdFetch,
@@ -89,13 +90,9 @@ export async function handleAssistant(request: Request) {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return json(500, "Assistente indisponível no momento.");
 
-  let body: { messages?: UIMessage[] };
-  try {
-    body = await request.json();
-  } catch {
-    return json(400, "Pedido inválido.");
-  }
-  const messages = Array.isArray(body.messages) ? body.messages.slice(-30) : [];
+  const body = await readAssistantInput(request);
+  if (!body) return json(400, "Pedido inválido ou longo demais.");
+  const messages: UIMessage[] = body.messages;
   const last = messages[messages.length - 1];
   if (!last || last.role !== "user") return json(400, "Pedido inválido.");
   const lastText = last.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
@@ -128,6 +125,7 @@ export async function handleAssistant(request: Request) {
 
   const result = streamText({
     model: provider.responses(MODEL),
+    maxOutputTokens: 1200,
     system: buildSystem((rows ?? []) as CourseRow[], !!userId),
     messages: await convertToModelMessages(messages),
     abortSignal: request.signal,

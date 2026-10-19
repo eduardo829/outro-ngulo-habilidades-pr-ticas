@@ -41,7 +41,7 @@ export type BrickData = z.infer<typeof brickSchema>;
 export function buildPaymentBody(
   p: { id: string; amount_cents: number },
   fd: BrickData,
-  o: { title: string; notificationUrl: string },
+  o: { title: string; notificationUrl: string; attemptId?: string },
 ) {
   const isPix = fd.payment_method_id === "pix";
   return {
@@ -49,6 +49,7 @@ export function buildPaymentBody(
     description: o.title.slice(0, 120),
     payment_method_id: fd.payment_method_id,
     external_reference: p.id,
+    ...(o.attemptId ? { metadata: { checkout_attempt_id: o.attemptId } } : {}),
     notification_url: o.notificationUrl,
     statement_descriptor: "OUTRO ANGULO",
     payer: {
@@ -94,11 +95,13 @@ export const canStartNewAttempt = (status: string) => status === "failed" || sta
 
 export type PayStatus = "paid" | "pending" | "failed" | "cancelled" | "refunded";
 export function mapPaymentStatus(
-  pay: { status: string; transaction_amount?: number | undefined },
+  pay: { status: string; transaction_amount?: number | undefined; currency_id?: string },
   amountCents: number,
+  currency = "BRL",
 ): PayStatus {
   const amountOk =
-    pay.transaction_amount != null && Math.round(pay.transaction_amount * 100) === amountCents;
+    pay.currency_id === currency && pay.transaction_amount != null && Number.isFinite(pay.transaction_amount) &&
+    amountCents > 0 && Math.round(pay.transaction_amount * 100) === amountCents;
   if (pay.status === "approved") return amountOk ? "paid" : "pending";
   if (pay.status === "refunded" || pay.status === "charged_back") return "refunded";
   if (pay.status === "rejected") return "failed";

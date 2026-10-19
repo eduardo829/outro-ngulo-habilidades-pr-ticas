@@ -371,6 +371,7 @@ export const payWithBrick = createServerFn({ method: "POST" })
           buildPaymentBody({ id: p.id, amount_cents: amount }, fd.data, {
             title: sellable.title,
             notificationUrl: NOTIFY_URL,
+            attemptId: key.slice(32).replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, "$1-$2-$3-$4-$5"),
           }),
           key,
         );
