@@ -25,6 +25,7 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as TrilhasRouteImport } from './routes/trilhas'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBoasVindasRouteImport } from './routes/_authenticated/boas-vindas'
+import { Route as AuthenticatedCatalogoRouteImport } from './routes/_authenticated/catalogo'
 import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated/inicio'
 import { Route as AuthenticatedMeuAnguloRouteImport } from './routes/_authenticated/meu-angulo'
 import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authenticated/meu-espaco'
@@ -145,6 +146,11 @@ const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
 const AuthenticatedBoasVindasRoute = AuthenticatedBoasVindasRouteImport.update({
   id: '/boas-vindas',
   path: '/boas-vindas',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCatalogoRoute = AuthenticatedCatalogoRouteImport.update({
+  id: '/catalogo',
+  path: '/catalogo',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedInicioRoute = AuthenticatedInicioRouteImport.update({
@@ -397,6 +403,7 @@ export interface FileRoutesByFullPath {
   '/trilhas': typeof TrilhasRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
+  '/catalogo': typeof AuthenticatedCatalogoRoute
   '/inicio': typeof AuthenticatedInicioRoute
   '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
@@ -455,6 +462,7 @@ export interface FileRoutesByTo {
   '/termos': typeof TermosRoute
   '/trilhas': typeof TrilhasRoute
   '/boas-vindas': typeof AuthenticatedBoasVindasRoute
+  '/catalogo': typeof AuthenticatedCatalogoRoute
   '/inicio': typeof AuthenticatedInicioRoute
   '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
@@ -516,6 +524,7 @@ export interface FileRoutesById {
   '/trilhas': typeof TrilhasRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/boas-vindas': typeof AuthenticatedBoasVindasRoute
+  '/_authenticated/catalogo': typeof AuthenticatedCatalogoRoute
   '/_authenticated/inicio': typeof AuthenticatedInicioRoute
   '/_authenticated/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/_authenticated/meu-espaco': typeof AuthenticatedMeuEspacoRoute
@@ -577,6 +586,7 @@ export interface FileRouteTypes {
     | '/trilhas'
     | '/admin'
     | '/boas-vindas'
+    | '/catalogo'
     | '/inicio'
     | '/meu-angulo'
     | '/meu-espaco'
@@ -635,6 +645,7 @@ export interface FileRouteTypes {
     | '/termos'
     | '/trilhas'
     | '/boas-vindas'
+    | '/catalogo'
     | '/inicio'
     | '/meu-angulo'
     | '/meu-espaco'
@@ -695,6 +706,7 @@ export interface FileRouteTypes {
     | '/trilhas'
     | '/_authenticated/admin'
     | '/_authenticated/boas-vindas'
+    | '/_authenticated/catalogo'
     | '/_authenticated/inicio'
     | '/_authenticated/meu-angulo'
     | '/_authenticated/meu-espaco'
@@ -878,6 +890,13 @@ declare module '@tanstack/react-router' {
       path: '/boas-vindas'
       fullPath: '/boas-vindas'
       preLoaderRoute: typeof AuthenticatedBoasVindasRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/catalogo': {
+      id: '/_authenticated/catalogo'
+      path: '/catalogo'
+      fullPath: '/catalogo'
+      preLoaderRoute: typeof AuthenticatedCatalogoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/inicio': {
@@ -1210,6 +1229,7 @@ const AuthenticatedAdminRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedBoasVindasRoute: typeof AuthenticatedBoasVindasRoute
+  AuthenticatedCatalogoRoute: typeof AuthenticatedCatalogoRoute
   AuthenticatedInicioRoute: typeof AuthenticatedInicioRoute
   AuthenticatedMeuAnguloRoute: typeof AuthenticatedMeuAnguloRoute
   AuthenticatedMeuEspacoRoute: typeof AuthenticatedMeuEspacoRoute
@@ -1238,6 +1258,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedBoasVindasRoute: AuthenticatedBoasVindasRoute,
+  AuthenticatedCatalogoRoute: AuthenticatedCatalogoRoute,
   AuthenticatedInicioRoute: AuthenticatedInicioRoute,
   AuthenticatedMeuAnguloRoute: AuthenticatedMeuAnguloRoute,
   AuthenticatedMeuEspacoRoute: AuthenticatedMeuEspacoRoute,

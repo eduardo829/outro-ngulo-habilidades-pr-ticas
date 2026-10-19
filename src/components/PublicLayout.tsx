@@ -1,3 +1,4 @@
+import { MemberLink, useReturnSearch } from "@/components/MemberLink";
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 import { Menu } from "lucide-react";
@@ -20,6 +21,7 @@ const NAV = [
 export function PublicLayout({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
+  const ret = useReturnSearch();
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#conteudo" className="sr-only focus:not-sr-only focus:absolute focus:p-2">
@@ -45,7 +47,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             ) : (
               <>
                 <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-                  <Link to="/auth">Entrar</Link>
+                  <Link to="/auth" search={ret}>Entrar</Link>
                 </Button>
                 <Button asChild size="sm">
                   <Link to="/auth" search={{ modo: "cadastro" }}>Fazer parte</Link>
@@ -66,7 +68,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                       <span className="text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>{n.label}
                     </Link>
                   ))}
-                  {!user && <Link to="/auth" onClick={() => setOpen(false)} className="py-4 text-sm font-medium text-primary">Entrar</Link>}
+                  {!user && <Link to="/auth" search={ret} onClick={() => setOpen(false)} className="py-4 text-sm font-medium text-primary">Entrar</Link>}
                 </nav>
               </SheetContent>
             </Sheet>

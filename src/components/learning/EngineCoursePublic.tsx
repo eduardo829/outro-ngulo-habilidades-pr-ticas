@@ -1,3 +1,4 @@
+import { MemberLink, useReturnSearch } from "@/components/MemberLink";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Lock } from "lucide-react";
@@ -93,7 +94,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
             </Button>
           ) : (
             <Button asChild size="lg">
-              <Link to="/auth">
+              <Link to="/auth" search={ret}>
                 Criar conta e experimentar
                 <ArrowRight />
               </Link>

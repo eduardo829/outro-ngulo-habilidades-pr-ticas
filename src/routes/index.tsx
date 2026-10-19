@@ -1,3 +1,4 @@
+import { MemberLink, useReturnSearch } from "@/components/MemberLink";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { heroPhoto } from "@/lib/photos";
 import { useQuery } from "@tanstack/react-query";
@@ -233,7 +234,7 @@ function Home() {
           <h2 className="max-w-xl text-4xl font-extrabold leading-[1.02] md:text-5xl">Olhe para a sua vida<br /><span className="pl-[10%] text-ink-foreground/60">de outro ângulo.</span></h2>
           <div className="flex flex-wrap items-center gap-6">
             <Button asChild size="lg" className="bg-highlight text-highlight-foreground hover:bg-highlight/90">
-              <Link to="/auth" search={{ modo: "cadastro" }}>Criar conta</Link>
+              <MemberLink to="/inicio" member="Ir para minha área" visitor="Criar conta" />
             </Button>
             <Link to="/cursos" className="link-arrow nav-line text-sm">Ver cursos <ArrowRight className="h-4 w-4" /></Link>
           </div>
