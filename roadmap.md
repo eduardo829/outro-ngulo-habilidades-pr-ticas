@@ -1,5 +1,10 @@
 # Outro Ângulo — Roadmap
 
+## Revisão de segurança — 19/10/2026
+- [ ] Verificar dependências, permissões do banco e acessos sem login
+- [ ] Revisar pagamentos, autorização e limites de IA; corrigir falhas confirmadas
+- [ ] Executar testes e registrar limites da verificação, sem publicar
+
 ## Revisão final e publicação
 - [x] Revisar páginas públicas, de aluno e administração; computador e celular
 - [x] Corrigir a montagem dos testes de navegação no ambiente de testes
