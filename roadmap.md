@@ -3,6 +3,7 @@
 ## Revisão final e publicação
 - [x] Revisar páginas públicas, de aluno e administração; computador e celular
 - [x] Corrigir a montagem dos testes de navegação no ambiente de testes
+- [ ] Criar categoria Corretores no catálogo e retirar cursos de corretagem de Profissões
 - [ ] Publicar após validação final
 
 ## E-mails de autenticação
