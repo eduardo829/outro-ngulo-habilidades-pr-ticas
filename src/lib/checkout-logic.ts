@@ -83,8 +83,11 @@ export function attemptPolicy(latestMpStatus: string | null): "same_key" | "bloc
 
 export type PayResult = { status: string; pix?: { qr_code: string } | null } | null;
 /** UI phase after a pay call. null = request failed in transit: a charge may exist, so we verify instead of claiming rejection. */
-export function phaseAfterPay(r: PayResult): "paid" | "pix" | "pending" | "rejected" | "verifying" {
+export function phaseAfterPay(
+  r: PayResult,
+): "paid" | "pix" | "pending" | "rejected" | "verifying" | "cooldown" {
   if (!r) return "verifying";
+  if (r.status === "cooldown") return "cooldown";
   if (r.status === "paid") return "paid";
   if (r.status === "pending") return r.pix?.qr_code ? "pix" : "pending";
   if (r.status === "failed" || r.status === "cancelled") return "rejected";
@@ -115,4 +118,16 @@ export function returnView(status: string): "checking" | "paid" | "pending" | "f
   if (status === "pending") return "pending";
   if (status === "failed" || status === "cancelled" || status === "refunded") return "failed";
   return "checking";
+}
+
+/** Card cooldown after a failed card payment: only issuer/antifraud rejections; typing errors (CVV, expiry, number) retry at once. */
+export const CARD_COOLDOWN_MS = 5 * 60_000;
+export function cooldownApplies(statusDetail: string | null | undefined): boolean {
+  if (!statusDetail || !statusDetail.startsWith("cc_rejected_")) return false;
+  return !statusDetail.startsWith("cc_rejected_bad_filled_");
+}
+/** Same card = same method + first 6 + last 4 digits (no full number ever exists server-side). */
+export async function cardFingerprint(method: string, first6: string, last4: string) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${method}|${first6}|${last4}`));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }

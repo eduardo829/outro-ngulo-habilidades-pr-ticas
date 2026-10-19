@@ -348,6 +348,24 @@ export const payWithBrick = createServerFn({ method: "POST" })
     if (lg.gate === "wait") return { status: "pending" as const, pix: null };
     if (lg.gate !== "open") return { status: "unknown" as const, pix: null };
 
+    // Same card recently refused by issuer/antifraud: wait, or use another card / Pix.
+    const { cardFingerprint, cooldownApplies, CARD_COOLDOWN_MS } = await import("./checkout-logic");
+    let fp: string | null = null;
+    if (fd.data.payment_method_id !== "pix" && fd.data.token) {
+      const { mpCardTokenDigits } = await import("./mercadopago.server");
+      const dg = await mpCardTokenDigits(fd.data.token);
+      if (dg) fp = await cardFingerprint(fd.data.payment_method_id, dg.first6, dg.last4);
+      if (fp) {
+        const { data: cd } = await supabaseAdmin
+          .from("card_cooldowns")
+          .select("blocked_until")
+          .eq("fingerprint", fp)
+          .maybeSingle();
+        if (cd && Date.parse(cd.blocked_until) > Date.now())
+          return { status: "cooldown" as const, pix: null, retryAt: cd.blocked_until };
+      }
+    }
+
     return runBrickAttempt({
       reconcile: () => reconcile(p.id, p.transaction_id),
       reserve: async () => {
@@ -381,6 +399,17 @@ export const payWithBrick = createServerFn({ method: "POST" })
         const fresh = await mpGetPayment(paymentId); // re-read before applying
         if (!fresh) return null;
         const status = (await applyPayment(fresh)) ?? "unknown";
+        if (status === "failed" && cooldownApplies(fresh.status_detail)) {
+          const c6 = fresh.card?.first_six_digits, c4 = fresh.card?.last_four_digits;
+          const key = c6 && c4 ? await cardFingerprint(fresh.payment_method_id ?? fd.data.payment_method_id, c6, c4) : fp;
+          if (key)
+            await supabaseAdmin.from("card_cooldowns").upsert({
+              fingerprint: key,
+              blocked_until: new Date(Date.now() + CARD_COOLDOWN_MS).toISOString(),
+              reason: fresh.status_detail ?? null,
+              updated_at: new Date().toISOString(),
+            });
+        }
         return { status, pix: pixOf(fresh) };
       },
     });

@@ -36,6 +36,7 @@ export type MpPayment = {
   currency_id?: string;
   metadata?: { checkout_attempt_id?: string };
   payment_method_id?: string;
+  card?: { first_six_digits?: string; last_four_digits?: string };
   point_of_interaction?: { transaction_data?: PixData };
 };
 
@@ -164,4 +165,22 @@ export async function mpSyncPayment(paymentId: string) {
 export async function mpSyncPurchase(purchaseId: string) {
   const pay = await mpLatestPaymentFor(purchaseId);
   return pay ? applyPayment(pay) : null;
+}
+
+/** Reads BIN/last4 of a Brick card token (no full number). null if unavailable: cooldown then simply does not apply. */
+export async function mpCardTokenDigits(tokenId: string) {
+  const pk = process.env["MERCADO_PAGO_PUBLIC_KEY"];
+  if (!pk) return null;
+  try {
+    const res = await fetch(
+      `${BASE}/v1/card_tokens/${encodeURIComponent(tokenId)}?public_key=${encodeURIComponent(pk)}`,
+    );
+    if (!res.ok) return null;
+    const j = (await res.json()) as { first_six_digits?: string; last_four_digits?: string };
+    return j.first_six_digits && j.last_four_digits
+      ? { first6: j.first_six_digits, last4: j.last_four_digits }
+      : null;
+  } catch {
+    return null;
+  }
 }
