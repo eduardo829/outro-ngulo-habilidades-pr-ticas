@@ -144,3 +144,22 @@ describe("checkout review regressions", () => {
     expect(attemptPolicy("cancelled")).toBe("new_attempt");
   });
 });
+
+import { cooldownApplies, CARD_COOLDOWN_MS, cardFingerprint, phaseAfterPay as pap } from "@/lib/checkout-logic";
+describe("card cooldown", () => {
+  it("lasts 5 minutes", () => expect(CARD_COOLDOWN_MS).toBe(300000));
+  it("applies to antifraud/bank refusals", () => {
+    expect(cooldownApplies("cc_rejected_high_risk")).toBe(true);
+    expect(cooldownApplies("cc_rejected_call_for_authorize")).toBe(true);
+  });
+  it("skips typing errors", () => {
+    expect(cooldownApplies("cc_rejected_bad_filled_security_code")).toBe(false);
+    expect(cooldownApplies("cc_rejected_bad_filled_date")).toBe(false);
+  });
+  it("same card same fingerprint, other card differs", async () => {
+    const a = await cardFingerprint("visa", "411111", "1234");
+    expect(await cardFingerprint("visa", "411111", "1234")).toBe(a);
+    expect(await cardFingerprint("visa", "411111", "9999")).not.toBe(a);
+  });
+  it("cooldown result shows cooldown phase", () => expect(pap({ status: "cooldown" })).toBe("cooldown"));
+});

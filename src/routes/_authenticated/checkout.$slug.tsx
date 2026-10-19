@@ -31,7 +31,8 @@ type Phase =
   | { k: "pix"; pix: Pix }
   | { k: "pending" }
   | { k: "verifying" }
-  | { k: "rejected" };
+  | { k: "rejected" }
+  | { k: "cooldown" };
 
 declare global {
   interface Window {
@@ -185,6 +186,7 @@ function CheckoutPage() {
   }, [ready, phase.k, qc]);
 
   function applyResult(r: { status: string; pix?: Pix | null }) {
+    if (r.status === "cooldown") return setPhase({ k: "cooldown" });
     const next = phaseAfterPay(r);
     if (next === "paid") {
       qc.invalidateQueries({ queryKey: ["my-learning"] });
@@ -282,10 +284,24 @@ function CheckoutPage() {
             <div role="alert" className="mt-6">
               <h2 className="font-display text-xl font-bold">O pagamento não foi aprovado</h2>
               <p className="mt-2 text-muted-foreground">
-                Nenhum valor foi cobrado. Confira os dados, use outro cartão ou pague com Pix.
+                Nenhum valor foi cobrado. Se o erro foi de digitação, confira os dados e tente de novo.
+                Se o banco ou o Mercado Pago recusou, este cartão fica bloqueado por 5 minutos: use
+                outro cartão ou pague com Pix para liberar o curso na hora.
               </p>
               <Button className="mt-4" onClick={retry}>
                 Tentar novamente
+              </Button>
+            </div>
+          )}
+          {phase.k === "cooldown" && (
+            <div role="alert" className="mt-6">
+              <h2 className="font-display text-xl font-bold">Use outro meio de pagamento</h2>
+              <p className="mt-2 text-muted-foreground">
+                Este cartão foi recusado há poucos minutos. Para proteger você, ele só pode ser usado de
+                novo em 5 minutos. Nada foi cobrado. Você pode pagar agora com outro cartão ou com Pix.
+              </p>
+              <Button className="mt-4" onClick={retry}>
+                Escolher outro meio de pagamento
               </Button>
             </div>
           )}

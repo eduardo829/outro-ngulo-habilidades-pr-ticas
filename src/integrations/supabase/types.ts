@@ -267,6 +267,27 @@ export type Database = {
         }
         Relationships: []
       }
+      card_cooldowns: {
+        Row: {
+          blocked_until: string
+          fingerprint: string
+          reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          blocked_until: string
+          fingerprint: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          blocked_until?: string
+          fingerprint?: string
+          reason?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       comments: {
         Row: {
           author_id: string
