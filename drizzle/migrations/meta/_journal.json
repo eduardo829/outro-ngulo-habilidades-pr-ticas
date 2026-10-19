@@ -162,6 +162,13 @@
       "when": 1792405631135,
       "tag": "0022_security_concurrency_and_message_permissions",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1792416264836,
+      "tag": "0023_card_cooldowns",
+      "breakpoints": true
     }
   ]
 }
