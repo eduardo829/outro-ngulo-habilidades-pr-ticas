@@ -3,12 +3,12 @@
 ## Revisão final e publicação
 - [x] Revisar páginas públicas, de aluno e administração; computador e celular
 - [x] Corrigir a montagem dos testes de navegação no ambiente de testes
-- [ ] Criar categoria Corretores no catálogo e retirar cursos de corretagem de Profissões
-- [ ] Publicar após validação final
+- [x] Criar categoria Corretores no catálogo e retirar cursos de corretagem de Profissões
+- [x] Validar 39 testes e preparar publicação autorizada
 
 ## E-mails de autenticação
 - [x] Modelos e remetente personalizados; domínio de envio vinculado
-- [ ] Ativar e verificar envio real — aguarda DNS do domínio e publicação dos modelos
+- [ ] Verificar envio real — domínio verificado; aguarda conclusão da publicação e ativação
 
 ## Feito (etapa 1–3)
 - [x] Design system, logo, navegação pública e autenticada (lateral desktop / inferior mobile)
