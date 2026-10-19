@@ -1,3 +1,4 @@
+import { MemberLink } from "@/components/MemberLink";
 import closePhoto from "@/assets/photo-close-comunidade.jpg";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import heroPhoto from "@/assets/photo-comunidade-publica.jpg";
@@ -61,7 +62,7 @@ function Page() {
           <h2 className="mt-5 text-4xl font-extrabold md:text-5xl">Quem você precisa conhecer?</h2>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {PESSOAS.map((p) => (
-              <RevealCard key={p.n} eyebrow={p.s} title={p.n} details={[{ k: "Construindo", v: p.b }, { k: "Pode ajudar", v: p.h }, { k: "Procura", v: p.p }]} cta={<Link to="/auth" search={{ modo: "cadastro" }} className="link-arrow">Conhecer pessoas assim →</Link>} />
+              <RevealCard key={p.n} eyebrow={p.s} title={p.n} details={[{ k: "Construindo", v: p.b }, { k: "Pode ajudar", v: p.h }, { k: "Procura", v: p.p }]} cta={<MemberLink to="/pessoas" className="link-arrow" member="Conhecer pessoas assim →" visitor="Conhecer pessoas assim →" />} />
             ))}
           </div>
           <div className="mt-6"><Illustrative /></div>

@@ -1,3 +1,4 @@
+import { MemberLink } from "@/components/MemberLink";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, CalendarDays, MessageCircleQuestion, PenLine, Users } from "lucide-react";
@@ -88,7 +89,7 @@ function Journey() {
           <div className={cn("mt-12 max-w-xl border bg-card p-6 transition-all duration-500", a === HOW.length - 1 ? "opacity-100" : "md:opacity-40")}>
             <label htmlFor="acao" className="eyebrow">Experimente · Minha próxima ação</label>
             <input id="acao" value={action} onChange={(e) => setAction(e.target.value)} maxLength={120} placeholder="Ex.: mandar mensagem para 3 possíveis clientes até sexta" className="mt-3 w-full border-b border-foreground/30 bg-transparent py-2 text-lg outline-none focus:border-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">{action.trim() ? <>Na plataforma, isso fica salvo no encontro e aparece na sua área. <Link to="/auth" search={{ modo: "cadastro" }} className="font-semibold text-foreground underline">Criar conta</Link></> : "Só um exemplo. Nada é salvo aqui."}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{action.trim() ? <>Na plataforma, isso fica salvo no encontro e aparece na sua área. <MemberLink to="/encontros" className="font-semibold text-foreground underline" member="Ver encontros" visitor="Criar conta" /></> : "Só um exemplo. Nada é salvo aqui."}</p>
           </div>
         </div>
       )} />

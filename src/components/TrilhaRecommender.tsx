@@ -1,3 +1,4 @@
+import { useReturnSearch } from "@/components/MemberLink";
 import { AiUsageBadge } from "@/components/AiUsageBadge";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
@@ -13,6 +14,7 @@ import { recommendTrilha, type Recommendation } from "@/lib/recommend.functions"
 export function TrilhaRecommender({ n }: { n: string }) {
   const run = useServerFn(recommendTrilha);
   const { user } = useAuth();
+  const ret = useReturnSearch();
   const [goal, setGoal] = useState("");
   const [loading, setLoading] = useState(false);
   const [res, setRes] = useState<Recommendation | null>(null);
@@ -42,7 +44,7 @@ export function TrilhaRecommender({ n }: { n: string }) {
             placeholder="Ex.: quero sair do meu emprego para trabalhar como freelancer, mas não sei como achar clientes." />
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-muted-foreground">Sugestão gerada por IA. Seu texto não é salvo.{user && <AiUsageBadge refreshKey={loading} />}</span>
-            {!user ? <Button asChild><Link to="/auth">Entrar para recomendar<ArrowRight /></Link></Button> : <Button type="submit" disabled={loading || goal.trim().length < 10}>
+            {!user ? <Button asChild><Link to="/auth" search={ret}>Entrar para recomendar<ArrowRight /></Link></Button> : <Button type="submit" disabled={loading || goal.trim().length < 10}>
               {loading ? <><Loader2 className="animate-spin" />Pensando…</> : <>Recomendar<ArrowRight /></>}
             </Button>}
           </div>
