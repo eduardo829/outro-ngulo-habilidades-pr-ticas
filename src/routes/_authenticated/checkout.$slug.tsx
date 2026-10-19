@@ -130,7 +130,28 @@ function CheckoutPage() {
     let dead = false;
     loadSecurity();
     loadSdk()
-...
+      .then(async () => {
+        if (dead || !window.MercadoPago) return;
+        const mp = new window.MercadoPago(ready.publicKey!, { locale: "pt-BR" });
+        ctrl = await mp.bricks().create("payment", "payment-brick", {
+          initialization: {
+            amount: ready.amount_cents / 100,
+            ...(ready.email ? { payer: { email: ready.email } } : {}),
+          },
+          customization: {
+            paymentMethods: {
+              creditCard: "all",
+              debitCard: "all",
+              bankTransfer: ["pix"],
+              maxInstallments: 12,
+            },
+          },
+          callbacks: {
+            onReady: () => {},
+            onError: () => {},
+            onSubmit: async ({ formData }: { formData: unknown }) => {
+              setPhase({ k: "processing" });
+              try {
                 const r = await payWithBrick({
                   data: { purchaseId: ready.purchaseId, formData, deviceId: deviceId() },
                 });
