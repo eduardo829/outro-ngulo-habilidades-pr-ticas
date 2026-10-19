@@ -28,7 +28,7 @@ function Home() {
               <div aria-hidden className="photo-scrim-b absolute inset-0 opacity-60" />
               <span aria-hidden className="absolute bottom-0 left-0 h-1 w-20 bg-highlight" />
             </div>
-            <p className="eyebrow">Curso · {c.category} · vídeos em preparação</p>
+            <p className="eyebrow">Curso · {c.category}</p>
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">{c.title}</h1>
             <p className="mt-6 max-w-2xl text-xl leading-snug text-muted-foreground">{c.thesis}</p>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
@@ -39,9 +39,9 @@ function Home() {
             <div className="mt-10 flex flex-wrap items-center gap-6 border-y py-6">
               <div><p className="font-display text-3xl font-extrabold">{p.modules} / {c.modules.length}</p><p className="text-sm text-muted-foreground">módulos concluídos</p></div>
               <div><p className="font-display text-3xl font-extrabold">{p.outputs} / {c.modules.length}</p><p className="text-sm text-muted-foreground">resultados no seu espaço</p></div>
-              <div className="ml-auto flex gap-3">
+              <div className="flex w-full flex-col gap-3 sm:ml-auto sm:w-auto sm:flex-row">
                 <Button asChild size="lg"><Link to="/aprender/$slug/$modulo" params={{ slug, modulo: next.key }}>{started ? "Continuar" : "Começar"}<ArrowRight /></Link></Button>
-                <Button asChild size="lg" variant="outline"><Link to="/aprender/$slug/espaco" params={{ slug }}>{c.project}</Link></Button>
+                <Button asChild size="lg" variant="outline" className="h-auto min-h-11 whitespace-normal text-center"><Link to="/aprender/$slug/espaco" params={{ slug }}>{c.project}</Link></Button>
               </div>
             </div>
 
