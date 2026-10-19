@@ -42,7 +42,7 @@ export type BrickData = z.infer<typeof brickSchema>;
 export function splitName(name: string | null | undefined): { first_name?: string; last_name?: string } {
   const parts = (name ?? "").trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return {};
-  const first_name = parts[0].slice(0, 80);
+  const first_name = (parts[0] ?? "").slice(0, 80);
   const last_name = parts.slice(1).join(" ").slice(0, 80);
   return last_name ? { first_name, last_name } : { first_name };
 }
