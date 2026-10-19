@@ -14,7 +14,7 @@ export interface BrickDeps {
   reconcile: () => Promise<Reconciled>;
   reserve: () => Promise<Reservation>;
   mark: (attemptId: string, state: "unknown" | "rejected" | "open") => Promise<void>;
-  create: (idempotencyKey: string) => Promise<CreateResult>;
+  create: (idempotencyKey: string, attemptId: string) => Promise<CreateResult>;
   readAndApply: (paymentId: string) => Promise<{ status: string; pix: Pix | null } | null>;
   key: (attemptId: string) => string;
 }
@@ -35,7 +35,7 @@ export async function runBrickAttempt(d: BrickDeps): Promise<FlowResult> {
   if (r.action !== "send" || !r.attempt_id) return { status: "unknown", pix: null }; // another attempt in flight: never charge
   let created: CreateResult;
   try {
-    created = await d.create(d.key(r.attempt_id));
+    created = await d.create(d.key(r.attempt_id), r.attempt_id);
   } catch {
     created = { kind: "unknown" };
   }

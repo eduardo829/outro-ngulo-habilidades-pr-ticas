@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const db = { rpcError: null as unknown, rpcCalls: [] as unknown[], directWrites: 0 };
 vi.mock("@/integrations/supabase/client.server", () => {
-  const purchase = { id: "p1", payment_provider: "mercadopago", amount_cents: 100 };
+  const purchase = { id: "p1", payment_provider: "mercadopago", amount_cents: 100, currency: "BRL" };
   const from = () => ({
     select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: purchase, error: null }) }) }),
     update: () => {
@@ -23,7 +23,7 @@ vi.mock("@/integrations/supabase/client.server", () => {
 
 import { applyPayment } from "@/lib/mercadopago.server";
 
-const approved = { id: 9, status: "approved", external_reference: "p1", transaction_amount: 1 };
+const approved = { id: 9, status: "approved", external_reference: "p1", transaction_amount: 1, currency_id: "BRL" };
 
 describe("applyPayment is a single transactional write", () => {
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe("applyPayment is a single transactional write", () => {
   it("approved: one RPC call, no separate table writes", async () => {
     await expect(applyPayment(approved)).resolves.toBe("paid");
     expect(db.rpcCalls).toEqual([
-      expect.objectContaining({ name: "checkout_apply_payment", _status: "paid" }),
+      expect.objectContaining({ name: "checkout_apply_verified_payment", _status: "paid" }),
     ]);
     expect(db.directWrites).toBe(0);
   });
@@ -51,4 +51,10 @@ describe("applyPayment is a single transactional write", () => {
     db.rpcError = { message: "x" };
     await expect(applyPayment(approved)).rejects.toThrow();
   });
+});
+
+it("wrong currency never grants access", async () => {
+ db.rpcCalls=[]; db.rpcError=null;
+ await applyPayment({...approved,currency_id:"USD"});
+ expect(db.rpcCalls).toEqual([expect.objectContaining({_status:"pending"})]);
 });

@@ -142,13 +142,13 @@ export async function applyPayment(pay: MpPayment) {
   if (!p || p.payment_provider !== "mercadopago") return null;
   const status = mapPaymentStatus(pay, p.amount_cents ?? -1, p.currency);
   const attempt = pay.metadata?.checkout_attempt_id;
-  const { data, error } = await supabaseAdmin.rpc("checkout_apply_verified_payment" as never, {
+  const { data, error } = await supabaseAdmin.rpc("checkout_apply_verified_payment", {
     _purchase: p.id,
     _status: status,
     _transaction_id: String(pay.id),
     _provider_status: `${pay.status}/${pay.status_detail ?? ""}`,
-    _attempt: attempt && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(attempt) ? attempt : null,
-  } as never);
+    _attempt: (attempt && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(attempt) ? attempt : null) as string,
+  });
   if (error) {
     console.error("[mp] apply payment failed", p.id);
     throw new Error("apply payment failed");
