@@ -41,7 +41,6 @@ function CourseCard({ c, i, state = "locked" }: { c: Course; i: number; state?: 
   );
 }
 
-function Catalog() {
 export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
   const Shell = inApp ? ({ children }: { children: ReactNode }) => <>{children}</> : PublicLayout;
   const [cat, setCat] = useState<"Todos" | Area>("Todos");
