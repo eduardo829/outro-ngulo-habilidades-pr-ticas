@@ -2,8 +2,13 @@ import { QueryClient } from "@tanstack/react-query";
 import { createMemoryHistory, createRouter, RouterProvider } from "@tanstack/react-router";
 import { cleanup, render, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import type { ReactNode } from "react";
 
 import { routeTree } from "@/routeTree.gen";
+
+// The production shell renders a full HTML document. Mount only its children
+// inside Testing Library's div; document shells are verified in the browser.
+routeTree.update({ shellComponent: ({ children }: { children: ReactNode }) => <>{children}</> });
 
 function renderAt(path: string) {
   const queryClient = new QueryClient();

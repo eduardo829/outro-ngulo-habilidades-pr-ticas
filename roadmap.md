@@ -1,5 +1,10 @@
 # Outro Ângulo — Roadmap
 
+## Revisão final e publicação
+- [x] Revisar páginas públicas, de aluno e administração; computador e celular
+- [x] Corrigir a montagem dos testes de navegação no ambiente de testes
+- [ ] Publicar após validação final
+
 ## E-mails de autenticação
 - [x] Modelos e remetente personalizados; domínio de envio vinculado
 - [ ] Ativar e verificar envio real — aguarda DNS do domínio e publicação dos modelos
