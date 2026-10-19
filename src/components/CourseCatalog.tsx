@@ -55,7 +55,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
   return (
     <Shell>
       <section className="relative mx-auto max-w-6xl px-5 pb-12 pt-16 md:pt-24">
-        <div aria-hidden className="photo-zoom absolute right-[-1.25rem] top-10 hidden h-[420px] w-[38%] overflow-hidden lg:block xl:right-[calc((100vw-72rem)/-2)]">
+        <div aria-hidden className={cn("photo-zoom absolute top-10 hidden h-[420px] w-[38%] overflow-hidden lg:block", inApp ? "right-5" : "right-[-1.25rem] xl:right-[calc((100vw-72rem)/-2)]")}>
           <img src={catalogPhoto} alt="" className="h-full w-full object-cover" />
           <span className="absolute bottom-0 left-0 h-1 w-24 bg-highlight" />
         </div>
@@ -106,9 +106,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
       <section id="explorar" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-3xl font-extrabold">{cat === "Todos" ? "Todos os cursos" : cat}</h2>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por tema">
-            {(["Todos", ...AREAS] as const).map((c) => <button key={c} type="button" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-3 py-1.5 text-sm transition-colors", cat === c ? "border-foreground bg-foreground text-background" : "hover:border-foreground")}>{c}</button>)}
-          </div>
+          {cat !== "Todos" && <button type="button" onClick={() => setCat("Todos")} className="text-sm underline underline-offset-4 hover:text-foreground">Ver todos os cursos</button>}
         </div>
         {(() => {
           const owned = list.filter((c) => stateOf(c) !== "locked");
