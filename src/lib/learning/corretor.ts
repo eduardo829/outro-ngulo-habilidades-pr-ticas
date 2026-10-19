@@ -4,7 +4,7 @@ export const CORRETOR: Course = {
   slug: "corretor-do-zero",
   title: "Corretor do zero: dos primeiros passos à primeira venda",
   thesis: "Um caminho prático para quem quer entrar no mercado imobiliário, entender como a profissão funciona e construir as bases para conquistar os primeiros clientes e realizar as primeiras negociações.",
-  category: "Profissões",
+  category: "Corretores",
   gestor: "vinicius-silva",
   difficulty: "Iniciante",
   commitment: "12 módulos · cerca de 30 min de prática cada",

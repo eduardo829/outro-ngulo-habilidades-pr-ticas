@@ -10,4 +10,4 @@ import { COMUNICACAO, DINHEIRO } from "./comunicacao-dinheiro";
 
 export const COURSES_ENGINE: Course[] = [DA_IDEIA, NETWORKING, VENDAS, IA_TRABALHO, CORRETOR, CORRETOR_PRATICA, KIT_PROFISSIONAL, MAPA_CARREIRA, TRANSICAO, PROXIMO_PASSO, ENTREVISTA, PRESENCA, COMUNICACAO, DINHEIRO];
 export const getEngineCourse = (slug: string) => COURSES_ENGINE.find((c) => c.slug === slug);
-export const CATEGORIES: ("Todos" | Category)[] = ["Todos", "Negócios", "Vendas", "Networking", "Tecnologia & IA", "Dinheiro", "Carreira", "Comunicação", "Profissões"];
+export const CATEGORIES: ("Todos" | Category)[] = ["Todos", "Negócios", "Vendas", "Networking", "Tecnologia & IA", "Dinheiro", "Carreira", "Comunicação", "Corretores", "Profissões"];
