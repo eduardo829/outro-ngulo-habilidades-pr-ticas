@@ -68,6 +68,8 @@ import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authen
 import { Route as AuthenticatedAprenderSlugIndexRouteImport } from './routes/_authenticated/aprender.$slug.index'
 import { Route as AuthenticatedAprenderSlugModuloRouteImport } from './routes/_authenticated/aprender.$slug.$modulo'
 import { Route as AuthenticatedAprenderSlugEspacoRouteImport } from './routes/_authenticated/aprender.$slug.espaco'
+import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
+import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -386,6 +388,16 @@ const AuthenticatedAprenderSlugEspacoRoute =
     path: '/aprender/$slug/espaco',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
+  id: '/lovable/email/auth/preview',
+  path: '/lovable/email/auth/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
+  id: '/lovable/email/auth/webhook',
+  path: '/lovable/email/auth/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -444,6 +456,8 @@ export interface FileRoutesByFullPath {
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
   '/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -503,6 +517,8 @@ export interface FileRoutesByTo {
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/admin/cursos': typeof AuthenticatedAdminCursosIndexRoute
   '/aprender/$slug': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -565,6 +581,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
   '/_authenticated/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/_authenticated/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
+  '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
+  '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/_authenticated/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
   '/_authenticated/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -627,6 +645,8 @@ export interface FileRouteTypes {
     | '/admin/cursos/$id'
     | '/aprender/$slug/$modulo'
     | '/aprender/$slug/espaco'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
     | '/admin/cursos/'
     | '/aprender/$slug/'
   fileRoutesByTo: FileRoutesByTo
@@ -686,6 +706,8 @@ export interface FileRouteTypes {
     | '/admin/cursos/$id'
     | '/aprender/$slug/$modulo'
     | '/aprender/$slug/espaco'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
     | '/admin/cursos'
     | '/aprender/$slug'
   id:
@@ -747,6 +769,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/cursos/$id'
     | '/_authenticated/aprender/$slug/$modulo'
     | '/_authenticated/aprender/$slug/espaco'
+    | '/lovable/email/auth/preview'
+    | '/lovable/email/auth/webhook'
     | '/_authenticated/admin/cursos/'
     | '/_authenticated/aprender/$slug/'
   fileRoutesById: FileRoutesById
@@ -776,6 +800,8 @@ export interface RootRouteChildren {
   CursosIndexRoute: typeof CursosIndexRoute
   GestoresIndexRoute: typeof GestoresIndexRoute
   ApiPublicMercadopagoWebhookRoute: typeof ApiPublicMercadopagoWebhookRoute
+  LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
+  LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1193,6 +1219,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAprenderSlugEspacoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/lovable/email/auth/preview': {
+      id: '/lovable/email/auth/preview'
+      path: '/lovable/email/auth/preview'
+      fullPath: '/lovable/email/auth/preview'
+      preLoaderRoute: typeof LovableEmailAuthPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/auth/webhook': {
+      id: '/lovable/email/auth/webhook'
+      path: '/lovable/email/auth/webhook'
+      fullPath: '/lovable/email/auth/webhook'
+      preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1312,6 +1352,8 @@ const rootRouteChildren: RootRouteChildren = {
   CursosIndexRoute: CursosIndexRoute,
   GestoresIndexRoute: GestoresIndexRoute,
   ApiPublicMercadopagoWebhookRoute: ApiPublicMercadopagoWebhookRoute,
+  LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
+  LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
