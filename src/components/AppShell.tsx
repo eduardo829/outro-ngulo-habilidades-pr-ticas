@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { to: "/inicio", label: "Início", icon: Home },
   { to: "/meu-angulo", label: "Meu Ângulo", short: "Ângulo", icon: Compass },
-  { to: "/cursos", label: "Cursos", icon: LayoutGrid },
+  { to: "/catalogo", label: "Cursos", icon: LayoutGrid },
   { to: "/meus-cursos", label: "Meus cursos", short: "Meus", icon: BookOpen },
   { to: "/comunidade", label: "Comunidade", icon: MessagesSquare },
   { to: "/encontros", label: "Encontros", icon: CalendarDays },
