@@ -1,9 +1,11 @@
 # Outro Ângulo — Roadmap
 
 ## Revisão de segurança — 19/10/2026
-- [ ] Verificar dependências, permissões do banco e acessos sem login
-- [ ] Revisar pagamentos, autorização e limites de IA; corrigir falhas confirmadas
-- [ ] Executar testes e registrar limites da verificação, sem publicar
+- [x] Verificar dependências, permissões do banco e acessos sem login
+- [x] Revisar pagamentos, autorização e limites de IA; corrigir falhas confirmadas
+- [x] Executar testes e registrar limites da verificação, sem publicar
+- [ ] Verificar formulário e pagamento real com conta sem matrícula — conta disponível já possui o curso
+- [ ] Confirmar IP confiável no serviço publicado e custo real da IA — depende de evidência do serviço externo
 
 ## Revisão final e publicação
 - [x] Revisar páginas públicas, de aluno e administração; computador e celular
