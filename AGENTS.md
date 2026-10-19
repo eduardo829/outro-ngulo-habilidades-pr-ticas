@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Outro Ângulo architecture
-- Auth emails use managed SDK verification and six templates with shared inline styles. Why: managed retries, email-client compatibility.
+- Auth emails: managed SDK, six inline-styled templates, exact-match entities aliases. Why: retries and email compatibility without breaking parse5 subpaths.
 - Authorization lives in Postgres RLS + security-definer helpers (has_role, is_enrolled); UI gates are cosmetic. Why: user asked for server-side enforcement.
 - Roles live only in public.user_roles; admins cannot change their own roles/enrollments (policy `user_id <> auth.uid()`). Why: prevent self-escalation.
 - Lesson rows are readable only by enrolled users, previews, or admins; public outlines go through the `course_outline` RPC (titles only). Why: no private content leakage via catalog.
