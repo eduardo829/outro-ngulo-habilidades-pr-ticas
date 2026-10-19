@@ -98,6 +98,7 @@ export async function mpVerifySignature(req: Request, dataId: string) {
 export async function mpCreatePayment(
   body: unknown,
   idempotencyKey: string,
+  deviceId?: string | null,
 ): Promise<{ kind: "created"; payment: MpPayment } | { kind: "refused" | "unknown" }> {
   const res = await fetch(`${BASE}/v1/payments`, {
     method: "POST",
@@ -105,6 +106,7 @@ export async function mpCreatePayment(
       Authorization: `Bearer ${token()}`,
       "Content-Type": "application/json",
       "X-Idempotency-Key": idempotencyKey,
+      ...(deviceId ? { "X-meli-session-id": deviceId } : {}),
     },
     body: JSON.stringify(body),
   });

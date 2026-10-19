@@ -38,14 +38,43 @@ export const brickSchema = z
   });
 export type BrickData = z.infer<typeof brickSchema>;
 
+/** Splits a display name into first/last for Mercado Pago antifraud (only real data we already have). */
+export function splitName(name: string | null | undefined): { first_name?: string; last_name?: string } {
+  const parts = (name ?? "").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return {};
+  const first_name = parts[0].slice(0, 80);
+  const last_name = parts.slice(1).join(" ").slice(0, 80);
+  return last_name ? { first_name, last_name } : { first_name };
+}
+
+/** Device fingerprint from Mercado Pago security.js; sent as X-meli-session-id. */
+export const deviceIdSchema = z
+  .string()
+  .max(200)
+  .regex(/^[A-Za-z0-9_:.-]+$/)
+  .optional();
+
 export function buildPaymentBody(
   p: { id: string; amount_cents: number },
   fd: BrickData,
-  o: { title: string; notificationUrl: string; attemptId?: string },
+  o: {
+    title: string;
+    notificationUrl: string;
+    attemptId?: string;
+    slug?: string;
+    payerName?: string | null;
+    registeredAt?: string | null;
+  },
 ) {
   const isPix = fd.payment_method_id === "pix";
+  const name = {
+    ...splitName(o.payerName),
+    ...(fd.payer.first_name ? { first_name: fd.payer.first_name } : {}),
+    ...(fd.payer.last_name ? { last_name: fd.payer.last_name } : {}),
+  };
+  const unit = p.amount_cents / 100;
   return {
-    transaction_amount: p.amount_cents / 100,
+    transaction_amount: unit,
     description: o.title.slice(0, 120),
     payment_method_id: fd.payment_method_id,
     external_reference: p.id,
@@ -54,7 +83,24 @@ export function buildPaymentBody(
     statement_descriptor: "OUTRO ANGULO",
     payer: {
       email: fd.payer.email,
+      ...name,
       ...(fd.payer.identification ? { identification: fd.payer.identification } : {}),
+    },
+    additional_info: {
+      items: [
+        {
+          id: (o.slug ?? p.id).slice(0, 120),
+          title: o.title.slice(0, 120),
+          description: `Curso online: ${o.title}`.slice(0, 250),
+          category_id: "learnings",
+          quantity: 1,
+          unit_price: unit,
+        },
+      ],
+      payer: {
+        ...name,
+        ...(o.registeredAt ? { registration_date: o.registeredAt } : {}),
+      },
     },
     ...(isPix
       ? {}
