@@ -1,7 +1,7 @@
 import type { Course } from "./types";
 
 /** "What do you want to improve?" areas used by /cursos. Engine categories map into them. */
-export const AREAS = ["Carreira", "Comunicação", "Dinheiro", "Tecnologia & IA", "Relacionamentos", "Execução", "Profissões", "Negócios"] as const;
+export const AREAS = ["Carreira", "Comunicação", "Dinheiro", "Tecnologia & IA", "Relacionamentos", "Execução", "Corretores", "Profissões", "Negócios"] as const;
 export type Area = (typeof AREAS)[number];
 
 export function areaOf(c: Course): Area {
@@ -13,6 +13,7 @@ export function areaOf(c: Course): Area {
     case "Dinheiro": return "Dinheiro";
     case "Tecnologia & IA": return "Tecnologia & IA";
     case "Profissões": return "Profissões";
+    case "Corretores": return "Corretores";
     default: return "Negócios";
   }
 }
