@@ -15,11 +15,11 @@ const entitiesPath = fileURLToPath(new URL("./node_modules/entities", import.met
 export default defineConfig({
   vite: {
     resolve: {
-      alias: {
-        "entities/lib/decode.js": `${entitiesPath}/lib/decode.js`,
-        "entities/lib/encode.js": `${entitiesPath}/lib/encode.js`,
-        entities: entitiesPath,
-      },
+      alias: [
+        { find: /^entities\/lib\/decode\.js$/, replacement: `${entitiesPath}/lib/decode.js` },
+        { find: /^entities\/lib\/encode\.js$/, replacement: `${entitiesPath}/lib/encode.js` },
+        { find: /^entities$/, replacement: `${entitiesPath}/lib/esm/index.js` },
+      ],
     },
   },
   tanstackStart: {
