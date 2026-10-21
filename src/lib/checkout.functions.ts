@@ -183,6 +183,23 @@ async function viewOf(p: { id: string; transaction_id: string | null } & Attempt
   };
 }
 
+/** Reconciles a Stripe purchase: re-reads the Checkout Session (id kept in provider_status) and applies it. */
+async function reconcileStripe(p: { id: string; provider_status: string | null }) {
+  const { stripeGetSession, applyStripeSession } = await import("./stripe.server");
+  const sid = p.provider_status?.startsWith("session/")
+    ? p.provider_status.slice(8).split(":")[0]
+    : null;
+  if (!sid) return "none" as const;
+  try {
+    const s = await stripeGetSession(sid);
+    if (!s) return "unknown" as const;
+    return (await applyStripeSession(s)) ?? "pending";
+  } catch (e) {
+    console.error("[stripe] reconcile failed", p.id, e instanceof Error ? e.message : "");
+    return "unknown" as const;
+  }
+}
+
 /** ALL pending legacy Checkout Pro purchases of this user/course (paginated), each reconciled with MP, combined into one gate. */
 async function legacyState(userId: string, courseId: string) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -231,22 +248,8 @@ export const getCheckout = createServerFn({ method: "POST" })
       return en?.status === "active";
     };
     if (await owned()) return { state: "owned" as const, slug: c.slug, title: c.title };
-    const base = () =>
-      supabaseAdmin
-        .from("purchases")
-        .select(
-          "id, payment_status, amount_cents, transaction_id, checkout_kind, attempt_state, attempt_started_at, created_at",
-        )
-        .eq("user_id", context.userId)
-        .eq("course_id", c.id)
-        .eq("payment_provider", "mercadopago")
-        .in("payment_status", ["pending", "failed"])
-        .order("created_at", { ascending: false })
-        .limit(1);
 
-    let existing: { phase: "pix" | "pending" | "verifying"; pix: Pix | null } | null = null;
-    // Legacy Checkout Pro purchase (never mixed with Brick): while its MP payment is open or unknown, the page
-    // polls THAT purchase and no Brick charge is allowed.
+    // Legacy Mercado Pago purchase still open/unknown: the page polls THAT purchase and no new charge is allowed.
     const lg = await legacyState(context.userId, c.id);
     if (lg.gate === "paid" && (await owned()))
       return { state: "owned" as const, slug: c.slug, title: c.title };
@@ -261,18 +264,98 @@ export const getCheckout = createServerFn({ method: "POST" })
       };
     }
 
-    // Reuse the latest Brick purchase at the same price, so reloads never create duplicate purchases.
-    const { data: open } = await base().eq("checkout_kind", "brick").maybeSingle();
-    let purchaseId = open && open.amount_cents === c.cents ? open.id : null;
-    if (purchaseId && open && !existing) {
-      const v = await viewOf(open);
-      if (v.view === "paid" && (await owned()))
+    // An open Stripe purchase at the same price is resumed, never duplicated.
+    const { data: open } = await supabaseAdmin
+      .from("purchases")
+      .select("id, amount_cents, provider_status")
+      .eq("user_id", context.userId)
+      .eq("course_id", c.id)
+      .eq("payment_provider", "stripe")
+      .eq("payment_status", "pending")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (open && open.amount_cents === c.cents) {
+      const st = await reconcileStripe(open);
+      if (st === "paid" && (await owned()))
         return { state: "owned" as const, slug: c.slug, title: c.title };
-      if (v.view === "pending") existing = { phase: v.pix ? "pix" : "pending", pix: v.pix };
-      else if (v.view === "unknown" || v.view === "paid")
-        existing = { phase: "verifying", pix: null };
+      if (st === "pending")
+        return {
+          state: "stripe-pending" as const,
+          slug: c.slug,
+          title: c.title,
+          amount_cents: c.cents,
+          purchaseId: open.id,
+        };
     }
-    if (!purchaseId) {
+
+    return {
+      state: "ready" as const,
+      slug: c.slug,
+      title: c.title,
+      amount_cents: c.cents,
+    };
+  });
+
+/**
+ * Starts a hosted Stripe Checkout (card, Pix, boleto) for one course. Price is read from the database,
+ * never from the client. One pending purchase per user/course/price is reused; the Stripe session is
+ * created with a deterministic idempotency key, so reloads and double-clicks never duplicate charges.
+ */
+export const createStripeCheckout = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) =>
+    z.object({ slug: z.string().min(1).max(120), origin: z.string().url().max(200) }).parse(d),
+  )
+  .handler(async ({ data, context }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { stripeCreateSession, stripeGetSession, applyStripeSession } = await import(
+      "./stripe.server"
+    );
+    const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
+    const c = await loadSellable(data.slug);
+    if (!c) throw new Error("Este curso não está à venda.");
+    const { data: en } = await supabaseAdmin
+      .from("enrollments")
+      .select("status")
+      .eq("user_id", context.userId)
+      .eq("course_id", c.id)
+      .maybeSingle();
+    if (en?.status === "active") throw new Error("Você já tem acesso a este curso.");
+
+    // Never open a Stripe charge while a legacy Mercado Pago payment is open or its state is unknown.
+    const lg = await legacyState(context.userId, c.id);
+    if (lg.gate === "paid") throw new Error("Você já tem acesso a este curso.");
+    if (lg.gate !== "open")
+      throw new Error("Você já tem um pagamento em análise. Aguarde a confirmação antes de tentar de novo.");
+
+    const { data: open } = await supabaseAdmin
+      .from("purchases")
+      .select("id, amount_cents, provider_status")
+      .eq("user_id", context.userId)
+      .eq("course_id", c.id)
+      .eq("payment_provider", "stripe")
+      .eq("payment_status", "pending")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    let purchaseId: string;
+    let priorSessionId: string | null = null;
+    if (open && open.amount_cents === c.cents) {
+      purchaseId = open.id;
+      priorSessionId = open.provider_status?.startsWith("session/")
+        ? open.provider_status.slice(8).split(":")[0]
+        : null;
+      if (priorSessionId) {
+        const s = await stripeGetSession(priorSessionId);
+        if (s?.status === "open" && s.url) return { checkout_url: s.url };
+        if (s) {
+          const st = await applyStripeSession(s);
+          if (st === "paid") throw new Error("Você já tem acesso a este curso.");
+        }
+      }
+    } else {
       const { data: p, error } = await supabaseAdmin
         .from("purchases")
         .insert({
@@ -280,27 +363,35 @@ export const getCheckout = createServerFn({ method: "POST" })
           course_id: c.id,
           amount_cents: c.cents,
           currency: "BRL",
-          payment_provider: "mercadopago",
+          payment_provider: "stripe",
           payment_status: "pending",
-          checkout_kind: "brick",
+          checkout_kind: "stripe",
         })
         .select("id")
         .single();
       if (error || !p) throw new Error("Não foi possível iniciar o pagamento.");
       purchaseId = p.id;
     }
-    const publicKey = process.env["MERCADO_PAGO_PUBLIC_KEY"] ?? null;
+
     const email = typeof context.claims?.email === "string" ? context.claims.email : null;
-    return {
-      state: "ready" as const,
-      slug: c.slug,
-      title: c.title,
-      amount_cents: c.cents,
-      purchaseId,
-      existing,
-      publicKey: publicKey && /^(APP_USR|TEST)-/.test(publicKey) ? publicKey : null,
-      email,
-    };
+    const session = await stripeCreateSession(
+      {
+        purchaseId,
+        title: c.title,
+        amountCents: c.cents,
+        successUrl: `${origin}/pagamento/sucesso?curso=${c.slug}&compra=${purchaseId}`,
+        cancelUrl: `${origin}/checkout/${c.slug}`,
+        email,
+      },
+      // Deterministic per new session: same key on retry returns the same session, never a second one.
+      priorSessionId ? `${purchaseId}:${priorSessionId}` : purchaseId,
+    );
+    if (!session.url) throw new Error("Não foi possível iniciar o pagamento.");
+    await supabaseAdmin
+      .from("purchases")
+      .update({ provider_status: `session/${session.id}` })
+      .eq("id", purchaseId);
+    return { checkout_url: session.url };
   });
 
 /**
@@ -438,7 +529,7 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const { data: p } = await supabaseAdmin
       .from("purchases")
       .select(
-        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at",
+        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at, payment_provider, provider_status",
       )
       .eq("id", data.purchaseId)
       .maybeSingle();
@@ -451,6 +542,10 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
         .eq("course_id", p.course_id!)
         .maybeSingle();
       if (en?.status === "active") return { status: "paid", pix: null };
+    }
+    if (p.payment_provider === "stripe") {
+      const st = await reconcileStripe(p);
+      return { status: st === "cancelled" ? "failed" : st, pix: null };
     }
     const v = await viewOf(p);
     return { status: v.view as string, pix: v.view === "pending" ? v.pix : null };

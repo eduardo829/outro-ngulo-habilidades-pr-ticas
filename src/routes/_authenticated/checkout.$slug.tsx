@@ -4,16 +4,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
-import { getCheckout, getPurchaseStatus, payWithBrick } from "@/lib/checkout.functions";
-import { canStartNewAttempt, phaseAfterPay } from "@/lib/checkout-logic";
+import { createStripeCheckout, getCheckout, getPurchaseStatus } from "@/lib/checkout.functions";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
   head: () => ({
     meta: [
       { title: "Pagamento do curso — Outro Ângulo" },
-      { name: "description", content: "Finalize a compra do seu curso com cartão ou Pix." },
+      { name: "description", content: "Finalize a compra do seu curso com cartão, Pix ou boleto." },
       { property: "og:title", content: "Pagamento do curso — Outro Ângulo" },
-      { property: "og:description", content: "Finalize a compra do seu curso com cartão ou Pix." },
+      { property: "og:description", content: "Finalize a compra do seu curso com cartão, Pix ou boleto." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
@@ -23,86 +22,22 @@ export const Route = createFileRoute("/_authenticated/checkout/$slug")({
 });
 
 type Info = Awaited<ReturnType<typeof getCheckout>>;
-type Pix = { qr_code: string; qr_code_base64: string | null; ticket_url: string | null };
-type Phase =
-  | { k: "form" }
-  | { k: "processing" }
-  | { k: "paid" }
-  | { k: "pix"; pix: Pix }
-  | { k: "pending" }
-  | { k: "verifying" }
-  | { k: "rejected" }
-  | { k: "cooldown" };
-
-declare global {
-  interface Window {
-    MercadoPago?: new (
-      key: string,
-      o: { locale: string },
-    ) => {
-      bricks: () => {
-        create: (t: string, id: string, s: unknown) => Promise<{ unmount: () => void }>;
-      };
-    };
-  }
-}
-
-function loadSdk() {
-  return new Promise<void>((res, rej) => {
-    if (window.MercadoPago) return res();
-    const s = document.createElement("script");
-    s.src = "https://sdk.mercadopago.com/js/v2";
-    s.onload = () => res();
-    s.onerror = () => rej(new Error("sdk"));
-    document.head.appendChild(s);
-  });
-}
-
-/** Mercado Pago device fingerprint (antifraud). Optional: payment proceeds without it if blocked. */
-function loadSecurity() {
-  if (document.getElementById("mp-security")) return;
-  const s = document.createElement("script");
-  s.id = "mp-security";
-  s.src = "https://www.mercadopago.com/v2/security.js";
-  s.setAttribute("view", "checkout");
-  s.setAttribute("output", "MP_DEVICE_SESSION_ID");
-  document.head.appendChild(s);
-}
-const deviceId = () => {
-  const v = (window as unknown as { MP_DEVICE_SESSION_ID?: unknown }).MP_DEVICE_SESSION_ID;
-  return typeof v === "string" && v ? v : undefined;
-};
 
 function CheckoutPage() {
   const { slug } = Route.useParams();
   const qc = useQueryClient();
   const [info, setInfo] = useState<Info | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [phase, setPhase] = useState<Phase>({ k: "form" });
-  const [brickKey, setBrickKey] = useState(0);
-  const [copied, setCopied] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
     getCheckout({ data: { slug } })
-      .then((i) => {
-        setInfo(i);
-        // An open payment (Pix awaiting, in analysis, or unconfirmed) is shown again; no new form.
-        if (i.state === "ready" && i.existing) {
-          const e = i.existing;
-          setPhase(
-            e.phase === "pix" && e.pix
-              ? { k: "pix", pix: e.pix }
-              : e.phase === "pix"
-                ? { k: "pending" }
-                : { k: e.phase },
-          );
-        }
-      })
+      .then(setInfo)
       .catch(() => setErr("Não foi possível carregar o pagamento."));
   }, [slug, reload]);
 
-  // Legacy Checkout Pro payment still open/unknown: poll THAT purchase; reload the checkout once it resolves.
+  // Legacy Mercado Pago payment still open/unknown: poll THAT purchase; reload the checkout once it resolves.
   const legacy = info?.state === "legacy" ? info : null;
   useEffect(() => {
     if (!legacy) return;
@@ -112,7 +47,6 @@ function CheckoutPage() {
         const r = await getPurchaseStatus({ data: { purchaseId: legacy.legacyPurchaseId } });
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
-          setPhase({ k: "paid" });
           setInfo({ state: "owned", slug: legacy.slug, title: legacy.title });
         } else if (r.status !== "pending" && r.status !== "unknown") setReload((n) => n + 1);
       } catch {
@@ -122,100 +56,36 @@ function CheckoutPage() {
     return () => clearInterval(t);
   }, [legacy, qc]);
 
-  const ready = info?.state === "ready" && info.publicKey ? info : null;
-
+  // Stripe payment in progress (Pix/boleto awaiting confirmation): poll until the server confirms.
+  const stripePending = info?.state === "stripe-pending" ? info : null;
   useEffect(() => {
-    if (!ready || phase.k !== "form") return;
-    let ctrl: { unmount: () => void } | null = null;
-    let dead = false;
-    loadSecurity();
-    loadSdk()
-      .then(async () => {
-        if (dead || !window.MercadoPago) return;
-        const mp = new window.MercadoPago(ready.publicKey!, { locale: "pt-BR" });
-        ctrl = await mp.bricks().create("payment", "payment-brick", {
-          initialization: {
-            amount: ready.amount_cents / 100,
-            ...(ready.email ? { payer: { email: ready.email } } : {}),
-          },
-          customization: {
-            paymentMethods: {
-              creditCard: "all",
-              debitCard: "all",
-              bankTransfer: ["pix"],
-              maxInstallments: 12,
-            },
-          },
-          callbacks: {
-            onReady: () => {},
-            onError: () => {},
-            onSubmit: async ({ formData }: { formData: unknown }) => {
-              setPhase({ k: "processing" });
-              try {
-                const r = await payWithBrick({
-                  data: { purchaseId: ready.purchaseId, formData, deviceId: deviceId() },
-                });
-                applyResult(r);
-              } catch {
-                // Transport error after submit: a charge may exist. Verify; the server keeps the same attempt key.
-                setPhase({ k: "verifying" });
-              }
-            },
-          },
-        });
-        if (dead) ctrl.unmount();
-      })
-      .catch(() =>
-        setErr("Não foi possível carregar o formulário de pagamento. Recarregue a página."),
-      );
-    return () => {
-      dead = true;
-      ctrl?.unmount();
-    };
-  }, [ready, phase.k, brickKey, qc]);
-
-  // Pix / pending / verifying: poll this specific purchase; only the server confirms the outcome.
-  useEffect(() => {
-    if (!ready || (phase.k !== "pix" && phase.k !== "pending" && phase.k !== "verifying")) return;
-    const check = async () => {
+    if (!stripePending) return;
+    const t = setInterval(async () => {
       try {
-        const r = await getPurchaseStatus({ data: { purchaseId: ready.purchaseId } });
+        const r = await getPurchaseStatus({ data: { purchaseId: stripePending.purchaseId } });
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
-          setPhase({ k: "paid" });
-        } else if (phase.k === "verifying") {
-          if (r.status === "none") {
-            // Confirmed: no payment exists. Form again, SAME attempt key (idempotent resend).
-            setBrickKey((k) => k + 1);
-            setPhase({ k: "form" });
-          } else if (r.status === "pending")
-            setPhase(r.pix ? { k: "pix", pix: r.pix } : { k: "pending" });
-          else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
-        } else if (canStartNewAttempt(r.status)) setPhase({ k: "rejected" });
+          setInfo({ state: "owned", slug: stripePending.slug, title: stripePending.title });
+        } else if (r.status !== "pending" && r.status !== "unknown") setReload((n) => n + 1);
       } catch {
         /* keep waiting */
       }
-    };
-    if (phase.k === "verifying") check();
-    const t = setInterval(check, 5000);
+    }, 5000);
     return () => clearInterval(t);
-  }, [ready, phase.k, qc]);
+  }, [stripePending, qc]);
 
-  function applyResult(r: { status: string; pix?: Pix | null }) {
-    if (r.status === "cooldown") return setPhase({ k: "cooldown" });
-    const next = phaseAfterPay(r);
-    if (next === "paid") {
-      qc.invalidateQueries({ queryKey: ["my-learning"] });
-      setPhase({ k: "paid" });
-    } else if (next === "pix" && r.pix) setPhase({ k: "pix", pix: r.pix });
-    else if (next === "pix") setPhase({ k: "pending" });
-    else setPhase({ k: next });
-  }
-
-  // Shown only after a server-confirmed rejection; the server issues the new attempt key.
-  const retry = () => {
-    setBrickKey((k) => k + 1);
-    setPhase({ k: "form" });
+  const pay = async () => {
+    setRedirecting(true);
+    setErr(null);
+    try {
+      const r = await createStripeCheckout({
+        data: { slug, origin: window.location.origin },
+      });
+      window.location.href = r.checkout_url;
+    } catch (e) {
+      setRedirecting(false);
+      setErr(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento.");
+    }
   };
 
   return (
@@ -229,7 +99,7 @@ function CheckoutPage() {
       </Link>
       <p className="eyebrow mt-6">Pagamento</p>
       {!info && !err && <p className="mt-4 text-muted-foreground">Carregando…</p>}
-      {err && (
+      {err && !info && (
         <p role="alert" className="mt-4 text-destructive">
           {err}
         </p>
@@ -246,9 +116,8 @@ function CheckoutPage() {
               : "Verificando seu pagamento…"}
           </h2>
           <p className="mt-2 text-muted-foreground">
-            Encontramos um pagamento anterior deste curso ainda sem resposta final do Mercado Pago.
-            Não pague de novo: esta página atualiza sozinha e libera o curso assim que ele for
-            confirmado.
+            Encontramos um pagamento anterior deste curso ainda sem resposta final. Não pague de
+            novo: esta página atualiza sozinha e libera o curso assim que ele for confirmado.
           </p>
         </div>
       )}
@@ -264,6 +133,16 @@ function CheckoutPage() {
           </Button>
         </div>
       )}
+      {stripePending && (
+        <div className="mt-4" aria-live="polite">
+          <h1 className="font-display text-3xl font-extrabold">{stripePending.title}</h1>
+          <h2 className="mt-6 font-display text-xl font-bold">Pagamento em confirmação</h2>
+          <p className="mt-2 text-muted-foreground">
+            Estamos aguardando a confirmação do pagamento. O curso é liberado assim que ela chegar;
+            você não precisa pagar de novo. Esta página atualiza sozinha.
+          </p>
+        </div>
+      )}
       {info?.state === "ready" && (
         <>
           <h1 className="mt-2 font-display text-3xl font-extrabold">{info.title}</h1>
@@ -271,111 +150,21 @@ function CheckoutPage() {
             <span className="text-muted-foreground">Pagamento único · acesso a este curso</span>
             <span className="font-display text-2xl font-bold">{brl(info.amount_cents)}</span>
           </div>
-          {!info.publicKey && (
-            <p role="alert" className="mt-6 text-muted-foreground">
-              O pagamento dentro do site ainda não está disponível. Tente novamente mais tarde.
+          <p className="mt-6 text-muted-foreground">
+            Você será levado a uma página segura de pagamento com as opções cartão, Pix e boleto.
+            Pix libera o curso na hora; boleto libera após a compensação do banco.
+          </p>
+          <Button size="lg" className="mt-6" onClick={pay} disabled={redirecting}>
+            {redirecting ? "Abrindo pagamento seguro…" : "Ir para o pagamento"}
+          </Button>
+          {err && (
+            <p role="alert" className="mt-4 text-destructive">
+              {err}
             </p>
-          )}
-          {info.publicKey && phase.k === "form" && (
-            <div key={brickKey} id="payment-brick" className="mt-6" />
-          )}
-          {phase.k === "processing" && (
-            <p className="mt-6" aria-live="polite">
-              Processando pagamento…
-            </p>
-          )}
-          {phase.k === "paid" && (
-            <div className="mt-6" aria-live="polite">
-              <h2 className="font-display text-2xl font-bold">
-                Pagamento confirmado. Seu curso está liberado.
-              </h2>
-              <Button asChild className="mt-4">
-                <Link to="/aprender/$slug" params={{ slug }}>
-                  Começar o curso
-                </Link>
-              </Button>
-            </div>
-          )}
-          {phase.k === "rejected" && (
-            <div role="alert" className="mt-6">
-              <h2 className="font-display text-xl font-bold">O pagamento não foi aprovado</h2>
-              <p className="mt-2 text-muted-foreground">
-                Nenhum valor foi cobrado. Se o erro foi de digitação, confira os dados e tente de novo.
-                Se o banco ou o Mercado Pago recusou, este cartão fica bloqueado por 5 minutos: use
-                outro cartão ou pague com Pix para liberar o curso na hora.
-              </p>
-              <Button className="mt-4" onClick={retry}>
-                Tentar novamente
-              </Button>
-            </div>
-          )}
-          {phase.k === "cooldown" && (
-            <div role="alert" className="mt-6">
-              <h2 className="font-display text-xl font-bold">Use outro meio de pagamento</h2>
-              <p className="mt-2 text-muted-foreground">
-                Este cartão foi recusado há poucos minutos. Para proteger você, ele só pode ser usado de
-                novo em 5 minutos. Nada foi cobrado. Você pode pagar agora com outro cartão ou com Pix.
-              </p>
-              <Button className="mt-4" onClick={retry}>
-                Escolher outro meio de pagamento
-              </Button>
-            </div>
-          )}
-          {phase.k === "verifying" && (
-            <div className="mt-6" aria-live="polite">
-              <h2 className="font-display text-xl font-bold">Verificando seu pagamento…</h2>
-              <p className="mt-2 text-muted-foreground">
-                Estamos confirmando com o Mercado Pago se a cobrança foi feita. Aguarde aqui e não
-                pague de novo; esta página atualiza sozinha.
-              </p>
-            </div>
-          )}
-          {phase.k === "pending" && (
-            <div className="mt-6" aria-live="polite">
-              <h2 className="font-display text-xl font-bold">Pagamento em análise</h2>
-              <p className="mt-2 text-muted-foreground">
-                Estamos aguardando a confirmação do Mercado Pago. O curso é liberado assim que ela
-                chegar; você não precisa pagar de novo.
-              </p>
-            </div>
-          )}
-          {phase.k === "pix" && (
-            <div className="mt-6" aria-live="polite">
-              <h2 className="font-display text-xl font-bold">Pague com Pix para liberar o curso</h2>
-              <p className="mt-2 text-muted-foreground">
-                Aguardando pagamento. Esta página atualiza sozinha quando o Mercado Pago confirmar.
-              </p>
-              {phase.pix.qr_code_base64 && (
-                <img
-                  src={`data:image/png;base64,${phase.pix.qr_code_base64}`}
-                  alt="QR Code Pix"
-                  className="mt-4 h-56 w-56 border"
-                />
-              )}
-              <label className="mt-4 block text-sm font-semibold" htmlFor="pix-code">
-                Pix copia e cola
-              </label>
-              <textarea
-                id="pix-code"
-                readOnly
-                value={phase.pix.qr_code}
-                className="mt-1 h-24 w-full rounded border bg-background p-2 text-xs"
-              />
-              <Button
-                variant="outline"
-                className="mt-2"
-                onClick={async () => {
-                  await navigator.clipboard.writeText(phase.pix.qr_code);
-                  setCopied(true);
-                }}
-              >
-                {copied ? "Código copiado" : "Copiar código"}
-              </Button>
-            </div>
           )}
           <p className="mt-8 inline-flex items-center gap-1 text-xs text-muted-foreground">
             <Lock className="h-3 w-3" />
-            Processado pelo Mercado Pago. Não guardamos dados do seu cartão.
+            Processado pelo Stripe. Não guardamos dados do seu cartão.
           </p>
         </>
       )}
