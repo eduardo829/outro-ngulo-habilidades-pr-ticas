@@ -42,7 +42,11 @@ export type StripeSession = {
   currency?: string;
   client_reference_id?: string | null;
   payment_intent?: string | null;
+  customer_details?: { email?: string | null } | null;
 };
+
+/** client_reference_id prefix for checkouts started without an account. */
+export const GUEST_REF = "guest_";
 
 /** Creates a hosted Checkout Session (card, Pix, boleto). Amount always comes from the database, never the client. */
 export async function stripeCreateSession(
@@ -53,6 +57,7 @@ export async function stripeCreateSession(
     successUrl: string;
     cancelUrl: string;
     email?: string | null;
+    ref?: string;
   },
   idempotencyKey: string,
 ): Promise<StripeSession> {
@@ -61,7 +66,7 @@ export async function stripeCreateSession(
     locale: "pt-BR",
     success_url: o.successUrl,
     cancel_url: o.cancelUrl,
-    client_reference_id: o.purchaseId,
+    client_reference_id: o.ref ?? o.purchaseId,
     "line_items[0][price_data][currency]": "brl",
     "line_items[0][price_data][unit_amount]": String(o.amountCents),
     "line_items[0][price_data][product_data][name]": o.title.slice(0, 120),
@@ -122,6 +127,7 @@ export async function stripeVerifyWebhook(rawBody: string, header: string | null
 export async function applyStripeSession(s: StripeSession): Promise<string | null> {
   const purchaseId = s.client_reference_id;
   if (!purchaseId) return null;
+  if (purchaseId.startsWith(GUEST_REF)) return applyGuestSession(s, purchaseId.slice(GUEST_REF.length));
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { stripeSessionStatus } = await import("./checkout-logic");
   const { data: p, error: re } = await supabaseAdmin
@@ -145,4 +151,64 @@ export async function applyStripeSession(s: StripeSession): Promise<string | nul
     throw new Error("apply payment failed");
   }
   return (data as string | null) ?? null;
+}
+
+const SITE = "https://outroangulo.com";
+
+/**
+ * Guest checkout (no account): once Stripe confirms the exact amount, the purchase is bound to the user with the
+ * buyer's e-mail. If no account exists, one is created by invite: the e-mail carries a link to set a password and
+ * the course is already unlocked. Binding is atomic (guest_checkout_bind), so retries never duplicate purchases.
+ */
+async function applyGuestSession(s: StripeSession, guestId: string): Promise<string | null> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { stripeSessionStatus } = await import("./checkout-logic");
+  const { data: g, error } = await supabaseAdmin
+    .from("guest_checkouts")
+    .select("id, amount_cents, currency, status, purchase_id, invited")
+    .eq("id", guestId)
+    .maybeSingle();
+  if (error) throw new Error("guest read failed");
+  if (!g) return null;
+  const status = stripeSessionStatus(s, g.amount_cents, g.currency);
+  if (status === "pending") return "pending";
+  if (status !== "paid") {
+    if (g.status === "pending")
+      await supabaseAdmin.from("guest_checkouts").update({ status, updated_at: new Date().toISOString() }).eq("id", g.id);
+    return status;
+  }
+  const email = s.customer_details?.email?.trim().toLowerCase();
+  if (!email) throw new Error("guest email missing"); // webhook retries
+
+  const { data: existing, error: ue } = await supabaseAdmin.rpc("auth_user_id_by_email", { _email: email });
+  if (ue) throw new Error("user lookup failed");
+  let userId = existing as string | null;
+  let invited = g.invited;
+  if (!userId) {
+    const { data: inv, error: ie } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+      redirectTo: `${SITE}/reset-password`,
+    });
+    if (ie || !inv.user) throw new Error("invite failed");
+    userId = inv.user.id;
+    invited = true;
+  }
+  const { data: pid, error: be } = await supabaseAdmin.rpc("guest_checkout_bind", {
+    _guest: g.id,
+    _user: userId,
+    _email: email,
+  });
+  if (be || !pid) throw new Error("guest bind failed");
+  const { error: ae } = await supabaseAdmin.rpc("checkout_apply_verified_payment", {
+    _purchase: pid as string,
+    _status: "paid",
+    _transaction_id: (typeof s.payment_intent === "string" && s.payment_intent) || s.id,
+    _provider_status: `session/${s.id}:${s.status ?? ""}/${s.payment_status ?? ""}`,
+    _attempt: null as unknown as string,
+  });
+  if (ae) throw new Error("apply payment failed");
+  await supabaseAdmin
+    .from("guest_checkouts")
+    .update({ status: "paid", invited, updated_at: new Date().toISOString() })
+    .eq("id", g.id);
+  return "paid";
 }
