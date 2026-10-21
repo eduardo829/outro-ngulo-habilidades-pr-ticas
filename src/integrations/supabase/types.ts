@@ -997,6 +997,69 @@ export type Database = {
           },
         ]
       }
+      guest_checkouts: {
+        Row: {
+          amount_cents: number
+          course_id: string
+          created_at: string
+          currency: string
+          email: string | null
+          id: string
+          invited: boolean
+          origin: string | null
+          purchase_id: string | null
+          session_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          course_id: string
+          created_at?: string
+          currency?: string
+          email?: string | null
+          id?: string
+          invited?: boolean
+          origin?: string | null
+          purchase_id?: string | null
+          session_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          course_id?: string
+          created_at?: string
+          currency?: string
+          email?: string | null
+          id?: string
+          invited?: boolean
+          origin?: string | null
+          purchase_id?: string | null
+          session_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_checkouts_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_checkouts_purchase_id_fkey"
+            columns: ["purchase_id"]
+            isOneToOne: false
+            referencedRelation: "purchases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       learning_outputs: {
         Row: {
           course_id: string
@@ -1740,6 +1803,7 @@ export type Database = {
         }
         Returns: Json
       }
+      auth_user_id_by_email: { Args: { _email: string }; Returns: string }
       book_event: { Args: { _event: string }; Returns: undefined }
       checkout_apply_payment: {
         Args: {
@@ -1781,6 +1845,10 @@ export type Database = {
       }
       ensure_event_reminders: { Args: never; Returns: undefined }
       event_join_url: { Args: { _event: string }; Returns: string }
+      guest_checkout_bind: {
+        Args: { _email: string; _guest: string; _user: string }
+        Returns: string
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
