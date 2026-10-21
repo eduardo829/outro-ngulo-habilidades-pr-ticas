@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createGuestCheckout } from "@/lib/checkout.functions";
 import { ArrowRight, Check, Lock } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
@@ -45,6 +47,44 @@ function CampaignPage() {
   const price = brl(prices?.[SLUG]);
   const gestor = course.gestor ? getGestor(course.gestor) : undefined;
   const buy = { ...buyTarget(SLUG), ...(origem ? { search: { origem } } : {}) };
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const guestBuy = async () => {
+    setBusy(true);
+    setErr(null);
+    try {
+      const r = await createGuestCheckout({
+        data: { slug: SLUG, origin: window.location.origin, origem: origem ?? undefined },
+      });
+      window.location.href = r.checkout_url;
+    } catch (e) {
+      setBusy(false);
+      setErr(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento.");
+    }
+  };
+  const BuyButton = ({ className }: { className?: string }) =>
+    user ? (
+      <Button asChild size="lg" className={className}>
+        <Link {...buy}>
+          Comprar agora
+          <ArrowRight />
+        </Link>
+      </Button>
+    ) : (
+      <Button size="lg" className={className} onClick={guestBuy} disabled={busy}>
+        {busy ? "Abrindo pagamento seguro…" : "Comprar agora"}
+        <ArrowRight />
+      </Button>
+    );
+  const note = !user && (
+    <p className="mt-3 text-sm opacity-80">
+      Não precisa criar conta antes. Depois do pagamento, enviamos ao seu e-mail um link para criar
+      a senha, com o curso já liberado.{" "}
+      <Link to="/auth" search={{ redirect: "/checkout/corretor-na-pratica" }} className="underline">
+        Já tenho conta
+      </Link>
+    </p>
+  );
 
   return (
     <PublicLayout>
@@ -68,13 +108,10 @@ function CampaignPage() {
             {price && (
               <span className="font-display text-3xl font-extrabold md:text-4xl">{price}</span>
             )}
-            <Button asChild size="lg">
-              <Link {...buy}>
-                {user ? "Comprar agora" : "Entrar e comprar"}
-                <ArrowRight />
-              </Link>
-            </Button>
+            <BuyButton />
           </div>
+          {note}
+          {err && <p role="alert" className="mt-3 text-sm">{err}</p>}
           <p className="mt-5 inline-flex items-center gap-1.5 text-sm text-ink-foreground/70">
             <Lock className="h-3.5 w-3.5" aria-hidden />
             Pagamento único por curso, sem assinatura. Cartão, Pix ou boleto — o Pix libera o curso
@@ -164,12 +201,9 @@ function CampaignPage() {
           Pagamento único, acesso a este curso sem prazo de validade. Você começa pelo episódio 01
           assim que o pagamento é confirmado.
         </p>
-        <Button asChild size="lg" className="mt-8">
-          <Link {...buy}>
-            {user ? "Comprar agora" : "Entrar e comprar"}
-            <ArrowRight />
-          </Link>
-        </Button>
+        <BuyButton className="mt-8" />
+        <div className="mx-auto max-w-xl text-muted-foreground">{note}</div>
+        {err && <p role="alert" className="mt-3 text-sm text-destructive">{err}</p>}
         <p className="mt-6 inline-flex items-center gap-1 text-xs text-muted-foreground">
           <Lock className="h-3 w-3" aria-hidden />
           Processado pelo Stripe. Não guardamos dados do seu cartão.

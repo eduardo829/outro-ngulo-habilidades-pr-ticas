@@ -190,6 +190,13 @@
       "when": 1792601851763,
       "tag": "0026_purchases_campaign_origin",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1792602132789,
+      "tag": "0027_guest_checkouts",
+      "breakpoints": true
     }
   ]
 }

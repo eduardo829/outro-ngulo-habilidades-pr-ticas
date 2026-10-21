@@ -557,3 +557,76 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const v = await viewOf(p);
     return { status: v.view as string, pix: v.view === "pending" ? v.pix : null };
   });
+
+/**
+ * Checkout without an account (campaign pages). Price comes from the database; Stripe collects the e-mail.
+ * After Stripe confirms payment, the webhook binds the purchase to that e-mail's account (creating it by invite).
+ */
+export const createGuestCheckout = createServerFn({ method: "POST" })
+  .inputValidator((d) =>
+    z
+      .object({
+        slug: z.string().min(1).max(120),
+        origin: z.string().url().max(200),
+        origem: z.string().max(40).regex(/^[a-z0-9_-]+$/).optional(),
+      })
+      .parse(d),
+  )
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { stripeCreateSession, GUEST_REF } = await import("./stripe.server");
+    const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
+    const c = await loadSellable(data.slug);
+    if (!c) throw new Error("Este curso não está à venda.");
+    const { data: g, error } = await supabaseAdmin
+      .from("guest_checkouts")
+      .insert({ course_id: c.id, amount_cents: c.cents, currency: "BRL", origin: data.origem ?? null })
+      .select("id")
+      .single();
+    if (error || !g) throw new Error("Não foi possível iniciar o pagamento.");
+    const session = await stripeCreateSession(
+      {
+        purchaseId: g.id,
+        ref: `${GUEST_REF}${g.id}`,
+        title: c.title,
+        amountCents: c.cents,
+        successUrl: `${origin}/pagamento/concluido?curso=${c.slug}&pedido=${g.id}`,
+        cancelUrl: `${origin}/${c.slug}`,
+      },
+      `guest:${g.id}`,
+    );
+    if (!session.url) throw new Error("Não foi possível iniciar o pagamento.");
+    await supabaseAdmin.from("guest_checkouts").update({ session_id: session.id }).eq("id", g.id);
+    return { checkout_url: session.url };
+  });
+
+/** Public status of one guest order (id is an unguessable UUID). Re-confirms with Stripe; returns only status + masked e-mail. */
+export const getGuestStatus = createServerFn({ method: "POST" })
+  .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { maskEmail } = await import("./checkout-logic");
+    const read = () =>
+      supabaseAdmin
+        .from("guest_checkouts")
+        .select("status, session_id, email, invited")
+        .eq("id", data.id)
+        .maybeSingle();
+    let { data: g } = await read();
+    if (!g) return { status: "unknown" as const, email: null, invited: false };
+    if (g.status === "pending" && g.session_id) {
+      try {
+        const { stripeGetSession, applyStripeSession } = await import("./stripe.server");
+        const s = await stripeGetSession(g.session_id);
+        if (s) await applyStripeSession(s);
+        g = (await read()).data ?? g;
+      } catch (e) {
+        console.error("[stripe] guest reconcile failed", e instanceof Error ? e.message : "");
+      }
+    }
+    return {
+      status: g.status as "pending" | "paid" | "failed" | "cancelled",
+      email: g.email ? maskEmail(g.email) : null,
+      invited: g.invited,
+    };
+  });

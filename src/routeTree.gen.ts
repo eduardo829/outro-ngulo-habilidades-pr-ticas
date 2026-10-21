@@ -39,6 +39,7 @@ import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as GestorSlugRouteImport } from './routes/gestor.$slug'
 import { Route as GestoresIndexRouteImport } from './routes/gestores.index'
+import { Route as PagamentoConcluidoRouteImport } from './routes/pagamento.concluido'
 import { Route as PagamentoFalhaRouteImport } from './routes/pagamento.falha'
 import { Route as PagamentoPendenteRouteImport } from './routes/pagamento.pendente'
 import { Route as PagamentoSucessoRouteImport } from './routes/pagamento.sucesso'
@@ -221,6 +222,11 @@ const GestorSlugRoute = GestorSlugRouteImport.update({
 const GestoresIndexRoute = GestoresIndexRouteImport.update({
   id: '/gestores/',
   path: '/gestores/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagamentoConcluidoRoute = PagamentoConcluidoRouteImport.update({
+  id: '/pagamento/concluido',
+  path: '/pagamento/concluido',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PagamentoFalhaRoute = PagamentoFalhaRouteImport.update({
@@ -439,6 +445,7 @@ export interface FileRoutesByFullPath {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/concluido': typeof PagamentoConcluidoRoute
   '/pagamento/falha': typeof PagamentoFalhaRoute
   '/pagamento/pendente': typeof PagamentoPendenteRoute
   '/pagamento/sucesso': typeof PagamentoSucessoRoute
@@ -502,6 +509,7 @@ export interface FileRoutesByTo {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/concluido': typeof PagamentoConcluidoRoute
   '/pagamento/falha': typeof PagamentoFalhaRoute
   '/pagamento/pendente': typeof PagamentoPendenteRoute
   '/pagamento/sucesso': typeof PagamentoSucessoRoute
@@ -568,6 +576,7 @@ export interface FileRoutesById {
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
   '/gestor/$slug': typeof GestorSlugRoute
+  '/pagamento/concluido': typeof PagamentoConcluidoRoute
   '/pagamento/falha': typeof PagamentoFalhaRoute
   '/pagamento/pendente': typeof PagamentoPendenteRoute
   '/pagamento/sucesso': typeof PagamentoSucessoRoute
@@ -634,6 +643,7 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/concluido'
     | '/pagamento/falha'
     | '/pagamento/pendente'
     | '/pagamento/sucesso'
@@ -697,6 +707,7 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/concluido'
     | '/pagamento/falha'
     | '/pagamento/pendente'
     | '/pagamento/sucesso'
@@ -762,6 +773,7 @@ export interface FileRouteTypes {
     | '/api/assistant'
     | '/cursos/$slug'
     | '/gestor/$slug'
+    | '/pagamento/concluido'
     | '/pagamento/falha'
     | '/pagamento/pendente'
     | '/pagamento/sucesso'
@@ -819,6 +831,7 @@ export interface RootRouteChildren {
   ApiAssistantRoute: typeof ApiAssistantRoute
   CursosSlugRoute: typeof CursosSlugRoute
   GestorSlugRoute: typeof GestorSlugRoute
+  PagamentoConcluidoRoute: typeof PagamentoConcluidoRoute
   PagamentoFalhaRoute: typeof PagamentoFalhaRoute
   PagamentoPendenteRoute: typeof PagamentoPendenteRoute
   PagamentoSucessoRoute: typeof PagamentoSucessoRoute
@@ -1040,6 +1053,13 @@ declare module '@tanstack/react-router' {
       path: '/gestores'
       fullPath: '/gestores/'
       preLoaderRoute: typeof GestoresIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pagamento/concluido': {
+      id: '/pagamento/concluido'
+      path: '/pagamento/concluido'
+      fullPath: '/pagamento/concluido'
+      preLoaderRoute: typeof PagamentoConcluidoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pagamento/falha': {
@@ -1387,6 +1407,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAssistantRoute: ApiAssistantRoute,
   CursosSlugRoute: CursosSlugRoute,
   GestorSlugRoute: GestorSlugRoute,
+  PagamentoConcluidoRoute: PagamentoConcluidoRoute,
   PagamentoFalhaRoute: PagamentoFalhaRoute,
   PagamentoPendenteRoute: PagamentoPendenteRoute,
   PagamentoSucessoRoute: PagamentoSucessoRoute,
