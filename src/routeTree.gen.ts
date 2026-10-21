@@ -63,6 +63,7 @@ import { Route as AuthenticatedMissoesKeyRouteImport } from './routes/_authentic
 import { Route as AuthenticatedPessoasIndexRouteImport } from './routes/_authenticated/pessoas.index'
 import { Route as AuthenticatedPessoasIdRouteImport } from './routes/_authenticated/pessoas.$id'
 import { Route as ApiPublicMercadopagoWebhookRouteImport } from './routes/api/public/mercadopago-webhook'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
 import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authenticated/admin/cursos.$id'
 import { Route as AuthenticatedAprenderSlugIndexRouteImport } from './routes/_authenticated/aprender.$slug.index'
@@ -358,6 +359,11 @@ const ApiPublicMercadopagoWebhookRoute =
     path: '/api/public/mercadopago-webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminCursosIndexRoute =
   AuthenticatedAdminCursosIndexRouteImport.update({
     id: '/cursos/',
@@ -447,6 +453,7 @@ export interface FileRoutesByFullPath {
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
@@ -508,6 +515,7 @@ export interface FileRoutesByTo {
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
@@ -572,6 +580,7 @@ export interface FileRoutesById {
   '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
   '/_authenticated/pessoas/$id': typeof AuthenticatedPessoasIdRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
@@ -636,6 +645,7 @@ export interface FileRouteTypes {
     | '/missoes/$key'
     | '/pessoas/$id'
     | '/api/public/mercadopago-webhook'
+    | '/api/public/stripe-webhook'
     | '/admin/'
     | '/comunidade/'
     | '/encontros/'
@@ -697,6 +707,7 @@ export interface FileRouteTypes {
     | '/missoes/$key'
     | '/pessoas/$id'
     | '/api/public/mercadopago-webhook'
+    | '/api/public/stripe-webhook'
     | '/admin'
     | '/comunidade'
     | '/encontros'
@@ -760,6 +771,7 @@ export interface FileRouteTypes {
     | '/_authenticated/missoes/$key'
     | '/_authenticated/pessoas/$id'
     | '/api/public/mercadopago-webhook'
+    | '/api/public/stripe-webhook'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
     | '/_authenticated/encontros/'
@@ -800,6 +812,7 @@ export interface RootRouteChildren {
   CursosIndexRoute: typeof CursosIndexRoute
   GestoresIndexRoute: typeof GestoresIndexRoute
   ApiPublicMercadopagoWebhookRoute: typeof ApiPublicMercadopagoWebhookRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
 }
@@ -1184,6 +1197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicMercadopagoWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/cursos/': {
       id: '/_authenticated/admin/cursos/'
       path: '/cursos'
@@ -1352,6 +1372,7 @@ const rootRouteChildren: RootRouteChildren = {
   CursosIndexRoute: CursosIndexRoute,
   GestoresIndexRoute: GestoresIndexRoute,
   ApiPublicMercadopagoWebhookRoute: ApiPublicMercadopagoWebhookRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
 }
