@@ -345,7 +345,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
     if (open && open.amount_cents === c.cents) {
       purchaseId = open.id;
       priorSessionId = open.provider_status?.startsWith("session/")
-        ? open.provider_status.slice(8).split(":")[0]
+        ? (open.provider_status.slice(8).split(":")[0] ?? null)
         : null;
       if (priorSessionId) {
         const s = await stripeGetSession(priorSessionId);
