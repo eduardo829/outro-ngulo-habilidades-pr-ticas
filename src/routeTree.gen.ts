@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ConhecaAComunidadeRouteImport } from './routes/conheca-a-comunidade'
 import { Route as ConhecaOsEncontrosRouteImport } from './routes/conheca-os-encontros'
+import { Route as CorretorNaPraticaRouteImport } from './routes/corretor-na-pratica'
 import { Route as DiretrizesRouteImport } from './routes/diretrizes'
 import { Route as FerramentasRouteImport } from './routes/ferramentas'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
@@ -94,6 +95,11 @@ const ConhecaAComunidadeRoute = ConhecaAComunidadeRouteImport.update({
 const ConhecaOsEncontrosRoute = ConhecaOsEncontrosRouteImport.update({
   id: '/conheca-os-encontros',
   path: '/conheca-os-encontros',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CorretorNaPraticaRoute = CorretorNaPraticaRouteImport.update({
+  id: '/corretor-na-pratica',
+  path: '/corretor-na-pratica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiretrizesRoute = DiretrizesRouteImport.update({
@@ -410,6 +416,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
+  '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -473,6 +480,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
+  '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -537,6 +545,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
+  '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
@@ -602,6 +611,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
+    | '/corretor-na-pratica'
     | '/diretrizes'
     | '/ferramentas'
     | '/oportunidades'
@@ -665,6 +675,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
+    | '/corretor-na-pratica'
     | '/diretrizes'
     | '/ferramentas'
     | '/oportunidades'
@@ -728,6 +739,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
+    | '/corretor-na-pratica'
     | '/diretrizes'
     | '/ferramentas'
     | '/oportunidades'
@@ -793,6 +805,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ConhecaAComunidadeRoute: typeof ConhecaAComunidadeRoute
   ConhecaOsEncontrosRoute: typeof ConhecaOsEncontrosRoute
+  CorretorNaPraticaRoute: typeof CorretorNaPraticaRoute
   DiretrizesRoute: typeof DiretrizesRoute
   FerramentasRoute: typeof FerramentasRoute
   OportunidadesRoute: typeof OportunidadesRoute
@@ -852,6 +865,13 @@ declare module '@tanstack/react-router' {
       path: '/conheca-os-encontros'
       fullPath: '/conheca-os-encontros'
       preLoaderRoute: typeof ConhecaOsEncontrosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/corretor-na-pratica': {
+      id: '/corretor-na-pratica'
+      path: '/corretor-na-pratica'
+      fullPath: '/corretor-na-pratica'
+      preLoaderRoute: typeof CorretorNaPraticaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/diretrizes': {
@@ -1353,6 +1373,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ConhecaAComunidadeRoute: ConhecaAComunidadeRoute,
   ConhecaOsEncontrosRoute: ConhecaOsEncontrosRoute,
+  CorretorNaPraticaRoute: CorretorNaPraticaRoute,
   DiretrizesRoute: DiretrizesRoute,
   FerramentasRoute: FerramentasRoute,
   OportunidadesRoute: OportunidadesRoute,
