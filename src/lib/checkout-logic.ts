@@ -126,7 +126,7 @@ export function origemParam(v: unknown): string | null {
   return s || null;
 }
 export function origemFromSearch(s: Record<string, unknown>): string | null {
-  return origemParam(s.origem) ?? origemParam(s.utm_source);
+  return origemParam(s["origem"]) ?? origemParam(s["utm_source"]);
 }
 
 /** Mercado Pago payment statuses that are still open (or already successful): no new charge may be created. */
