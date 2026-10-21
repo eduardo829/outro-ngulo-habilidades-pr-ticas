@@ -372,7 +372,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
           payment_provider: "stripe",
           payment_status: "pending",
           checkout_kind: "stripe",
-          origem: data.origem ?? null,
+          origin: data.origem ?? null,
         })
         .select("id")
         .single();

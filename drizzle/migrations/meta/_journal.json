@@ -183,6 +183,13 @@
       "when": 1792588824620,
       "tag": "0025_stripe_checkout_kind",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1792601851763,
+      "tag": "0026_purchases_campaign_origin",
+      "breakpoints": true
     }
   ]
 }
