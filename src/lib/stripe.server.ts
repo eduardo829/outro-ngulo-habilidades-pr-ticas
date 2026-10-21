@@ -66,9 +66,7 @@ export async function stripeCreateSession(
     "line_items[0][price_data][unit_amount]": String(o.amountCents),
     "line_items[0][price_data][product_data][name]": o.title.slice(0, 120),
     "line_items[0][quantity]": "1",
-    "payment_method_types[0]": "card",
-    "payment_method_types[1]": "pix",
-    "payment_method_types[2]": "boleto",
+    // Payment methods (card, Pix, boleto) are enabled in the Stripe Dashboard, not per-session.
     "metadata[purchase_id]": o.purchaseId,
     "payment_intent_data[metadata][purchase_id]": o.purchaseId,
   };
