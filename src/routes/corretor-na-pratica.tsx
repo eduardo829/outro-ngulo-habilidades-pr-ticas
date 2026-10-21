@@ -4,6 +4,7 @@ import { createGuestCheckout } from "@/lib/checkout.functions";
 import { ArrowRight, Check, Lock } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { getEngineCourse } from "@/lib/learning/courses";
 import { getGestor } from "@/lib/gestores";
