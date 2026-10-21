@@ -21,7 +21,7 @@ async function call(
       ...(body ? { "Content-Type": "application/x-www-form-urlencoded" } : {}),
       ...(idempotencyKey ? { "Idempotency-Key": idempotencyKey } : {}),
     },
-    body: body ? new URLSearchParams(body).toString() : undefined,
+    body: body ? new URLSearchParams(body).toString() : null,
   });
   const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
   if (!res.ok) {
