@@ -183,6 +183,23 @@ async function viewOf(p: { id: string; transaction_id: string | null } & Attempt
   };
 }
 
+/** Reconciles a Stripe purchase: re-reads the Checkout Session (id kept in provider_status) and applies it. */
+async function reconcileStripe(p: { id: string; provider_status: string | null }) {
+  const { stripeGetSession, applyStripeSession } = await import("./stripe.server");
+  const sid = p.provider_status?.startsWith("session/")
+    ? p.provider_status.slice(8).split(":")[0]
+    : null;
+  if (!sid) return "none" as const;
+  try {
+    const s = await stripeGetSession(sid);
+    if (!s) return "unknown" as const;
+    return (await applyStripeSession(s)) ?? "pending";
+  } catch (e) {
+    console.error("[stripe] reconcile failed", p.id, e instanceof Error ? e.message : "");
+    return "unknown" as const;
+  }
+}
+
 /** ALL pending legacy Checkout Pro purchases of this user/course (paginated), each reconciled with MP, combined into one gate. */
 async function legacyState(userId: string, courseId: string) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
