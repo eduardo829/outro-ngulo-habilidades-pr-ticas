@@ -1,0 +1,2 @@
+ALTER TABLE public.purchases DROP CONSTRAINT IF EXISTS purchases_checkout_kind_check;
+ALTER TABLE public.purchases ADD CONSTRAINT purchases_checkout_kind_check CHECK (checkout_kind IS NULL OR checkout_kind IN ('pro','brick','stripe'));
