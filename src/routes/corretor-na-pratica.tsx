@@ -25,7 +25,7 @@ export const Route = createFileRoute("/corretor-na-pratica")({
       {
         name: "description",
         content:
-          "Curso em 6 episódios para começar como corretor e conduzir vendas de imóveis de até R$ 500 mil. Acesso por curso, pagamento único, com cartão, Pix ou boleto.",
+          "Curso em 6 episódios para começar como corretor e conduzir vendas de imóveis com método. Acesso por curso, pagamento único, com cartão, Pix ou boleto.",
       },
       { property: "og:title", content: "Corretor na prática — curso Outro Ângulo" },
       {
@@ -62,20 +62,25 @@ function CampaignPage() {
       setErr(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento.");
     }
   };
-  const BuyButton = ({ className }: { className?: string }) =>
-    user ? (
-      <Button asChild size="lg" className={className}>
+  const BuyButton = ({ className }: { className?: string }) => {
+    const cta = cn(
+      "bg-highlight text-highlight-foreground hover:bg-highlight/90",
+      className,
+    );
+    return user ? (
+      <Button asChild size="lg" className={cta}>
         <Link {...buy}>
           Comprar agora
           <ArrowRight />
         </Link>
       </Button>
     ) : (
-      <Button size="lg" className={className} onClick={guestBuy} disabled={busy}>
+      <Button size="lg" className={cta} onClick={guestBuy} disabled={busy}>
         {busy ? "Abrindo pagamento seguro…" : "Comprar agora"}
         <ArrowRight />
       </Button>
     );
+  };
   const note = !user && (
     <p className="mt-3 text-sm opacity-80">
       Não precisa criar conta antes. Depois do pagamento, enviamos ao seu e-mail um link para criar

@@ -7,7 +7,7 @@ const ML = true;
 export const CORRETOR_PRATICA: Course = {
   slug: "corretor-na-pratica",
   title: "Corretor na prática",
-  thesis: "Como começar com foco e conduzir vendas de imóveis de até R$ 500 mil: conhecer, ouvir, orientar e vender.",
+  thesis: "Como começar com foco e conduzir vendas de imóveis: conhecer, ouvir, orientar e vender.",
   category: "Corretores",
   gestor: "vinicius-silva",
   difficulty: "Iniciante",
