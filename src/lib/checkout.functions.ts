@@ -305,7 +305,13 @@ export const getCheckout = createServerFn({ method: "POST" })
 export const createStripeCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) =>
-    z.object({ slug: z.string().min(1).max(120), origin: z.string().url().max(200) }).parse(d),
+    z
+      .object({
+        slug: z.string().min(1).max(120),
+        origin: z.string().url().max(200),
+        origem: z.string().max(40).regex(/^[a-z0-9_-]+$/).optional(),
+      })
+      .parse(d),
   )
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -366,6 +372,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
           payment_provider: "stripe",
           payment_status: "pending",
           checkout_kind: "stripe",
+          origem: data.origem ?? null,
         })
         .select("id")
         .single();

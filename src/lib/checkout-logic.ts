@@ -119,6 +119,16 @@ export const idempotencyKey = (purchaseId: string, attemptId: string) =>
 /** Buy CTA: always the checkout route itself; the _authenticated gate sends visitors to login with the full return URL. */
 export const buyTarget = (slug: string) => ({ to: "/checkout/$slug" as const, params: { slug } });
 
+/** Campaign origin (?origem / ?utm_source): lowercase, URL-safe, max 40 chars; anything else becomes null. */
+export function origemParam(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const s = v.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 40);
+  return s || null;
+}
+export function origemFromSearch(s: Record<string, unknown>): string | null {
+  return origemParam(s.origem) ?? origemParam(s.utm_source);
+}
+
 /** Mercado Pago payment statuses that are still open (or already successful): no new charge may be created. */
 const OPEN_MP = new Set(["pending", "in_process", "authorized", "in_mediation", "approved"]);
 /** Given the latest MP payment for a purchase (or none), decide how a new submit may proceed. */
