@@ -71,3 +71,7 @@
 - [ ] Check pré-migração: conta Stripe, chaves, testes, build
 - [ ] Integrar checkout Stripe (cartão + Pix + boleto) com webhook assinado
 - [ ] Testar antes de tirar o Mercado Pago
+
+## Campanhas
+- [x] Página de venda /corretor-na-pratica com origem da campanha
+- [x] Compra sem conta + link por e-mail para criar conta com curso liberado

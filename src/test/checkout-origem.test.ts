@@ -32,3 +32,11 @@ describe("origem de campanha", () => {
     expect(origemFromSearch({})).toBeNull();
   });
 });
+
+import { maskEmail } from "@/lib/checkout-logic";
+describe("e-mail mascarado na página pública do pedido", () => {
+  it("mostra só as duas primeiras letras e o domínio", () => {
+    expect(maskEmail("joana.silva@gmail.com")).toBe("jo•••@gmail.com");
+    expect(maskEmail("semarroba")).toBe("•••");
+  });
+});
