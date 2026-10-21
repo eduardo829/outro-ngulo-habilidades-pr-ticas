@@ -66,3 +66,8 @@
 - [ ] Fase 5 Contribuições e reputação por utilidade
 - [ ] Fase 6 Assistente usando Meu Ângulo, missões e recursos
 - [ ] Missões dentro dos cursos; fim de curso com "próximo passo"; painel inicial mais pessoal
+
+## Migração Stripe (em andamento)
+- [ ] Check pré-migração: conta Stripe, chaves, testes, build
+- [ ] Integrar checkout Stripe (cartão + Pix + boleto) com webhook assinado
+- [ ] Testar antes de tirar o Mercado Pago
