@@ -166,6 +166,28 @@ export function returnView(status: string): "checking" | "paid" | "pending" | "f
   return "checking";
 }
 
+/**
+ * Maps a re-read Stripe Checkout Session to a purchase status. "paid" requires payment_status "paid"
+ * AND the exact amount/currency stored in the purchase row — a mismatched amount never unlocks access.
+ */
+export function stripeSessionStatus(
+  s: { status?: string; payment_status?: string; amount_total?: number; currency?: string },
+  amountCents: number,
+  currency = "BRL",
+): "paid" | "pending" | "failed" | "cancelled" {
+  if (s.status === "expired") return "cancelled";
+  if (s.payment_status === "paid") {
+    const ok =
+      s.currency === currency.toLowerCase() &&
+      s.amount_total != null &&
+      Number.isFinite(s.amount_total) &&
+      amountCents > 0 &&
+      s.amount_total === amountCents;
+    return ok ? "paid" : "pending"; // wrong amount: never grant, keep verifying
+  }
+  return "pending";
+}
+
 /** Card cooldown after a failed card payment: only issuer/antifraud rejections; typing errors (CVV, expiry, number) retry at once. */
 export const CARD_COOLDOWN_MS = 5 * 60_000;
 export function cooldownApplies(statusDetail: string | null | undefined): boolean {
