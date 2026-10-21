@@ -169,6 +169,13 @@
       "when": 1792416264836,
       "tag": "0023_card_cooldowns",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1792586298547,
+      "tag": "0024_stripe_checkout_provider",
+      "breakpoints": true
     }
   ]
 }
