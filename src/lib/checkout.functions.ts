@@ -529,7 +529,7 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const { data: p } = await supabaseAdmin
       .from("purchases")
       .select(
-        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at",
+        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at, payment_provider, provider_status",
       )
       .eq("id", data.purchaseId)
       .maybeSingle();
@@ -542,6 +542,10 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
         .eq("course_id", p.course_id!)
         .maybeSingle();
       if (en?.status === "active") return { status: "paid", pix: null };
+    }
+    if (p.payment_provider === "stripe") {
+      const st = await reconcileStripe(p);
+      return { status: st === "cancelled" ? "failed" : st, pix: null };
     }
     const v = await viewOf(p);
     return { status: v.view as string, pix: v.view === "pending" ? v.pix : null };
