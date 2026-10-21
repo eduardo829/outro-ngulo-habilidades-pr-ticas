@@ -209,3 +209,10 @@ export async function cardFingerprint(method: string, first6: string, last4: str
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${method}|${first6}|${last4}`));
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
+
+/** "joana.silva@gmail.com" → "jo•••@gmail.com" (shown on the public order page; never the full address). */
+export function maskEmail(email: string): string {
+  const [user = "", domain = ""] = email.split("@");
+  if (!domain) return "•••";
+  return `${user.slice(0, 2)}•••@${domain}`;
+}
