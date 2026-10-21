@@ -1550,6 +1550,7 @@ export type Database = {
           created_at: string
           currency: string
           id: string
+          origin: string | null
           payment_provider: string | null
           payment_status: string
           provider_status: string | null
@@ -1570,6 +1571,7 @@ export type Database = {
           created_at?: string
           currency?: string
           id?: string
+          origin?: string | null
           payment_provider?: string | null
           payment_status?: string
           provider_status?: string | null
@@ -1590,6 +1592,7 @@ export type Database = {
           created_at?: string
           currency?: string
           id?: string
+          origin?: string | null
           payment_provider?: string | null
           payment_status?: string
           provider_status?: string | null

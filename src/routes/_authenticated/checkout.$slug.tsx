@@ -5,8 +5,13 @@ import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
 import { createStripeCheckout, getCheckout, getPurchaseStatus } from "@/lib/checkout.functions";
+import { origemFromSearch } from "@/lib/checkout-logic";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
+  validateSearch: (s: Record<string, unknown>): { origem?: string } => {
+    const origem = origemFromSearch(s);
+    return origem ? { origem } : {};
+  },
   head: () => ({
     meta: [
       { title: "Pagamento do curso — Outro Ângulo" },
@@ -25,6 +30,7 @@ type Info = Awaited<ReturnType<typeof getCheckout>>;
 
 function CheckoutPage() {
   const { slug } = Route.useParams();
+  const { origem } = Route.useSearch();
   const qc = useQueryClient();
   const [info, setInfo] = useState<Info | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -79,7 +85,7 @@ function CheckoutPage() {
     setErr(null);
     try {
       const r = await createStripeCheckout({
-        data: { slug, origin: window.location.origin },
+        data: { slug, origin: window.location.origin, origem: origem ?? undefined },
       });
       window.location.href = r.checkout_url;
     } catch (e) {
