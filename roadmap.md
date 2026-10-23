@@ -1,11 +1,14 @@
 # Outro Ângulo — Roadmap
 
 ## Check-up da primeira campanha — 23/10/2026
-- [ ] Conferir se administradores conseguem checar cada novo usuário; implementar o que faltar
-- [ ] Conferir campanha e pagamento como visitante no celular e computador
-- [ ] Conferir login, retorno do Stripe e curso com conta autenticada
-- [ ] Revisar e-mails, pagamentos confirmados e acesso; corrigir falhas de UX encontradas
-- [ ] Executar regressões e registrar o que depende de compra real ou publicação
+- [x] Administradores consultam 26 contas reais, mais recentes primeiro, confirmação de e-mail, último login e matrículas; busca/atualização verificadas no celular
+- [x] Conferir campanha no celular e computador; visitante chegou ao Stripe por R$127 e voltou com CTA disponível
+- [x] Conferir login com origem preservada e seis módulos com player na conta autenticada; retomada autenticada coberta por testes
+- [x] E-mails habilitados/domínio verificado e quatro eventos de envio; nove compras pagas com matrícula ativa
+- [x] Corrigir UX: CTA maior, erros seguros em português, recuperação com saída, novas tentativas de consulta, origem no retorno e metadados completos
+- [x] Executar 89 regressões; preview sem erros
+- [ ] Publicar melhorias desta revisão — aguarda pedido explícito de publicação
+- [ ] Concluir compra sem conta com e-mail novo e conferir convite recebido + senha + acesso — depende de pagamento real autorizado
 
 ## Retomada do Stripe — 23/10/2026
 - [x] Confirmar e corrigir bloqueio após abandonar pagamento aberto, preservando a sessão existente
@@ -32,7 +35,8 @@
 
 ## E-mails de autenticação
 - [x] Modelos e remetente personalizados; domínio de envio vinculado
-- [ ] Verificar envio real — domínio verificado; aguarda conclusão da publicação e ativação
+- [x] Configuração completa, e-mails habilitados e domínio verificado; quatro eventos de envio confirmados em 23/10
+- [ ] Verificar recebimento do convite após compra de visitante novo — depende de compra real; evento enviado não comprova caixa de entrada
 
 ## Feito (etapa 1–3)
 - [x] Design system, logo, navegação pública e autenticada (lateral desktop / inferior mobile)
