@@ -111,7 +111,13 @@
 ## Pixel Meta — 23/10/2026
 - [x] Instalar pixel 1427453789455130 no site (carregamento e eventos gated por consentimento; PageView, InitiateCheckout, Purchase)
 - [x] Banner regional de cookies + "Configurações de cookies" no rodapé + seção na política de privacidade; 93 testes passando
-- [ ] Publicar para o pixel valer no site oficial e conferir recebimento em Test Events do Meta — depende de publicação autorizada
+- [x] Publicar para o pixel valer no site oficial (versão publicada contém o ID e o aviso de cookies)
+- [ ] Conferir recebimento em Test Events do Meta — depende de evidência externa
 
 ## Relatórios admin — 23/10/2026
 - [x] Aba Relatórios com período, leitura por IA e envio para o próprio e-mail
+
+## Aviso de venda ao suporte — 23/10/2026
+- [x] Notificação a cada pagamento confirmado para suporte@outroangulo.com (compra com ou sem conta, um aviso por pagamento)
+- [ ] Publicar para o aviso passar a sair — depende de publicação autorizada
+- [ ] Conferir chegada do primeiro aviso real — depende de uma venda
