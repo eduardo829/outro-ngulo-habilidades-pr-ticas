@@ -1,9 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { origemFromSearch, origemParam } from "@/lib/checkout-logic";
+import { checkoutReturnPath, origemFromSearch, origemParam } from "@/lib/checkout-logic";
 
 // Campaign rule: /corretor-na-pratica?origem=... must reach the purchase row,
 // sanitized (lowercase, URL-safe, max 40 chars); anything else is dropped.
 describe("origem de campanha", () => {
+  it("preserva a origem instagram no retorno do Stripe e no destino de login", () => {
+    expect(checkoutReturnPath("corretor-na-pratica", "instagram")).toBe("/checkout/corretor-na-pratica?origem=instagram");
+    expect(checkoutReturnPath("corretor-na-pratica")).toBe("/checkout/corretor-na-pratica");
+  });
   it("aceita origem simples e normaliza para minúsculas", () => {
     expect(origemParam("Instagram")).toBe("instagram");
     expect(origemParam("WhatsApp-Grupo_1")).toBe("whatsapp-grupo_1");

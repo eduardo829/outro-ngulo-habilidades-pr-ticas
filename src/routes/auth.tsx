@@ -21,15 +21,18 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Entre ou crie sua conta no Outro Ângulo." },
       { property: "og:title", content: "Entrar — Outro Ângulo" },
       { property: "og:description", content: "Entre ou crie sua conta." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: AuthPage,
 });
 
 const signupSchema = z.object({
-  name: z.string().trim().min(2, "Informe seu nome").max(80),
-  email: z.string().trim().email("E-mail inválido").max(255),
-  password: z.string().min(8, "A senha precisa ter pelo menos 8 caracteres").max(72),
+  name: z.string().trim().min(2, "Informe seu nome").max(80, "O nome deve ter no máximo 80 caracteres."),
+  email: z.string().trim().email("E-mail inválido").max(255, "O e-mail deve ter no máximo 255 caracteres."),
+  password: z.string().min(8, "A senha precisa ter pelo menos 8 caracteres").max(72, "A senha deve ter no máximo 72 caracteres."),
 });
 
 function AuthPage() {
@@ -66,14 +69,23 @@ function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
         if (error) return toast.error("E-mail ou senha incorretos, ou e-mail ainda não confirmado.");
       }
+    } catch {
+      toast.error("Não foi possível conectar agora. Tente novamente em instantes.");
     } finally {
       setBusy(false);
     }
   }
 
   async function google() {
+    setBusy(true);
+    try {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" + (redirect ? `?redirect=${encodeURIComponent(redirect)}` : "") });
     if (r.error) toast.error("Não foi possível entrar com o Google.");
+    } catch {
+      toast.error("Não foi possível entrar com o Google. Tente novamente.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -98,7 +110,7 @@ function AuthPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 {mode === "login" ? "Que bom te ver de novo." : "A conta dá acesso à sua área. Os cursos são liberados por matrícula."}
               </p>
-              <Button type="button" variant="outline" className="mt-6 w-full" onClick={google}>Continuar com Google</Button>
+              <Button type="button" variant="outline" className="mt-6 w-full" onClick={google} disabled={busy}>Continuar com Google</Button>
               <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground"><span className="h-px flex-1 bg-border" />ou<span className="h-px flex-1 bg-border" /></div>
               <form onSubmit={submit} className="space-y-4">
                 {mode === "cadastro" && (
@@ -116,9 +128,9 @@ function AuthPage() {
               </form>
               <p className="mt-6 text-center text-sm text-muted-foreground">
                 {mode === "login" ? "Ainda não tem conta? " : "Já tem conta? "}
-                <button type="button" className="font-semibold text-primary hover:underline" onClick={() => setMode(mode === "login" ? "cadastro" : "login")}>
+                <Button type="button" variant="link" className="h-auto p-0 font-semibold" disabled={busy} onClick={() => setMode(mode === "login" ? "cadastro" : "login")}>
                   {mode === "login" ? "Criar conta" : "Entrar"}
-                </button>
+                </Button>
               </p>
             </>
           )}

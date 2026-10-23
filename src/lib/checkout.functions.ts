@@ -322,7 +322,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
     const { stripeCreateSession, stripeGetSession, applyStripeSession } = await import(
       "./stripe.server"
     );
-    const { canResumeStripeSession } = await import("./checkout-logic");
+    const { canResumeStripeSession, checkoutReturnPath } = await import("./checkout-logic");
     const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
     const c = await loadSellable(data.slug);
     if (!c) throw new Error("Este curso não está à venda.");
@@ -395,7 +395,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
         title: c.title,
         amountCents: c.cents,
         successUrl: `${origin}/pagamento/sucesso?curso=${c.slug}&compra=${purchaseId}`,
-        cancelUrl: `${origin}/checkout/${c.slug}`,
+        cancelUrl: `${origin}${checkoutReturnPath(c.slug, data.origem)}`,
         email,
       },
       // Deterministic per new session: same key on retry returns the same session, never a second one.

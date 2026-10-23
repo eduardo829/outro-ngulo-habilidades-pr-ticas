@@ -5,7 +5,7 @@ import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
 import { createStripeCheckout, getCheckout, getPurchaseStatus } from "@/lib/checkout.functions";
-import { origemFromSearch } from "@/lib/checkout-logic";
+import { checkoutErrorMessage, origemFromSearch } from "@/lib/checkout-logic";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
@@ -38,9 +38,12 @@ function CheckoutPage() {
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
+    let active = true;
+    setErr(null);
     getCheckout({ data: { slug } })
-      .then(setInfo)
-      .catch(() => setErr("Não foi possível carregar o pagamento."));
+      .then((result) => { if (active) setInfo(result); })
+      .catch(() => { if (active) setErr("Não foi possível carregar o pagamento."); });
+    return () => { active = false; };
   }, [slug, reload]);
 
   // Legacy Mercado Pago payment still open/unknown: poll THAT purchase; reload the checkout once it resolves.
@@ -90,7 +93,7 @@ function CheckoutPage() {
       window.location.href = r.checkout_url;
     } catch (e) {
       setRedirecting(false);
-      setErr(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento.");
+      setErr(checkoutErrorMessage(e));
     }
   };
 
@@ -106,9 +109,10 @@ function CheckoutPage() {
       <p className="eyebrow mt-6">Pagamento</p>
       {!info && !err && <p className="mt-4 text-muted-foreground">Carregando…</p>}
       {err && !info && (
-        <p role="alert" className="mt-4 text-destructive">
-          {err}
-        </p>
+        <div className="mt-4">
+          <p role="alert" className="text-destructive">{err}</p>
+          <Button variant="outline" className="mt-4" onClick={() => setReload((n) => n + 1)}>Tentar novamente</Button>
+        </div>
       )}
       {info?.state === "unavailable" && (
         <p className="mt-4">Este curso não está à venda no momento.</p>
@@ -152,15 +156,15 @@ function CheckoutPage() {
       {info?.state === "ready" && (
         <>
           <h1 className="mt-2 font-display text-3xl font-extrabold">{info.title}</h1>
-          <div className="mt-6 flex items-baseline justify-between border-y py-4">
+          <div className="mt-6 flex flex-wrap items-baseline justify-between gap-3 border-y py-4">
             <span className="text-muted-foreground">Pagamento único · acesso a este curso</span>
             <span className="font-display text-2xl font-bold">{brl(info.amount_cents)}</span>
           </div>
           <p className="mt-6 text-muted-foreground">
             Você será levado a uma página segura de pagamento com as opções cartão, Pix e boleto.
-            Pix libera o curso na hora; boleto libera após a compensação do banco.
+            O curso é liberado após a confirmação do pagamento; boleto depende da compensação do banco.
           </p>
-          <Button size="lg" className="mt-6" onClick={pay} disabled={redirecting}>
+          <Button size="lg" className="mt-6 min-h-12 bg-highlight text-highlight-foreground hover:bg-highlight/90" onClick={pay} disabled={redirecting}>
             {redirecting ? "Abrindo pagamento seguro…" : "Ir para o pagamento"}
           </Button>
           {err && (

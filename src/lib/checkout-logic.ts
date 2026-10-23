@@ -129,6 +129,26 @@ export function origemFromSearch(s: Record<string, unknown>): string | null {
   return origemParam(s["origem"]) ?? origemParam(s["utm_source"]);
 }
 
+/** The login and Stripe return paths retain the same sanitized campaign attribution. */
+export function checkoutReturnPath(slug: string, origem?: string | null): string {
+  const source = origemParam(origem);
+  return `/checkout/${encodeURIComponent(slug)}${source ? `?origem=${encodeURIComponent(source)}` : ""}`;
+}
+
+/** Only application-owned messages may be shown; provider/network details stay out of the UI. */
+export function checkoutErrorMessage(error: unknown): string {
+  const known = new Set([
+    "Este curso não está à venda.",
+    "Preço ainda não definido.",
+    "Você já tem acesso a este curso.",
+    "Você já tem um pagamento em análise. Aguarde a confirmação antes de tentar de novo.",
+    "Não foi possível verificar seu pagamento. Tente novamente em instantes.",
+  ]);
+  return error instanceof Error && known.has(error.message)
+    ? error.message
+    : "Não foi possível abrir o pagamento agora. Tente novamente em instantes.";
+}
+
 /** Mercado Pago payment statuses that are still open (or already successful): no new charge may be created. */
 const OPEN_MP = new Set(["pending", "in_process", "authorized", "in_mediation", "approved"]);
 /** Given the latest MP payment for a purchase (or none), decide how a new submit may proceed. */

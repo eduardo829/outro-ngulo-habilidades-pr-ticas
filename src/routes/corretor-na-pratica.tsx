@@ -9,11 +9,11 @@ import { useAuth } from "@/lib/auth";
 import { getEngineCourse } from "@/lib/learning/courses";
 import { getGestor } from "@/lib/gestores";
 import { brl, useCoursePrices } from "@/lib/coursePrices";
-import { buyTarget, origemFromSearch } from "@/lib/checkout-logic";
+import { buyTarget, checkoutErrorMessage, checkoutReturnPath, origemFromSearch } from "@/lib/checkout-logic";
 import { coursePhoto } from "@/lib/photos";
 
 const SLUG = "corretor-na-pratica";
-const course = getEngineCourse(SLUG)!;
+const course = getEngineCourse(SLUG);
 
 export const Route = createFileRoute("/corretor-na-pratica")({
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
@@ -43,10 +43,10 @@ export const Route = createFileRoute("/corretor-na-pratica")({
 
 function CampaignPage() {
   const { origem } = Route.useSearch();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { data: prices } = useCoursePrices();
   const price = brl(prices?.[SLUG]);
-  const gestor = course.gestor ? getGestor(course.gestor) : undefined;
+  const gestor = course?.gestor ? getGestor(course.gestor) : undefined;
   const buy = { ...buyTarget(SLUG), ...(origem ? { search: { origem } } : {}) };
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -60,12 +60,12 @@ function CampaignPage() {
       window.location.href = r.checkout_url;
     } catch (e) {
       setBusy(false);
-      setErr(e instanceof Error ? e.message : "Não foi possível iniciar o pagamento.");
+      setErr(checkoutErrorMessage(e));
     }
   };
   const BuyButton = ({ className }: { className?: string }) => {
     const cta = cn(
-      "bg-highlight text-highlight-foreground hover:bg-highlight/90",
+      "min-h-12 bg-highlight text-highlight-foreground hover:bg-highlight/90",
       className,
     );
     return user ? (
@@ -76,7 +76,7 @@ function CampaignPage() {
         </Link>
       </Button>
     ) : (
-      <Button size="lg" className={cta} onClick={guestBuy} disabled={busy}>
+      <Button size="lg" className={cta} onClick={guestBuy} disabled={busy || loading}>
         {busy ? "Abrindo pagamento seguro…" : "Comprar agora"}
         <ArrowRight />
       </Button>
@@ -84,13 +84,15 @@ function CampaignPage() {
   };
   const note = !user && (
     <p className="mt-3 text-sm opacity-80">
-      Não precisa criar conta antes. Depois do pagamento, enviamos ao seu e-mail um link para criar
-      a senha, com o curso já liberado.{" "}
-      <Link to="/auth" search={{ redirect: "/checkout/corretor-na-pratica" }} className="underline">
+      Compre sem cadastro. Após a confirmação, o curso fica na conta do e-mail usado no pagamento.
+      Se você ainda não tem conta, enviaremos um link para criar sua senha.{" "}
+      <Link to="/auth" search={{ redirect: checkoutReturnPath(SLUG, origem) }} className="underline">
         Já tenho conta
       </Link>
     </p>
   );
+
+  if (!course) return <PublicLayout><p className="mx-auto max-w-6xl px-5 py-16">Curso não encontrado.</p></PublicLayout>;
 
   return (
     <PublicLayout>
@@ -118,10 +120,10 @@ function CampaignPage() {
           </div>
           {note}
           {err && <p role="alert" className="mt-3 text-sm">{err}</p>}
-          <p className="mt-5 inline-flex items-center gap-1.5 text-sm text-ink-foreground/70">
-            <Lock className="h-3.5 w-3.5" aria-hidden />
-            Pagamento único por curso, sem assinatura. Cartão, Pix ou boleto — o Pix libera o curso
-            na hora.
+          <p className="mt-5 flex items-start gap-2 text-sm text-ink-foreground/70">
+            <Lock className="mt-1 h-3.5 w-3.5 shrink-0" aria-hidden />
+            <span>Pagamento único por curso, sem assinatura. Acesso após a confirmação do pagamento;
+            boleto depende da compensação bancária.</span>
           </p>
           <dl className="mt-10 grid gap-px border border-ink-foreground/15 text-sm sm:grid-cols-4">
             <div className="bg-ink/95 p-4">
@@ -204,7 +206,7 @@ function CampaignPage() {
           {price ? `Acesso completo por ${price}` : "Acesso completo ao curso"}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-          Pagamento único, acesso a este curso sem prazo de validade. Você começa pelo episódio 01
+          Pagamento único, sem assinatura. Você começa pelo episódio 01
           assim que o pagamento é confirmado.
         </p>
         <BuyButton className="mt-8" />
