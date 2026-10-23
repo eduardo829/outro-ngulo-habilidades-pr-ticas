@@ -5,8 +5,7 @@ import { ArrowRight, CalendarDays, MessageCircleQuestion, PenLine, Users } from 
 import { PublicPage } from "@/components/PublicPage";
 import { PhotoBand } from "@/components/PhotoBand";
 import { SectionLabel } from "@/components/Angle";
-import { StickyStory, ScrollReveal } from "@/components/motion/Motion";
-import { cn } from "@/lib/utils";
+import { ScrollReveal } from "@/components/motion/Motion";
 import heroPhoto from "@/assets/photo-encontros.jpg";
 import stairsPhoto from "@/assets/photo-escada.jpg";
 
@@ -38,33 +37,26 @@ const HOW = [
 function Formats() {
   return (
     <section className="bg-ink text-ink-foreground">
-      <StickyStory steps={FORMATS.length} render={(a) => (
-        <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 md:grid-cols-2">
-          <div>
-            <SectionLabel n="02" className="!text-ink-foreground/60">Formatos</SectionLabel>
-            <p className="mt-8 font-display text-4xl font-extrabold leading-[1.02] md:text-6xl">04 formas<span className="block text-ink-foreground/55">de encontrar pessoas e ideias.</span></p>
-          </div>
-          <ol className="space-y-2">
-            {FORMATS.map((f, i) => {
-              const on = i === a;
-              return (
-                <li key={f.title} className={cn("border-l-2 pl-6 transition-all duration-500", on ? "border-highlight py-5" : "border-ink-foreground/15 py-2 opacity-45")}>
-                  <div className="flex items-baseline gap-4">
-                    <span className={cn("font-display font-extrabold tabular-nums transition-all duration-500", on ? "text-4xl text-highlight" : "text-xl")}>{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className={cn("font-display font-bold uppercase tracking-wide transition-all", on ? "text-2xl" : "text-base")}>{f.title}</h3>
-                  </div>
-                  <div className={cn("grid transition-all duration-500", on ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
-                    <div className="overflow-hidden">
-                      <p className="text-ink-foreground/75">{f.body}</p>
-                      <div className="mt-4 border border-ink-foreground/15 bg-ink-foreground/[0.04] p-4">{f.preview}</div>
-                    </div>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-10 px-5 py-20 md:grid-cols-2 md:py-28">
+        <div>
+          <SectionLabel n="02" className="!text-ink-foreground/60">Formatos</SectionLabel>
+          <p className="mt-8 font-display text-4xl font-extrabold leading-[1.02] md:text-6xl">04 formas<span className="block text-ink-foreground/55">de encontrar pessoas e ideias.</span></p>
         </div>
-      )} />
+        <ol className="space-y-8">
+          {FORMATS.map((f, i) => (
+            <ScrollReveal as="li" key={f.title} delay={i * 100}>
+              <div className="border-l-2 border-ink-foreground/15 pl-6">
+                <div className="flex items-baseline gap-4">
+                  <span className="font-display text-3xl font-extrabold tabular-nums text-highlight">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="font-display text-2xl font-bold uppercase tracking-wide">{f.title}</h3>
+                </div>
+                <p className="mt-3 text-ink-foreground/75">{f.body}</p>
+                <div className="mt-4 border border-ink-foreground/15 bg-ink-foreground/[0.04] p-4">{f.preview}</div>
+              </div>
+            </ScrollReveal>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }
@@ -74,25 +66,20 @@ function Journey() {
   return (
     <section className="mx-auto max-w-6xl px-5 py-20 md:py-28">
       <SectionLabel n="03">Como funciona</SectionLabel>
-      <StickyStory steps={HOW.length} render={(a, p) => (
-        <div className="w-full">
-          <div className="relative mt-4 hidden h-px bg-border md:block"><div className="absolute inset-y-0 left-0 bg-highlight transition-[width] duration-200" style={{ width: `${Math.min(100, p * 115)}%` }} /></div>
-          <ol className="mt-10 grid gap-8 md:grid-cols-4">
-            {HOW.map((h, i) => (
-              <li key={h.title} className={cn("transition-all duration-500", i <= a ? "opacity-100" : "md:translate-y-3 md:opacity-30")}>
-                <span className={cn("block font-display text-6xl font-extrabold leading-none tabular-nums transition-colors", i === a ? "text-foreground" : "text-foreground/15")}>{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-4 font-display text-xl font-bold">{h.title}</h3>
-                <p className="mt-2 text-muted-foreground">{h.body}</p>
-              </li>
-            ))}
-          </ol>
-          <div className={cn("mt-12 max-w-xl border bg-card p-6 transition-all duration-500", a === HOW.length - 1 ? "opacity-100" : "md:opacity-40")}>
-            <label htmlFor="acao" className="eyebrow">Experimente · Minha próxima ação</label>
-            <input id="acao" value={action} onChange={(e) => setAction(e.target.value)} maxLength={120} placeholder="Ex.: mandar mensagem para 3 possíveis clientes até sexta" className="mt-3 w-full border-b border-foreground/30 bg-transparent py-2 text-lg outline-none focus:border-foreground" />
-            <p className="mt-3 text-sm text-muted-foreground">{action.trim() ? <>Na plataforma, isso fica salvo no encontro e aparece na sua área. <MemberLink to="/encontros" className="font-semibold text-foreground underline" member="Ver encontros" visitor="Criar conta" /></> : "Só um exemplo. Nada é salvo aqui."}</p>
-          </div>
-        </div>
-      )} />
+      <ol className="mt-10 grid gap-8 md:grid-cols-4">
+        {HOW.map((h, i) => (
+          <ScrollReveal as="li" key={h.title} delay={i * 100}>
+            <span className="block font-display text-6xl font-extrabold leading-none tabular-nums text-foreground">{String(i + 1).padStart(2, "0")}</span>
+            <h3 className="mt-4 font-display text-xl font-bold">{h.title}</h3>
+            <p className="mt-2 text-muted-foreground">{h.body}</p>
+          </ScrollReveal>
+        ))}
+      </ol>
+      <div className="mt-12 max-w-xl border bg-card p-6">
+        <label htmlFor="acao" className="eyebrow">Experimente · Minha próxima ação</label>
+        <input id="acao" value={action} onChange={(e) => setAction(e.target.value)} maxLength={120} placeholder="Ex.: mandar mensagem para 3 possíveis clientes até sexta" className="mt-3 w-full border-b border-foreground/30 bg-transparent py-2 text-lg outline-none focus:border-foreground" />
+        <p className="mt-3 text-sm text-muted-foreground">{action.trim() ? <>Na plataforma, isso fica salvo no encontro e aparece na sua área. <MemberLink to="/encontros" className="font-semibold text-foreground underline" member="Ver encontros" visitor="Criar conta" /></> : "Só um exemplo. Nada é salvo aqui."}</p>
+      </div>
     </section>
   );
 }

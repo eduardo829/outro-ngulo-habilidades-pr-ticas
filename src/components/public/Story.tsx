@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { StickyStory, ScrollReveal } from "@/components/motion/Motion";
+import { ScrollReveal } from "@/components/motion/Motion";
 import { SectionLabel } from "@/components/Angle";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
@@ -43,25 +43,20 @@ export function Opening({ label, a, b, intro, children, photo }: { label: string
   );
 }
 
-/** Statements that take the full screen one at a time while scrolling. */
+/** Large statements shown together, with a soft staggered entrance. */
 export function Statements({ lines, label, dark }: { lines: string[]; label?: string; dark?: boolean }) {
   return (
     <section className={dark ? "bg-ink text-ink-foreground" : ""}>
-      <StickyStory steps={lines.length} render={(a) => (
-        <div className="mx-auto w-full max-w-6xl px-5">
-          {label && <p className={cn("eyebrow", dark && "!text-ink-foreground/60")}>{label}</p>}
-          <div className="relative mt-8 min-h-[14rem] md:min-h-[18rem]">
-            {lines.map((t, i) => (
-              <p key={t} className={cn("absolute inset-0 font-display text-4xl font-extrabold leading-[1.04] tracking-tight transition-all duration-500 ease-[var(--ease-out)] md:text-6xl", i === a ? "translate-y-0 opacity-100" : i < a ? "-translate-y-8 opacity-0" : "translate-y-8 opacity-0")} style={{ paddingLeft: `${i * 6}%` }}>
-                {t}
-              </p>
-            ))}
-          </div>
-          <div className="mt-10 flex gap-2" aria-hidden>
-            {lines.map((_, i) => <span key={i} className={cn("h-0.5 w-10 transition-colors duration-300", i <= a ? (dark ? "bg-ink-foreground" : "bg-foreground") : dark ? "bg-ink-foreground/20" : "bg-border")} />)}
-          </div>
+      <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
+        {label && <p className={cn("eyebrow", dark && "!text-ink-foreground/60")}>{label}</p>}
+        <div className="mt-8">
+          {lines.map((t, i) => (
+            <ScrollReveal key={t} delay={i * 120}>
+              <p className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl" style={{ paddingLeft: `${i * 6}%` }}>{t}</p>
+            </ScrollReveal>
+          ))}
         </div>
-      )} />
+      </div>
     </section>
   );
 }

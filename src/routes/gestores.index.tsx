@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Opening, Closing } from "@/components/public/Story";
 import { SectionLabel } from "@/components/Angle";
-import { ScrollReveal, StickyStory } from "@/components/motion/Motion";
+import { ScrollReveal } from "@/components/motion/Motion";
 import { DoisAngulos, GestorPhoto, Txt } from "@/components/gestores/GestorParts";
 import { GESTORES } from "@/lib/gestores";
 import { cn } from "@/lib/utils";
@@ -27,18 +27,18 @@ function Page() {
         intro="Gestores são pessoas que trazem experiência real para dentro das conversas do Outro Ângulo." />
 
       <section className="bg-ink text-ink-foreground">
-        <StickyStory steps={VERBOS.length} render={(a) => (
-          <div className="mx-auto w-full max-w-6xl px-5">
-            <p className="eyebrow !text-ink-foreground/60">O que é um gestor</p>
-            <p className="mt-6 font-display text-2xl font-bold md:text-3xl">Não existe só para publicar cursos. Pode</p>
-            <div className="relative mt-4 h-24 md:h-32">
-              {VERBOS.map((v, i) => (
-                <p key={v} className={cn("absolute inset-0 font-display text-5xl font-extrabold tracking-tight transition-all duration-500 md:text-7xl", i === a ? "opacity-100 text-highlight" : i < a ? "-translate-y-6 opacity-0" : "translate-y-6 opacity-0")}>{v}.</p>
-              ))}
-            </div>
-            <p className="mt-6 max-w-xl text-ink-foreground/70">A autoridade aparece no que a pessoa construiu, nas decisões que tomou e nos erros que cometeu. Não em títulos.</p>
+        <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
+          <p className="eyebrow !text-ink-foreground/60">O que é um gestor</p>
+          <p className="mt-6 font-display text-2xl font-bold md:text-3xl">Não existe só para publicar cursos. Pode</p>
+          <div className="mt-4">
+            {VERBOS.map((v, i) => (
+              <ScrollReveal key={v} delay={i * 70}>
+                <p className={cn("font-display text-4xl font-extrabold tracking-tight md:text-6xl", i === 0 ? "text-highlight" : "")} style={{ paddingLeft: `${i * 4}%` }}>{v}.</p>
+              </ScrollReveal>
+            ))}
           </div>
-        )} />
+          <p className="mt-6 max-w-xl text-ink-foreground/70">A autoridade aparece no que a pessoa construiu, nas decisões que tomou e nos erros que cometeu. Não em títulos.</p>
+        </div>
       </section>
 
       {GESTORES.map((g, i) => (
