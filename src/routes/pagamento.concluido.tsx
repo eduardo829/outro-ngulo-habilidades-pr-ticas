@@ -30,31 +30,48 @@ type St = Awaited<ReturnType<typeof getGuestStatus>>;
 function GuestDone() {
   const { curso, pedido } = Route.useSearch();
   const [st, setSt] = useState<St | null>(null);
+  const [statusError, setStatusError] = useState(false);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => {
     if (!pedido) return;
     let stop = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let failures = 0;
+    setStatusError(false);
     const tick = async () => {
       try {
         const r = await getGuestStatus({ data: { id: pedido } });
         if (stop) return;
+        failures = 0;
+        setStatusError(false);
         setSt(r);
-        if (r.status === "pending") setTimeout(tick, 5000);
+        if (r.status === "pending") timer = setTimeout(tick, 5000);
       } catch {
-        if (!stop) setTimeout(tick, 5000);
+        if (stop) return;
+        failures += 1;
+        if (failures >= 3) setStatusError(true);
+        else timer = setTimeout(tick, 5000);
       }
     };
     tick();
     return () => {
       stop = true;
+      clearTimeout(timer);
     };
-  }, [pedido]);
+  }, [pedido, reload]);
 
   return (
     <PublicLayout>
       <div className="mx-auto max-w-xl px-5 py-16" aria-live="polite">
         <p className="eyebrow">Pagamento</p>
-        {!pedido || st?.status === "unknown" ? (
+        {statusError ? (
+          <>
+            <h1 className="mt-3 font-display text-3xl font-extrabold">Não foi possível consultar o pagamento agora</h1>
+            <p className="mt-3 text-muted-foreground">Isso não significa que o pagamento falhou. Não pague novamente; tente consultar mais uma vez.</p>
+            <Button className="mt-6" onClick={() => setReload((n) => n + 1)}>Consultar novamente</Button>
+          </>
+        ) : !pedido || st?.status === "unknown" ? (
           <>
             <h1 className="mt-3 font-display text-3xl font-extrabold">Pedido não encontrado</h1>
             <p className="mt-3 text-muted-foreground">
@@ -82,7 +99,7 @@ function GuestDone() {
                   </span>
                 </p>
                 <p className="mt-3 text-sm text-muted-foreground">
-                  Não chegou em alguns minutos? Veja a caixa de spam ou peça um novo link em{" "}
+                  Não chegou em alguns minutos? Veja a caixa de spam ou crie/redefina a senha usando o mesmo e-mail da compra em{" "}
                   <Link to="/recuperar-senha" className="underline">recuperar senha</Link>.
                 </p>
               </>
