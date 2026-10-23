@@ -178,7 +178,7 @@ async function notifySale(purchaseId: string, s: StripeSession) {
         course: (p.courses as { title?: string } | null)?.title ?? "Curso",
         amount: ((p.amount_cents ?? 0) / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
         buyer: prof?.display_name || s.customer_details?.email || "—",
-        method: types.length === 1 ? METHOD[types[0]] ?? types[0] : "Stripe",
+        method: types.length === 1 && types[0] ? METHOD[types[0]] ?? types[0] : "Stripe",
         origem: p.origin ?? "",
         when: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
       },

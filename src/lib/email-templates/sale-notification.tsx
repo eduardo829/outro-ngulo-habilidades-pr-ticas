@@ -36,7 +36,7 @@ const SaleEmail = ({ course, amount, buyer, method, origem, when }: Props) => (
 
 export const template = {
   component: SaleEmail,
-  subject: (d: Record<string, any>) => `Nova venda: ${d.course ?? 'curso'} · ${d.amount ?? ''}`,
+  subject: (d: Record<string, any>) => `Nova venda: ${d['course'] ?? 'curso'} · ${d['amount'] ?? ''}`,
   displayName: 'Aviso de venda (equipe)',
   to: 'suporte@outroangulo.com',
   previewData: { course: 'Corretor na prática', amount: 'R$ 127,00', buyer: 'Maria Silva', method: 'Pix', origem: 'instagram', when: '23/10/2026 13:40' },
