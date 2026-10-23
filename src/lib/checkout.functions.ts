@@ -637,5 +637,7 @@ export const getGuestStatus = createServerFn({ method: "POST" })
       status: g.status as "pending" | "paid" | "failed" | "cancelled",
       email: g.email ? maskEmail(g.email) : null,
       invited: g.invited,
+      amount_cents: g.amount_cents,
+      currency: g.currency ?? "BRL",
     };
   });
