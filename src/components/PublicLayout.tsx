@@ -6,6 +6,8 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/lib/auth";
+import { openCookieSettings } from "@/lib/consent";
+import { MetaPixel } from "@/components/MetaPixel";
 
 const NAV = [
   { to: "/trilhas", label: "Trilhas" },
@@ -94,6 +96,13 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <nav className="flex flex-col gap-2 text-sm opacity-85">
             <Link to="/privacidade">Privacidade</Link>
             <Link to="/termos">Termos de uso</Link>
+            <button
+              type="button"
+              className="text-left underline-offset-2 hover:underline"
+              onClick={openCookieSettings}
+            >
+              Configurações de cookies
+            </button>
           </nav>
         </div>
       </footer>

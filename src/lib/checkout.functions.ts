@@ -556,7 +556,8 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
         .eq("user_id", p.user_id)
         .eq("course_id", p.course_id!)
         .maybeSingle();
-      if (en?.status === "active") return { status: "paid", pix: null };
+      if (en?.status === "active")
+        return { status: "paid", pix: null, amount_cents: p.amount_cents, currency: p.currency ?? "BRL" };
     }
     if (p.payment_provider === "stripe") {
       const st = await reconcileStripe(p);

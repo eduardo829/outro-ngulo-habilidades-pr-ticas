@@ -129,6 +129,7 @@ function RootComponent() {
       <AuthProvider>
         <Outlet />
         <AssistantWidget />
+        <MetaPixel />
         <Toaster richColors position="top-center" />
       </AuthProvider>
     </QueryClientProvider>
