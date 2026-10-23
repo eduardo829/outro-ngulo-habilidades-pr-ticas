@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
-import { StickyStory, ScrollReveal } from "@/components/motion/Motion";
+import { ScrollReveal } from "@/components/motion/Motion";
 import { SectionLabel } from "@/components/Angle";
 import { settingsQuery } from "@/lib/queries";
 import { DOIS_ANGULOS, getGestor, isPending, type GestorProfile } from "@/lib/gestores";
@@ -72,21 +72,19 @@ export function KnowledgeGraph({ g }: { g: GestorProfile }) {
   ];
   return (
     <section className="bg-ink text-ink-foreground">
-      <StickyStory steps={nodes.length} render={(a) => (
-        <div className="mx-auto w-full max-w-6xl px-5">
+        <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
           <p className="eyebrow !text-ink-foreground/60">Mapa de conhecimento</p>
           <ol className="mt-8 space-y-3">
             {nodes.map((n, i) => (
-              <li key={n.k} className={cn("grid grid-cols-[8rem_1fr] items-baseline gap-4 transition-all duration-500 ease-[var(--ease-out)] md:grid-cols-[12rem_1fr]", i <= a ? "opacity-100" : "translate-y-2 opacity-15")} style={{ paddingLeft: `${i * 2.5}%` }}>
-                <span className={cn("font-display text-sm font-bold uppercase tracking-[0.14em]", i === a ? "text-highlight" : "text-ink-foreground/60")}>{String(i + 1).padStart(2, "0")} {n.k}</span>
-                <span className={cn("font-display font-bold transition-all", i === a ? "text-xl md:text-2xl" : "text-base")}>
+              <ScrollReveal as="li" key={n.k} delay={i * 80} className="grid grid-cols-[8rem_1fr] items-baseline gap-4 md:grid-cols-[12rem_1fr]" style={{ paddingLeft: `${i * 2.5}%` }}>
+                <span className={cn("font-display text-sm font-bold uppercase tracking-[0.14em]", i === 0 ? "text-highlight" : "text-ink-foreground/60")}>{String(i + 1).padStart(2, "0")} {n.k}</span>
+                <span className="font-display text-base font-bold md:text-lg">
                   {n.items.map((t, j) => <span key={t}>{j > 0 && <span className="text-ink-foreground/40"> · </span>}{isPending(t) ? <span className="text-ink-foreground/50">Em breve</span> : t}</span>)}
                 </span>
-              </li>
+              </ScrollReveal>
             ))}
           </ol>
         </div>
-      )} />
     </section>
   );
 }

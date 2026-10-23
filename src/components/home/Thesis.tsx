@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Angle, SectionLabel } from "@/components/Angle";
 import { TRILHAS } from "@/lib/trilhas";
-import { StickyStory, useInView } from "@/components/motion/Motion";
+import { ScrollReveal, useInView } from "@/components/motion/Motion";
 import { cn } from "@/lib/utils";
 
 const LINES = [
@@ -98,21 +98,16 @@ const PROBLEMA = ["Informação nunca foi tão acessível.", "Experiência conti
 
 export function Problema() {
   return (
-    <StickyStory steps={3} render={(a) => (
-      <div className="mx-auto w-full max-w-6xl px-5">
-        <p className="eyebrow">O problema</p>
-        <div className="relative mt-8 min-h-[14rem] md:min-h-[18rem]">
-          {PROBLEMA.map((t, i) => (
-            <p key={t} className={cn("absolute inset-0 font-display text-4xl font-extrabold leading-[1.04] tracking-tight transition-all duration-500 ease-[var(--ease-out)] md:text-7xl", i === a ? "translate-y-0 opacity-100" : i < a ? "-translate-y-8 opacity-0" : "translate-y-8 opacity-0", i === 1 && "md:pl-[8%]", i === 2 && "md:pl-[16%]")}>
-              {t}
-            </p>
-          ))}
-        </div>
-        <div className="mt-10 flex gap-2" aria-hidden>
-          {PROBLEMA.map((_, i) => <span key={i} className={cn("h-0.5 w-10 transition-colors duration-300", i <= a ? "bg-foreground" : "bg-border")} />)}
-        </div>
+    <section className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
+      <p className="eyebrow">O problema</p>
+      <div className="mt-8">
+        {PROBLEMA.map((t, i) => (
+          <ScrollReveal key={t} delay={i * 120}>
+            <p className={cn("font-display text-4xl font-extrabold leading-[1.08] tracking-tight md:text-6xl", i === 1 && "md:pl-[8%]", i === 2 && "md:pl-[16%]")}>{t}</p>
+          </ScrollReveal>
+        ))}
       </div>
-    )} />
+    </section>
   );
 }
 
@@ -125,28 +120,26 @@ const PILARES = [
 export function Pilares() {
   return (
     <section className="border-y bg-card">
-      <StickyStory steps={4} render={(a) => (
-        <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 md:grid-cols-[1fr_1.2fr] md:items-center">
-          <div>
-            <SectionLabel>Três pilares</SectionLabel>
-            <p className={cn("mt-6 max-w-sm font-display text-3xl font-extrabold leading-[1.08] transition-opacity duration-500 md:text-4xl", a === 3 ? "opacity-100" : "opacity-0")}>
-              O Outro Ângulo existe na interseção dos três.
-            </p>
-          </div>
-          <ol className="relative">
-            <span aria-hidden className="absolute left-[5px] top-3 w-px bg-foreground transition-[height] duration-700 ease-[var(--ease-out)]" style={{ height: `${Math.min(a, 2) * 50}%` }} />
-            <span aria-hidden className="absolute left-[5px] top-3 bottom-3 -z-10 w-px bg-border" />
-            {PILARES.map((p, i) => (
-              <li key={p.t} className={cn("relative pb-10 pl-10 transition-all duration-500 ease-[var(--ease-out)] last:pb-0", i <= a ? "opacity-100" : "translate-y-3 opacity-20")}>
-                <span aria-hidden className={cn("absolute left-0 top-3 h-[11px] w-[11px] transition-colors duration-300", i <= a ? "bg-highlight" : "bg-border")} />
-                <span className="font-display text-xs font-bold tabular-nums text-muted-foreground">0{i + 1}</span>
-                <p className={cn("font-display text-4xl font-extrabold transition-[letter-spacing] duration-500 md:text-6xl", a === 3 && "tracking-tight")}>{p.t}</p>
-                <p className={cn("mt-2 max-w-sm text-muted-foreground transition-opacity duration-500", i <= a ? "opacity-100" : "opacity-0")}>{p.d}</p>
-              </li>
-            ))}
-          </ol>
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-20 md:grid-cols-[1fr_1.2fr] md:items-center md:py-28">
+        <div>
+          <SectionLabel>Três pilares</SectionLabel>
+          <p className="mt-6 max-w-sm font-display text-3xl font-extrabold leading-[1.08] md:text-4xl">
+            O Outro Ângulo existe na interseção dos três.
+          </p>
         </div>
-      )} />
+        <ol className="relative">
+          <span aria-hidden className="absolute left-[5px] top-3 w-px bg-foreground" style={{ height: "100%" }} />
+          <span aria-hidden className="absolute left-[5px] top-3 bottom-3 -z-10 w-px bg-border" />
+          {PILARES.map((p, i) => (
+            <ScrollReveal as="li" key={p.t} delay={i * 120} className="relative pb-10 pl-10 last:pb-0">
+              <span aria-hidden className="absolute left-0 top-3 h-[11px] w-[11px] bg-highlight" />
+              <span className="font-display text-xs font-bold tabular-nums text-muted-foreground">0{i + 1}</span>
+              <p className="font-display text-4xl font-extrabold md:text-6xl">{p.t}</p>
+              <p className="mt-2 max-w-sm text-muted-foreground">{p.d}</p>
+            </ScrollReveal>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }
@@ -187,37 +180,39 @@ const STEPS = ["Aprender", "Conversar", "Conectar", "Construir", "Compartilhar"]
 const FRASES = ["O conhecimento não termina quando o vídeo acaba.", "Uma ideia pode gerar uma conversa.", "Uma conversa pode gerar uma conexão.", "Uma conexão pode gerar um projeto.", "E um projeto gera novas experiências para compartilhar."];
 
 export function Ciclo() {
+  const r = 130, c = 2 * Math.PI * r;
   return (
     <section className="bg-ink text-ink-foreground">
-      <StickyStory steps={6} render={(a, p) => {
-        const r = 130, c = 2 * Math.PI * r;
-        return (
-          <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 md:grid-cols-2">
-            <div>
-              <p className="eyebrow !text-ink-foreground/60">O ciclo</p>
-              <p key={a} className="mt-6 min-h-[7rem] animate-fade-in font-display text-3xl font-extrabold leading-[1.08] md:text-4xl">{FRASES[Math.min(a, 4)]}</p>
-            </div>
-            <div className="relative mx-auto aspect-square w-full max-w-[22rem]">
-              <svg viewBox="0 0 300 300" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden>
-                <circle cx="150" cy="150" r={r} fill="none" stroke="currentColor" strokeOpacity="0.15" />
-                <circle cx="150" cy="150" r={r} fill="none" stroke="var(--color-highlight)" strokeWidth="2" strokeDasharray={c} strokeDashoffset={c * (1 - p)} />
-              </svg>
-              {STEPS.map((s, i) => {
-                const ang = (i / STEPS.length) * 2 * Math.PI - Math.PI / 2;
-                const on = i <= a || a === 5;
-                return (
-                  <span key={s} className={cn("absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-ink px-2 font-display text-sm font-bold transition-all duration-500 md:text-lg", on ? "opacity-100" : "opacity-30", i === Math.min(a, 4) && a < 5 && "text-highlight")} style={{ left: `${50 + 43 * Math.cos(ang)}%`, top: `${50 + 43 * Math.sin(ang)}%` }}>
-                    {s}
-                  </span>
-                );
-              })}
-              <span className={cn("absolute inset-0 flex items-center justify-center text-center text-sm text-ink-foreground/60 transition-opacity duration-500", a === 5 ? "opacity-100" : "opacity-0")}>
-                e volta a<br />aprender
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-20 md:grid-cols-2 md:py-28">
+        <div>
+          <p className="eyebrow !text-ink-foreground/60">O ciclo</p>
+          <ul className="mt-6 space-y-3">
+            {FRASES.map((f, i) => (
+              <ScrollReveal as="li" key={f} delay={i * 100} className="flex items-baseline gap-3">
+                <span className="font-display text-xs font-bold tabular-nums text-ink-foreground/50">0{i + 1}</span>
+                <p className="font-display text-xl font-extrabold leading-[1.15] md:text-2xl">{f}</p>
+              </ScrollReveal>
+            ))}
+          </ul>
+        </div>
+        <div className="relative mx-auto aspect-square w-full max-w-[22rem]">
+          <svg viewBox="0 0 300 300" className="absolute inset-0 h-full w-full -rotate-90" aria-hidden>
+            <circle cx="150" cy="150" r={r} fill="none" stroke="currentColor" strokeOpacity="0.15" />
+            <circle cx="150" cy="150" r={r} fill="none" stroke="var(--color-highlight)" strokeWidth="2" strokeDasharray={c} />
+          </svg>
+          {STEPS.map((s, i) => {
+            const ang = (i / STEPS.length) * 2 * Math.PI - Math.PI / 2;
+            return (
+              <span key={s} className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap bg-ink px-2 font-display text-sm font-bold md:text-lg" style={{ left: `${50 + 43 * Math.cos(ang)}%`, top: `${50 + 43 * Math.sin(ang)}%` }}>
+                {s}
               </span>
-            </div>
-          </div>
-        );
-      }} />
+            );
+          })}
+          <span className="absolute inset-0 flex items-center justify-center text-center text-sm text-ink-foreground/60">
+            e volta a<br />aprender
+          </span>
+        </div>
+      </div>
     </section>
   );
 }
