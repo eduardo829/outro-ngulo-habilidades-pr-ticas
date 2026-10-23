@@ -1,6 +1,7 @@
 # Outro Ângulo — Roadmap
 
 ## Check-up da primeira campanha — 23/10/2026
+- [ ] Ampliar auditoria de UX para páginas públicas, área de membros e administração; corrigir falhas concretas
 - [x] Administradores consultam 26 contas reais, mais recentes primeiro, confirmação de e-mail, último login e matrículas; busca/atualização verificadas no celular
 - [x] Conferir campanha no celular e computador; visitante chegou ao Stripe por R$127 e voltou com CTA disponível
 - [x] Conferir login com origem preservada e seis módulos com player na conta autenticada; retomada autenticada coberta por testes
