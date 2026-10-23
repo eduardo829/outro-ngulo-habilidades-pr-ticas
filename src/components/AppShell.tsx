@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
-import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target } from "lucide-react";
+import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target, Globe, Info, Wrench } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth";
@@ -16,6 +16,13 @@ const NAV = [
   { to: "/encontros", label: "Encontros", icon: CalendarDays },
   { to: "/pessoas", label: "Pessoas", icon: Users },
   { to: "/perfil", label: "Meu perfil", icon: User },
+] as const;
+
+const SITE = [
+  { to: "/", label: "Página inicial", icon: Globe },
+  { to: "/gestores", label: "Gestores", icon: Users },
+  { to: "/sobre", label: "Sobre", icon: Info },
+  { to: "/ferramentas", label: "Ferramentas", icon: Wrench },
 ] as const;
 
 export function useMyProfile() {
@@ -89,6 +96,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           {isAdmin && (
             <Link to="/admin" className={cn(linkCls, "mt-3")} activeProps={active}><Shield className="h-4 w-4" aria-hidden />Administração</Link>
           )}
+          <div className="my-3 border-t" />
+          <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Site</p>
+          {SITE.map(({ to, label, icon: Icon }) => (
+            <Link key={to} to={to} className={linkCls} activeOptions={{ exact: true }} activeProps={active}><Icon className="h-4 w-4" aria-hidden />{label}</Link>
+          ))}
         </nav>
         <button onClick={signOut} className={linkCls}><LogOut className="h-4 w-4" aria-hidden />Sair</button>
       </aside>
