@@ -115,7 +115,7 @@ async function analyze(r: AdminReport): Promise<string[] | null> {
         text: { format: { type: "json_object" } },
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) { console.error("report analysis status", res.status, (await res.text()).slice(0, 300)); return null; }
     const j = await res.json();
     const txt: string = j.output_text ?? (j.output ?? []).flatMap((o: { content?: { text?: string }[] }) => o.content ?? []).map((c: { text?: string }) => c.text ?? "").join("");
     const points = (JSON.parse(txt).points ?? []).slice(0, 6).map((p: unknown) => String(p).slice(0, 400));
