@@ -1,5 +1,11 @@
 # Outro Ângulo — Roadmap
 
+## Check-up da primeira campanha — 23/10/2026
+- [ ] Conferir campanha e pagamento como visitante no celular e computador
+- [ ] Conferir login, retorno do Stripe e curso com conta autenticada
+- [ ] Revisar e-mails, pagamentos confirmados e acesso; corrigir falhas de UX encontradas
+- [ ] Executar regressões e registrar o que depende de compra real ou publicação
+
 ## Retomada do Stripe — 23/10/2026
 - [x] Confirmar e corrigir bloqueio após abandonar pagamento aberto, preservando a sessão existente
 - [x] Executar 46 regressões, incluindo handlers de retomada e bloqueio de pagamento assíncrono; montagem sem erros
