@@ -88,6 +88,7 @@
 - [x] Compra sem conta + link por e-mail para criar conta com curso liberado
 
 ## Conferências solicitadas — 23/10/2026
+- [x] Conferir que o link da campanha funciona (página, preço e Stripe)
 - [x] Doc de logos separadas para o gestor de marketing
 - [x] Conferir envio do e-mail de login (magic link)
 - [x] Conferir acesso ao curso para quem já pagou
