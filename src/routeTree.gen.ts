@@ -49,6 +49,7 @@ import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
 import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
+import { Route as AuthenticatedAdminRelatoriosRouteImport } from './routes/_authenticated/admin/relatorios'
 import { Route as AuthenticatedAdminVideosRouteImport } from './routes/_authenticated/admin/videos'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
 import { Route as AuthenticatedCheckoutSlugRouteImport } from './routes/_authenticated/checkout.$slug'
@@ -73,6 +74,7 @@ import { Route as AuthenticatedAprenderSlugModuloRouteImport } from './routes/_a
 import { Route as AuthenticatedAprenderSlugEspacoRouteImport } from './routes/_authenticated/aprender.$slug.espaco'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -279,6 +281,12 @@ const AuthenticatedAdminGestoresRoute =
     path: '/gestores',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminRelatoriosRoute =
+  AuthenticatedAdminRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminVideosRoute =
   AuthenticatedAdminVideosRouteImport.update({
     id: '/videos',
@@ -416,6 +424,12 @@ const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
   path: '/lovable/email/auth/webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -456,6 +470,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -479,6 +494,7 @@ export interface FileRoutesByFullPath {
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
   '/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -520,6 +536,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -543,6 +560,7 @@ export interface FileRoutesByTo {
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/cursos': typeof AuthenticatedAdminCursosIndexRoute
   '/aprender/$slug': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -587,6 +605,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/_authenticated/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/_authenticated/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -610,6 +629,7 @@ export interface FileRoutesById {
   '/_authenticated/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/_authenticated/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
   '/_authenticated/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
@@ -654,6 +674,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
@@ -677,6 +698,7 @@ export interface FileRouteTypes {
     | '/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
+    | '/lovable/email/transactional/preview'
     | '/admin/cursos/'
     | '/aprender/$slug/'
   fileRoutesByTo: FileRoutesByTo
@@ -718,6 +740,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
@@ -741,6 +764,7 @@ export interface FileRouteTypes {
     | '/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
+    | '/lovable/email/transactional/preview'
     | '/admin/cursos'
     | '/aprender/$slug'
   id:
@@ -784,6 +808,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/configuracoes'
     | '/_authenticated/admin/encontros'
     | '/_authenticated/admin/gestores'
+    | '/_authenticated/admin/relatorios'
     | '/_authenticated/admin/videos'
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/checkout/$slug'
@@ -807,6 +832,7 @@ export interface FileRouteTypes {
     | '/_authenticated/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
+    | '/lovable/email/transactional/preview'
     | '/_authenticated/admin/cursos/'
     | '/_authenticated/aprender/$slug/'
   fileRoutesById: FileRoutesById
@@ -841,6 +867,7 @@ export interface RootRouteChildren {
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1125,6 +1152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGestoresRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/relatorios': {
+      id: '/_authenticated/admin/relatorios'
+      path: '/relatorios'
+      fullPath: '/admin/relatorios'
+      preLoaderRoute: typeof AuthenticatedAdminRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/videos': {
       id: '/_authenticated/admin/videos'
       path: '/videos'
@@ -1293,6 +1327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailAuthWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1302,6 +1343,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
   AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
   AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
+  AuthenticatedAdminRelatoriosRoute: typeof AuthenticatedAdminRelatoriosRoute
   AuthenticatedAdminVideosRoute: typeof AuthenticatedAdminVideosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminCursosIdRoute: typeof AuthenticatedAdminCursosIdRoute
@@ -1315,6 +1357,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
     AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
     AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
+    AuthenticatedAdminRelatoriosRoute: AuthenticatedAdminRelatoriosRoute,
     AuthenticatedAdminVideosRoute: AuthenticatedAdminVideosRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminCursosIdRoute: AuthenticatedAdminCursosIdRoute,
@@ -1417,6 +1460,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

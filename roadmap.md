@@ -107,3 +107,6 @@
 - [x] Doc de logos separadas para o gestor de marketing
 - [x] Conferir envio do e-mail de login (magic link)
 - [x] Conferir acesso ao curso para quem já pagou
+
+## Relatórios admin — 23/10/2026
+- [x] Aba Relatórios com período, leitura por IA e envio para o próprio e-mail
