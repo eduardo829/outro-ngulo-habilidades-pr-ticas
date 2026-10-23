@@ -1,5 +1,10 @@
 # Outro Ângulo — Roadmap
 
+## Retomada do Stripe — 23/10/2026
+- [x] Confirmar e corrigir bloqueio após abandonar pagamento aberto, preservando a sessão existente
+- [x] Executar 46 regressões, incluindo handlers de retomada e bloqueio de pagamento assíncrono; montagem sem erros
+- [ ] Verificar abandono/retomada real no Stripe — conta conectada já possui matrícula; nenhuma cobrança criada
+
 ## Teste do gateway — 19/10/2026
 - [x] Confirmar conexão autenticada com Mercado Pago e disponibilidade de Pix/cartão, sem cobrar
 - [x] Consultar pagamentos recentes e confirmar preço de R$127; executar 42 testes de pagamento
