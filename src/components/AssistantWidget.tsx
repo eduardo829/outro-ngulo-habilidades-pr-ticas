@@ -58,7 +58,7 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
   };
 
   return (
-    <div role="dialog" aria-label="Assistente da Outro Ângulo" className="fixed inset-x-3 bottom-20 z-50 flex h-[min(560px,75vh)] flex-col overflow-hidden rounded-md border bg-background shadow-xl md:inset-x-auto md:bottom-24 md:right-6 md:w-[400px]">
+    <div role="dialog" aria-label="Assistente da Outro Ângulo" className="fixed inset-x-3 bottom-36 z-50 flex h-[min(560px,65dvh)] flex-col overflow-hidden rounded-md border bg-background shadow-xl md:inset-x-auto md:bottom-24 md:right-6 md:w-[400px]">
       <header className="flex items-center justify-between border-b bg-ink px-4 py-3 text-ink-foreground">
         <div className="flex items-center gap-2">
           <span aria-hidden className="relative block h-4 w-4 border-l-2 border-t-2 border-ink-foreground"><span className="absolute -bottom-0.5 -right-0.5 h-1.5 w-1.5 bg-highlight" /></span>

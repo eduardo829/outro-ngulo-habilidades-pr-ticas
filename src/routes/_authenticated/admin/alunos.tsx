@@ -28,8 +28,16 @@ function Students() {
   const { user } = useAuth();
   const fetchAccounts = useServerFn(listAccounts);
   const accounts = useQuery({ queryKey: ["admin-accounts"], queryFn: () => fetchAccounts(), refetchInterval: 60000 });
-  const courses = useQuery({ queryKey: ["admin-courses-min"], queryFn: async () => (await supabase.from("courses").select("id, title").order("position")).data ?? [] });
-  const enrollments = useQuery({ queryKey: ["admin-enrollments"], queryFn: async () => (await supabase.from("enrollments").select("id, user_id, course_id, status")).data ?? [] });
+  const courses = useQuery({ queryKey: ["admin-courses-min"], queryFn: async () => {
+    const { data, error } = await supabase.from("courses").select("id, title").order("position");
+    if (error) throw error;
+    return data ?? [];
+  } });
+  const enrollments = useQuery({ queryKey: ["admin-enrollments"], refetchInterval: 60000, queryFn: async () => {
+    const { data, error } = await supabase.from("enrollments").select("id, user_id, course_id, status");
+    if (error) throw error;
+    return data ?? [];
+  } });
   const [search, setSearch] = useState("");
   const [pick, setPick] = useState<Record<string, string>>({});
   const [filter, setFilter] = useState("all");
@@ -44,7 +52,7 @@ function Students() {
   }, [accounts.data, search, filter, enrollments.data]);
 
   const date = (value: string | null) => value ? new Intl.DateTimeFormat("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" }).format(new Date(value)) : "Ainda não entrou";
-  const refresh = () => { accounts.refetch(); enrollments.refetch(); };
+  const refresh = () => { accounts.refetch(); enrollments.refetch(); courses.refetch(); };
 
   const courseTitle = (id: string) => courses.data?.find((c) => c.id === id)?.title ?? "—";
 
@@ -73,8 +81,8 @@ function Students() {
     accounts.refetch();
   }
 
-  if (accounts.isLoading) return <p className="text-muted-foreground">Carregando…</p>;
-  if (accounts.error) return <div><p className="text-destructive">Não foi possível carregar as contas.</p><Button variant="outline" className="mt-4" onClick={refresh}>Tentar novamente</Button></div>;
+  if (accounts.isLoading || enrollments.isLoading || courses.isLoading) return <p className="text-muted-foreground">Carregando…</p>;
+  if (accounts.isError || enrollments.isError || courses.isError) return <div role="alert"><p className="text-destructive">Não foi possível carregar as contas e matrículas.</p><Button variant="outline" className="mt-4" onClick={refresh}>Tentar novamente</Button></div>;
 
   return (
     <div className="space-y-4">
