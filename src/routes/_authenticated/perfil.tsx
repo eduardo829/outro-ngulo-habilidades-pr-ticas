@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
-  head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }, { property: "og:title", content: "Meu perfil — Outro Ângulo" }, { property: "og:description", content: "Edite seu perfil e preferências." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ProfilePage,
 });
 
@@ -32,61 +32,78 @@ type Form = { display_name: string; bio: string; city: string; area: string; int
 function ProfilePage() {
   const { user } = useAuth();
   const [f, setF] = useState<Form | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("*").eq("id", user.id).single().then(({ data }) => {
+    let alive = true;
+    setLoadError(false);
+    supabase.from("profiles").select("*").eq("id", user.id).single().then(({ data, error }) => {
+      if (!alive) return;
+      if (error || !data) { setLoadError(true); return; }
       if (data) setF({
         display_name: data.display_name, bio: data.bio ?? "", city: data.city ?? "", area: data.area ?? "",
         interests: data.interests.join(", "), can_share: data.can_share ?? "", wants_learn: data.wants_learn ?? "",
         link: data.link ?? "", avatar_url: data.avatar_url ?? "", in_directory: data.in_directory,
         persona: data.persona ?? "", working_on: data.working_on ?? "", skills: data.skills.join(", "), learn_tags: data.learn_tags.join(", "),
       });
-    });
-  }, [user]);
+    }, () => { if (alive) setLoadError(true); });
+    return () => { alive = false; };
+  }, [user, attempt]);
 
+  if (loadError) return <><PageHeader title="Meu perfil" /><div role="alert" className="p-8"><p>Não foi possível carregar seu perfil.</p><Button variant="outline" className="mt-3" onClick={() => setAttempt((n) => n + 1)}>Tentar novamente</Button></div></>;
   if (!f) return <><PageHeader title="Meu perfil" /><p className="p-8 text-muted-foreground">Carregando…</p></>;
   const set = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (!f || !user || busy || uploading) return;
     const p = schema.safeParse(f);
     if (!p.success) return toast.error(p.error.issues[0]?.message ?? "Dados inválidos");
     setBusy(true);
+    try {
     const { error } = await supabase.from("profiles").update({
-      display_name: f!.display_name.trim(), bio: f!.bio || null, city: f!.city || null, area: f!.area || null,
-      interests: f!.interests.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 12),
-      can_share: f!.can_share || null, wants_learn: f!.wants_learn || null, link: f!.link || null,
-      in_directory: f!.in_directory, persona: f!.persona || null, working_on: f!.working_on || null,
-      skills: f!.skills.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10),
-      learn_tags: f!.learn_tags.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10), updated_at: new Date().toISOString(),
-    }).eq("id", user!.id);
-    setBusy(false);
-    error ? toast.error("Não foi possível salvar.") : toast.success("Perfil salvo.");
+      display_name: f.display_name.trim(), bio: f.bio || null, city: f.city || null, area: f.area || null,
+      interests: f.interests.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 12),
+      can_share: f.can_share || null, wants_learn: f.wants_learn || null, link: f.link || null,
+      in_directory: f.in_directory, persona: f.persona || null, working_on: f.working_on || null,
+      skills: f.skills.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10),
+      learn_tags: f.learn_tags.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10), updated_at: new Date().toISOString(),
+    }).eq("id", user.id);
+    if (error) throw error;
+    toast.success("Perfil salvo.");
+    } catch { toast.error("Não foi possível salvar."); } finally { setBusy(false); }
   }
 
   async function uploadAvatar(file: File) {
+    if (!user || !f || uploading || busy) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 2 * 1024 * 1024)
       return toast.error("Use JPG, PNG ou WEBP de até 2 MB.");
-    const path = `${user!.id}/avatar-${Date.now()}`;
+    setUploading(true);
+    try {
+    const path = `${user.id}/avatar-${Date.now()}`;
     const { error } = await supabase.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
     if (error) return toast.error("Falha no envio da foto.");
     const url = supabase.storage.from("avatars").getPublicUrl(path).data.publicUrl;
-    await supabase.from("profiles").update({ avatar_url: url }).eq("id", user!.id);
-    setF({ ...f!, avatar_url: url });
+    const { error: saveError } = await supabase.from("profiles").update({ avatar_url: url }).eq("id", user.id);
+    if (saveError) throw saveError;
+    setF((current) => current ? { ...current, avatar_url: url } : current);
     toast.success("Foto atualizada.");
+    } catch { toast.error("Não foi possível salvar a foto. Tente novamente."); } finally { setUploading(false); }
   }
 
   return (
     <>
       <PageHeader title="Meu perfil" />
       <form onSubmit={save} className="mx-auto max-w-2xl space-y-5 px-5 py-8 md:px-8">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           {f.avatar_url ? <img src={f.avatar_url} alt="Sua foto" className="h-16 w-16 rounded-lg object-cover" /> : <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-secondary font-display text-xl font-bold">{f.display_name[0]}</div>}
           <div>
             <Label htmlFor="avatar">Foto</Label>
-            <Input id="avatar" type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])} />
+            <Input id="avatar" disabled={busy || uploading} type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => e.target.files?.[0] && uploadAvatar(e.target.files[0])} />
           </div>
         </div>
         <p className="text-sm text-muted-foreground">E-mail de acesso: {user?.email} (nunca aparece para outros membros)</p>
@@ -110,7 +127,7 @@ function ProfilePage() {
           <div><Label htmlFor="dir">Aparecer em “Pessoas”</Label><p className="text-xs text-muted-foreground">Opcional. Seu e-mail nunca é exibido.</p></div>
           <Switch id="dir" checked={f.in_directory} onCheckedChange={(c) => setF({ ...f, in_directory: c })} />
         </div>
-        <Button type="submit" disabled={busy}>{busy ? "Salvando…" : "Salvar perfil"}</Button>
+        <Button type="submit" disabled={busy || uploading}>{busy || uploading ? "Salvando…" : "Salvar perfil"}</Button>
       </form>
     </>
   );

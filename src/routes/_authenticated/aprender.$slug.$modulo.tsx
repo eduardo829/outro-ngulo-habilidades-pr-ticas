@@ -7,7 +7,7 @@ import { getGestor } from "@/lib/gestores";
 import { hasValue } from "@/lib/learning/store";
 
 export const Route = createFileRoute("/_authenticated/aprender/$slug/$modulo")({
-  head: () => ({ meta: [{ title: "Módulo — Outro Ângulo" }, { name: "description", content: "Pergunte, aprenda, aplique e salve o que construiu." }] }),
+  head: () => ({ meta: [{ title: "Módulo — Outro Ângulo" }, { name: "description", content: "Pergunte, aprenda, aplique e salve o que construiu." }, { property: "og:title", content: "Módulo — Outro Ângulo" }, { property: "og:description", content: "Pergunte, aprenda, aplique e salve o que construiu." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ModulePage,
 });
 

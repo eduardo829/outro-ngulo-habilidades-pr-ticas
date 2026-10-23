@@ -1,5 +1,19 @@
 # Outro Ângulo — Roadmap
 
+## Check-up da primeira campanha — 23/10/2026
+- [x] Auditar 27 páginas no celular e computador; sem imagens quebradas ou erros de execução, corrigido corte dos botões de vídeos
+- [x] Corrigir estados de erro/repetição em perfil, cursos, editor, pessoas, mensagens, acesso e assistente; perfil recuperou após falha simulada
+- [x] Confirmar 26 usuários com dados de confirmação e matrículas; impedir que falha de consulta pareça ausência de matrícula
+- [x] Revalidar 89 testes e preview sem erros após correções de UX
+- [x] Administradores consultam 26 contas reais, mais recentes primeiro, confirmação de e-mail, último login e matrículas; busca/atualização verificadas no celular
+- [x] Conferir campanha no celular e computador; visitante chegou ao Stripe por R$127 e voltou com CTA disponível
+- [x] Conferir login com origem preservada e seis módulos com player na conta autenticada; retomada autenticada coberta por testes
+- [x] E-mails habilitados/domínio verificado e quatro eventos de envio; nove compras pagas com matrícula ativa
+- [x] Corrigir UX: CTA maior, erros seguros em português, recuperação com saída, novas tentativas de consulta, origem no retorno e metadados completos
+- [x] Executar 89 regressões; preview sem erros
+- [ ] Publicar melhorias desta revisão — aguarda pedido explícito de publicação
+- [ ] Concluir compra sem conta com e-mail novo e conferir convite recebido + senha + acesso — depende de pagamento real autorizado
+
 ## Retomada do Stripe — 23/10/2026
 - [x] Confirmar e corrigir bloqueio após abandonar pagamento aberto, preservando a sessão existente
 - [x] Executar 46 regressões, incluindo handlers de retomada e bloqueio de pagamento assíncrono; montagem sem erros
@@ -25,7 +39,8 @@
 
 ## E-mails de autenticação
 - [x] Modelos e remetente personalizados; domínio de envio vinculado
-- [ ] Verificar envio real — domínio verificado; aguarda conclusão da publicação e ativação
+- [x] Configuração completa, e-mails habilitados e domínio verificado; quatro eventos de envio confirmados em 23/10
+- [ ] Verificar recebimento do convite após compra de visitante novo — depende de compra real; evento enviado não comprova caixa de entrada
 
 ## Feito (etapa 1–3)
 - [x] Design system, logo, navegação pública e autenticada (lateral desktop / inferior mobile)

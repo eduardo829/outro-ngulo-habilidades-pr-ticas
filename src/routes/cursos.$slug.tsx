@@ -51,6 +51,7 @@ function CourseDetail() {
   });
 
   if (q.isLoading) return <PublicLayout><p className="mx-auto max-w-6xl p-10 text-muted-foreground">Carregando…</p></PublicLayout>;
+  if (q.isError) return <PublicLayout><div role="alert" className="mx-auto max-w-xl px-5 py-16"><h1 className="text-2xl font-bold">Não foi possível carregar o curso</h1><Button variant="outline" className="mt-4" onClick={() => q.refetch()}>Tentar novamente</Button></div></PublicLayout>;
   if (!q.data)
     return (
       <PublicLayout>

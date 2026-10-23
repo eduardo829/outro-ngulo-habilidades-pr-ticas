@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useMyProjects } from "@/lib/learning/progress";
 
 export const Route = createFileRoute("/_authenticated/meu-espaco")({
-  head: () => ({ meta: [{ title: "Meu espaço — Outro Ângulo" }, { name: "description", content: "Seus projetos construídos nos cursos, num só lugar." }] }),
+  head: () => ({ meta: [{ title: "Meu espaço — Outro Ângulo" }, { name: "description", content: "Seus projetos construídos nos cursos, num só lugar." }, { property: "og:title", content: "Meu espaço — Outro Ângulo" }, { property: "og:description", content: "Seus projetos construídos nos cursos, num só lugar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: MyProjects,
 });
 

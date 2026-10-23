@@ -23,7 +23,7 @@ const TABS = [
 
 export const Route = createFileRoute("/_authenticated/meu-angulo")({
   validateSearch: z.object({ s: z.enum(["agora", "proximo", "plano", "evidencias"]).optional() }),
-  head: () => ({ meta: [{ title: "Meu Ângulo — Outro Ângulo" }, { name: "description", content: "Onde você está, para onde quer ir e o que está fazendo a respeito." }] }),
+  head: () => ({ meta: [{ title: "Meu Ângulo — Outro Ângulo" }, { name: "description", content: "Onde você está, para onde quer ir e o que está fazendo a respeito." }, { property: "og:title", content: "Meu Ângulo — Outro Ângulo" }, { property: "og:description", content: "Onde você está, para onde quer ir e o que está fazendo a respeito." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Page,
 });
 

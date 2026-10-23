@@ -14,6 +14,9 @@ export const Route = createFileRoute("/recuperar-senha")({
       { name: "description", content: "Receba um link para criar uma nova senha." },
       { property: "og:title", content: "Recuperar senha — Outro Ângulo" },
       { property: "og:description", content: "Receba um link para criar uma nova senha." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: Forgot,
@@ -26,10 +29,15 @@ function Forgot() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
-    setBusy(false);
-    if (error) return toast.error("Não foi possível enviar agora. Tente novamente.");
-    setSent(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${window.location.origin}/reset-password` });
+      if (error) return toast.error("Não foi possível enviar agora. Tente novamente.");
+      setSent(true);
+    } catch {
+      toast.error("Não foi possível conectar agora. Tente novamente em instantes.");
+    } finally {
+      setBusy(false);
+    }
   }
   return (
     <div className="flex min-h-screen items-center justify-center px-5">
@@ -40,7 +48,8 @@ function Forgot() {
           <p className="mt-3 text-muted-foreground">Se houver uma conta com este e-mail, você receberá um link para criar uma nova senha.</p>
         ) : (
           <form onSubmit={submit} className="mt-6 space-y-4">
-            <div><Label htmlFor="email">E-mail</Label><Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
+            <p className="text-sm text-muted-foreground">Se você comprou um curso, use o mesmo e-mail informado no pagamento.</p>
+            <div><Label htmlFor="email">E-mail</Label><Input id="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
             <Button type="submit" className="w-full" disabled={busy}>{busy ? "Enviando…" : "Enviar link"}</Button>
           </form>
         )}

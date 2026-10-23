@@ -13,20 +13,21 @@ import { getGestor } from "@/lib/gestores";
 import type { Course, Module } from "@/lib/learning/types";
 
 export const Route = createFileRoute("/_authenticated/admin/videos")({
-  head: () => ({ meta: [{ title: "Vídeos das aulas — Administração" }] }),
+  head: () => ({ meta: [{ title: "Vídeos das aulas — Administração Outro Ângulo" }, { name: "description", content: "Administre vídeos das aulas no Outro Ângulo." }, { property: "og:title", content: "Vídeos das aulas — Administração Outro Ângulo" }, { property: "og:description", content: "Administre vídeos das aulas no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AdminVideos,
 });
 
 function AdminVideos() {
-  const [slug, setSlug] = useState(COURSES_ENGINE[0]!.slug);
-  const c = COURSES_ENGINE.find((x) => x.slug === slug)!;
+  const [slug, setSlug] = useState(COURSES_ENGINE[0]?.slug ?? "");
+  const c = COURSES_ENGINE.find((x) => x.slug === slug);
   const videos = useCourseVideos(slug);
+  if (!c) return <p>Nenhum curso disponível.</p>;
   return (
     <div>
       <h2 className="text-xl font-bold">Vídeos das aulas</h2>
       <p className="mt-1 text-sm text-muted-foreground">Cole o link do YouTube ou Vimeo. Assim que o link for salvo, o aviso “Vídeo em preparação” será substituído pelo reprodutor de vídeo para os alunos.</p>
-      <div className="mt-4 flex flex-wrap gap-2">{COURSES_ENGINE.map((x) => <Button key={x.slug} size="sm" variant={x.slug === slug ? "default" : "outline"} onClick={() => setSlug(x.slug)}>{x.title}</Button>)}</div>
-      {videos.isLoading ? <p className="mt-6 text-muted-foreground">Carregando…</p> : (
+      <div className="mt-4 flex flex-wrap gap-2">{COURSES_ENGINE.map((x) => <Button key={x.slug} size="sm" className="h-auto min-h-9 max-w-full whitespace-normal text-left" variant={x.slug === slug ? "default" : "outline"} onClick={() => setSlug(x.slug)}>{x.title}</Button>)}</div>
+      {videos.isError ? <div role="alert" className="mt-6"><p>Não foi possível carregar os vídeos.</p><Button variant="outline" className="mt-3" onClick={() => videos.refetch()}>Tentar novamente</Button></div> : videos.isLoading ? <p className="mt-6 text-muted-foreground">Carregando…</p> : (
         <ul className="mt-6 space-y-3">{c.modules.map((m, i) => <VideoRow key={`${slug}-${m.key}`} c={c} m={m} i={i} row={videos.data?.[m.key]} />)}</ul>
       )}
     </div>
@@ -58,11 +59,11 @@ function VideoRow({ c, m, i, row }: { c: Course; m: Module; i: number; row?: Cou
   const set = (k: keyof typeof f) => (e: { target: { value: string } }) => setF({ ...f, [k]: e.target.value });
   return (
     <li className="border bg-card">
-      <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="flex w-full items-center gap-3 p-4 text-left">
+      <Button type="button" variant="ghost" onClick={() => setOpen(!open)} aria-expanded={open} className="h-auto w-full items-start gap-3 whitespace-normal rounded-none p-4 text-left">
         <span className="w-6 text-xs font-bold text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-        <span className="flex-1"><span className="font-semibold">{m.title}</span><span className="block text-sm text-muted-foreground">{row?.title ?? defTitle}</span></span>
-        <span className="text-xs">{row?.video_url ? "Publicado" : "Em preparação"}</span>
-      </button>
+        <span className="min-w-0 flex-1 break-words"><span className="font-semibold">{m.title}</span><span className="block text-sm text-muted-foreground">{row?.title ?? defTitle}</span></span>
+        <span className="shrink-0 text-xs">{row?.video_url ? "Publicado" : "Em preparação"}</span>
+      </Button>
       {open && (
         <div className="grid gap-3 border-t p-4 md:grid-cols-2">
           <label className="text-sm">Título<Input value={f.title} onChange={set("title")} /></label>

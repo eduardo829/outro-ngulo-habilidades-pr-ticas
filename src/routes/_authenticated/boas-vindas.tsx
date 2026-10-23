@@ -11,7 +11,7 @@ import { GOALS, PERSONAS } from "@/lib/community";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/boas-vindas")({
-  head: () => ({ meta: [{ title: "Boas-vindas — Outro Ângulo" }, { name: "description", content: "Conte um pouco sobre você." }] }),
+  head: () => ({ meta: [{ title: "Boas-vindas — Outro Ângulo" }, { name: "description", content: "Conte um pouco sobre você." }, { property: "og:title", content: "Boas-vindas — Outro Ângulo" }, { property: "og:description", content: "Conte um pouco sobre você." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Onboarding,
 });
 

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/admin/cursos/")({
-  head: () => ({ meta: [{ title: "Cursos — Administração" }] }),
+  head: () => ({ meta: [{ title: "Cursos — Administração Outro Ângulo" }, { name: "description", content: "Administre cursos no Outro Ângulo." }, { property: "og:title", content: "Cursos — Administração Outro Ângulo" }, { property: "og:description", content: "Administre cursos no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AdminCourses,
 });
 
@@ -21,9 +21,13 @@ function slugify(s: string) {
 function AdminCourses() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading, isError } = useQuery({
     queryKey: ["admin-courses"],
-    queryFn: async () => (await supabase.from("courses").select("id, slug, title, status, position").order("position")).data ?? [],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("courses").select("id, slug, title, status, position").order("position");
+      if (error) throw error;
+      return data ?? [];
+    },
   });
 
   async function create(e: React.FormEvent) {
@@ -38,12 +42,12 @@ function AdminCourses() {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={create} className="flex gap-2">
+      <form onSubmit={create} className="flex flex-col gap-2 sm:flex-row">
         <label htmlFor="newc" className="sr-only">Título do novo curso</label>
         <Input id="newc" placeholder="Título do novo curso" value={title} onChange={(e) => setTitle(e.target.value)} />
         <Button type="submit">Criar curso</Button>
       </form>
-      <ul className="divide-y rounded-lg border bg-card">
+      {isLoading ? <p className="text-muted-foreground">Carregando cursos…</p> : isError ? <div role="alert"><p>Não foi possível carregar os cursos.</p><Button variant="outline" className="mt-3" onClick={() => refetch()}>Tentar novamente</Button></div> : !data?.length ? <p className="text-muted-foreground">Nenhum curso cadastrado.</p> : <ul className="divide-y rounded-lg border bg-card">
         {data?.map((c) => (
           <li key={c.id}>
             <Link to="/admin/cursos/$id" params={{ id: c.id }} className="flex items-center justify-between gap-3 p-4 hover:bg-secondary">
@@ -52,7 +56,7 @@ function AdminCourses() {
             </Link>
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   );
 }

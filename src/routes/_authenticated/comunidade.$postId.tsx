@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/comunidade/$postId")({
-  head: () => ({ meta: [{ title: "Publicação — Outro Ângulo" }, { name: "description", content: "Conversa na comunidade." }] }),
+  head: () => ({ meta: [{ title: "Publicação — Outro Ângulo" }, { name: "description", content: "Conversa na comunidade." }, { property: "og:title", content: "Publicação — Outro Ângulo" }, { property: "og:description", content: "Conversa na comunidade." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: PostPage,
 });
 

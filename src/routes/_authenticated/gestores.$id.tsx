@@ -8,7 +8,7 @@ import { EventCard } from "@/components/community/EventCard";
 import { fetchEvents, type Expert } from "@/lib/events";
 
 export const Route = createFileRoute("/_authenticated/gestores/$id")({
-  head: () => ({ meta: [{ title: "Gestor — Outro Ângulo" }, { name: "description", content: "Experiência real e encontros de um gestor." }] }),
+  head: () => ({ meta: [{ title: "Gestor — Outro Ângulo" }, { name: "description", content: "Experiência real e encontros de um gestor." }, { property: "og:title", content: "Gestor — Outro Ângulo" }, { property: "og:description", content: "Experiência real e encontros de um gestor." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ExpertPage,
 });
 

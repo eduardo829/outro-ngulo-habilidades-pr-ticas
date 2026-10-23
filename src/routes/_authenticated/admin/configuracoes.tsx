@@ -12,7 +12,7 @@ import { AiSettingsPanel } from "@/components/admin/AiSettingsPanel";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
-  head: () => ({ meta: [{ title: "Configurações — Administração" }] }),
+  head: () => ({ meta: [{ title: "Configurações — Administração Outro Ângulo" }, { name: "description", content: "Administre configurações no Outro Ângulo." }, { property: "og:title", content: "Configurações — Administração Outro Ângulo" }, { property: "og:description", content: "Administre configurações no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Settings,
 });
 

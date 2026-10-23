@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  head: () => ({ meta: [{ title: "Administração — Outro Ângulo" }] }),
+  head: () => ({ meta: [{ title: "Administração — Outro Ângulo" }, { name: "description", content: "Administre administração no Outro Ângulo." }, { property: "og:title", content: "Administração — Outro Ângulo" }, { property: "og:description", content: "Administre administração no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Overview,
 });
 

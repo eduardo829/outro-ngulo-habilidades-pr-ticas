@@ -7,7 +7,7 @@ import { timeAgo } from "@/lib/community";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/notificacoes")({
-  head: () => ({ meta: [{ title: "Notificações — Outro Ângulo" }, { name: "description", content: "Respostas, mensagens e encontros." }] }),
+  head: () => ({ meta: [{ title: "Notificações — Outro Ângulo" }, { name: "description", content: "Respostas, mensagens e encontros." }, { property: "og:title", content: "Notificações — Outro Ângulo" }, { property: "og:description", content: "Respostas, mensagens e encontros." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Notifications,
 });
 

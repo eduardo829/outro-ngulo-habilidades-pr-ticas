@@ -2,11 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
 import { Avatar, Page } from "@/components/community/Bits";
 import { fetchProfiles, timeAgo } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
-  head: () => ({ meta: [{ title: "Mensagens — Outro Ângulo" }, { name: "description", content: "Suas conversas privadas." }] }),
+  head: () => ({ meta: [{ title: "Mensagens — Outro Ângulo" }, { name: "description", content: "Suas conversas privadas." }, { property: "og:title", content: "Mensagens — Outro Ângulo" }, { property: "og:description", content: "Suas conversas privadas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Inbox,
 });
 
@@ -17,28 +18,32 @@ export function useConversations() {
     enabled: !!user,
     refetchInterval: 20000,
     queryFn: async () => {
-      const { data: convs } = await supabase.from("conversations").select("*").order("last_message_at", { ascending: false });
+      if (!user) return [];
+      const { data: convs, error } = await supabase.from("conversations").select("*").order("last_message_at", { ascending: false });
+      if (error) throw error;
       const list = convs ?? [];
-      const others = list.map((c) => (c.user_a === user!.id ? c.user_b : c.user_a));
+      const others = list.map((c) => (c.user_a === user.id ? c.user_b : c.user_a));
       const ids = list.map((c) => c.id);
-      const [people, { data: msgs }] = await Promise.all([
+      const [people, messagesResult] = await Promise.all([
         fetchProfiles(others),
         ids.length ? supabase.from("messages").select("conversation_id, body, sender_id, read_at, created_at").in("conversation_id", ids).order("created_at", { ascending: false }).limit(500) : Promise.resolve({ data: [] as never[] }),
       ]);
+      if ("error" in messagesResult && messagesResult.error) throw messagesResult.error;
+      const msgs = messagesResult.data;
       return list.map((c, i) => {
         const mine = (msgs ?? []).filter((m) => m.conversation_id === c.id);
-        return { ...c, other: people.get(others[i] ?? ""), last: mine[0], unread: mine.some((m) => m.sender_id !== user!.id && !m.read_at) };
+        return { ...c, other: people.get(others[i] ?? ""), last: mine[0], unread: mine.some((m) => m.sender_id !== user.id && !m.read_at) };
       });
     },
   });
 }
 
 function Inbox() {
-  const { data, isLoading } = useConversations();
+  const { data, isLoading, isError, refetch } = useConversations();
   return (
     <Page narrow>
       <h1 className="text-3xl font-extrabold">Mensagens</h1>
-      {isLoading ? <p className="mt-6 text-muted-foreground">Carregando…</p> : !data?.length ? (
+      {isError ? <div role="alert" className="mt-6"><p>Não foi possível carregar suas conversas.</p><Button variant="outline" className="mt-3" onClick={() => refetch()}>Tentar novamente</Button></div> : isLoading ? <p className="mt-6 text-muted-foreground">Carregando…</p> : !data?.length ? (
         <p className="mt-6 text-muted-foreground">Nenhuma conversa ainda. Abra o perfil de alguém em <Link to="/pessoas" className="text-primary underline">Pessoas</Link> e envie uma mensagem.</p>
       ) : (
         <ul className="mt-6 divide-y rounded-xl border bg-card">

@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/auth";
 import { MISSIONS } from "@/lib/angulo";
 
 export const Route = createFileRoute("/_authenticated/missoes/")({
-  head: () => ({ meta: [{ title: "Missões — Outro Ângulo" }, { name: "description", content: "Pequenas tarefas fora da tela que geram aprendizado real." }] }),
+  head: () => ({ meta: [{ title: "Missões — Outro Ângulo" }, { name: "description", content: "Pequenas tarefas fora da tela que geram aprendizado real." }, { property: "og:title", content: "Missões — Outro Ângulo" }, { property: "og:description", content: "Pequenas tarefas fora da tela que geram aprendizado real." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Page,
 });
 

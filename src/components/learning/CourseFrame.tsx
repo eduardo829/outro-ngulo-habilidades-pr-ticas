@@ -27,6 +27,7 @@ export function CourseGate({ slug, moduleKey, children }: { slug: string; module
   const outputs = useOutputs(access.data?.allowed || preview ? access.data?.courseId : null);
   if (!course) return <p className="p-8">Curso não encontrado.</p>;
   if (access.isLoading || ((access.data?.allowed || preview) && outputs.isLoading)) return <p className="p-8 text-muted-foreground">Carregando…</p>;
+  if (access.isError || outputs.isError) return <div role="alert" className="p-8"><p>Não foi possível carregar o curso. Seu acesso e trabalho salvo não foram alterados.</p><Button variant="outline" className="mt-4" onClick={() => { access.refetch(); if (access.data?.allowed || preview) outputs.refetch(); }}>Tentar novamente</Button></div>;
   if (!access.data?.courseId) return <p className="p-8">Curso não encontrado.</p>;
   if (!access.data.allowed && !preview) return <LockedCourse c={course} moduleKey={moduleKey} previewKey={access.data.previewKey} />;
   return <>

@@ -12,9 +12,12 @@ export function useEngineAccess(slug: string) {
     queryKey: ["engine-access", slug, user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data: course } = await supabase.from("courses").select("id, title, preview_enabled, preview_module_key").eq("slug", slug).maybeSingle();
+      if (!user) throw new Error("Entre para acessar o curso.");
+      const { data: course, error } = await supabase.from("courses").select("id, title, preview_enabled, preview_module_key").eq("slug", slug).maybeSingle();
+      if (error) throw error;
       if (!course) return { courseId: null, allowed: false, previewKey: null as string | null };
-      const { data: en } = await supabase.from("enrollments").select("status").eq("course_id", course.id).eq("user_id", user!.id).maybeSingle();
+      const { data: en, error: enrollmentError } = await supabase.from("enrollments").select("status").eq("course_id", course.id).eq("user_id", user.id).maybeSingle();
+      if (enrollmentError) throw enrollmentError;
       return { courseId: course.id, allowed: en?.status === "active" || isStaff, previewKey: course.preview_enabled ? course.preview_module_key : null };
     },
   });
@@ -26,7 +29,8 @@ export function useOutputs(courseId: string | null | undefined) {
     queryKey: ["outputs", courseId, user?.id],
     enabled: !!user && !!courseId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("learning_outputs").select("key, value").eq("course_id", courseId!).eq("user_id", user!.id);
+      if (!user || !courseId) throw new Error("Entre para acessar seu trabalho.");
+      const { data, error } = await supabase.from("learning_outputs").select("key, value").eq("course_id", courseId).eq("user_id", user.id);
       if (error) throw error;
       return Object.fromEntries((data ?? []).map((r) => [r.key, r.value])) as Outputs;
     },
@@ -38,7 +42,8 @@ export function useSaveOutput(courseId: string | null | undefined) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ key, value }: { key: string; value: unknown }) => {
-      const { error } = await supabase.from("learning_outputs").upsert({ user_id: user!.id, course_id: courseId!, key, value: value as Json, updated_at: new Date().toISOString() });
+      if (!user || !courseId) throw new Error("Entre para salvar seu trabalho.");
+      const { error } = await supabase.from("learning_outputs").upsert({ user_id: user.id, course_id: courseId, key, value: value as Json, updated_at: new Date().toISOString() });
       if (error) throw error;
       return { key, value };
     },

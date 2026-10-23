@@ -20,10 +20,11 @@ import { buyTarget } from "@/lib/checkout-logic";
 
 /** Public page for an interactive (engine) course: thesis, what you build, module path. */
 export function EngineCoursePublic({ c }: { c: Course }) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const ret = useReturnSearch();
   const { data: prices } = useCoursePrices();
   const g = c.gestor ? getGestor(c.gestor) : undefined;
+  const [interestBusy, setInterestBusy] = useState(false);
   const [scroll, setScroll] = useState(0);
   const [open, setOpen] = useState<string | null>(c.modules[0]?.key ?? null);
   useEffect(() => {
@@ -43,15 +44,21 @@ export function EngineCoursePublic({ c }: { c: Course }) {
     info && my.data ? courseState(c, my.data.owned.has(info.id), my.data.keys[info.id]) : "locked";
   const interested = !!(info && my.data?.interest.has(info.id));
   const toggleInterest = async () => {
-    if (!user || !info) return;
+    if (!user || !info || interestBusy) return;
+    setInterestBusy(true);
+    try {
+    let error;
     if (interested)
-      await supabase
+      ({ error } = await supabase
         .from("course_interest")
         .delete()
         .eq("user_id", user.id)
-        .eq("course_id", info.id);
-    else await supabase.from("course_interest").insert({ user_id: user.id, course_id: info.id });
+        .eq("course_id", info.id));
+    else ({ error } = await supabase.from("course_interest").insert({ user_id: user.id, course_id: info.id }));
+    if (error) throw error;
     qc.invalidateQueries({ queryKey: ["my-learning"] });
+    } catch { toast.error("Não foi possível atualizar seu interesse. Tente novamente."); }
+    finally { setInterestBusy(false); }
   };
   // After paying (e.g. Pix in another tab), re-check with Mercado Pago when the visitor comes back to this page.
   useEffect(() => {
@@ -76,7 +83,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
   }, [user, state, info?.is_purchasable, c.slug, qc]);
   const previewKey = info?.preview_enabled ? info.preview_module_key : null;
   const cta =
-    state !== "locked" ? (
+    commerce.isError || (user && my.isError) ? <div role="alert"><p>Não foi possível consultar preço e acesso.</p><Button variant="outline" className="mt-3" onClick={() => { commerce.refetch(); if (user) my.refetch(); }}>Tentar novamente</Button></div> : commerce.isLoading || authLoading || (user && my.isLoading) ? <p role="status">Consultando acesso…</p> : state !== "locked" ? (
       <Button asChild size="lg">
         <Link to="/aprender/$slug" params={{ slug: c.slug }}>
           {ctaLabel[state]}
@@ -105,22 +112,22 @@ export function EngineCoursePublic({ c }: { c: Course }) {
           user ? (
             <Button asChild size="lg">
               <Link {...buyTarget(c.slug)}>
-                {`Comprar por ${brl(prices?.[c.slug]) ?? ""}`}
+                {brl(prices?.[c.slug]) ? `Comprar por ${brl(prices?.[c.slug])}` : "Ver opções de compra"}
                 <ArrowRight />
               </Link>
             </Button>
           ) : (
             <Button asChild size="lg">
               <Link {...buyTarget(c.slug)}>
-                Entrar para comprar
+                Comprar curso
                 <ArrowRight />
               </Link>
             </Button>
           )
         ) : (
           user && (
-            <Button size="lg" variant="outline" onClick={toggleInterest} aria-pressed={interested}>
-              {interested ? "Na minha lista de interesse" : "Tenho interesse"}
+            <Button size="lg" variant="outline" disabled={interestBusy} onClick={toggleInterest} aria-pressed={interested}>
+              {interestBusy ? "Atualizando…" : interested ? "Na minha lista de interesse" : "Tenho interesse"}
             </Button>
           )
         )}
@@ -207,8 +214,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
             </p>
             <p className="mt-4 text-ink-foreground/70">
               Cada módulo segue esta sequência: pergunta → conceito → exemplo → o ângulo do gestor
-              em vídeo → exercício → resultado salvo no seu projeto → conversa com a comunidade. Os
-              vídeos ainda estão sendo gravados; o texto e os exercícios já funcionam.
+              em vídeo → exercício → resultado salvo no seu projeto → conversa com a comunidade.
             </p>
           </div>
           <div>
@@ -248,7 +254,7 @@ export function EngineCoursePublic({ c }: { c: Course }) {
               <div
                 className={cn(
                   "grid grid-cols-[2.5rem_1fr] gap-3 overflow-hidden transition-all duration-300",
-                  open === m.key ? "max-h-60 pb-5 opacity-100" : "max-h-0 opacity-0",
+                  open === m.key ? "pb-5" : "hidden",
                 )}
               >
                 <span />

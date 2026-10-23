@@ -12,8 +12,9 @@ export function useCourseCommerce() {
   return useQuery({
     queryKey: ["course-commerce"],
     queryFn: async () => {
-      const { data } = await supabase.from("courses")
+      const { data, error } = await supabase.from("courses")
         .select("id, slug, price_cents, currency, sale_price_cents, sale_start, sale_end, is_free, is_purchasable, preview_enabled, preview_module_key");
+      if (error) throw error;
       return Object.fromEntries((data ?? []).map((r) => [r.slug, r as CourseCommerce])) as Record<string, CourseCommerce>;
     },
     staleTime: 60_000,
@@ -44,14 +45,18 @@ export function useMyLearning(userId: string | undefined) {
     queryKey: ["my-learning", userId],
     enabled: !!userId,
     queryFn: async () => {
+      if (!userId) throw new Error("Entre para consultar seus cursos.");
       const [en, out, int] = await Promise.all([
-        supabase.from("enrollments").select("course_id, status, last_accessed_at").eq("user_id", userId!),
-        supabase.from("learning_outputs").select("course_id, key, updated_at").eq("user_id", userId!),
-        supabase.from("course_interest").select("course_id").eq("user_id", userId!),
+        supabase.from("enrollments").select("course_id, status, last_accessed_at").eq("user_id", userId),
+        supabase.from("learning_outputs").select("course_id, key, updated_at").eq("user_id", userId),
+        supabase.from("course_interest").select("course_id").eq("user_id", userId),
       ]);
+      if (en.error) throw en.error;
+      if (out.error) throw out.error;
+      if (int.error) throw int.error;
       const owned = new Set((en.data ?? []).filter((e) => e.status === "active").map((e) => e.course_id));
       const keys: Record<string, string[]> = {}; const last: Record<string, string> = {};
-      for (const r of out.data ?? []) { (keys[r.course_id] ??= []).push(r.key); if (!last[r.course_id] || r.updated_at > last[r.course_id]!) last[r.course_id] = r.updated_at; }
+      for (const r of out.data ?? []) { (keys[r.course_id] ??= []).push(r.key); if (!last[r.course_id] || r.updated_at > (last[r.course_id] ?? "")) last[r.course_id] = r.updated_at; }
       return { owned, keys, last, interest: new Set((int.data ?? []).map((r) => r.course_id)) };
     },
   });
