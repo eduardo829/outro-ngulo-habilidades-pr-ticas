@@ -50,10 +50,12 @@ describe("resuming abandoned Stripe checkout", () => {
     expect(canResumeStripeSession({ ...open, payment_status: "paid" }, 12700)).toBe(false);
   });
   it("blocks an unknown session state", () => {
-    expect(canResumeStripeSession({ ...open, status: undefined }, 12700)).toBe(false);
+    const { status, ...unknown } = open;
+    expect(canResumeStripeSession(unknown, 12700)).toBe(false);
   });
   it("blocks unknown payment state", () => {
-    expect(canResumeStripeSession({ ...open, payment_status: undefined }, 12700)).toBe(false);
+    const { payment_status, ...unknown } = open;
+    expect(canResumeStripeSession(unknown, 12700)).toBe(false);
   });
   it("requires a resume URL", () => {
     expect(canResumeStripeSession({ ...open, url: null }, 12700)).toBe(false);
