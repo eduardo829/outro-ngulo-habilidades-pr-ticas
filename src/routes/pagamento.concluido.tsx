@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { Mail } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { getGuestStatus } from "@/lib/checkout.functions";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/pagamento/concluido")({
   validateSearch: z.object({

@@ -45,6 +45,7 @@ export function PaymentReturn({
   const qc = useQueryClient();
   const [status, setStatus] = useState<string>("checking");
   const [done, setDone] = useState(false);
+  const purchaseReported = useRef(false);
   useEffect(() => {
     if (!user || (!slug && !purchaseId)) return;
     let n = 0;
@@ -57,6 +58,15 @@ export function PaymentReturn({
         setStatus(r.status);
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
+          if (!purchaseReported.current) {
+            purchaseReported.current = true;
+            const value =
+              "amount_cents" in r && r.amount_cents ? r.amount_cents / 100 : undefined;
+            void trackConversionEvent(
+              "Purchase",
+              value != null ? { value, currency: "BRL" } : {},
+            );
+          }
           return;
         }
       } catch {
