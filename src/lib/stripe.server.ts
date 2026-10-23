@@ -150,7 +150,42 @@ export async function applyStripeSession(s: StripeSession): Promise<string | nul
     console.error("[stripe] apply session failed", p.id);
     throw new Error("apply payment failed");
   }
+  if (status === "paid") await notifySale(p.id, s);
   return (data as string | null) ?? null;
+}
+
+const METHOD: Record<string, string> = { card: "Cartão", pix: "Pix", boleto: "Boleto" };
+
+/**
+ * Internal sale notice to the team inbox (one fixed recipient). Idempotency key per purchase means
+ * webhook + polling re-applies never duplicate it. Failures never block access.
+ */
+async function notifySale(purchaseId: string, s: StripeSession) {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: p } = await supabaseAdmin
+      .from("purchases")
+      .select("amount_cents, origin, user_id, created_at, courses(title)")
+      .eq("id", purchaseId)
+      .maybeSingle();
+    if (!p) return;
+    const { data: prof } = await supabaseAdmin.from("profiles").select("display_name").eq("id", p.user_id).maybeSingle();
+    const types = (s as { payment_method_types?: string[] }).payment_method_types ?? [];
+    const { sendTemplateEmail } = await import("./email-templates/send-email");
+    await sendTemplateEmail("sale-notification", "suporte@outroangulo.com", {
+      idempotencyKey: `sale-notification-${purchaseId}`,
+      templateData: {
+        course: (p.courses as { title?: string } | null)?.title ?? "Curso",
+        amount: ((p.amount_cents ?? 0) / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+        buyer: prof?.display_name || s.customer_details?.email || "—",
+        method: types.length === 1 ? METHOD[types[0]] ?? types[0] : "Stripe",
+        origem: p.origin ?? "",
+        when: new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+      },
+    });
+  } catch (e) {
+    console.error("[sale-notification] failed", e instanceof Error ? e.message : "");
+  }
 }
 
 const SITE = "https://outroangulo.com";
@@ -210,5 +245,6 @@ async function applyGuestSession(s: StripeSession, guestId: string): Promise<str
     .from("guest_checkouts")
     .update({ status: "paid", invited, updated_at: new Date().toISOString() })
     .eq("id", g.id);
+  await notifySale(pid as string, s);
   return "paid";
 }
