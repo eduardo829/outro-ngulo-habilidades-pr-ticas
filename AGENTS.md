@@ -32,3 +32,4 @@
 - Campaign sales pages (e.g. /corretor-na-pratica) are dedicated conversion routes: content renders only from real course data, campaign attribution is sanitized and stored on purchases, and checkoutReturnPath preserves it through login and Stripe cancellation. Why: fewer clicks to buy without losing attribution or hardcoding prices.
 - Message recipients have UPDATE on read_at only. Why: marking read must never permit editing another user's message.
 - Security database regressions execute actual migration SQL in isolated PGlite. Why: verify permissions and state transitions without real purchases.
+- Admin reports (src/lib/reports.functions.ts, /admin/relatorios) are built server-side from real data after has_role check, with optional AI reading restricted to those numbers, and are e-mailed only on demand to the requesting admin. Why: no list/scheduled sends through app e-mail, no invented figures.
