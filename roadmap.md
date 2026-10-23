@@ -67,6 +67,12 @@
 - [ ] Fase 6 Assistente usando Meu Ângulo, missões e recursos
 - [ ] Missões dentro dos cursos; fim de curso com "próximo passo"; painel inicial mais pessoal
 
+## Kit de identidade visual — 23/10/2026
+- [x] Logotipos em PNG (transparente, branco) e SVG no tamanho para redes sociais
+- [x] Foto de perfil 1024 e capas YouTube/Facebook/LinkedIn/X
+- [ ] Guia de identidade visual em PDF — montagem e conferência visual
+- [ ] Decisão da tela de login: renomear projeto vs. Google próprio — aguarda escolha do usuário
+
 ## Migração Stripe (em andamento)
 - [ ] Check pré-migração: conta Stripe, chaves, testes, build
 - [ ] Integrar checkout Stripe (cartão + Pix + boleto) com webhook assinado
