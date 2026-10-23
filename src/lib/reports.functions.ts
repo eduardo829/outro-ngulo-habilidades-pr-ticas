@@ -34,7 +34,7 @@ async function buildReport(from: string, to: string, withAnalysis: boolean): Pro
   const [courses, purchases, enrollments, interest, spend] = await Promise.all([
     db.from("courses").select("id, title"),
     db.from("purchases").select("course_id, payment_status, payment_provider, amount_cents, origin, provider_status, created_at").gte("created_at", s).lte("created_at", e),
-    db.from("enrollments").select("course_id, status, created_at, last_accessed_at"),
+    db.from("enrollments").select("course_id, status, created_at"),
     db.from("course_interest").select("course_id, created_at").gte("created_at", s).lte("created_at", e),
     db.from("ai_spend").select("feature, requests, est_cost_cents, day").gte("day", from).lte("day", to),
   ]);
@@ -50,7 +50,6 @@ async function buildReport(from: string, to: string, withAnalysis: boolean): Pro
     return [...m.entries()].map(([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value);
   };
   const active = enrollments.data!.filter((x) => x.status === "active");
-  const staleCut = new Date(end.getTime() - 14 * 86400000).toISOString();
 
   const report: AdminReport = {
     from, to, generatedAt: new Date().toISOString(),
@@ -72,8 +71,6 @@ async function buildReport(from: string, to: string, withAnalysis: boolean): Pro
     learning: {
       activeEnrollments: active.length,
       newEnrollments: active.filter((x) => inRange(x.created_at)).length,
-      neverAccessed: active.filter((x) => !x.last_accessed_at).length,
-      inactive14d: active.filter((x) => x.last_accessed_at && x.last_accessed_at < staleCut).length,
       interest: group(interest.data!, (i) => title(i.course_id)),
     },
     ai: {

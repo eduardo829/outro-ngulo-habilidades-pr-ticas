@@ -3,7 +3,7 @@ export type AdminReport = {
   from: string; to: string; generatedAt: string;
   sales: { paidCount: number; revenueCents: number; byCourse: Row[]; byOrigin: Row[]; failedCount: number; failedReasons: Row[]; pendingCount: number };
   accounts: { total: number; newCount: number; newConfirmed: number; signedInInPeriod: number };
-  learning: { activeEnrollments: number; newEnrollments: number; neverAccessed: number; inactive14d: number; interest: Row[] };
+  learning: { activeEnrollments: number; newEnrollments: number; interest: Row[] };
   ai: { requests: number; estCostCents: number; byFeature: Row[] };
   analysis: string[] | null;
 };
@@ -17,7 +17,7 @@ export function reportSections(r: AdminReport): { title: string; lines: Row[]; m
     { title: "Vendas", lines: [
       { label: "Compras pagas", value: r.sales.paidCount },
       { label: "Pagamentos recusados ou cancelados", value: r.sales.failedCount },
-      { label: "Pagamentos pendentes", value: r.sales.pendingCount },
+      { label: "Pendentes ou não concluídos", value: r.sales.pendingCount },
     ] },
     { title: "Receita", lines: [{ label: "Total recebido", value: r.sales.revenueCents }], fmt: brlCents },
     { title: "Vendas por curso", lines: r.sales.byCourse },

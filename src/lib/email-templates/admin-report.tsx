@@ -42,7 +42,7 @@ export const template = {
   component: AdminReportEmail,
   subject: (d: Record<string, any>) => d['report'] ? `Relatório Outro Ângulo ${brDate(d['report'].from)} a ${brDate(d['report'].to)}` : 'Relatório Outro Ângulo',
   displayName: 'Relatório da administração',
-  previewData: { report: { from: '2026-10-16', to: '2026-10-23', generatedAt: '', sales: { paidCount: 3, revenueCents: 38100, byCourse: [{ label: 'Corretor na prática', value: 3 }], byOrigin: [{ label: 'instagram', value: 2 }], failedCount: 1, failedReasons: [], pendingCount: 0 }, accounts: { total: 26, newCount: 5, newConfirmed: 4, signedInInPeriod: 10 }, learning: { activeEnrollments: 9, newEnrollments: 3, neverAccessed: 1, inactive14d: 0, interest: [] }, ai: { requests: 40, estCostCents: 120, byFeature: [] }, analysis: ['Exemplo de leitura.'] } },
+  previewData: { report: { from: '2026-10-16', to: '2026-10-23', generatedAt: '', sales: { paidCount: 3, revenueCents: 38100, byCourse: [{ label: 'Corretor na prática', value: 3 }], byOrigin: [{ label: 'instagram', value: 2 }], failedCount: 1, failedReasons: [], pendingCount: 0 }, accounts: { total: 26, newCount: 5, newConfirmed: 4, signedInInPeriod: 10 }, learning: { activeEnrollments: 9, newEnrollments: 3, interest: [] }, ai: { requests: 40, estCostCents: 120, byFeature: [] }, analysis: ['Exemplo de leitura.'] } },
 } satisfies TemplateEntry
 
 const label = { fontSize: '12px', letterSpacing: '0.08em', color: '#65758B', fontWeight: 'bold' as const, margin: '0 0 6px' }
