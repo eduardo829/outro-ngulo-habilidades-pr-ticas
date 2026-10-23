@@ -50,7 +50,7 @@ function ProfilePage() {
         link: data.link ?? "", avatar_url: data.avatar_url ?? "", in_directory: data.in_directory,
         persona: data.persona ?? "", working_on: data.working_on ?? "", skills: data.skills.join(", "), learn_tags: data.learn_tags.join(", "),
       });
-    }).catch(() => { if (alive) setLoadError(true); });
+    }, () => { if (alive) setLoadError(true); });
     return () => { alive = false; };
   }, [user, attempt]);
 

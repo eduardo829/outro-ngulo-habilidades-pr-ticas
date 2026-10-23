@@ -132,7 +132,7 @@ export function AssistantWidget() {
     setHistoryError(false);
     if (!userId) { setInitial([]); return; }
     supabase.from("assistant_messages").select("message").eq("user_id", userId).order("created_at").limit(200)
-      .then(({ data, error }) => { if (!alive) return; if (error) { setHistoryError(true); return; } setInitial((data ?? []).map((r) => r.message as unknown as UIMessage)); }).catch(() => { if (alive) setHistoryError(true); });
+      .then(({ data, error }) => { if (!alive) return; if (error) { setHistoryError(true); return; } setInitial((data ?? []).map((r) => r.message as unknown as UIMessage)); }, () => { if (alive) setHistoryError(true); });
     return () => { alive = false; };
   }, [open, userId, loading, attempt]);
 
