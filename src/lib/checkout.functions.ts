@@ -618,7 +618,7 @@ export const getGuestStatus = createServerFn({ method: "POST" })
     const read = () =>
       supabaseAdmin
         .from("guest_checkouts")
-        .select("status, session_id, email, invited")
+        .select("status, session_id, email, invited, amount_cents, currency")
         .eq("id", data.id)
         .maybeSingle();
     let { data: g } = await read();
