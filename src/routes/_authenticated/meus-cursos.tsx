@@ -14,7 +14,7 @@ import { requiredKeys, type Course } from "@/lib/learning/types";
 import { coursePhoto } from "@/lib/photos";
 
 export const Route = createFileRoute("/_authenticated/meus-cursos")({
-  head: () => ({ meta: [{ title: "Meus cursos — Outro Ângulo" }, { name: "description", content: "Seus cursos: continuar, adquiridos, concluídos e lista de interesse." }] }),
+  head: () => ({ meta: [{ title: "Meus cursos — Outro Ângulo" }, { name: "description", content: "Seus cursos: continuar, adquiridos, concluídos e lista de interesse." }, { property: "og:title", content: "Meus cursos — Outro Ângulo" }, { property: "og:description", content: "Seus cursos: continuar, adquiridos, concluídos e lista de interesse." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: MyCourses,
 });
 

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import photo from "@/assets/photo-pessoas.jpg";
 
 export const Route = createFileRoute("/_authenticated/pessoas/")({
-  head: () => ({ meta: [{ title: "Pessoas — Outro Ângulo" }, { name: "description", content: "Descubra quem está na comunidade e em que pode ajudar." }] }),
+  head: () => ({ meta: [{ title: "Pessoas — Outro Ângulo" }, { name: "description", content: "Descubra quem está na comunidade e em que pode ajudar." }, { property: "og:title", content: "Pessoas — Outro Ângulo" }, { property: "og:description", content: "Descubra quem está na comunidade e em que pode ajudar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: People,
 });
 

@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
-  head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }] }),
+  head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }, { property: "og:title", content: "Meu perfil — Outro Ângulo" }, { property: "og:description", content: "Edite seu perfil e preferências." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ProfilePage,
 });
 

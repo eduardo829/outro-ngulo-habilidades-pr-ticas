@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/encontros/$id")({
-  head: () => ({ meta: [{ title: "Encontro — Outro Ângulo" }, { name: "description", content: "Detalhes, perguntas e acesso ao encontro." }] }),
+  head: () => ({ meta: [{ title: "Encontro — Outro Ângulo" }, { name: "description", content: "Detalhes, perguntas e acesso ao encontro." }, { property: "og:title", content: "Encontro — Outro Ângulo" }, { property: "og:description", content: "Detalhes, perguntas e acesso ao encontro." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: EventPage,
 });
 

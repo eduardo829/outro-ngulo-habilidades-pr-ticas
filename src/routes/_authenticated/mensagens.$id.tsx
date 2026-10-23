@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/mensagens/$id")({
-  head: () => ({ meta: [{ title: "Conversa — Outro Ângulo" }, { name: "description", content: "Conversa privada entre membros." }] }),
+  head: () => ({ meta: [{ title: "Conversa — Outro Ângulo" }, { name: "description", content: "Conversa privada entre membros." }, { property: "og:title", content: "Conversa — Outro Ângulo" }, { property: "og:description", content: "Conversa privada entre membros." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Chat,
 });
 

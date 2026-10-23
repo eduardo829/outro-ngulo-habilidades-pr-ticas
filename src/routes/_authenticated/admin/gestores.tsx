@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export const Route = createFileRoute("/_authenticated/admin/gestores")({
-  head: () => ({ meta: [{ title: "Gestores — Administração" }] }),
+  head: () => ({ meta: [{ title: "Gestores — Administração Outro Ângulo" }, { name: "description", content: "Administre gestores no Outro Ângulo." }, { property: "og:title", content: "Gestores — Administração Outro Ângulo" }, { property: "og:description", content: "Administre gestores no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Experts,
 });
 

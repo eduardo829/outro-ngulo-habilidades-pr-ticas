@@ -9,7 +9,7 @@ import { openConversation } from "@/lib/community";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/pessoas/$id")({
-  head: () => ({ meta: [{ title: "Perfil de membro — Outro Ângulo" }, { name: "description", content: "Perfil de um membro da comunidade." }] }),
+  head: () => ({ meta: [{ title: "Perfil de membro — Outro Ângulo" }, { name: "description", content: "Perfil de um membro da comunidade." }, { property: "og:title", content: "Perfil de membro — Outro Ângulo" }, { property: "og:description", content: "Perfil de um membro da comunidade." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Member,
 });
 

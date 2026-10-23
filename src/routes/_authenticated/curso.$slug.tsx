@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/curso/$slug")({
-  head: () => ({ meta: [{ title: "Curso — Outro Ângulo" }, { name: "description", content: "Módulos e aulas do curso." }] }),
+  head: () => ({ meta: [{ title: "Aulas do curso — Outro Ângulo" }, { name: "description", content: "Módulos e aulas do curso." }, { property: "og:title", content: "Aulas do curso — Outro Ângulo" }, { property: "og:description", content: "Módulos e aulas do curso." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: CoursePage,
 });
 

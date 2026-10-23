@@ -12,7 +12,7 @@ import { COURSES_ENGINE } from "@/lib/learning/courses";
 
 export const Route = createFileRoute("/_authenticated/missoes/$key")({
   loader: ({ params }) => { const m = findMission(params.key); if (!m) throw notFound(); return { title: m.title }; },
-  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? "Missão"} — Outro Ângulo` }, { name: "description", content: "Missão prática da Outro Ângulo." }] }),
+  head: ({ loaderData }) => ({ meta: [{ title: `${loaderData?.title ?? "Missão"} — Outro Ângulo` }, { name: "description", content: "Missão prática da Outro Ângulo." }, { property: "og:title", content: `${loaderData?.title ?? "Missão"} — Outro Ângulo` }, { property: "og:description", content: "Missão prática da Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   notFoundComponent: () => <p className="p-10">Missão não encontrada. <Link to="/missoes" className="underline">Ver missões</Link></p>,
   component: Page,
 });

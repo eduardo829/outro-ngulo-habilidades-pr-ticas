@@ -13,7 +13,7 @@ import { getGestor } from "@/lib/gestores";
 import type { Course, Module } from "@/lib/learning/types";
 
 export const Route = createFileRoute("/_authenticated/admin/videos")({
-  head: () => ({ meta: [{ title: "Vídeos das aulas — Administração" }] }),
+  head: () => ({ meta: [{ title: "Vídeos das aulas — Administração Outro Ângulo" }, { name: "description", content: "Administre vídeos das aulas no Outro Ângulo." }, { property: "og:title", content: "Vídeos das aulas — Administração Outro Ângulo" }, { property: "og:description", content: "Administre vídeos das aulas no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AdminVideos,
 });
 

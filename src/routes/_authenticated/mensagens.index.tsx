@@ -6,7 +6,7 @@ import { Avatar, Page } from "@/components/community/Bits";
 import { fetchProfiles, timeAgo } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/mensagens/")({
-  head: () => ({ meta: [{ title: "Mensagens — Outro Ângulo" }, { name: "description", content: "Suas conversas privadas." }] }),
+  head: () => ({ meta: [{ title: "Mensagens — Outro Ângulo" }, { name: "description", content: "Suas conversas privadas." }, { property: "og:title", content: "Mensagens — Outro Ângulo" }, { property: "og:description", content: "Suas conversas privadas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Inbox,
 });
 

@@ -16,7 +16,7 @@ function labelsOf(c: Course): Record<string, string> {
 let LABELS: Record<string, string> = {};
 
 export const Route = createFileRoute("/_authenticated/aprender/$slug/espaco")({
-  head: () => ({ meta: [{ title: "Meu espaço — Outro Ângulo" }, { name: "description", content: "Tudo o que você construiu no curso, num só lugar." }] }),
+  head: () => ({ meta: [{ title: "Projeto do curso — Outro Ângulo" }, { name: "description", content: "Tudo o que você construiu no curso, num só lugar." }, { property: "og:title", content: "Projeto do curso — Outro Ângulo" }, { property: "og:description", content: "Tudo o que você construiu no curso, num só lugar." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Workspace,
 });
 

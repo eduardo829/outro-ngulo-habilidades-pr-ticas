@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export const Route = createFileRoute("/_authenticated/aula/$lessonId")({
-  head: () => ({ meta: [{ title: "Aula — Outro Ângulo" }, { name: "description", content: "Aula do curso." }] }),
+  head: () => ({ meta: [{ title: "Aula — Outro Ângulo" }, { name: "description", content: "Aula do curso." }, { property: "og:title", content: "Aula — Outro Ângulo" }, { property: "og:description", content: "Aula do curso." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: LessonPage,
 });
 

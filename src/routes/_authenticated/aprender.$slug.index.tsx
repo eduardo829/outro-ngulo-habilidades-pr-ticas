@@ -8,7 +8,7 @@ import { hasValue } from "@/lib/learning/store";
 import { NextCourses } from "@/components/learning/NextCourses";
 
 export const Route = createFileRoute("/_authenticated/aprender/$slug/")({
-  head: () => ({ meta: [{ title: "Curso — Outro Ângulo" }, { name: "description", content: "Aprender, aplicar e construir algo útil em cada módulo." }] }),
+  head: () => ({ meta: [{ title: "Curso — Outro Ângulo" }, { name: "description", content: "Aprender, aplicar e construir algo útil em cada módulo." }, { property: "og:title", content: "Curso — Outro Ângulo" }, { property: "og:description", content: "Aprender, aplicar e construir algo útil em cada módulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Home,
 });
 
