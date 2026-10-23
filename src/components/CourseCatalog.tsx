@@ -49,7 +49,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
   const commerce = useCourseCommerce();
   const my = useMyLearning(user?.id);
   const stateOf = (c: Course): CourseState => { const id = commerce.data?.[c.slug]?.id; return id && my.data ? courseState(c, my.data.owned.has(id), my.data.keys[id]) : "locked"; };
-  const featured = getEngineCourse("da-ideia-aos-primeiros-clientes")!;
+  const featured = getEngineCourse("da-ideia-aos-primeiros-clientes");
   const list = COURSES_ENGINE.filter((c) => cat === "Todos" || areaOf(c) === cat);
   const soon = UPCOMING.filter((u) => cat === "Todos" || u.area === cat);
   return (
@@ -65,7 +65,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
         <div className="relative mt-10 lg:max-w-[58%]">
           <p className="eyebrow">O que você quer melhorar?</p>
           <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Escolher área">
-            {(["Todos", ...AREAS] as const).map((c) => <a key={c} href="#explorar" aria-pressed={cat === c} onClick={() => setCat(c)} className={cn("border px-4 py-2 text-sm font-medium transition-all duration-200", cat === c ? "border-foreground bg-foreground text-background" : "bg-background/70 hover:-translate-y-0.5 hover:border-foreground")}>{c === "Todos" ? "Ver tudo" : c}</a>)}
+            {(["Todos", ...AREAS] as const).map((c) => <Button key={c} variant="outline" aria-pressed={cat === c} onClick={() => { setCat(c); document.getElementById("explorar")?.scrollIntoView({ behavior: "smooth" }); }} className={cn("border px-4 py-2 text-sm font-medium transition-all duration-200", cat === c ? "border-foreground bg-foreground text-background" : "bg-background/70 hover:-translate-y-0.5 hover:border-foreground")}>{c === "Todos" ? "Ver tudo" : c}</Button>)}
           </div>
         </div>
       </section>
@@ -85,7 +85,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
         </section>
       )}
 
-      {cat === "Negócios" && <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
+      {cat === "Negócios" && featured && <section className="relative isolate overflow-hidden bg-ink text-ink-foreground">
         <img src={coursePhoto(featured.slug)} alt="" aria-hidden loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-70" />
         <div aria-hidden className="photo-scrim-l absolute inset-0 -z-10" />
         <Link to="/cursos/$slug" params={{ slug: featured.slug }} className="group mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-[1.3fr_1fr] md:py-20">
@@ -106,7 +106,7 @@ export function CourseCatalog({ inApp = false }: { inApp?: boolean }) {
       <section id="explorar" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-16">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-3xl font-extrabold">{cat === "Todos" ? "Todos os cursos" : cat}</h2>
-          {cat !== "Todos" && <button type="button" onClick={() => setCat("Todos")} className="text-sm underline underline-offset-4 hover:text-foreground">Ver todos os cursos</button>}
+          {cat !== "Todos" && <Button variant="link" type="button" onClick={() => setCat("Todos")} className="text-sm underline underline-offset-4 hover:text-foreground">Ver todos os cursos</Button>}
         </div>
         {(() => {
           const owned = list.filter((c) => stateOf(c) !== "locked");

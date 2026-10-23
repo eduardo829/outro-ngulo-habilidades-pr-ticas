@@ -45,18 +45,22 @@ function CourseEditor() {
   const q = useQuery({
     queryKey: ["admin-course", id],
     queryFn: async () => {
-      const [{ data: course }, { data: modules }, { data: lessons }, { count }] = await Promise.all([
-        supabase.from("courses").select("*").eq("id", id).single(),
+      const [courseResult, modulesResult, lessonsResult, enrollResult] = await Promise.all([
+        supabase.from("courses").select("*").eq("id", id).maybeSingle(),
         supabase.from("modules").select("*").eq("course_id", id).order("position"),
         supabase.from("lessons").select("*").eq("course_id", id).order("position"),
         supabase.from("enrollments").select("id", { count: "exact", head: true }).eq("course_id", id),
       ]);
-      return { course: course!, modules: modules ?? [], lessons: lessons ?? [], enrollCount: count ?? 0 };
+      for (const result of [courseResult, modulesResult, lessonsResult, enrollResult]) { if (result.error) throw result.error; }
+      if (!courseResult.data) return null;
+      return { course: courseResult.data, modules: modulesResult.data ?? [], lessons: lessonsResult.data ?? [], enrollCount: enrollResult.count ?? 0 };
     },
   });
   const [editing, setEditing] = useState<Lesson | null>(null);
 
-  if (q.isLoading || !q.data) return <p className="text-muted-foreground">Carregando…</p>;
+  if (q.isLoading) return <p className="text-muted-foreground">Carregando…</p>;
+  if (q.isError) return <div role="alert"><p>Não foi possível carregar o curso.</p><Button variant="outline" className="mt-3" onClick={() => q.refetch()}>Tentar novamente</Button></div>;
+  if (!q.data) return <div><p>Curso não encontrado.</p><Button asChild variant="outline" className="mt-3"><Link to="/admin/cursos">Voltar aos cursos</Link></Button></div>;
   const { course, modules, lessons, enrollCount } = q.data;
   const reload = () => q.refetch();
 

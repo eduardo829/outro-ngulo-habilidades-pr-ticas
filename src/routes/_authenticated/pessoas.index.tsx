@@ -25,7 +25,11 @@ function People() {
   const [q, setQ] = useState({ text: "", area: "", city: "", skill: "" });
   const list = useQuery({
     queryKey: ["people"],
-    queryFn: async () => (await supabase.from("profiles").select(PEOPLE_COLS).eq("in_directory", true).eq("suspended", false).order("display_name")).data ?? [],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("profiles").select(PEOPLE_COLS).eq("in_directory", true).eq("suspended", false).order("display_name");
+      if (error) throw error;
+      return data ?? [];
+    },
   });
   const all = useMemo(() => (list.data ?? []).filter((p) => p.id !== user?.id), [list.data, user?.id]);
 
@@ -59,7 +63,7 @@ function People() {
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-highlight">Pessoas · diretório</p>
           <h1 className="mt-3 max-w-2xl font-display text-4xl font-extrabold leading-[1.05] md:text-6xl">Quem está aqui<br />e no que pode ajudar.</h1>
           <p className="mt-4 max-w-xl text-background/80">Só aparece quem escolheu aparecer. Ninguém vê seu e-mail. Puxe conversa com respeito: diga quem você é e por que escreveu.</p>
-          <p className="mt-8 font-display text-5xl font-extrabold">{list.isLoading ? "…" : String(all.length).padStart(2, "0")}<span className="ml-3 align-middle text-sm font-semibold uppercase tracking-wider text-background/70">{all.length === 1 ? "pessoa no diretório" : "pessoas no diretório"}</span></p>
+          <p className="mt-8 font-display text-5xl font-extrabold">{list.isLoading || list.isError ? "…" : String(all.length).padStart(2, "0")}<span className="ml-3 align-middle text-sm font-semibold uppercase tracking-wider text-background/70">{all.length === 1 ? "pessoa no diretório" : "pessoas no diretório"}</span></p>
         </div>
       </section>
 
@@ -100,7 +104,7 @@ function People() {
           </div>
         )}
 
-        {list.isLoading ? <p className="mt-8 text-muted-foreground">Carregando…</p> : (
+        {list.isError ? <div role="alert" className="mt-8"><p>Não foi possível carregar as pessoas.</p><Button variant="outline" className="mt-3" onClick={() => list.refetch()}>Tentar novamente</Button></div> : list.isLoading ? <p className="mt-8 text-muted-foreground">Carregando…</p> : (
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => <PersonCard key={p.id} p={p} />)}
             {!filtered.length && (

@@ -24,7 +24,7 @@ function MyCourses() {
   const { user } = useAuth();
   const commerce = useCourseCommerce();
   const my = useMyLearning(user?.id);
-  const legacy = useQuery({ queryKey: ["my-courses", user?.id], enabled: !!user, queryFn: () => fetchMyCourses(user!.id) });
+  const legacy = useQuery({ queryKey: ["my-courses", user?.id], enabled: !!user, queryFn: () => user ? fetchMyCourses(user.id) : Promise.resolve([]) });
   const engineSlugs = new Set(COURSES_ENGINE.map((c) => c.slug));
 
   const rows: Row[] = [];
@@ -37,21 +37,21 @@ function MyCourses() {
       if (state === "locked") { if (my.data.interest.has(id)) interest.push(c); continue; }
       const states = c.modules.map((m) => { const r = requiredKeys(m); return r.length > 0 && r.every((k) => keys.has(k)); });
       const nextIdx = states.findIndex((x) => !x);
-      rows.push({ c, state, done: states.filter(Boolean).length, nextKey: c.modules[nextIdx < 0 ? 0 : nextIdx]!.key, last: my.data.last[id] });
+      rows.push({ c, state, done: states.filter(Boolean).length, nextKey: c.modules[nextIdx < 0 ? 0 : nextIdx]?.key ?? "", last: my.data.last[id] });
     }
   }
   const continuing = rows.filter((r) => r.state === "in_progress").sort((a, b) => (b.last ?? "").localeCompare(a.last ?? ""));
   const acquired = rows.filter((r) => r.state === "owned");
   const completed = rows.filter((r) => r.state === "completed");
   const legacyRows = (legacy.data ?? []).filter((c) => !engineSlugs.has(c.slug));
-  const loading = commerce.isLoading || my.isLoading;
+  const loading = commerce.isLoading || my.isLoading || legacy.isLoading;
 
   return (
     <>
       <PageHeader title="Meus cursos" />
       <div className="mx-auto max-w-5xl px-5 py-8 md:px-8">
         <Link to="/meu-espaco" className="mb-8 flex items-center justify-between border-l-2 border-highlight bg-card p-4 text-sm hover:underline"><span><b>Meu espaço → Meus projetos</b> · tudo o que você construiu nos cursos</span><span aria-hidden>→</span></Link>
-        {loading ? <p className="text-muted-foreground">Carregando…</p> : (
+        {commerce.isError || my.isError || legacy.isError ? <div role="alert"><p>Não foi possível consultar seus cursos. Suas matrículas não foram alteradas.</p><Button className="mt-4" variant="outline" onClick={() => { commerce.refetch(); my.refetch(); legacy.refetch(); }}>Tentar novamente</Button></div> : loading ? <p className="text-muted-foreground">Carregando…</p> : (
           <>
             {!rows.length && !legacyRows.length && (
               <div className="border border-dashed bg-card p-8 text-center">
@@ -81,7 +81,7 @@ function MyCourses() {
                 <p className="eyebrow">Tenho interesse</p>
                 <ul className="mt-4 divide-y border-y">
                   {interest.map((c) => (
-                    <li key={c.slug} className="flex items-center justify-between gap-4 py-4">
+                    <li key={c.slug} className="flex flex-wrap items-center justify-between gap-4 py-4">
                       <div><p className="font-display font-bold">{c.title}</p><p className="text-sm text-muted-foreground">{c.thesis}</p></div>
                       <Button asChild size="sm" variant="outline"><Link to="/cursos/$slug" params={{ slug: c.slug }}>Conhecer curso</Link></Button>
                     </li>
