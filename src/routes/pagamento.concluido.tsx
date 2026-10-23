@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { Mail } from "lucide-react";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { getGuestStatus } from "@/lib/checkout.functions";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/pagamento/concluido")({
   validateSearch: z.object({
@@ -32,6 +33,7 @@ function GuestDone() {
   const [st, setSt] = useState<St | null>(null);
   const [statusError, setStatusError] = useState(false);
   const [reload, setReload] = useState(0);
+  const purchaseReported = useRef(false);
 
   useEffect(() => {
     if (!pedido) return;
@@ -46,6 +48,13 @@ function GuestDone() {
         failures = 0;
         setStatusError(false);
         setSt(r);
+        if (r.status === "paid" && !purchaseReported.current) {
+          purchaseReported.current = true;
+          void trackConversionEvent(
+            "Purchase",
+            r.amount_cents ? { value: r.amount_cents / 100, currency: r.currency ?? "BRL" } : {},
+          );
+        }
         if (r.status === "pending") timer = setTimeout(tick, 5000);
       } catch {
         if (stop) return;

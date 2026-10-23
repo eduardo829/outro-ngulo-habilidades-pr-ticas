@@ -109,8 +109,9 @@
 - [x] Conferir acesso ao curso para quem já pagou
 
 ## Pixel Meta — 23/10/2026
-- [ ] Instalar pixel do Meta no site para as campanhas — aguardando ID do pixel do usuário
-- [ ] Definir rota de consentimento (banner regional ou bloqueio) antes do rastreio
+- [x] Instalar pixel 1427453789455130 no site (carregamento e eventos gated por consentimento; PageView, InitiateCheckout, Purchase)
+- [x] Banner regional de cookies + "Configurações de cookies" no rodapé + seção na política de privacidade; 93 testes passando
+- [ ] Publicar para o pixel valer no site oficial e conferir recebimento em Test Events do Meta — depende de publicação autorizada
 
 ## Relatórios admin — 23/10/2026
 - [x] Aba Relatórios com período, leitura por IA e envio para o próprio e-mail

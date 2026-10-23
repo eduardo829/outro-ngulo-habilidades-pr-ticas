@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { PublicLayout } from "@/components/PublicLayout";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { getPurchaseStatus, refreshMyPurchase } from "@/lib/checkout.functions";
 import { returnView } from "@/lib/checkout-logic";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 type Kind = "sucesso" | "falha" | "pendente";
 // The page shown depends only on the status confirmed by the server, never on the redirect address.
@@ -44,6 +45,7 @@ export function PaymentReturn({
   const qc = useQueryClient();
   const [status, setStatus] = useState<string>("checking");
   const [done, setDone] = useState(false);
+  const purchaseReported = useRef(false);
   useEffect(() => {
     if (!user || (!slug && !purchaseId)) return;
     let n = 0;
@@ -56,6 +58,14 @@ export function PaymentReturn({
         setStatus(r.status);
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
+          if (!purchaseReported.current) {
+            purchaseReported.current = true;
+            const paid = r.status === "paid" ? (r as { amount_cents?: number | null }) : null;
+            void trackConversionEvent(
+              "Purchase",
+              paid?.amount_cents ? { value: paid.amount_cents / 100, currency: "BRL" } : {},
+            );
+          }
           return;
         }
       } catch {

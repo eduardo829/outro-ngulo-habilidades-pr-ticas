@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import { AuthProvider } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 import { AssistantWidget } from "@/components/AssistantWidget";
+import { MetaPixel } from "@/components/MetaPixel";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -129,6 +130,7 @@ function RootComponent() {
       <AuthProvider>
         <Outlet />
         <AssistantWidget />
+        <MetaPixel />
         <Toaster richColors position="top-center" />
       </AuthProvider>
     </QueryClientProvider>

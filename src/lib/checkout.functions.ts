@@ -556,7 +556,8 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
         .eq("user_id", p.user_id)
         .eq("course_id", p.course_id!)
         .maybeSingle();
-      if (en?.status === "active") return { status: "paid", pix: null };
+      if (en?.status === "active")
+        return { status: "paid", pix: null, amount_cents: p.amount_cents, currency: p.currency ?? "BRL" };
     }
     if (p.payment_provider === "stripe") {
       const st = await reconcileStripe(p);
@@ -617,7 +618,7 @@ export const getGuestStatus = createServerFn({ method: "POST" })
     const read = () =>
       supabaseAdmin
         .from("guest_checkouts")
-        .select("status, session_id, email, invited")
+        .select("status, session_id, email, invited, amount_cents, currency")
         .eq("id", data.id)
         .maybeSingle();
     let { data: g } = await read();
@@ -636,5 +637,7 @@ export const getGuestStatus = createServerFn({ method: "POST" })
       status: g.status as "pending" | "paid" | "failed" | "cancelled",
       email: g.email ? maskEmail(g.email) : null,
       invited: g.invited,
+      amount_cents: g.amount_cents,
+      currency: g.currency ?? "BRL",
     };
   });

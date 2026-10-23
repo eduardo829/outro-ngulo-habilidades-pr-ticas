@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
 import { createStripeCheckout, getCheckout, getPurchaseStatus } from "@/lib/checkout.functions";
 import { checkoutErrorMessage, origemFromSearch } from "@/lib/checkout-logic";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
@@ -67,6 +68,7 @@ function CheckoutPage() {
 
   // Stripe payment in progress (Pix/boleto awaiting confirmation): poll until the server confirms.
   const stripePending = info?.state === "stripe-pending" ? info : null;
+  const purchaseReported = useRef(false);
   useEffect(() => {
     if (!stripePending) return;
     const t = setInterval(async () => {
@@ -75,6 +77,13 @@ function CheckoutPage() {
         if (r.status === "paid") {
           qc.invalidateQueries({ queryKey: ["my-learning"] });
           setInfo({ state: "owned", slug: stripePending.slug, title: stripePending.title });
+          if (!purchaseReported.current) {
+            purchaseReported.current = true;
+            void trackConversionEvent("Purchase", {
+              value: stripePending.amount_cents / 100,
+              currency: "BRL",
+            });
+          }
         } else if (r.status !== "pending" && r.status !== "unknown") setReload((n) => n + 1);
       } catch {
         /* keep waiting */
@@ -86,6 +95,7 @@ function CheckoutPage() {
   const pay = async () => {
     setRedirecting(true);
     setErr(null);
+    void trackConversionEvent("InitiateCheckout");
     try {
       const r = await createStripeCheckout({
         data: { slug, origin: window.location.origin, origem: origem ?? undefined },
