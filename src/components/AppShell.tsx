@@ -109,6 +109,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:hidden">
           <Link to="/inicio"><Logo /></Link>
           <div className="flex items-center">
+            <Link to="/" className={iconBtn} aria-label="Ir para o site"><Globe className="h-5 w-5" /></Link>
             <Link to="/mensagens" className={iconBtn} aria-label="Mensagens"><Mail className="h-5 w-5" /><Badge n={unread.data?.messages} /></Link>
             <Link to="/notificacoes" className={iconBtn} aria-label="Notificações"><Bell className="h-5 w-5" /><Badge n={unread.data?.all} /></Link>
             <Link to="/perfil" className={iconBtn} aria-label="Meu perfil"><User className="h-5 w-5" /></Link>
