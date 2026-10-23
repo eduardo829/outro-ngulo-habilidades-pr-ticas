@@ -78,7 +78,7 @@ export function StickyStory({ steps, className, render }: { steps: number; class
   const [ref, p] = useScrollProgress<HTMLDivElement>();
   const active = Math.min(steps - 1, Math.floor(p * steps));
   return (
-    <div ref={ref} className={cn("relative", className)} style={{ height: `${steps * 70 + 30}vh` } as CSSProperties}>
+    <div ref={ref} className={cn("relative", className)} style={{ height: `${steps * 42 + 24}vh` } as CSSProperties}>
       <div className="sticky top-16 flex h-[calc(100vh-4rem)] items-center overflow-hidden">{render(active, p)}</div>
     </div>
   );
