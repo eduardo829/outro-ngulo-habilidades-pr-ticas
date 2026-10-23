@@ -11,8 +11,8 @@
 - [x] E-mails habilitados/domínio verificado e quatro eventos de envio; nove compras pagas com matrícula ativa
 - [x] Corrigir UX: CTA maior, erros seguros em português, recuperação com saída, novas tentativas de consulta, origem no retorno e metadados completos
 - [x] Executar 89 regressões; preview sem erros
-- [ ] Publicar melhorias desta revisão — aguarda pedido explícito de publicação
-- [ ] Concluir compra sem conta com e-mail novo e conferir convite recebido + senha + acesso — depende de pagamento real autorizado
+- [ ] Publicar melhorias desta revisão — autorizado em 23/10 às 14:48 UTC; conferir segurança antes
+- [ ] Concluir compra sem conta com e-mail novo e conferir convite recebido + senha + acesso — autorizado; falta e-mail novo controlado pelo usuário e pagamento de R$127
 
 ## Retomada do Stripe — 23/10/2026
 - [x] Confirmar e corrigir bloqueio após abandonar pagamento aberto, preservando a sessão existente
