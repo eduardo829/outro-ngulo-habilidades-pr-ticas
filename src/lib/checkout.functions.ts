@@ -184,16 +184,20 @@ async function viewOf(p: { id: string; transaction_id: string | null } & Attempt
 }
 
 /** Reconciles a Stripe purchase: re-reads the Checkout Session (id kept in provider_status) and applies it. */
-async function reconcileStripe(p: { id: string; provider_status: string | null }) {
+async function reconcileStripe(p: { id: string; provider_status: string | null; amount_cents: number | null; currency?: string | null }) {
   const { stripeGetSession, applyStripeSession } = await import("./stripe.server");
+  const { canResumeStripeSession } = await import("./checkout-logic");
   const sid = p.provider_status?.startsWith("session/")
     ? p.provider_status.slice(8).split(":")[0]
     : null;
   if (!sid) return "none" as const;
   try {
     const s = await stripeGetSession(sid);
-    if (!s) return "unknown" as const;
-    return (await applyStripeSession(s)) ?? "pending";
+    if (!s || s.client_reference_id !== p.id) return "unknown" as const;
+    const status = (await applyStripeSession(s)) ?? "unknown";
+    if (status === "pending" && canResumeStripeSession(s, p.amount_cents ?? -1, p.currency ?? "BRL"))
+      return "resumable" as const;
+    return status;
   } catch (e) {
     console.error("[stripe] reconcile failed", p.id, e instanceof Error ? e.message : "");
     return "unknown" as const;
@@ -279,7 +283,7 @@ export const getCheckout = createServerFn({ method: "POST" })
       const st = await reconcileStripe(open);
       if (st === "paid" && (await owned()))
         return { state: "owned" as const, slug: c.slug, title: c.title };
-      if (st === "pending")
+      if (st === "pending" || st === "unknown")
         return {
           state: "stripe-pending" as const,
           slug: c.slug,
@@ -318,6 +322,7 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
     const { stripeCreateSession, stripeGetSession, applyStripeSession } = await import(
       "./stripe.server"
     );
+    const { canResumeStripeSession } = await import("./checkout-logic");
     const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
     const c = await loadSellable(data.slug);
     if (!c) throw new Error("Este curso não está à venda.");
@@ -355,11 +360,14 @@ export const createStripeCheckout = createServerFn({ method: "POST" })
         : null;
       if (priorSessionId) {
         const s = await stripeGetSession(priorSessionId);
-        if (s?.status === "open" && s.url) return { checkout_url: s.url };
-        if (s) {
-          const st = await applyStripeSession(s);
-          if (st === "paid") throw new Error("Você já tem acesso a este curso.");
-        }
+        if (!s || s.client_reference_id !== purchaseId)
+          throw new Error("Não foi possível verificar seu pagamento. Tente novamente em instantes.");
+        const st = await applyStripeSession(s);
+        if (st === "paid") throw new Error("Você já tem acesso a este curso.");
+        if (st === "pending" && canResumeStripeSession(s, c.cents) && s.url)
+          return { checkout_url: s.url };
+        if (st !== "cancelled" && st !== "failed")
+          throw new Error("Você já tem um pagamento em análise. Aguarde a confirmação antes de tentar de novo.");
       }
     } else {
       const { data: p, error } = await supabaseAdmin
@@ -536,7 +544,7 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     const { data: p } = await supabaseAdmin
       .from("purchases")
       .select(
-        "id, user_id, course_id, payment_status, transaction_id, attempt_state, attempt_started_at, payment_provider, provider_status",
+        "id, user_id, course_id, amount_cents, currency, payment_status, transaction_id, attempt_state, attempt_started_at, payment_provider, provider_status",
       )
       .eq("id", data.purchaseId)
       .maybeSingle();
@@ -552,7 +560,7 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
     }
     if (p.payment_provider === "stripe") {
       const st = await reconcileStripe(p);
-      return { status: st === "cancelled" ? "failed" : st, pix: null };
+      return { status: st === "cancelled" ? "failed" : st === "resumable" ? "pending" : st, pix: null };
     }
     const v = await viewOf(p);
     return { status: v.view as string, pix: v.view === "pending" ? v.pix : null };

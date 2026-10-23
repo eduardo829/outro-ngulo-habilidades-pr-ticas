@@ -198,6 +198,16 @@ export function stripeSessionStatus(
   return "pending";
 }
 
+/** Only an open, unpaid session with the purchase's exact price can be resumed; async/unknown states stay blocked. */
+export function canResumeStripeSession(
+  s: { status?: string; payment_status?: string; amount_total?: number; currency?: string; url?: string | null },
+  amountCents: number,
+  currency = "BRL",
+): boolean {
+  return s.status === "open" && s.payment_status === "unpaid" && !!s.url &&
+    amountCents > 0 && s.amount_total === amountCents && s.currency === currency.toLowerCase();
+}
+
 /** Card cooldown after a failed card payment: only issuer/antifraud rejections; typing errors (CVV, expiry, number) retry at once. */
 export const CARD_COOLDOWN_MS = 5 * 60_000;
 export function cooldownApplies(statusDetail: string | null | undefined): boolean {
