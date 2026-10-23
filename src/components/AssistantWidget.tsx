@@ -8,11 +8,13 @@ import { Conversation, ConversationContent, ConversationEmptyState, Conversation
 import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
 import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from "@/components/ai-elements/prompt-input";
 import { AiUsageBadge } from "@/components/AiUsageBadge";
+import { Button } from "@/components/ui/button";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 
 const SUGGESTIONS = ["Como funcionam os cursos?", "Qual curso combina com quem quer mudar de carreira?", "Quanto custa?"];
 
 function ChatPanel({ userId, initial, onClose }: { userId: string | null; initial: UIMessage[]; onClose: () => void }) {
+  const [resetting, setResetting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const transport = useMemo(
     () =>
@@ -30,7 +32,7 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
     id: userId ?? "visitor",
     messages: initial,
     transport,
-    onError: (e) => setError(e.message?.startsWith("{") ? (JSON.parse(e.message).error ?? "Erro") : "Não consegui responder agora. Tente de novo."),
+    onError: () => setError("Não consegui responder agora. Tente de novo."),
   });
   const busy = status === "submitted" || status === "streaming";
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -43,8 +45,16 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
   };
 
   const reset = async () => {
-    if (userId) await supabase.from("assistant_messages").delete().eq("user_id", userId);
-    setMessages([]);
+    if (busy || resetting) return;
+    setResetting(true);
+    try {
+      if (userId) {
+        const { error } = await supabase.from("assistant_messages").delete().eq("user_id", userId);
+        if (error) throw error;
+      }
+      setMessages([]); setError(null);
+    } catch { setError("Não foi possível apagar a conversa. Tente novamente."); }
+    finally { setResetting(false); }
   };
 
   return (
@@ -59,22 +69,22 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
         </div>
         <div className="flex gap-1">
           {messages.length > 0 && (
-            <button type="button" onClick={reset} aria-label="Começar nova conversa" className="rounded p-1.5 hover:bg-ink-foreground/10"><RotateCcw className="h-4 w-4" /></button>
+            <Button variant="ghost" size="icon" disabled={busy || resetting} type="button" onClick={reset} aria-label="Começar nova conversa" className="rounded p-1.5 hover:bg-ink-foreground/10"><RotateCcw className="h-4 w-4" /></Button>
           )}
-          <button type="button" onClick={onClose} aria-label="Fechar assistente" className="rounded p-1.5 hover:bg-ink-foreground/10"><X className="h-4 w-4" /></button>
+          <Button variant="ghost" size="icon" type="button" onClick={onClose} aria-label="Fechar assistente" className="rounded p-1.5 hover:bg-ink-foreground/10"><X className="h-4 w-4" /></Button>
         </div>
       </header>
 
       <Conversation className="flex-1">
         <ConversationContent className="gap-5 px-4 py-4">
           {messages.length === 0 ? (
-            <ConversationEmptyState title="Olá! Como posso ajudar?" description="Pergunte sobre cursos, preços, aula aberta ou como a plataforma funciona.">
+            <ConversationEmptyState title="Olá! Como posso ajudar?" description="Pergunte sobre cursos, preços, acesso ou como a plataforma funciona.">
               <div className="flex flex-col items-center gap-3 text-center">
                 <p className="font-heading text-base font-semibold">Olá! Como posso ajudar?</p>
-                <p className="text-sm text-muted-foreground">Pergunte sobre cursos, preços, aula aberta ou como a plataforma funciona.</p>
+                <p className="text-sm text-muted-foreground">Pergunte sobre cursos, preços, acesso ou como a plataforma funciona.</p>
                 <div className="mt-2 flex flex-col gap-2">
                   {SUGGESTIONS.map((s) => (
-                    <button key={s} type="button" onClick={() => send(s)} className="rounded border px-3 py-2 text-left text-sm hover:border-primary">{s}</button>
+                    <Button variant="outline" key={s} disabled={busy} type="button" onClick={() => send(s)} className="rounded border px-3 py-2 text-left text-sm hover:border-primary">{s}</Button>
                   ))}
                 </div>
               </div>
@@ -110,6 +120,8 @@ function ChatPanel({ userId, initial, onClose }: { userId: string | null; initia
 export function AssistantWidget() {
   const { user, loading } = useAuth();
   const [open, setOpen] = useState(false);
+  const [historyError, setHistoryError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   const [initial, setInitial] = useState<UIMessage[] | null>(null);
   const userId = user?.id ?? null;
 
@@ -117,16 +129,18 @@ export function AssistantWidget() {
     if (!open || loading) return;
     let alive = true;
     setInitial(null);
+    setHistoryError(false);
     if (!userId) { setInitial([]); return; }
     supabase.from("assistant_messages").select("message").eq("user_id", userId).order("created_at").limit(200)
-      .then(({ data }) => { if (alive) setInitial((data ?? []).map((r) => r.message as unknown as UIMessage)); });
+      .then(({ data, error }) => { if (!alive) return; if (error) { setHistoryError(true); return; } setInitial((data ?? []).map((r) => r.message as unknown as UIMessage)); }).catch(() => { if (alive) setHistoryError(true); });
     return () => { alive = false; };
-  }, [open, userId, loading]);
+  }, [open, userId, loading, attempt]);
 
   return (
     <>
       {open && initial && <ChatPanel key={userId ?? "visitor"} userId={userId} initial={initial} onClose={() => setOpen(false)} />}
-      <button
+      {open && initial === null && <div role="dialog" aria-label="Assistente da Outro Ângulo" className="fixed inset-x-3 bottom-36 z-50 border bg-background p-5 shadow-xl md:inset-x-auto md:right-6 md:w-[400px]">{historyError ? <div role="alert"><p>Não foi possível carregar sua conversa.</p><Button variant="outline" className="mt-3" onClick={() => setAttempt((n) => n + 1)}>Tentar novamente</Button></div> : <p role="status">Carregando conversa…</p>}</div>}
+      <Button variant="ghost"
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Fechar assistente" : "Abrir assistente de dúvidas"}
@@ -134,7 +148,7 @@ export function AssistantWidget() {
         className="fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-ink-foreground shadow-lg ring-2 ring-highlight/0 transition hover:-translate-y-0.5 hover:ring-highlight focus-visible:outline-none focus-visible:ring-highlight md:bottom-6 md:right-6 md:h-14 md:w-14"
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircleQuestion className="h-6 w-6" />}
-      </button>
+      </Button>
     </>
   );
 }
