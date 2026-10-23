@@ -60,11 +60,10 @@ export function PaymentReturn({
           qc.invalidateQueries({ queryKey: ["my-learning"] });
           if (!purchaseReported.current) {
             purchaseReported.current = true;
-            const value =
-              "amount_cents" in r && r.amount_cents ? r.amount_cents / 100 : undefined;
+            const paid = r.status === "paid" ? (r as { amount_cents?: number | null }) : null;
             void trackConversionEvent(
               "Purchase",
-              value != null ? { value, currency: "BRL" } : {},
+              paid?.amount_cents ? { value: paid.amount_cents / 100, currency: "BRL" } : {},
             );
           }
           return;
