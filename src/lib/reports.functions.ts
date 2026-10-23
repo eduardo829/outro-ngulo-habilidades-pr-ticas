@@ -111,7 +111,7 @@ async function analyze(r: AdminReport): Promise<string[] | null> {
       body: JSON.stringify({
         model: "openai/gpt-6-astra", max_output_tokens: 900, store: false,
         instructions: `Você escreve a leitura do relatório interno da plataforma Outro Ângulo para a administração. Use SOMENTE os números do JSON; não invente dados, causas ou comparações com períodos que não estão no JSON. Valores em centavos de real. Escreva de 3 a 6 observações curtas em português brasileiro: o que aconteceu e pontos de atenção. Não dê ordens nem recomende decisões. Responda SOMENTE JSON: {"points":["..."]}`,
-        input: JSON.stringify(facts),
+        input: `Dados do período em JSON:\n${JSON.stringify(facts)}`,
         text: { format: { type: "json_object" } },
       }),
     });
