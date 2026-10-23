@@ -1,11 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { brl } from "@/lib/coursePrices";
 import { createStripeCheckout, getCheckout, getPurchaseStatus } from "@/lib/checkout.functions";
 import { checkoutErrorMessage, origemFromSearch } from "@/lib/checkout-logic";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
