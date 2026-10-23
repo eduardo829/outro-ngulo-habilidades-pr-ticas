@@ -86,3 +86,8 @@
 ## Campanhas
 - [x] Página de venda /corretor-na-pratica com origem da campanha
 - [x] Compra sem conta + link por e-mail para criar conta com curso liberado
+
+## Conferências solicitadas — 23/10/2026
+- [x] Doc de logos separadas para o gestor de marketing
+- [ ] Conferir envio do e-mail de login (magic link)
+- [ ] Conferir acesso ao curso para quem já pagou
