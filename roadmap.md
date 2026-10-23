@@ -89,5 +89,5 @@
 
 ## Conferências solicitadas — 23/10/2026
 - [x] Doc de logos separadas para o gestor de marketing
-- [ ] Conferir envio do e-mail de login (magic link)
-- [ ] Conferir acesso ao curso para quem já pagou
+- [x] Conferir envio do e-mail de login (magic link)
+- [x] Conferir acesso ao curso para quem já pagou
