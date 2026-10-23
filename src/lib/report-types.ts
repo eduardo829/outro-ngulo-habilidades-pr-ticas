@@ -32,8 +32,6 @@ export function reportSections(r: AdminReport): { title: string; lines: Row[]; m
     { title: "Alunos", lines: [
       { label: "Matrículas ativas", value: r.learning.activeEnrollments },
       { label: "Novas matrículas no período", value: r.learning.newEnrollments },
-      { label: "Nunca abriram o curso", value: r.learning.neverAccessed },
-      { label: "Sem acesso há 14+ dias", value: r.learning.inactive14d },
     ] },
     { title: "Interesse em cursos futuros", lines: r.learning.interest },
     { title: "Uso da IA", lines: [{ label: "Pedidos à IA", value: r.ai.requests }, ...r.ai.byFeature] },

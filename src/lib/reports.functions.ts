@@ -60,7 +60,7 @@ async function buildReport(from: string, to: string, withAnalysis: boolean): Pro
       byCourse: group(paid, (p) => title(p.course_id)),
       byOrigin: group(paid, (p) => p.origin || "direto / sem origem"),
       failedCount: failed.length,
-      failedReasons: group(failed, (p) => p.provider_status || p.payment_status),
+      failedReasons: group(failed, (p) => reason(p.provider_status, p.payment_status)),
       pendingCount: pending.length,
     },
     accounts: {
@@ -85,6 +85,19 @@ async function buildReport(from: string, to: string, withAnalysis: boolean): Pro
   };
   if (withAnalysis) report.analysis = await analyze(report);
   return report;
+}
+
+const REASONS: Record<string, string> = {
+  cc_rejected_high_risk: "Recusado pelo antifraude",
+  cc_rejected_insufficient_amount: "Limite insuficiente",
+  cc_rejected_bad_filled_security_code: "CVV inválido",
+  cc_rejected_call_for_authorize: "Banco pediu autorização",
+  cc_rejected_other_reason: "Recusado pelo banco",
+};
+function reason(provider: string | null, status: string) {
+  if (provider?.startsWith("session/") && provider.includes("expired")) return "Checkout abandonado (expirou sem pagar)";
+  const code = provider?.split("/").pop() ?? "";
+  return REASONS[code] ?? (status === "cancelled" ? "Cancelado" : "Recusado (outro motivo)");
 }
 
 async function analyze(r: AdminReport): Promise<string[] | null> {
