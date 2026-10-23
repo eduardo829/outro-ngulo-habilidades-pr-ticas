@@ -49,6 +49,7 @@ import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
 import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
+import { Route as AuthenticatedAdminRelatoriosRouteImport } from './routes/_authenticated/admin/relatorios'
 import { Route as AuthenticatedAdminVideosRouteImport } from './routes/_authenticated/admin/videos'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
 import { Route as AuthenticatedCheckoutSlugRouteImport } from './routes/_authenticated/checkout.$slug'
@@ -280,6 +281,12 @@ const AuthenticatedAdminGestoresRoute =
     path: '/gestores',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminRelatoriosRoute =
+  AuthenticatedAdminRelatoriosRouteImport.update({
+    id: '/relatorios',
+    path: '/relatorios',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminVideosRoute =
   AuthenticatedAdminVideosRouteImport.update({
     id: '/videos',
@@ -463,6 +470,7 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -528,6 +536,7 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -596,6 +605,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/_authenticated/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/_authenticated/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
@@ -664,6 +674,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
@@ -729,6 +740,7 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
@@ -796,6 +808,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/configuracoes'
     | '/_authenticated/admin/encontros'
     | '/_authenticated/admin/gestores'
+    | '/_authenticated/admin/relatorios'
     | '/_authenticated/admin/videos'
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/checkout/$slug'
@@ -1139,6 +1152,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGestoresRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/relatorios': {
+      id: '/_authenticated/admin/relatorios'
+      path: '/relatorios'
+      fullPath: '/admin/relatorios'
+      preLoaderRoute: typeof AuthenticatedAdminRelatoriosRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/videos': {
       id: '/_authenticated/admin/videos'
       path: '/videos'
@@ -1323,6 +1343,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
   AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
   AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
+  AuthenticatedAdminRelatoriosRoute: typeof AuthenticatedAdminRelatoriosRoute
   AuthenticatedAdminVideosRoute: typeof AuthenticatedAdminVideosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminCursosIdRoute: typeof AuthenticatedAdminCursosIdRoute
@@ -1336,6 +1357,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
     AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
     AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
+    AuthenticatedAdminRelatoriosRoute: AuthenticatedAdminRelatoriosRoute,
     AuthenticatedAdminVideosRoute: AuthenticatedAdminVideosRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminCursosIdRoute: AuthenticatedAdminCursosIdRoute,
