@@ -13,7 +13,7 @@ const EEA = [
 export const CONSENT_REGIONS = new Set<string>([...EEA, "GB", "CH", "BR"]);
 
 /** Version of the notice text shown when the visitor decided. */
-export const NOTICE_VERSION = "2026-10-23";
+export const NOTICE_VERSION = "2026-10-23b";
 
 /** Fired to reopen the banner from the footer's "Configurações de cookies". */
 export const COOKIE_SETTINGS_EVENT = "oa:open-cookie-settings";

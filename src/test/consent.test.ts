@@ -24,7 +24,7 @@ describe("advertising consent gate", () => {
     const rec = readConsent();
     expect(rec?.decision).toBe("accepted");
     expect(typeof rec?.at).toBe("string");
-    expect(rec?.noticeVersion).toBe("2026-10-23");
+    expect(rec?.noticeVersion).toBe("2026-10-23b");
   });
 
   it("keeps tracking off after refusal", async () => {
