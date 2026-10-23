@@ -1,6 +1,7 @@
 # Outro Ângulo — Roadmap
 
 ## Check-up da primeira campanha — 23/10/2026
+- [ ] Conferir se administradores conseguem checar cada novo usuário; implementar o que faltar
 - [ ] Conferir campanha e pagamento como visitante no celular e computador
 - [ ] Conferir login, retorno do Stripe e curso com conta autenticada
 - [ ] Revisar e-mails, pagamentos confirmados e acesso; corrigir falhas de UX encontradas
