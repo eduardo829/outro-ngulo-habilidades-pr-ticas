@@ -11,6 +11,7 @@ import { getGestor } from "@/lib/gestores";
 import { brl, useCoursePrices } from "@/lib/coursePrices";
 import { buyTarget, checkoutErrorMessage, checkoutReturnPath, origemFromSearch } from "@/lib/checkout-logic";
 import { coursePhoto } from "@/lib/photos";
+import { trackConversionEvent } from "@/lib/meta-pixel";
 
 const SLUG = "corretor-na-pratica";
 const course = getEngineCourse(SLUG);
@@ -53,6 +54,7 @@ function CampaignPage() {
   const guestBuy = async () => {
     setBusy(true);
     setErr(null);
+    void trackConversionEvent("InitiateCheckout");
     try {
       const r = await createGuestCheckout({
         data: { slug: SLUG, origin: window.location.origin, origem: origem ?? undefined },

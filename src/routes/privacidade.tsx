@@ -18,6 +18,16 @@ export const Route = createFileRoute("/privacidade")({
       <p>Para dar acesso aos cursos em que você está matriculado, registrar seu progresso e permitir a participação na comunidade.</p>
       <h2>Diretório de membros</h2>
       <p>Seu perfil só aparece no diretório se você ativar essa opção. Seu e-mail nunca é exibido a outros membros.</p>
+      <h2>Cookies e anúncios</h2>
+      <p>
+        Em regiões que exigem consentimento, mostramos um aviso de cookies e só carregamos as
+        ferramentas de anúncios depois da sua resposta. O site usa o Pixel do Meta (Meta Platforms
+        Ireland Ltd.) para medir o desempenho das campanhas e, para visitantes que aceitam, registrar
+        eventos como início de compra e compra concluída (valor e moeda; nunca dados do cartão).
+        Cliques e impressões dos anúncios seguem sendo contados pelo Meta independentemente da sua
+        escolha. Sua escolha fica registrada com data, região e versão do aviso; você pode recusar ou
+        mudar de ideia a qualquer momento em "Configurações de cookies", no rodapé do site.
+      </p>
       <h2>Exclusão de conta</h2>
       <p>Você pode solicitar a exclusão da conta na página de configurações do seu perfil.</p>
     </LegalPage>

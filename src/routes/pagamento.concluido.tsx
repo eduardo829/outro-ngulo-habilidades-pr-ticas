@@ -33,6 +33,7 @@ function GuestDone() {
   const [st, setSt] = useState<St | null>(null);
   const [statusError, setStatusError] = useState(false);
   const [reload, setReload] = useState(0);
+  const purchaseReported = useRef(false);
 
   useEffect(() => {
     if (!pedido) return;
@@ -47,6 +48,13 @@ function GuestDone() {
         failures = 0;
         setStatusError(false);
         setSt(r);
+        if (r.status === "paid" && !purchaseReported.current) {
+          purchaseReported.current = true;
+          void trackConversionEvent(
+            "Purchase",
+            r.amount_cents ? { value: r.amount_cents / 100, currency: r.currency ?? "BRL" } : {},
+          );
+        }
         if (r.status === "pending") timer = setTimeout(tick, 5000);
       } catch {
         if (stop) return;
