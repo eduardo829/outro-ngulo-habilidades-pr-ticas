@@ -116,3 +116,8 @@
 
 ## Relatórios admin — 23/10/2026
 - [x] Aba Relatórios com período, leitura por IA e envio para o próprio e-mail
+
+## Aviso de venda ao suporte — 23/10/2026
+- [x] Notificação a cada pagamento confirmado para suporte@outroangulo.com (compra com ou sem conta, um aviso por pagamento)
+- [ ] Publicar para o aviso passar a sair — depende de publicação autorizada
+- [ ] Conferir chegada do primeiro aviso real — depende de uma venda
