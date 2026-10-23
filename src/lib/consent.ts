@@ -10,7 +10,7 @@ const EEA = [
   "IS", "IE", "IT", "LV", "LI", "LT", "LU", "MT", "NL", "NO", "PL", "PT", "RO",
   "SK", "SI", "ES", "SE",
 ];
-const CONSENT_REGIONS = new Set<string>([...EEA, "GB", "CH", "BR"]);
+export const CONSENT_REGIONS = new Set<string>([...EEA, "GB", "CH", "BR"]);
 
 /** Version of the notice text shown when the visitor decided. */
 export const NOTICE_VERSION = "2026-10-23";
