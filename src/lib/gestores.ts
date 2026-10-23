@@ -4,6 +4,7 @@
  * Only facts from the gestor's own public sources or the project go here.
  */
 import viniPhoto from "@/assets/gestor-vinicius-silva.jpg.asset.json";
+import jeanPhoto from "@/assets/gestor-jean-gedean.png.asset.json";
 
 export type GestorLink = { label: string; url: string };
 export type GestorVenture = { name: string; area: string; role?: string; years?: string; note?: string; url?: string };
@@ -115,10 +116,37 @@ const BASE: GestorProfile[] = [
     what_i_am_learning: ["[o que está aprendendo]"],
     sources: [{ label: "Apresentação Vinicius Silva 2026", url: "https://www.instagram.com/sillvaviniicius" }],
   },
+  {
+    slug: "jean-gedean",
+    name: "Jean Gedean",
+    photo: jeanPhoto.url,
+    photoAlt: "Jean Gedean",
+    location: "[localização]",
+    positioning: "Branding · Performance · Posicionamento",
+    tagline: "Marca vem antes de anúncio: mídia paga só amplifica o que já funciona.",
+    biography: [
+      "Do futebol profissional ao marketing, carrega a mesma lógica: resultado é construção de time.",
+      "Desde 2016 atua em todas as etapas, da execução à direção estratégica. Acredita que marca vem antes de anúncio e que mídia paga só amplifica o que já funciona, por isso começa pelo posicionamento e usa os dados para orientar cada decisão.",
+    ],
+    areas_of_experience: ["Branding", "Posicionamento", "Performance", "Mídia paga", "Direção estratégica", "Execução", "Dados"],
+    ventures: [{ name: "[projetos e empresas]", area: "[áreas]" }],
+    knowledge_topics: ["[o que aprendi fazendo]"],
+    learning_tracks: [],
+    courses: [],
+    tools: [{ title: "[ferramentas]" }],
+    discussions: [{ title: "[discussões]" }],
+    events: [{ title: "[encontros]" }],
+    recommended_reading: [],
+    social_links: [],
+    what_i_am_building: ["Outro Ângulo"],
+    what_i_can_help_with: ["Definir o posicionamento de uma marca", "Estruturar performance e mídia paga", "Usar dados para orientar decisões de marketing"],
+    what_i_am_learning: ["[o que está aprendendo]"],
+    sources: [],
+  },
 ];
 
-/** Display order: Vinicius first, then Eduardo. */
-export const GESTORES: GestorProfile[] = ["vinicius-silva", "eduardo-araujo"].map((s) => BASE.find((g) => g.slug === s)!);
+/** Display order: Vinicius first, then Eduardo, then Jean. */
+export const GESTORES: GestorProfile[] = ["vinicius-silva", "eduardo-araujo", "jean-gedean"].map((s) => BASE.find((g) => g.slug === s)!);
 
 export const getGestor = (slug: string) => GESTORES.find((g) => g.slug === slug);
 
