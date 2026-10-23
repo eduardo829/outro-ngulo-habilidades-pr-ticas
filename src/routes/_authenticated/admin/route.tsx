@@ -13,6 +13,7 @@ const TABS = [
   { to: "/admin/encontros", label: "Encontros" },
   { to: "/admin/gestores", label: "Gestores" },
   { to: "/admin/comunidade", label: "Comunidade" },
+  { to: "/admin/relatorios", label: "Relatórios" },
   { to: "/admin/configuracoes", label: "Configurações" },
 ] as const;
 
