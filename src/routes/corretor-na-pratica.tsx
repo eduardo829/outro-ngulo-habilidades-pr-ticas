@@ -158,17 +158,13 @@ function CampaignPage() {
         <section className="relative isolate overflow-hidden">
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-10 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-16">
             <div>
-              <p className="eyebrow">O que o TTI não te ensina · Outro Ângulo</p>
-              <h1 className="mt-5 max-w-2xl font-display text-4xl font-extrabold leading-[1.06] text-foreground md:text-6xl">
-                {course.title}
-                <span className="text-highlight">.</span>
+              <p className="eyebrow">O que o TTI não te ensina · {course.title}</p>
+              <h1 className="mt-5 max-w-2xl font-display font-extrabold leading-[1.02] text-foreground">
+                <span className="block text-4xl md:text-[3.4rem]">Sua meta é vender</span>
+                <span className="block py-1 text-6xl campaign-big-number md:text-8xl">R$500 mil</span>
+                <span className="block text-4xl md:text-[3.4rem]">em imóveis por mês?</span>
               </h1>
-              <p className="mt-5 max-w-xl font-display text-2xl font-semibold leading-snug md:text-3xl">
-                Sua meta é vender
-                <br />
-                <span className="font-extrabold text-highlight">R$500 mil</span> em imóveis por mês?
-              </p>
-              <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
+              <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground">
                 Entenda o cliente, conduza a negociação e organize seus próximos passos.{" "}
                 {course.modules.length} episódios com exercícios para construir seu plano de corretor.
               </p>
