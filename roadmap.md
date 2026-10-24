@@ -1,5 +1,10 @@
 # Outro Ângulo — Roadmap
 
+## Página de vendas Corretor na prática — 24/10/2026
+- [x] Reformular /corretor-na-pratica usando a referência enviada, sem metas financeiras ou promessas de vendas
+- [x] Preservar preço real, compra sem cadastro, Stripe e origem da campanha; 34 regressões passaram
+- [x] Verificar leitura, dúvidas e caminho de compra no computador e celular; Stripe abriu com R$127, sem cobrar ou publicar
+
 ## Check-up da primeira campanha — 23/10/2026
 - [x] Auditar 27 páginas no celular e computador; sem imagens quebradas ou erros de execução, corrigido corte dos botões de vídeos
 - [x] Corrigir estados de erro/repetição em perfil, cursos, editor, pessoas, mensagens, acesso e assistente; perfil recuperou após falha simulada
