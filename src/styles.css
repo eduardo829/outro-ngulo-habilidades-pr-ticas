@@ -249,4 +249,5 @@ body { background-image: linear-gradient(color-mix(in oklab, var(--background) 4
 .frame-offset.border, .frame-offset[class*="border"] { background: linear-gradient(160deg, color-mix(in oklab, var(--card) 92%, var(--highlight) 8%), var(--secondary)); box-shadow: 0 18px 40px -28px color-mix(in oklab, var(--ink) 45%, transparent); }
 
 /* Campaign content stays in normal document flow with legible editorial type. */
+.campaign-sales { --background: #ffffff; --secondary: #ffffff; }
 .campaign-sales :is(h1, h2, h3, .eyebrow) { letter-spacing: 0; }
