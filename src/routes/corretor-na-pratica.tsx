@@ -171,9 +171,9 @@ function CampaignPage() {
               <span className="text-highlight">.</span>
             </h1>
             <p className="mt-5 max-w-xl font-display text-2xl font-semibold leading-snug md:text-3xl">
-              A formação abriu uma porta.
+              Sua meta é vender
               <br />
-              Agora, entre na prática.
+              <span className="font-extrabold text-highlight">R$500 mil</span> em imóveis por mês?
             </p>
             <p className="mt-4 max-w-lg text-base leading-relaxed text-ink-foreground/85">
               Entenda o cliente, conduza a negociação e organize seus próximos passos.{" "}
@@ -205,6 +205,10 @@ function CampaignPage() {
             </div>
             <p className="mt-3 max-w-lg text-sm text-ink-foreground/80">
               Compra sem cadastro · acesso após pagamento confirmado
+            </p>
+            <p className="mt-3 max-w-lg text-xs leading-relaxed text-ink-foreground/80">
+              Meta de volume de vendas de imóveis, não de renda ou comissão. O curso não garante
+              resultados comerciais.
             </p>
             {err && (
               <p role="alert" className="mt-3 max-w-lg text-sm">
