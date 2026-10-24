@@ -356,24 +356,28 @@ function CampaignPage() {
           </ul>
         </section>
 
-        <section className="bg-ink text-ink-foreground">
+        <section className="bg-background">
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-12 md:grid-cols-2 md:gap-16 md:py-16">
             <div>
-              <p className="eyebrow !text-highlight">É para o seu momento?</p>
-              <h2 className="mt-3 font-display text-3xl font-extrabold">
+              <p className="eyebrow">É para o seu momento?</p>
+              <h2 className="mt-3 font-display text-3xl font-extrabold text-foreground">
                 Comece com mais clareza.
               </h2>
               <div className="mt-6 space-y-6">
                 <div>
-                  <h3 className="font-display text-lg font-bold">Está entrando no mercado</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-foreground/75">
+                  <h3 className="font-display text-lg font-bold text-foreground">
+                    Está entrando no mercado
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     Organize o que fazer depois da formação e antes de conduzir seus próximos
                     atendimentos.
                   </p>
                 </div>
                 <div>
-                  <h3 className="font-display text-lg font-bold">Já atende, mas ainda improvisa</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-foreground/75">
+                  <h3 className="font-display text-lg font-bold text-foreground">
+                    Já atende, mas ainda improvisa
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     Construa uma sequência para entender o cliente, conferir o produto e acompanhar
                     a negociação.
                   </p>
@@ -381,8 +385,8 @@ function CampaignPage() {
               </div>
             </div>
             {gestor && (
-              <div className="border-t border-ink-foreground/20 pt-6 md:border-l md:border-t-0 md:pl-10 md:pt-0">
-                <p className="eyebrow !text-highlight">Quem conduz o curso</p>
+              <div className="border-t pt-6 md:border-l md:border-t-0 md:pl-10 md:pt-0">
+                <p className="eyebrow">Quem conduz o curso</p>
                 <div className="mt-5 flex items-center gap-4">
                   {gestor.photo && (
                     <img
@@ -393,14 +397,16 @@ function CampaignPage() {
                     />
                   )}
                   <div>
-                    <h2 className="font-display text-2xl font-extrabold">{gestor.name}</h2>
-                    <p className="mt-1 text-sm text-ink-foreground/70">{gestor.positioning}</p>
+                    <h2 className="font-display text-2xl font-extrabold text-foreground">
+                      {gestor.name}
+                    </h2>
+                    <p className="mt-1 text-sm text-muted-foreground">{gestor.positioning}</p>
                   </div>
                 </div>
-                <p className="mt-5 text-sm leading-relaxed text-ink-foreground/80">
+                <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
                   {gestor.biography[0]}
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-ink-foreground/80">
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {gestor.tagline}
                 </p>
                 <Link
@@ -473,7 +479,7 @@ function CampaignPage() {
           </div>
         </section>
 
-        <section id="duvidas" className="scroll-mt-20 border-t bg-secondary">
+        <section id="duvidas" className="scroll-mt-20 border-t bg-background">
           <div className="mx-auto grid max-w-6xl gap-7 px-5 py-12 md:grid-cols-[0.8fr_1.2fr] md:gap-16 md:py-16">
             <div>
               <p className="eyebrow">Antes do próximo passo</p>
