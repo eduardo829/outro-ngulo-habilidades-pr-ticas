@@ -251,3 +251,33 @@ body { background-image: linear-gradient(color-mix(in oklab, var(--background) 4
 /* Campaign content stays in normal document flow with legible editorial type. */
 .campaign-sales { --background: #ffffff; --secondary: #ffffff; }
 .campaign-sales :is(h1, h2, h3, .eyebrow) { letter-spacing: 0; }
+
+/* Arte do topo da campanha (modelo da referência): livro do curso sobre plano verde-limão. */
+.campaign-sales .hero-art { position: relative; isolation: isolate; min-height: 554px; margin-top: 5px; }
+.campaign-sales .art-grid { position: absolute; inset: 0; background-image: linear-gradient(color-mix(in oklab, var(--ink) 4%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--ink) 4%, transparent) 1px, transparent 1px); background-size: 40px 40px; mask-image: linear-gradient(black, black 70%, transparent); }
+.campaign-sales .art-note { position: absolute; top: 4px; left: 25px; font-size: 8px; letter-spacing: .17em; font-weight: 700; z-index: 2; color: var(--muted-foreground); }
+.campaign-sales .lime-plane { position: absolute; background: var(--highlight); width: 360px; height: 420px; left: 94px; top: 68px; transform: rotate(13deg); }
+.campaign-sales .course-book { width: 315px; min-height: 440px; position: relative; left: 58px; top: 48px; padding: 26px 26px 20px; background: var(--ink); color: var(--background); transform: perspective(1300px) rotateY(-12deg) rotateZ(-7deg); box-shadow: 10px 5px 0 color-mix(in oklab, var(--ink) 88%, var(--background)), 13px 9px 0 color-mix(in oklab, var(--background) 88%, var(--ink) 8%), 18px 15px 0 color-mix(in oklab, var(--ink) 88%, var(--background)), 25px 40px 45px color-mix(in oklab, var(--ink) 19%, transparent); overflow: hidden; }
+.campaign-sales .book-top { display: flex; justify-content: space-between; font-size: 7px; letter-spacing: .1em; padding-bottom: 26px; }
+.campaign-sales .book-title { font-family: var(--font-display, inherit); font-size: 43px; line-height: 1.02; font-weight: 700; letter-spacing: -.05em; }
+.campaign-sales .book-dot { color: var(--highlight); }
+.campaign-sales .book-sub { font-size: 12px; line-height: 1.4; margin-top: 14px; color: color-mix(in oklab, var(--ink-foreground) 78%, var(--ink)); }
+.campaign-sales .building { width: 245px; height: 190px; display: block; color: color-mix(in oklab, var(--ink-foreground) 45%, var(--ink)); margin-top: 6px; }
+.campaign-sales .book-foot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid color-mix(in oklab, var(--background) 19%, transparent); padding-top: 15px; font-size: 7px; letter-spacing: .1em; line-height: 1.6; }
+.campaign-sales .book-arrow { font-size: 32px; color: var(--highlight); line-height: 1; }
+.campaign-sales .plan-float { display: flex; gap: 13px; align-items: center; position: absolute; z-index: 3; right: -3px; bottom: 45px; background: var(--background); padding: 20px; box-shadow: 0 12px 30px color-mix(in oklab, var(--ink) 9%, transparent); border: 1px solid var(--background); transform: rotate(2deg); }
+.campaign-sales .mini-check { display: grid; place-items: center; background: var(--ink); color: var(--highlight); width: 34px; height: 36px; font-size: 17px; flex-shrink: 0; }
+.campaign-sales .plan-float small { display: block; font-size: 6px; letter-spacing: .13em; margin-bottom: 7px; color: var(--muted-foreground); }
+.campaign-sales .plan-float strong { font-size: 15px; letter-spacing: -.025em; color: var(--foreground); }
+.campaign-sales .plan-float > span:last-child { margin-left: 15px; font-size: 22px; color: var(--foreground); }
+.campaign-sales .art-index { position: absolute; left: 45px; bottom: 5px; font-size: 7px; letter-spacing: .17em; color: var(--muted-foreground); }
+@media (max-width: 767px) {
+  .campaign-sales .hero-art { min-height: 440px; max-width: 400px; width: 100%; transform: scale(.83); transform-origin: top center; margin: 36px auto -45px; }
+  .campaign-sales .art-note { font-size: 7px; }
+  .campaign-sales .course-book { left: 25px; top: 36px; width: 290px; min-height: 410px; }
+  .campaign-sales .book-title { font-size: 40px; }
+  .campaign-sales .building { height: 165px; }
+  .campaign-sales .lime-plane { left: 75px; top: 64px; width: 290px; height: 370px; }
+  .campaign-sales .plan-float { right: -8px; bottom: -11px; padding: 16px; }
+  .campaign-sales .art-index { bottom: -44px; left: 20px; }
+}
