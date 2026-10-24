@@ -21,7 +21,6 @@ import {
   checkoutReturnPath,
   origemFromSearch,
 } from "@/lib/checkout-logic";
-import { coursePhoto } from "@/lib/photos";
 import { trackConversionEvent } from "@/lib/meta-pixel";
 
 const SLUG = "corretor-na-pratica";
@@ -224,34 +223,87 @@ function CampaignPage() {
                 </a>
               </nav>
             </div>
-            <div className="hidden md:block">
-              <img
-                src={coursePhoto(SLUG)}
-                alt=""
-                aria-hidden
-                className="aspect-[4/3] w-full rounded-md object-cover"
-              />
+            <div
+              className="hero-art mt-8 max-w-[400px] max-md:mx-auto md:mt-1"
+              role="img"
+              aria-label="Apresentação visual do curso"
+            >
+              <div className="art-grid" aria-hidden />
+              <span className="art-note">UM NOVO OLHAR SOBRE A SUA PROFISSÃO.</span>
+              <div className="lime-plane" aria-hidden />
+              <div className="course-book" aria-hidden>
+                <div className="book-top">
+                  <span>OUTRO ÂNGULO</span>
+                  <span>CURSO / 01</span>
+                </div>
+                <div className="book-title">
+                  {course.title}
+                  <span className="book-dot">.</span>
+                </div>
+                <p className="book-sub">
+                  O que o TTI
+                  <br />
+                  não te ensina.
+                </p>
+                <svg className="building" viewBox="0 0 300 230" fill="none" aria-hidden>
+                  <path
+                    d="M26 216V95L133 28L262 67V216M133 28V216M26 95L155 132L262 67M155 132V216M26 127L133 61L262 98M26 160L133 94L262 130M26 193L133 127L262 162M47 81V216M69 68V216M90 55V216M111 42V216M176 119V216M198 106V216M219 93V216M240 80V216"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  />
+                  <path d="M9 216H286" stroke="currentColor" />
+                </svg>
+                <div className="book-foot">
+                  <span>
+                    {String(course.modules.length).padStart(2, "0")} EPISÓDIOS
+                    <br />
+                    + EXERCÍCIOS PRÁTICOS
+                  </span>
+                  <span className="book-arrow">↗</span>
+                </div>
+              </div>
+              <div className="plan-float" aria-hidden>
+                <span className="mini-check">✓</span>
+                <div>
+                  <small>DA AULA PARA A SUA ROTINA</small>
+                  <strong>Seu plano de corretor.</strong>
+                </div>
+                <span>↗</span>
+              </div>
+              <span className="art-index">CONHECER. OUVIR. ORIENTAR. VENDER.</span>
             </div>
           </div>
         </section>
 
         <div className="bg-background px-5">
-          <dl className="mx-auto grid max-w-6xl grid-cols-3 gap-4 rounded-md bg-ink px-6 py-6 text-ink-foreground md:px-10 md:py-8">
+          <div className="mx-auto grid max-w-6xl grid-cols-3 gap-4 border-t py-6 md:grid-cols-[repeat(3,1fr)_1.1fr] md:gap-0 md:py-7">
             {[
-              [String(course.modules.length).padStart(2, "0"), "Episódios + exercícios"],
-              ["01", "Projeto construído por você"],
+              [String(course.modules.length).padStart(2, "0"), "Episódios com aplicação prática"],
+              ["01", "Projeto construído ao longo do curso"],
               ["30", "Dias no seu plano de ação"],
-            ].map(([n, text]) => (
-              <div key={n} className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-                <dd className="font-display text-3xl font-extrabold text-highlight md:text-4xl">
+            ].map(([n, text], i) => (
+              <div
+                key={n}
+                className={cn(
+                  "flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-4",
+                  i > 0 && "md:border-l md:pl-6",
+                )}
+              >
+                <span className="font-display text-3xl font-medium text-foreground md:text-[2.2rem]">
                   {n}
-                </dd>
-                <dt className="max-w-36 text-xs leading-relaxed text-ink-foreground/75 md:text-sm">
+                </span>
+                <span className="max-w-36 text-[10px] leading-relaxed text-muted-foreground md:text-xs">
                   {text}
-                </dt>
+                </span>
               </div>
             ))}
-          </dl>
+            <p className="relative hidden pl-8 font-display text-xs leading-relaxed text-muted-foreground md:block">
+              Conhecimento que vira
+              <br />
+              <strong className="font-medium text-foreground">próximo passo.</strong>
+              <ArrowUpRight className="absolute right-0 top-1 h-6 w-6 text-foreground" />
+            </p>
+          </div>
         </div>
 
         <section className="mx-auto max-w-6xl px-5 py-12 md:py-16">
