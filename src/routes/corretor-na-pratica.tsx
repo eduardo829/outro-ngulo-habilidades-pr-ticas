@@ -224,13 +224,54 @@ function CampaignPage() {
                 </a>
               </nav>
             </div>
-            <div className="hidden md:block">
-              <img
-                src={coursePhoto(SLUG)}
-                alt=""
-                aria-hidden
-                className="aspect-[4/3] w-full rounded-md object-cover"
-              />
+            <div
+              className="hero-art mt-8 max-w-[400px] max-md:mx-auto md:mt-1"
+              role="img"
+              aria-label="Apresentação visual do curso"
+            >
+              <div className="art-grid" aria-hidden />
+              <span className="art-note">UM NOVO OLHAR SOBRE A SUA PROFISSÃO.</span>
+              <div className="lime-plane" aria-hidden />
+              <div className="course-book" aria-hidden>
+                <div className="book-top">
+                  <span>OUTRO ÂNGULO</span>
+                  <span>CURSO / 01</span>
+                </div>
+                <div className="book-title">
+                  {course.title}
+                  <span className="book-dot">.</span>
+                </div>
+                <p className="book-sub">
+                  O que o TTI
+                  <br />
+                  não te ensina.
+                </p>
+                <svg className="building" viewBox="0 0 300 230" fill="none" aria-hidden>
+                  <path
+                    d="M26 216V95L133 28L262 67V216M133 28V216M26 95L155 132L262 67M155 132V216M26 127L133 61L262 98M26 160L133 94L262 130M26 193L133 127L262 162M47 81V216M69 68V216M90 55V216M111 42V216M176 119V216M198 106V216M219 93V216M240 80V216"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  />
+                  <path d="M9 216H286" stroke="currentColor" />
+                </svg>
+                <div className="book-foot">
+                  <span>
+                    {String(course.modules.length).padStart(2, "0")} EPISÓDIOS
+                    <br />
+                    + EXERCÍCIOS PRÁTICOS
+                  </span>
+                  <span className="book-arrow">↗</span>
+                </div>
+              </div>
+              <div className="plan-float" aria-hidden>
+                <span className="mini-check">✓</span>
+                <div>
+                  <small>DA AULA PARA A SUA ROTINA</small>
+                  <strong>Seu plano de corretor.</strong>
+                </div>
+                <span>↗</span>
+              </div>
+              <span className="art-index">CONHECER. OUVIR. ORIENTAR. VENDER.</span>
             </div>
           </div>
         </section>
