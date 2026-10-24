@@ -272,12 +272,12 @@ body { background-image: linear-gradient(color-mix(in oklab, var(--background) 4
 .campaign-sales .plan-float > span:last-child { margin-left: 15px; font-size: 22px; color: var(--foreground); }
 .campaign-sales .art-index { position: absolute; left: 45px; bottom: 5px; font-size: 7px; letter-spacing: .17em; color: var(--muted-foreground); }
 @media (max-width: 767px) {
-  .campaign-sales .hero-art { min-height: 440px; max-width: 400px; width: 100%; transform: scale(.83); transform-origin: top center; margin: 36px auto -45px; }
+  .campaign-sales .hero-art { min-height: 480px; max-width: 400px; width: 100%; transform: scale(.83); transform-origin: top center; margin: 36px auto -45px; }
   .campaign-sales .art-note { font-size: 7px; }
   .campaign-sales .course-book { left: 25px; top: 36px; width: 290px; min-height: 410px; }
   .campaign-sales .book-title { font-size: 40px; }
   .campaign-sales .building { height: 165px; }
   .campaign-sales .lime-plane { left: 75px; top: 64px; width: 290px; height: 370px; }
   .campaign-sales .plan-float { right: -8px; bottom: -11px; padding: 16px; }
-  .campaign-sales .art-index { bottom: -44px; left: 20px; }
+  .campaign-sales .art-index { bottom: -48px; left: 20px; z-index: 3; }
 }
