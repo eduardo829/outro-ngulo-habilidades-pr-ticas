@@ -281,3 +281,7 @@ body { background-image: linear-gradient(color-mix(in oklab, var(--background) 4
   .campaign-sales .plan-float { right: -8px; bottom: -11px; padding: 16px; }
   .campaign-sales .art-index { bottom: -48px; left: 20px; z-index: 3; }
 }
+
+.campaign-big-number {
+  color: color-mix(in oklab, var(--highlight, #c7d84b) 62%, var(--foreground) 38%);
+}
