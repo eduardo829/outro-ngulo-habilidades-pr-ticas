@@ -21,7 +21,6 @@ import {
   checkoutReturnPath,
   origemFromSearch,
 } from "@/lib/checkout-logic";
-import { coursePhoto } from "@/lib/photos";
 import { trackConversionEvent } from "@/lib/meta-pixel";
 
 const SLUG = "corretor-na-pratica";
@@ -277,22 +276,34 @@ function CampaignPage() {
         </section>
 
         <div className="bg-background px-5">
-          <dl className="mx-auto grid max-w-6xl grid-cols-3 gap-4 rounded-md bg-ink px-6 py-6 text-ink-foreground md:px-10 md:py-8">
+          <div className="mx-auto grid max-w-6xl grid-cols-3 gap-4 border-t py-6 md:grid-cols-[repeat(3,1fr)_1.1fr] md:gap-0 md:py-7">
             {[
-              [String(course.modules.length).padStart(2, "0"), "Episódios + exercícios"],
-              ["01", "Projeto construído por você"],
+              [String(course.modules.length).padStart(2, "0"), "Episódios com aplicação prática"],
+              ["01", "Projeto construído ao longo do curso"],
               ["30", "Dias no seu plano de ação"],
-            ].map(([n, text]) => (
-              <div key={n} className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-                <dd className="font-display text-3xl font-extrabold text-highlight md:text-4xl">
+            ].map(([n, text], i) => (
+              <div
+                key={n}
+                className={cn(
+                  "flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-4",
+                  i > 0 && "md:border-l md:pl-6",
+                )}
+              >
+                <span className="font-display text-3xl font-medium text-foreground md:text-[2.2rem]">
                   {n}
-                </dd>
-                <dt className="max-w-36 text-xs leading-relaxed text-ink-foreground/75 md:text-sm">
+                </span>
+                <span className="max-w-36 text-[10px] leading-relaxed text-muted-foreground md:text-xs">
                   {text}
-                </dt>
+                </span>
               </div>
             ))}
-          </dl>
+            <p className="relative hidden pl-8 font-display text-xs leading-relaxed text-muted-foreground md:block">
+              Conhecimento que vira
+              <br />
+              <strong className="font-medium text-foreground">próximo passo.</strong>
+              <ArrowUpRight className="absolute right-0 top-1 h-6 w-6 text-foreground" />
+            </p>
+          </div>
         </div>
 
         <section className="mx-auto max-w-6xl px-5 py-12 md:py-16">
