@@ -235,18 +235,18 @@ function CampaignPage() {
           </div>
         </section>
 
-        <div className="border-b bg-background">
-          <dl className="mx-auto grid max-w-6xl grid-cols-3 gap-4 px-5 py-6 md:py-8">
+        <div className="bg-background px-5">
+          <dl className="mx-auto grid max-w-6xl grid-cols-3 gap-4 rounded-md bg-ink px-6 py-6 text-ink-foreground md:px-10 md:py-8">
             {[
               [String(course.modules.length).padStart(2, "0"), "Episódios + exercícios"],
               ["01", "Projeto construído por você"],
               ["30", "Dias no seu plano de ação"],
             ].map(([n, text]) => (
               <div key={n} className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-                <dd className="font-display text-3xl font-extrabold text-primary md:text-4xl">
+                <dd className="font-display text-3xl font-extrabold text-highlight md:text-4xl">
                   {n}
                 </dd>
-                <dt className="max-w-36 text-xs leading-relaxed text-muted-foreground md:text-sm">
+                <dt className="max-w-36 text-xs leading-relaxed text-ink-foreground/75 md:text-sm">
                   {text}
                 </dt>
               </div>
@@ -287,7 +287,7 @@ function CampaignPage() {
           </div>
         </section>
 
-        <section id="percurso" className="scroll-mt-20 bg-secondary">
+        <section id="percurso" className="scroll-mt-20 bg-background">
           <div className="mx-auto max-w-6xl px-5 py-12 md:py-16">
             <div className="flex flex-wrap items-end justify-between gap-5">
               <div>
