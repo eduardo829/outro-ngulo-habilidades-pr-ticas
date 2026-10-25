@@ -68,7 +68,7 @@ export const Route = createFileRoute("/corretor-na-pratica")({
 
 function CampaignPage() {
   const { origem } = Route.useSearch();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const { data: prices } = useCoursePrices();
   const { priceCents } = Route.useLoaderData();
   const price = brl(prices?.[SLUG] ?? priceCents);
