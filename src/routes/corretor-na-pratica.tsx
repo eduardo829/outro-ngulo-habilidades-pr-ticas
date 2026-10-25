@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 import { getEngineCourse } from "@/lib/learning/courses";
 import { getGestor } from "@/lib/gestores";
-import { brl, useCoursePrices } from "@/lib/coursePrices";
+import { brl, effectivePrice, useCoursePrices, type CourseCommerce } from "@/lib/coursePrices";
+import { supabase } from "@/integrations/supabase/client";
 import {
   buyTarget,
   checkoutErrorMessage,
@@ -30,6 +31,19 @@ export const Route = createFileRoute("/corretor-na-pratica")({
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
     const origem = origemFromSearch(s);
     return origem ? { origem } : {};
+  },
+  // Price is read during server render so it shows in the first HTML, before any app code loads.
+  loader: async () => {
+    try {
+      const { data } = await supabase
+        .from("courses")
+        .select("price_cents, currency, sale_price_cents, sale_start, sale_end, is_free")
+        .eq("slug", SLUG)
+        .maybeSingle();
+      return { priceCents: data ? effectivePrice(data as CourseCommerce) : null };
+    } catch {
+      return { priceCents: null };
+    }
   },
   head: () => ({
     meta: [
@@ -54,9 +68,10 @@ export const Route = createFileRoute("/corretor-na-pratica")({
 
 function CampaignPage() {
   const { origem } = Route.useSearch();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const { data: prices } = useCoursePrices();
-  const price = brl(prices?.[SLUG]);
+  const priceCents = Route.useLoaderData()?.priceCents ?? null;
+  const price = brl(prices?.[SLUG] ?? priceCents);
   const gestor = course?.gestor ? getGestor(course.gestor) : undefined;
   const buy = { ...buyTarget(SLUG), ...(origem ? { search: { origem } } : {}) };
   const [busy, setBusy] = useState(false);
@@ -94,7 +109,7 @@ function CampaignPage() {
         </Link>
       </Button>
     ) : (
-      <Button size="lg" className={cta} onClick={guestBuy} disabled={busy || loading}>
+      <Button size="lg" className={cta} onClick={guestBuy} disabled={busy}>
         {busy ? "Abrindo pagamento seguro…" : label}
         <ArrowRight />
       </Button>

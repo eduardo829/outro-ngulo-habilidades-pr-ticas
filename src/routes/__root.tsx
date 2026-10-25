@@ -8,11 +8,21 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+
+// The assistant (chat + markdown libraries) is heavy; load it only after the page is idle.
+const AssistantWidget = lazy(() => import("@/components/AssistantWidget").then((m) => ({ default: m.AssistantWidget })));
+function DeferredAssistant() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setReady(true), 2500);
+    return () => clearTimeout(t);
+  }, []);
+  return ready ? <Suspense fallback={null}><AssistantWidget /></Suspense> : null;
+}
 
 import { AuthProvider } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
-import { AssistantWidget } from "@/components/AssistantWidget";
 import { MetaPixel } from "@/components/MetaPixel";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -129,7 +139,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <AuthProvider>
         <Outlet />
-        <AssistantWidget />
+        <DeferredAssistant />
         <MetaPixel />
         <Toaster richColors position="top-center" />
       </AuthProvider>
