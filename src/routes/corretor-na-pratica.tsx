@@ -70,7 +70,7 @@ function CampaignPage() {
   const { origem } = Route.useSearch();
   const { user } = useAuth();
   const { data: prices } = useCoursePrices();
-  const { priceCents } = Route.useLoaderData();
+  const priceCents = Route.useLoaderData()?.priceCents ?? null;
   const price = brl(prices?.[SLUG] ?? priceCents);
   const gestor = course?.gestor ? getGestor(course.gestor) : undefined;
   const buy = { ...buyTarget(SLUG), ...(origem ? { search: { origem } } : {}) };
