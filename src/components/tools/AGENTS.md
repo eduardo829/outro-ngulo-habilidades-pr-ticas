@@ -1,0 +1,1 @@
+- Public tools (src/components/tools) are deterministic client-side calculators with no AI and no persistence. Why: transparent results, no fake certainty, visitor data never stored.

@@ -1,0 +1,1 @@
+- Interactive courses are defined as data (src/lib/learning/*) and rendered by reusable blocks; member work saves to learning_outputs (owner-only, write requires enrollment or staff). Gestor questions go to gestor_questions queue. Why: new courses without new layouts, private work by default.
