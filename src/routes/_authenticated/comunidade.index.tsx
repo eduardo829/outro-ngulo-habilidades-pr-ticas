@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import communityPhoto from "@/assets/photo-comunidade.jpg";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/comunidade/")({
   head: () => ({ meta: [{ title: "Comunidade — Outro Ângulo" }, { name: "description", content: "Perguntas, experiências e oportunidades entre membros." }, { property: "og:title", content: "Comunidade — Outro Ângulo" }, { property: "og:description", content: "Perguntas, experiências e oportunidades entre membros." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  beforeLoad: () => { throw redirect({ to: "/comunidades/$slug", params: { slug: "empreender-do-zero" }, replace: true }); },
   component: Community,
 });
 

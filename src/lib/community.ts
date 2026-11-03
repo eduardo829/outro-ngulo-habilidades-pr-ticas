@@ -58,4 +58,4 @@ export function eventPhase(e: { starts_at: string; duration_min: number; status:
   return "upcoming" as const;
 }
 
-export const EVENT_COLS = "id, expert_id, title, theme, description, starts_at, duration_min, capacity, recording_url, summary, materials, status, is_demo";
+export const EVENT_COLS = "id, expert_id, title, theme, description, starts_at, duration_min, capacity, recording_url, summary, materials, status, is_demo, community_id";
