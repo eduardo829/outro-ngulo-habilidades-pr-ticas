@@ -86,7 +86,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const iconBtn = "relative rounded-md p-2 text-muted-foreground hover:bg-secondary hover:text-foreground";
 
   return (
-    <div className="min-h-screen md:grid md:grid-cols-[232px_1fr]">
+    <div className="min-h-screen md:grid md:grid-cols-[232px_minmax(0,1fr)]">
       <aside className="sticky top-0 hidden h-screen flex-col border-r bg-sidebar p-4 md:flex">
         <Link to="/inicio" className="px-2 py-2"><Logo /></Link>
         <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Navegação principal">

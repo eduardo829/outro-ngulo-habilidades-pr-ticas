@@ -109,7 +109,7 @@ function Communities() {
             <select value={c.visibility} onChange={(e) => update(c.id, { visibility: e.target.value })} className="h-9 rounded-md border bg-background px-2" aria-label="Visibilidade">
               {Object.entries(VISIBILITY_LABEL).map(([k, l]) => <option key={k} value={k}>{l}</option>)}
             </select>
-            <Input defaultValue={c.categories.join(", ")} onBlur={(e) => { const v = e.target.value.split(",").map((s) => s.trim()).filter(Boolean); if (v.join() !== c.categories.join()) update(c.id, { categories: v }); }} className="h-9 w-64" aria-label="Categorias (separadas por vírgula)" />
+            <Input defaultValue={c.categories.join(", ")} onBlur={(e) => { const v = e.target.value.split(",").map((s) => s.trim()).filter(Boolean); if (v.join() !== c.categories.join()) update(c.id, { categories: v }); }} className="h-9 w-full md:w-64" aria-label="Categorias (separadas por vírgula)" />
             <Button size="sm" variant={c.active ? "outline" : "default"} onClick={() => update(c.id, { active: !c.active })}>{c.active ? "Desativar" : "Ativar"}</Button>
           </li>
         ))}
