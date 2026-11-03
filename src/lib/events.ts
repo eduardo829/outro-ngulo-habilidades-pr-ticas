@@ -3,7 +3,7 @@ import { EVENT_COLS } from "@/lib/community";
 
 export type EventRow = {
   id: string; expert_id: string | null; title: string; theme: string; description: string | null; starts_at: string;
-  duration_min: number; capacity: number; recording_url: string | null; summary: string | null; materials: string | null; status: string; is_demo: boolean;
+  duration_min: number; capacity: number; recording_url: string | null; summary: string | null; materials: string | null; status: string; is_demo: boolean; community_id: string | null;
 };
 export type Expert = { id: string; name: string; photo_url: string | null; headline: string | null; experience: string | null; area: string | null; topics: string[]; active: boolean; is_demo: boolean; position: number; user_id: string | null };
 
