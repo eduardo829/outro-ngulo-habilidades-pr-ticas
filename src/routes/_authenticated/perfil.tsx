@@ -129,6 +129,10 @@ function ProfilePage() {
           <div><Label htmlFor="partner">Aberto a networking e parcerias</Label><p className="text-xs text-muted-foreground">Mostra no seu perfil que você topa conversar sobre parcerias.</p></div>
           <Switch id="partner" checked={f.open_to_partnerships} onCheckedChange={(c) => setF({ ...f, open_to_partnerships: c })} />
         </div>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card p-4">
+          <div><p className="text-sm font-medium">Ofereço serviços profissionais</p><p className="text-xs text-muted-foreground">Crie um perfil de especialista. Ele é analisado pela equipe antes de aparecer.</p></div>
+          <Link to="/especialistas/painel" className="text-sm font-medium underline">Quero ser especialista</Link>
+        </div>
         <div><Label htmlFor="link">LinkedIn ou link profissional (opcional)</Label><Input id="link" type="url" value={f.link} onChange={set("link")} placeholder="https://" /></div>
         <div className="flex items-center justify-between rounded-lg border bg-card p-4">
           <div><Label htmlFor="dir">Aparecer em “Pessoas”</Label><p className="text-xs text-muted-foreground">Opcional. Seu e-mail nunca é exibido.</p></div>
