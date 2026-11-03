@@ -330,6 +330,81 @@ export type Database = {
           },
         ]
       }
+      communities: {
+        Row: {
+          active: boolean
+          categories: string[]
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          position: number
+          slug: string
+          visibility: string
+        }
+        Insert: {
+          active?: boolean
+          categories?: string[]
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          position?: number
+          slug: string
+          visibility?: string
+        }
+        Update: {
+          active?: boolean
+          categories?: string[]
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          position?: number
+          slug?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      community_members: {
+        Row: {
+          community_id: string
+          created_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          community_id: string
+          created_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          community_id?: string
+          created_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_members_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           context_post_id: string | null
@@ -764,6 +839,7 @@ export type Database = {
       events: {
         Row: {
           capacity: number
+          community_id: string | null
           created_at: string
           description: string | null
           duration_min: number
@@ -781,6 +857,7 @@ export type Database = {
         }
         Insert: {
           capacity?: number
+          community_id?: string | null
           created_at?: string
           description?: string | null
           duration_min?: number
@@ -798,6 +875,7 @@ export type Database = {
         }
         Update: {
           capacity?: number
+          community_id?: string | null
           created_at?: string
           description?: string | null
           duration_min?: number
@@ -814,6 +892,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "events_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "events_expert_id_fkey"
             columns: ["expert_id"]
@@ -1428,6 +1513,86 @@ export type Database = {
           },
         ]
       }
+      opportunities: {
+        Row: {
+          author_id: string
+          category: string
+          city: string | null
+          created_at: string
+          description: string
+          id: string
+          remote: boolean
+          removed: boolean
+          status: string
+          title: string
+        }
+        Insert: {
+          author_id: string
+          category: string
+          city?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          remote?: boolean
+          removed?: boolean
+          status?: string
+          title: string
+        }
+        Update: {
+          author_id?: string
+          category?: string
+          city?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          remote?: boolean
+          removed?: boolean
+          status?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_interests: {
+        Row: {
+          created_at: string
+          opportunity_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          opportunity_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          opportunity_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_interests_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunity_interests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       plan_actions: {
         Row: {
           created_at: string
@@ -1486,6 +1651,7 @@ export type Database = {
           author_id: string
           body: string
           category: string
+          community_id: string | null
           created_at: string
           featured: boolean
           id: string
@@ -1493,12 +1659,14 @@ export type Database = {
           kind: string
           link_url: string | null
           opportunity_type: string | null
+          pinned: boolean
           removed: boolean
         }
         Insert: {
           author_id?: string
           body: string
           category?: string
+          community_id?: string | null
           created_at?: string
           featured?: boolean
           id?: string
@@ -1506,12 +1674,14 @@ export type Database = {
           kind?: string
           link_url?: string | null
           opportunity_type?: string | null
+          pinned?: boolean
           removed?: boolean
         }
         Update: {
           author_id?: string
           body?: string
           category?: string
+          community_id?: string | null
           created_at?: string
           featured?: boolean
           id?: string
@@ -1519,6 +1689,7 @@ export type Database = {
           kind?: string
           link_url?: string | null
           opportunity_type?: string | null
+          pinned?: boolean
           removed?: boolean
         }
         Relationships: [
@@ -1527,6 +1698,13 @@ export type Database = {
             columns: ["author_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
             referencedColumns: ["id"]
           },
         ]
@@ -1540,13 +1718,16 @@ export type Database = {
           city: string | null
           created_at: string
           display_name: string
+          goals: string | null
           id: string
           in_directory: boolean
           interests: string[]
           is_demo: boolean
+          last_active_at: string | null
           learn_tags: string[]
           link: string | null
           onboarded: boolean
+          open_to_partnerships: boolean
           persona: string | null
           skills: string[]
           suspended: boolean
@@ -1562,13 +1743,16 @@ export type Database = {
           city?: string | null
           created_at?: string
           display_name?: string
+          goals?: string | null
           id: string
           in_directory?: boolean
           interests?: string[]
           is_demo?: boolean
+          last_active_at?: string | null
           learn_tags?: string[]
           link?: string | null
           onboarded?: boolean
+          open_to_partnerships?: boolean
           persona?: string | null
           skills?: string[]
           suspended?: boolean
@@ -1584,13 +1768,16 @@ export type Database = {
           city?: string | null
           created_at?: string
           display_name?: string
+          goals?: string | null
           id?: string
           in_directory?: boolean
           interests?: string[]
           is_demo?: boolean
+          last_active_at?: string | null
           learn_tags?: string[]
           link?: string | null
           onboarded?: boolean
+          open_to_partnerships?: boolean
           persona?: string | null
           skills?: string[]
           suspended?: boolean
@@ -1717,6 +1904,88 @@ export type Database = {
           },
         ]
       }
+      reports: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          reporter_id: string
+          status: string
+          target_id: string
+          target_kind: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason: string
+          reporter_id: string
+          status?: string
+          target_id: string
+          target_kind: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          target_id?: string
+          target_kind?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          community_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          kind: string
+          position: number
+          published: boolean
+          title: string
+          url: string | null
+        }
+        Insert: {
+          community_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind: string
+          position?: number
+          published?: boolean
+          title: string
+          url?: string | null
+        }
+        Update: {
+          community_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          kind?: string
+          position?: number
+          published?: boolean
+          title?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           key: string
@@ -1805,6 +2074,7 @@ export type Database = {
       }
       auth_user_id_by_email: { Args: { _email: string }; Returns: string }
       book_event: { Args: { _event: string }; Returns: undefined }
+      can_view_community: { Args: { _c: string; _u: string }; Returns: boolean }
       checkout_apply_payment: {
         Args: {
           _provider_status: string
@@ -1858,6 +2128,7 @@ export type Database = {
       }
       in_conversation: { Args: { _c: string; _u: string }; Returns: boolean }
       is_active_member: { Args: { _u: string }; Returns: boolean }
+      is_community_mod: { Args: { _c: string; _u: string }; Returns: boolean }
       is_enrolled: {
         Args: { _course: string; _user: string }
         Returns: boolean
@@ -1883,6 +2154,7 @@ export type Database = {
         Args: { _other: string; _post?: string }
         Returns: string
       }
+      touch_activity: { Args: never; Returns: undefined }
       touch_last_lesson: { Args: { _lesson: string }; Returns: undefined }
     }
     Enums: {
