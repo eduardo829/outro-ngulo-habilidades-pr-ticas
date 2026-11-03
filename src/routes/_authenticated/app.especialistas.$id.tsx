@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/app/especialistas/$id")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Especialista — Outro Ângulo" }, { name: "description", content: "Perfil profissional na comunidade Outro Ângulo." }, { property: "og:title", content: "Especialista — Outro Ângulo" }, { property: "og:description", content: "Perfil profissional na comunidade Outro Ângulo." }, { property: "og:type", content: "profile" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Profile,
 });

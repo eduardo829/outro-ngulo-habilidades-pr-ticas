@@ -10,6 +10,7 @@ import { eventWhen } from "@/lib/community";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/encontros/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Encontros — Outro Ângulo" }, { name: "description", content: "Conversas em grupo com pessoas que já viveram o problema." }, { property: "og:title", content: "Encontros — Outro Ângulo" }, { property: "og:description", content: "Conversas em grupo com pessoas que já viveram o problema." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Events,
 });

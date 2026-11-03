@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Angle, SectionLabel } from "@/components/Angle";
 
 export const Route = createFileRoute("/especialistas")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Especialistas — Outro Ângulo" },

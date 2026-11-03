@@ -12,6 +12,7 @@ import { getEngineCourse } from "@/lib/learning/courses";
 import { EngineCoursePublic } from "@/components/learning/EngineCoursePublic";
 
 export const Route = createFileRoute("/cursos/$slug")({
+  staticData: { sitemap: true },
   head: ({ params }) => {
     const c = getEngineCourse(params.slug);
     const title = c ? `${c.title} — Curso Outro Ângulo` : "Curso — Outro Ângulo";

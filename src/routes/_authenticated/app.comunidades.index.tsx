@@ -6,6 +6,7 @@ import { Page } from "@/components/community/Bits";
 import { VISIBILITY_LABEL } from "@/lib/ecosystem";
 
 export const Route = createFileRoute("/_authenticated/app/comunidades/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Comunidades — Outro Ângulo" }, { name: "description", content: "Encontre sua comunidade e participe das conversas." }, { property: "og:title", content: "Comunidades — Outro Ângulo" }, { property: "og:description", content: "Encontre sua comunidade e participe das conversas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Communities,
 });

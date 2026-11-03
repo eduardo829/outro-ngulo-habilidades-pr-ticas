@@ -10,6 +10,7 @@ import { SPECIALIST_CATEGORIES, STATUS_LABEL, type ProStatus } from "@/lib/speci
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin/ecossistema")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Especialistas e serviços — Admin" }, { name: "robots", content: "noindex" }] }),
   component: Admin,
 });

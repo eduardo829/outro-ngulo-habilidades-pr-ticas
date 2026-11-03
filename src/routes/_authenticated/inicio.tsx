@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 
 export const Route = createFileRoute("/_authenticated/inicio")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Meu início — Outro Ângulo" }, { name: "description", content: "Seu painel: cursos, encontros, comunidade e próximo passo." }, { property: "og:title", content: "Meu início — Outro Ângulo" }, { property: "og:description", content: "Seu painel: cursos, encontros, comunidade e próximo passo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Dashboard,
 });

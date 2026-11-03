@@ -11,6 +11,7 @@ import { seedDemo, removeDemo } from "@/lib/demo.functions";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated/admin/comunidade")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Moderação — Outro Ângulo" }, { name: "description", content: "Administre moderação no Outro Ângulo." }, { property: "og:title", content: "Moderação — Outro Ângulo" }, { property: "og:description", content: "Administre moderação no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Moderation,
 });

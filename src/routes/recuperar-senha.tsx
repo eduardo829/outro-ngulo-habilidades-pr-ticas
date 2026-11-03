@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/recuperar-senha")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Recuperar senha — Outro Ângulo" },

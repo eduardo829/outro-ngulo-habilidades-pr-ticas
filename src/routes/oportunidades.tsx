@@ -14,6 +14,7 @@ const T = "Oportunidades — Outro Ângulo";
 const D = "Às vezes a oportunidade não é uma vaga. É uma pessoa. Projetos, parcerias e trabalhos compartilhados entre membros.";
 
 export const Route = createFileRoute("/oportunidades")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Page,
 });

@@ -14,6 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 const T = "Especialistas — Outro Ângulo";
 const D = "Profissionais de IA, sistemas, marketing, finanças, jurídico, gestão e design para o seu negócio.";
 export const Route = createFileRoute("/_authenticated/app/especialistas/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Directory,
 });

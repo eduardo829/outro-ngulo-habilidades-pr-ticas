@@ -14,6 +14,7 @@ const T = "Gestores — Outro Ângulo";
 const D = "Algumas coisas você aprende estudando. Outras, fazendo. Gestores trazem experiência real para dentro das conversas do Outro Ângulo.";
 
 export const Route = createFileRoute("/gestores/")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Page,
 });

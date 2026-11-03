@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 // Mercado Pago payment notifications. Signature is verified, then the payment is re-read from the API before any access change.
 export const Route = createFileRoute("/api/public/mercadopago-webhook")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       POST: async ({ request }) => {

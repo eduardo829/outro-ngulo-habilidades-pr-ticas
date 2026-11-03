@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): { modo?: "cadastro"; redirect?: string } => {
     const r = typeof s["redirect"] === "string" && /^\/(?!\/)/.test(s["redirect"]) && !s["redirect"].startsWith("/auth") ? s["redirect"] : undefined;
     return { ...(s["modo"] === "cadastro" ? { modo: "cadastro" as const } : {}), ...(r ? { redirect: r } : {}) };

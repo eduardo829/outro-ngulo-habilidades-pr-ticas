@@ -6,6 +6,7 @@ import { MemberLink } from "@/components/MemberLink";
 import { Angle, SectionLabel } from "@/components/Angle";
 
 export const Route = createFileRoute("/como-funciona")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Como funciona — Outro Ângulo" },

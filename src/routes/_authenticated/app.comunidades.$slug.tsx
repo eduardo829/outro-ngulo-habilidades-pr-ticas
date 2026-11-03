@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/app/comunidades/$slug")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Comunidade — Outro Ângulo" }, { name: "description", content: "Feed, membros e eventos da comunidade." }, { property: "og:title", content: "Comunidade — Outro Ângulo" }, { property: "og:description", content: "Feed, membros e eventos da comunidade." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: CommunityPage,
 });

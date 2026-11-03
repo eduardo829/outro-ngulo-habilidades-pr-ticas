@@ -9,6 +9,7 @@ import { CourseCard } from "@/components/CourseCard";
 import { Angle, SectionLabel } from "@/components/Angle";
 
 export const Route = createFileRoute("/academia")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Academia — Outro Ângulo" },

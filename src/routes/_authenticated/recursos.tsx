@@ -6,6 +6,7 @@ import { Page, Tag } from "@/components/community/Bits";
 import { RESOURCE_KINDS } from "@/lib/ecosystem";
 
 export const Route = createFileRoute("/_authenticated/recursos")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Recursos — Outro Ângulo" }, { name: "description", content: "Templates, planilhas, checklists, prompts e guias práticos." }, { property: "og:title", content: "Recursos — Outro Ângulo" }, { property: "og:description", content: "Templates, planilhas, checklists, prompts e guias práticos." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Resources,
 });

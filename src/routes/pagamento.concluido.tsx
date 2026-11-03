@@ -8,6 +8,7 @@ import { getGuestStatus } from "@/lib/checkout.functions";
 import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/pagamento/concluido")({
+  staticData: { sitemap: false },
   validateSearch: z.object({
     curso: z.string().max(120).optional(),
     pedido: z.string().uuid().optional(),

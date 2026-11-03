@@ -28,6 +28,7 @@ const SLUG = "corretor-na-pratica";
 const course = getEngineCourse(SLUG);
 
 export const Route = createFileRoute("/corretor-na-pratica")({
+  staticData: { sitemap: true },
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
     const origem = origemFromSearch(s);
     return origem ? { origem } : {};

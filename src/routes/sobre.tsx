@@ -11,6 +11,7 @@ const T = "Sobre — Outro Ângulo";
 const D = "O conhecimento nunca esteve tão disponível. Mas informação não é experiência. Por que estamos construindo uma rede, não apenas uma escola?";
 
 export const Route = createFileRoute("/sobre")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: About,
 });

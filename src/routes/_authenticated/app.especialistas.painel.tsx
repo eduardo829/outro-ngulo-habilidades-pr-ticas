@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/app/especialistas/painel")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Meu perfil profissional — Outro Ângulo" }, { name: "description", content: "Cadastre seu perfil profissional e acompanhe solicitações de serviço." }, { property: "og:title", content: "Meu perfil profissional — Outro Ângulo" }, { property: "og:description", content: "Cadastre seu perfil profissional e acompanhe solicitações de serviço." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Painel,
 });

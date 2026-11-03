@@ -13,6 +13,7 @@ const T = "Encontros ao vivo — Outro Ângulo";
 const D = "Aulas ao vivo, plantões de dúvidas, workshops e encontros de networking com vagas limitadas e perguntas enviadas antes.";
 
 export const Route = createFileRoute("/conheca-os-encontros")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Page,
 });

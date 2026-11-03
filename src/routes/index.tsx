@@ -12,6 +12,7 @@ import { GESTORES } from "@/lib/gestores";
 import { Angle, SectionLabel } from "@/components/Angle";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Outro Ângulo — Aprenda. Conecte-se. Construa." },

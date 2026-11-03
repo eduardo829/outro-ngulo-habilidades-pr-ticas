@@ -11,6 +11,7 @@ import { CATEGORIES } from "@/lib/community";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/comunidade/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Comunidade — Outro Ângulo" }, { name: "description", content: "Perguntas, experiências e oportunidades entre membros." }, { property: "og:title", content: "Comunidade — Outro Ângulo" }, { property: "og:description", content: "Perguntas, experiências e oportunidades entre membros." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   beforeLoad: () => { throw redirect({ to: "/app/comunidades/$slug", params: { slug: "empreender-do-zero" }, replace: true }); },
   component: Community,

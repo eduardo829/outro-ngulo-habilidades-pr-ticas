@@ -3,6 +3,7 @@ import { aiQuota } from "@/lib/ai-limits.server";
 
 // Read-only allowance status for the current visitor/member (does not consume).
 export const Route = createFileRoute("/api/ai-usage")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       GET: async ({ request }) => {
