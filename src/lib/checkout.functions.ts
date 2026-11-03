@@ -571,6 +571,8 @@ export const getPurchaseStatus = createServerFn({ method: "POST" })
  * Checkout without an account (campaign pages). Price comes from the database; Stripe collects the e-mail.
  * After Stripe confirms payment, the webhook binds the purchase to that e-mail's account (creating it by invite).
  */
+const GUEST_COOKIE = "oa_guest_order";
+
 export const createGuestCheckout = createServerFn({ method: "POST" })
   .inputValidator((d) =>
     z
@@ -583,10 +585,31 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { stripeCreateSession, GUEST_REF } = await import("./stripe.server");
+    const { stripeCreateSession, stripeGetSession, GUEST_REF } = await import("./stripe.server");
+    const { getRequestHeader, getCookie, setCookie } = await import("@tanstack/react-start/server");
+    // Only our own pages may start a guest order (blocks cross-site/scripted creation from other origins).
+    const reqOrigin = getRequestHeader("origin");
+    if (reqOrigin && !ALLOWED_ORIGIN.test(reqOrigin)) throw new Error("Não foi possível iniciar o pagamento.");
     const origin = ALLOWED_ORIGIN.test(data.origin) ? data.origin : "https://outroangulo.com";
     const c = await loadSellable(data.slug);
     if (!c) throw new Error("Este curso não está à venda.");
+    // Reuse this browser's still-open order instead of creating new rows on every click.
+    const prev = getCookie(GUEST_COOKIE);
+    if (prev && /^[0-9a-f-]{36}$/i.test(prev)) {
+      const { data: old } = await supabaseAdmin
+        .from("guest_checkouts")
+        .select("id, status, session_id, course_id, amount_cents")
+        .eq("id", prev)
+        .maybeSingle();
+      if (old && old.status === "pending" && old.session_id && old.course_id === c.id && old.amount_cents === c.cents) {
+        try {
+          const s = await stripeGetSession(old.session_id);
+          if (s && s.status === "open" && s.payment_status === "unpaid" && s.url) return { checkout_url: s.url as string };
+        } catch {
+          /* fall through to a fresh order */
+        }
+      }
+    }
     const { data: g, error } = await supabaseAdmin
       .from("guest_checkouts")
       .insert({ course_id: c.id, amount_cents: c.cents, currency: "BRL", origin: data.origem ?? null })
@@ -606,6 +629,8 @@ export const createGuestCheckout = createServerFn({ method: "POST" })
     );
     if (!session.url) throw new Error("Não foi possível iniciar o pagamento.");
     await supabaseAdmin.from("guest_checkouts").update({ session_id: session.id }).eq("id", g.id);
+    // Binds the order to this browser: only it can read the order status later.
+    setCookie(GUEST_COOKIE, g.id, { httpOnly: true, secure: true, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 7 });
     return { checkout_url: session.url };
   });
 
@@ -615,6 +640,9 @@ export const getGuestStatus = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { maskEmail } = await import("./checkout-logic");
+    const { getCookie } = await import("@tanstack/react-start/server");
+    // Only the browser that created the order may see its status.
+    if (getCookie(GUEST_COOKIE) !== data.id) return { status: "unknown" as const, email: null, invited: false };
     const read = () =>
       supabaseAdmin
         .from("guest_checkouts")
