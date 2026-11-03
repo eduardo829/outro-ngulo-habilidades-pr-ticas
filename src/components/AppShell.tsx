@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, type ReactNode } from "react";
-import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target, Globe, Info, Wrench, Handshake, FolderOpen } from "lucide-react";
+import { Fragment, useEffect, type ReactNode } from "react";
+import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target, Globe, Info, Wrench, Handshake, FolderOpen, BriefcaseBusiness } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth";
@@ -63,6 +63,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const me = useMyProfile();
   const unread = useUnread();
+  const specialists = useQuery({ queryKey: ["has-specialists"], staleTime: 300_000, queryFn: async () => (await supabase.rpc("has_public_specialists")).data === true });
 
   useEffect(() => {
     if (me.data) supabase.rpc("touch_activity").then(() => {});
@@ -91,9 +92,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Link to="/inicio" className="px-2 py-2"><Logo /></Link>
         <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Navegação principal">
           {NAV.map(({ to, label, icon: Icon }) => (
-            <Link key={to} to={to} className={linkCls} activeProps={active}>
-              <Icon className="h-4 w-4" aria-hidden />{label}
-            </Link>
+            <Fragment key={to}>
+              <Link to={to} className={linkCls} activeProps={active}>
+                <Icon className="h-4 w-4" aria-hidden />{label}
+              </Link>
+              {to === "/mural" && (specialists.data || isAdmin) && (
+                <Link to="/especialistas" className={linkCls} activeProps={active}><BriefcaseBusiness className="h-4 w-4" aria-hidden />Especialistas</Link>
+              )}
+            </Fragment>
           ))}
           <Link to="/missoes" className={linkCls} activeProps={active}><Target className="h-4 w-4" aria-hidden />Missões</Link>
           <div className="my-3 border-t" />
