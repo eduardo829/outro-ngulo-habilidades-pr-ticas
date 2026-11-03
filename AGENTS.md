@@ -14,7 +14,7 @@
 - Authorization lives in Postgres RLS + security-definer helpers (has_role, is_enrolled); UI gates are cosmetic. Why: user asked for server-side enforcement.
 - Roles live only in public.user_roles; admins cannot change their own roles/enrollments (policy `user_id <> auth.uid()`). Why: prevent self-escalation.
 - Lesson rows are readable only by enrolled users, previews, or admins; public outlines go through the `course_outline` RPC (titles only). Why: no private content leakage via catalog.
-- Video is stored as provider + id/url, parsed in src/lib/video.ts into an allowlisted embed; never raw HTML. Why: XSS safety.
+- Video = provider + id/url parsed by src/lib/video.ts into allowlisted embeds. Why: XSS safety.
 - Accessing user e-mails is admin-only via src/lib/admin.functions.ts (service role loaded inside handler after role check). Why: e-mails never exposed to members.
 - Editable institutional content (founders, offer, support) lives in public.site_settings. Why: admins edit without code.
 - AI calls go through server functions (src/lib/*.functions.ts) to the AI Gateway Responses API, output validated against known data (e.g. trail titles). Why: keep keys server-side and avoid invented content.
@@ -31,7 +31,7 @@
 - Stripe checkout resumption is separate from stored payment status: verified open/unpaid sessions reuse their URL, while complete/unpaid and unknown sessions block new checkout creation. Why: abandoned checkout must remain payable without duplicating asynchronous payments.
 - Meta pixel (src/lib/meta-pixel.ts) loads and reports only through the advertising-consent gate in src/lib/consent.ts (regional banner route; unknown/failed region lookup = consent required). New ad events must call trackConversionEvent, never window.fbq directly. Why: no tracking without recorded consent evidence.
 - Campaign sales pages (e.g. /corretor-na-pratica) are dedicated conversion routes: content renders only from real course data, campaign attribution is sanitized and stored on purchases, and checkoutReturnPath preserves it through login and Stripe cancellation. Why: fewer clicks to buy without losing attribution or hardcoding prices.
-- Message recipients have UPDATE on read_at only. Why: marking read must never permit editing another user's message.
-- Security database regressions execute actual migration SQL in isolated PGlite. Why: verify permissions and state transitions without real purchases.
+- Message recipients may UPDATE read_at only. Why: no editing others' messages.
+- DB security tests run real migration SQL in PGlite. Why: verify RLS without real purchases.
 - Admin reports (src/lib/reports.functions.ts, /admin/relatorios) are built server-side from real data after has_role check, with optional AI reading restricted to those numbers, and are e-mailed only on demand to the requesting admin. Why: no list/scheduled sends through app e-mail, no invented figures.
 - Ecosystem 2.0: posts scoped by communities (RESTRICTIVE RLS via can_view_community); opportunities, reports, resources are owner/staff tables moderated at /admin/moderacao. Why: moderation without touching courses/payments.
