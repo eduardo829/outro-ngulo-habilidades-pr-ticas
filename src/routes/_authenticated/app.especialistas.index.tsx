@@ -9,6 +9,8 @@ import { SPECIALIST_CATEGORIES, badgeFor, canShowBudget, matchesSpecialist } fro
 import { RequestForm } from "@/components/specialists/RequestForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PartnerGrid, partnersQuery } from "@/components/partners/Partners";
+import { FOUNDER_NOTE } from "@/lib/partners";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const T = "Especialistas — Outro Ângulo";
@@ -85,6 +87,20 @@ function Directory() {
           <RequestForm onDone={() => setOpen(false)} />
         </DialogContent>
       </Dialog>
+      <MemberPartners />
     </Page>
+  );
+}
+
+function MemberPartners() {
+  const { data = [] } = useQuery(partnersQuery);
+  if (!data.length) return null;
+  return (
+    <section className="mt-14 border-t pt-8">
+      <p className="eyebrow">Empresas parceiras</p>
+      <h2 className="mt-2 text-2xl font-extrabold">Parceiros do ecossistema</h2>
+      <p className="mt-2 max-w-xl text-sm text-muted-foreground">{FOUNDER_NOTE}</p>
+      <div className="mt-8"><PartnerGrid partners={data} origin="membros" /></div>
+    </section>
   );
 }
