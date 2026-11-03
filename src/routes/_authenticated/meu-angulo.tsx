@@ -196,7 +196,7 @@ function resLink(type: string | null, ref: string | null) {
     case "tool": return <Link to="/ferramentas" search={{ t: res.ref as "validador" }} className={cls}>Ferramenta: {res.label}</Link>;
     case "community": return <Link to="/comunidade" className={cls}>{res.label}</Link>;
     case "people": return <Link to="/pessoas" className={cls}>{res.label}</Link>;
-    case "opportunity": return <Link to="/oportunidades" className={cls}>{res.label}</Link>;
+    case "opportunity": return <Link to="/mural" className={cls}>{res.label}</Link>;
   }
 }
 
