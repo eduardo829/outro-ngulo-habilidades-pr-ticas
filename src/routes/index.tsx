@@ -114,16 +114,12 @@ function Home() {
         <SectionLabel n="01">Um ecossistema de possibilidades</SectionLabel>
         <h2 className="mt-5 max-w-2xl text-4xl font-extrabold leading-[1.02] md:text-5xl">Mais do que cursos.<br />Um lugar para construir.</h2>
         <div className="mt-12 grid gap-px border bg-border sm:grid-cols-2 lg:grid-cols-4">
-          {PILARES.map(({ icon: Icon, t, d, ...link }) => (
+          {PILARES.map(({ icon: Icon, t, d, to }) => (
             <article key={t} className="group flex flex-col bg-background p-6 transition-colors duration-300 hover:bg-card">
               <Icon className="h-5 w-5 text-primary" aria-hidden />
               <h3 className="mt-4 font-display text-xl font-bold">{t}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{d}</p>
-              {"to" in link ? (
-                <Link to={link.to} className="link-arrow mt-5 text-sm">Conhecer <ArrowRight className="h-4 w-4" /></Link>
-              ) : (
-                <a href={link.href} className="link-arrow mt-5 text-sm">Conhecer <ArrowRight className="h-4 w-4" /></a>
-              )}
+              <Link to={to} className="link-arrow mt-5 text-sm">Conhecer <ArrowRight className="h-4 w-4" /></Link>
             </article>
           ))}
         </div>
@@ -172,7 +168,7 @@ function Home() {
                 <SectionLabel n="04">Comunidades em destaque</SectionLabel>
                 <h2 className="mt-5 text-4xl font-extrabold md:text-5xl">Conversas que<br />fazem diferença</h2>
               </div>
-              <Link to="/conheca-a-comunidade" className="link-arrow text-sm">Conhecer <ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/comunidades" className="link-arrow text-sm">Conhecer <ArrowRight className="h-4 w-4" /></Link>
             </div>
             <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {communities.data.slice(0, 3).map((c) => (
