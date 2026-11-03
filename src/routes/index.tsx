@@ -28,10 +28,10 @@ export const Route = createFileRoute("/")({
 });
 
 const PILARES = [
-  { icon: MessagesSquare, t: "Comunidades", d: "Conecte-se com pessoas que compartilham seus interesses e objetivos.", to: "/conheca-a-comunidade" },
-  { icon: BriefcaseBusiness, t: "Especialistas", d: "Encontre profissionais de IA, tecnologia, marketing, gestão, contabilidade e outras áreas.", href: "#especialistas" },
+  { icon: MessagesSquare, t: "Comunidades", d: "Conecte-se com pessoas que compartilham seus interesses e objetivos.", to: "/comunidades" },
+  { icon: BriefcaseBusiness, t: "Especialistas", d: "Encontre profissionais de IA, tecnologia, marketing, gestão, contabilidade e outras áreas.", to: "/especialistas" },
   { icon: Handshake, t: "Startups e Oportunidades", d: "Descubra projetos, encontre parceiros e apresente suas ideias.", to: "/oportunidades" },
-  { icon: BookOpen, t: "Academia", d: "Aprenda habilidades práticas por meio de cursos, desafios e conteúdos.", to: "/cursos" },
+  { icon: BookOpen, t: "Academia", d: "Aprenda habilidades práticas por meio de cursos, desafios e conteúdos.", to: "/academia" },
 ] as const;
 
 const PASSOS = [
