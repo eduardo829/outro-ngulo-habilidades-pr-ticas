@@ -2,12 +2,13 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Heart, Bookmark, MessageCircle, HandHelping, Star } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar, Tag } from "@/components/community/Bits";
+import { ReportButton } from "@/components/community/ReportButton";
 import { KINDS, openConversation, timeAgo, type MiniProfile } from "@/lib/community";
 import { cn } from "@/lib/utils";
 
 export type FeedPost = {
   id: string; author_id: string; kind: string; category: string; opportunity_type: string | null; body: string;
-  link_url: string | null; image_url: string | null; featured: boolean; removed: boolean; created_at: string;
+  link_url: string | null; image_url: string | null; featured: boolean; pinned?: boolean; removed: boolean; created_at: string;
   likes: number; liked: boolean; saved: boolean; comments: number; author?: MiniProfile;
 };
 
@@ -29,6 +30,7 @@ export function PostCard({ p, me, onToggle, compact }: { p: FeedPost; me: string
           <span className="text-muted-foreground"> · {timeAgo(p.created_at)}</span>
           {p.author?.persona && <p className="truncate text-xs text-muted-foreground">{p.author.persona}{p.author.city ? ` · ${p.author.city}` : ""}</p>}
         </div>
+        {p.pinned && <Tag tone="primary">Fixado</Tag>}
         {p.featured && <Star className="h-4 w-4 fill-primary text-primary" aria-label="Destacado pela equipe" />}
       </header>
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -52,6 +54,7 @@ export function PostCard({ p, me, onToggle, compact }: { p: FeedPost; me: string
           <button onClick={() => onToggle?.("save")} className={cn("flex items-center gap-1.5 rounded-md px-2 py-1.5 hover:bg-secondary", p.saved && "text-primary")} aria-pressed={p.saved}>
             <Bookmark className={cn("h-4 w-4", p.saved && "fill-current")} /><span className="sr-only">Salvar</span>
           </button>
+          {p.author_id !== me && <ReportButton kind="post" id={p.id} />}
           {special && p.author_id !== me && (
             <button onClick={reach} className="ml-auto flex items-center gap-1.5 rounded-full border border-primary/40 px-3 py-1.5 font-medium text-primary hover:bg-accent">
               <HandHelping className="h-4 w-4" />{p.kind === "ajuda" ? "Posso ajudar" : "Tenho interesse"}

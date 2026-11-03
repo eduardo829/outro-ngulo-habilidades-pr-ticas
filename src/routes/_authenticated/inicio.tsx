@@ -10,6 +10,7 @@ import { useAuth } from "@/lib/auth";
 import { fetchMyCourses } from "@/lib/student";
 import { fetchEvents } from "@/lib/events";
 import { fetchFeed } from "@/lib/feed";
+import { OPP_CATEGORIES } from "@/lib/ecosystem";
 import { useMyProfile } from "@/components/AppShell";
 import { Page, SectionTitle } from "@/components/community/Bits";
 import { EventCard } from "@/components/community/EventCard";
@@ -23,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/inicio")({
   component: Dashboard,
 });
 
-const more = (to: "/encontros" | "/comunidade" | "/pessoas") => <Link to={to} className="text-sm text-primary hover:underline">Ver tudo</Link>;
+const more = (to: "/encontros" | "/comunidades" | "/pessoas" | "/mural") => <Link to={to} className="text-sm text-primary hover:underline">Ver tudo</Link>;
 
 function NextStep() {
   const { user } = useAuth();
@@ -88,6 +89,8 @@ function Dashboard() {
     },
   });
 
+  const opps = useQuery({ queryKey: ["opportunities", "home", user?.id], enabled: !!user, queryFn: async () => (await supabase.from("opportunities").select("id, title, category, city, remote").eq("status", "open").eq("removed", false).order("created_at", { ascending: false }).limit(3)).data ?? [] });
+
   const first = (me.data?.display_name ?? "").split(" ")[0];
   const cont = courses.data?.find((c) => c.lastLesson) ?? courses.data?.[0];
 
@@ -99,7 +102,11 @@ function Dashboard() {
         <div className="flex min-h-[200px] flex-col justify-end p-6 md:min-h-[240px] md:items-end md:p-10 md:text-right">
           <p className="eyebrow !text-ink-foreground/70">Seu ponto de vista de hoje</p>
           <h1 className="mt-3 text-3xl font-extrabold md:text-5xl">Olá{first ? `, ${first}` : ""}.</h1>
-          <p className="mt-2 text-lg text-ink-foreground/80">O que você quer desenvolver agora?</p>
+          <p className="mt-2 text-lg text-ink-foreground/80">O que você pode aprender, fazer ou conquistar hoje?</p>
+          <div className="mt-4 flex flex-wrap gap-2 md:justify-end">
+            <Button asChild size="sm" className="bg-highlight text-highlight-foreground hover:bg-highlight/90"><Link to="/comunidades/$slug" params={{ slug: "empreender-do-zero" }}>Publicar</Link></Button>
+            <Button asChild size="sm" variant="outline" className="border-ink-foreground/40 bg-transparent text-ink-foreground hover:bg-ink-foreground/10"><Link to="/comunidades">Explorar comunidades</Link></Button>
+          </div>
           <span aria-hidden className="mt-5 block h-px w-16 bg-highlight" />
         </div>
       </header>
@@ -140,12 +147,18 @@ function Dashboard() {
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
         <section>
-          <SectionTitle action={more("/comunidade")}>Acontecendo na comunidade</SectionTitle>
+          <SectionTitle action={more("/comunidades")}>Acontecendo na comunidade</SectionTitle>
           <div className="rounded-xl border bg-card px-5">
-            {feed.data?.length ? feed.data.map((p) => <PostCard key={p.id} p={p} me={user!.id} compact />) : <p className="py-6 text-muted-foreground">Ainda sem publicações. <Link to="/comunidade" className="text-primary underline">Comece uma conversa</Link>.</p>}
+            {feed.data?.length ? feed.data.map((p) => <PostCard key={p.id} p={p} me={user!.id} compact />) : <p className="py-6 text-muted-foreground">Ainda sem publicações. <Link to="/comunidades/$slug" params={{ slug: "empreender-do-zero" }} className="text-primary underline">Comece uma conversa</Link>.</p>}
           </div>
         </section>
         <section>
+          <SectionTitle action={more("/mural")}>Oportunidades recentes</SectionTitle>
+          {opps.data?.length ? (
+            <ul className="mb-8 divide-y rounded-xl border bg-card px-5">
+              {opps.data.map((o) => <li key={o.id} className="py-3"><Link to="/mural" className="font-medium hover:underline">{o.title}</Link><p className="text-xs text-muted-foreground">{OPP_CATEGORIES[o.category]}{o.city ? ` · ${o.city}` : ""}{o.remote ? " · Remoto" : ""}</p></li>)}
+            </ul>
+          ) : <p className="mb-8 text-muted-foreground">Nenhuma oportunidade aberta. <Link to="/mural" className="text-primary underline">Publique a primeira</Link>.</p>}
           <SectionTitle action={more("/pessoas")}>Pessoas para conhecer</SectionTitle>
           <ul className="grid gap-4">
             {people.data?.map((p) => <PersonCard key={p.id} p={p} />)}

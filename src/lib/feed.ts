@@ -2,9 +2,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchProfiles } from "@/lib/community";
 import type { FeedPost } from "@/components/community/PostCard";
 
-export async function fetchFeed(me: string, opts: { category?: string | undefined; kind?: string | undefined; saved?: boolean; limit?: number; ids?: string[] } = {}) {
-  let q = supabase.from("posts").select("*").order("featured", { ascending: false }).order("created_at", { ascending: false }).limit(opts.limit ?? 50);
+export async function fetchFeed(me: string, opts: { category?: string | undefined; kind?: string | undefined; saved?: boolean; limit?: number; communityId?: string | undefined; ids?: string[] } = {}) {
+  let q = supabase.from("posts").select("*").order("pinned", { ascending: false }).order("featured", { ascending: false }).order("created_at", { ascending: false }).limit(opts.limit ?? 50);
   if (opts.category && opts.category !== "Todas") q = q.eq("category", opts.category);
+  if (opts.communityId) q = q.eq("community_id", opts.communityId);
   if (opts.kind) q = q.eq("kind", opts.kind);
   if (opts.ids) q = q.in("id", opts.ids.length ? opts.ids : ["00000000-0000-0000-0000-000000000000"]);
   if (opts.saved) {

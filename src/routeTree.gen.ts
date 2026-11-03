@@ -31,8 +31,10 @@ import { Route as AuthenticatedInicioRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedMeuAnguloRouteImport } from './routes/_authenticated/meu-angulo'
 import { Route as AuthenticatedMeuEspacoRouteImport } from './routes/_authenticated/meu-espaco'
 import { Route as AuthenticatedMeusCursosRouteImport } from './routes/_authenticated/meus-cursos'
+import { Route as AuthenticatedMuralRouteImport } from './routes/_authenticated/mural'
 import { Route as AuthenticatedNotificacoesRouteImport } from './routes/_authenticated/notificacoes'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as AuthenticatedRecursosRouteImport } from './routes/_authenticated/recursos'
 import { Route as ApiAiUsageRouteImport } from './routes/api/ai-usage'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
@@ -49,12 +51,15 @@ import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
 import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
+import { Route as AuthenticatedAdminModeracaoRouteImport } from './routes/_authenticated/admin/moderacao'
 import { Route as AuthenticatedAdminRelatoriosRouteImport } from './routes/_authenticated/admin/relatorios'
 import { Route as AuthenticatedAdminVideosRouteImport } from './routes/_authenticated/admin/videos'
 import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authenticated/aula.$lessonId'
 import { Route as AuthenticatedCheckoutSlugRouteImport } from './routes/_authenticated/checkout.$slug'
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
+import { Route as AuthenticatedComunidadesIndexRouteImport } from './routes/_authenticated/comunidades.index'
+import { Route as AuthenticatedComunidadesSlugRouteImport } from './routes/_authenticated/comunidades.$slug'
 import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
 import { Route as AuthenticatedEncontrosIndexRouteImport } from './routes/_authenticated/encontros.index'
 import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenticated/encontros.$id'
@@ -185,6 +190,11 @@ const AuthenticatedMeusCursosRoute = AuthenticatedMeusCursosRouteImport.update({
   path: '/meus-cursos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMuralRoute = AuthenticatedMuralRouteImport.update({
+  id: '/mural',
+  path: '/mural',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedNotificacoesRoute =
   AuthenticatedNotificacoesRouteImport.update({
     id: '/notificacoes',
@@ -194,6 +204,11 @@ const AuthenticatedNotificacoesRoute =
 const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRecursosRoute = AuthenticatedRecursosRouteImport.update({
+  id: '/recursos',
+  path: '/recursos',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ApiAiUsageRoute = ApiAiUsageRouteImport.update({
@@ -281,6 +296,12 @@ const AuthenticatedAdminGestoresRoute =
     path: '/gestores',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminModeracaoRoute =
+  AuthenticatedAdminModeracaoRouteImport.update({
+    id: '/moderacao',
+    path: '/moderacao',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminRelatoriosRoute =
   AuthenticatedAdminRelatoriosRouteImport.update({
     id: '/relatorios',
@@ -315,6 +336,18 @@ const AuthenticatedComunidadePostIdRoute =
   AuthenticatedComunidadePostIdRouteImport.update({
     id: '/comunidade/$postId',
     path: '/comunidade/$postId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedComunidadesIndexRoute =
+  AuthenticatedComunidadesIndexRouteImport.update({
+    id: '/comunidades/',
+    path: '/comunidades/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedComunidadesSlugRoute =
+  AuthenticatedComunidadesSlugRouteImport.update({
+    id: '/comunidades/$slug',
+    path: '/comunidades/$slug',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedCursoSlugRoute = AuthenticatedCursoSlugRouteImport.update({
@@ -453,8 +486,10 @@ export interface FileRoutesByFullPath {
   '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/mural': typeof AuthenticatedMuralRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/recursos': typeof AuthenticatedRecursosRoute
   '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -470,11 +505,13 @@ export interface FileRoutesByFullPath {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
   '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
+  '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
@@ -485,6 +522,7 @@ export interface FileRoutesByFullPath {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
+  '/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/missoes/': typeof AuthenticatedMissoesIndexRoute
@@ -519,8 +557,10 @@ export interface FileRoutesByTo {
   '/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/mural': typeof AuthenticatedMuralRoute
   '/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/recursos': typeof AuthenticatedRecursosRoute
   '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -536,11 +576,13 @@ export interface FileRoutesByTo {
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
   '/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
+  '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
@@ -551,6 +593,7 @@ export interface FileRoutesByTo {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
+  '/comunidades': typeof AuthenticatedComunidadesIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/missoes': typeof AuthenticatedMissoesIndexRoute
@@ -588,8 +631,10 @@ export interface FileRoutesById {
   '/_authenticated/meu-angulo': typeof AuthenticatedMeuAnguloRoute
   '/_authenticated/meu-espaco': typeof AuthenticatedMeuEspacoRoute
   '/_authenticated/meus-cursos': typeof AuthenticatedMeusCursosRoute
+  '/_authenticated/mural': typeof AuthenticatedMuralRoute
   '/_authenticated/notificacoes': typeof AuthenticatedNotificacoesRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/_authenticated/recursos': typeof AuthenticatedRecursosRoute
   '/api/ai-usage': typeof ApiAiUsageRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/cursos/$slug': typeof CursosSlugRoute
@@ -605,11 +650,13 @@ export interface FileRoutesById {
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
   '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
+  '/_authenticated/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
   '/_authenticated/admin/relatorios': typeof AuthenticatedAdminRelatoriosRoute
   '/_authenticated/admin/videos': typeof AuthenticatedAdminVideosRoute
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
+  '/_authenticated/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
@@ -620,6 +667,7 @@ export interface FileRoutesById {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
+  '/_authenticated/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/missoes/': typeof AuthenticatedMissoesIndexRoute
@@ -657,8 +705,10 @@ export interface FileRouteTypes {
     | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
+    | '/mural'
     | '/notificacoes'
     | '/perfil'
+    | '/recursos'
     | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
@@ -674,11 +724,13 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/moderacao'
     | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
     | '/comunidade/$postId'
+    | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
     | '/gestores/$id'
@@ -689,6 +741,7 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/admin/'
     | '/comunidade/'
+    | '/comunidades/'
     | '/encontros/'
     | '/mensagens/'
     | '/missoes/'
@@ -723,8 +776,10 @@ export interface FileRouteTypes {
     | '/meu-angulo'
     | '/meu-espaco'
     | '/meus-cursos'
+    | '/mural'
     | '/notificacoes'
     | '/perfil'
+    | '/recursos'
     | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
@@ -740,11 +795,13 @@ export interface FileRouteTypes {
     | '/admin/configuracoes'
     | '/admin/encontros'
     | '/admin/gestores'
+    | '/admin/moderacao'
     | '/admin/relatorios'
     | '/admin/videos'
     | '/aula/$lessonId'
     | '/checkout/$slug'
     | '/comunidade/$postId'
+    | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
     | '/gestores/$id'
@@ -755,6 +812,7 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/admin'
     | '/comunidade'
+    | '/comunidades'
     | '/encontros'
     | '/mensagens'
     | '/missoes'
@@ -791,8 +849,10 @@ export interface FileRouteTypes {
     | '/_authenticated/meu-angulo'
     | '/_authenticated/meu-espaco'
     | '/_authenticated/meus-cursos'
+    | '/_authenticated/mural'
     | '/_authenticated/notificacoes'
     | '/_authenticated/perfil'
+    | '/_authenticated/recursos'
     | '/api/ai-usage'
     | '/api/assistant'
     | '/cursos/$slug'
@@ -808,11 +868,13 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/configuracoes'
     | '/_authenticated/admin/encontros'
     | '/_authenticated/admin/gestores'
+    | '/_authenticated/admin/moderacao'
     | '/_authenticated/admin/relatorios'
     | '/_authenticated/admin/videos'
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/checkout/$slug'
     | '/_authenticated/comunidade/$postId'
+    | '/_authenticated/comunidades/$slug'
     | '/_authenticated/curso/$slug'
     | '/_authenticated/encontros/$id'
     | '/_authenticated/gestores/$id'
@@ -823,6 +885,7 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
+    | '/_authenticated/comunidades/'
     | '/_authenticated/encontros/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/missoes/'
@@ -1026,6 +1089,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMeusCursosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/mural': {
+      id: '/_authenticated/mural'
+      path: '/mural'
+      fullPath: '/mural'
+      preLoaderRoute: typeof AuthenticatedMuralRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/notificacoes': {
       id: '/_authenticated/notificacoes'
       path: '/notificacoes'
@@ -1038,6 +1108,13 @@ declare module '@tanstack/react-router' {
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/recursos': {
+      id: '/_authenticated/recursos'
+      path: '/recursos'
+      fullPath: '/recursos'
+      preLoaderRoute: typeof AuthenticatedRecursosRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/api/ai-usage': {
@@ -1152,6 +1229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminGestoresRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/moderacao': {
+      id: '/_authenticated/admin/moderacao'
+      path: '/moderacao'
+      fullPath: '/admin/moderacao'
+      preLoaderRoute: typeof AuthenticatedAdminModeracaoRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/relatorios': {
       id: '/_authenticated/admin/relatorios'
       path: '/relatorios'
@@ -1192,6 +1276,20 @@ declare module '@tanstack/react-router' {
       path: '/comunidade/$postId'
       fullPath: '/comunidade/$postId'
       preLoaderRoute: typeof AuthenticatedComunidadePostIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/comunidades/': {
+      id: '/_authenticated/comunidades/'
+      path: '/comunidades'
+      fullPath: '/comunidades/'
+      preLoaderRoute: typeof AuthenticatedComunidadesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/comunidades/$slug': {
+      id: '/_authenticated/comunidades/$slug'
+      path: '/comunidades/$slug'
+      fullPath: '/comunidades/$slug'
+      preLoaderRoute: typeof AuthenticatedComunidadesSlugRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/curso/$slug': {
@@ -1343,6 +1441,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
   AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
   AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
+  AuthenticatedAdminModeracaoRoute: typeof AuthenticatedAdminModeracaoRoute
   AuthenticatedAdminRelatoriosRoute: typeof AuthenticatedAdminRelatoriosRoute
   AuthenticatedAdminVideosRoute: typeof AuthenticatedAdminVideosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -1357,6 +1456,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
     AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
     AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
+    AuthenticatedAdminModeracaoRoute: AuthenticatedAdminModeracaoRoute,
     AuthenticatedAdminRelatoriosRoute: AuthenticatedAdminRelatoriosRoute,
     AuthenticatedAdminVideosRoute: AuthenticatedAdminVideosRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
@@ -1377,11 +1477,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMeuAnguloRoute: typeof AuthenticatedMeuAnguloRoute
   AuthenticatedMeuEspacoRoute: typeof AuthenticatedMeuEspacoRoute
   AuthenticatedMeusCursosRoute: typeof AuthenticatedMeusCursosRoute
+  AuthenticatedMuralRoute: typeof AuthenticatedMuralRoute
   AuthenticatedNotificacoesRoute: typeof AuthenticatedNotificacoesRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedRecursosRoute: typeof AuthenticatedRecursosRoute
   AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
   AuthenticatedCheckoutSlugRoute: typeof AuthenticatedCheckoutSlugRoute
   AuthenticatedComunidadePostIdRoute: typeof AuthenticatedComunidadePostIdRoute
+  AuthenticatedComunidadesSlugRoute: typeof AuthenticatedComunidadesSlugRoute
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
   AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
@@ -1389,6 +1492,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMissoesKeyRoute: typeof AuthenticatedMissoesKeyRoute
   AuthenticatedPessoasIdRoute: typeof AuthenticatedPessoasIdRoute
   AuthenticatedComunidadeIndexRoute: typeof AuthenticatedComunidadeIndexRoute
+  AuthenticatedComunidadesIndexRoute: typeof AuthenticatedComunidadesIndexRoute
   AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedMissoesIndexRoute: typeof AuthenticatedMissoesIndexRoute
@@ -1406,11 +1510,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMeuAnguloRoute: AuthenticatedMeuAnguloRoute,
   AuthenticatedMeuEspacoRoute: AuthenticatedMeuEspacoRoute,
   AuthenticatedMeusCursosRoute: AuthenticatedMeusCursosRoute,
+  AuthenticatedMuralRoute: AuthenticatedMuralRoute,
   AuthenticatedNotificacoesRoute: AuthenticatedNotificacoesRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedRecursosRoute: AuthenticatedRecursosRoute,
   AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
   AuthenticatedCheckoutSlugRoute: AuthenticatedCheckoutSlugRoute,
   AuthenticatedComunidadePostIdRoute: AuthenticatedComunidadePostIdRoute,
+  AuthenticatedComunidadesSlugRoute: AuthenticatedComunidadesSlugRoute,
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
   AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
@@ -1418,6 +1525,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMissoesKeyRoute: AuthenticatedMissoesKeyRoute,
   AuthenticatedPessoasIdRoute: AuthenticatedPessoasIdRoute,
   AuthenticatedComunidadeIndexRoute: AuthenticatedComunidadeIndexRoute,
+  AuthenticatedComunidadesIndexRoute: AuthenticatedComunidadesIndexRoute,
   AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedMissoesIndexRoute: AuthenticatedMissoesIndexRoute,
