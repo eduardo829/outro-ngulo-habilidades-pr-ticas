@@ -14,6 +14,7 @@ const TABS = [
   { to: "/admin/gestores", label: "Gestores" },
   { to: "/admin/comunidade", label: "Comunidade" },
   { to: "/admin/moderacao", label: "Moderação e engajamento" },
+  { to: "/admin/ecossistema", label: "Especialistas e serviços" },
   { to: "/admin/relatorios", label: "Relatórios" },
   { to: "/admin/configuracoes", label: "Configurações" },
 ] as const;
