@@ -63,6 +63,8 @@ import { Route as AuthenticatedComunidadesSlugRouteImport } from './routes/_auth
 import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
 import { Route as AuthenticatedEncontrosIndexRouteImport } from './routes/_authenticated/encontros.index'
 import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenticated/encontros.$id'
+import { Route as AuthenticatedEspecialistasIndexRouteImport } from './routes/_authenticated/especialistas.index'
+import { Route as AuthenticatedEspecialistasIdRouteImport } from './routes/_authenticated/especialistas.$id'
 import { Route as AuthenticatedGestoresIdRouteImport } from './routes/_authenticated/gestores.$id'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedMensagensIdRouteImport } from './routes/_authenticated/mensagens.$id'
@@ -367,6 +369,18 @@ const AuthenticatedEncontrosIdRoute =
     path: '/encontros/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEspecialistasIndexRoute =
+  AuthenticatedEspecialistasIndexRouteImport.update({
+    id: '/especialistas/',
+    path: '/especialistas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEspecialistasIdRoute =
+  AuthenticatedEspecialistasIdRouteImport.update({
+    id: '/especialistas/$id',
+    path: '/especialistas/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedGestoresIdRoute = AuthenticatedGestoresIdRouteImport.update({
   id: '/gestores/$id',
   path: '/gestores/$id',
@@ -514,6 +528,7 @@ export interface FileRoutesByFullPath {
   '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -524,6 +539,7 @@ export interface FileRoutesByFullPath {
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
+  '/especialistas/': typeof AuthenticatedEspecialistasIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/pessoas/': typeof AuthenticatedPessoasIndexRoute
@@ -585,6 +601,7 @@ export interface FileRoutesByTo {
   '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -595,6 +612,7 @@ export interface FileRoutesByTo {
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
   '/comunidades': typeof AuthenticatedComunidadesIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
+  '/especialistas': typeof AuthenticatedEspecialistasIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/missoes': typeof AuthenticatedMissoesIndexRoute
   '/pessoas': typeof AuthenticatedPessoasIndexRoute
@@ -659,6 +677,7 @@ export interface FileRoutesById {
   '/_authenticated/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
+  '/_authenticated/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
   '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -669,6 +688,7 @@ export interface FileRoutesById {
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
   '/_authenticated/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
+  '/_authenticated/especialistas/': typeof AuthenticatedEspecialistasIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/_authenticated/pessoas/': typeof AuthenticatedPessoasIndexRoute
@@ -733,6 +753,7 @@ export interface FileRouteTypes {
     | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
+    | '/especialistas/$id'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -743,6 +764,7 @@ export interface FileRouteTypes {
     | '/comunidade/'
     | '/comunidades/'
     | '/encontros/'
+    | '/especialistas/'
     | '/mensagens/'
     | '/missoes/'
     | '/pessoas/'
@@ -804,6 +826,7 @@ export interface FileRouteTypes {
     | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
+    | '/especialistas/$id'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -814,6 +837,7 @@ export interface FileRouteTypes {
     | '/comunidade'
     | '/comunidades'
     | '/encontros'
+    | '/especialistas'
     | '/mensagens'
     | '/missoes'
     | '/pessoas'
@@ -877,6 +901,7 @@ export interface FileRouteTypes {
     | '/_authenticated/comunidades/$slug'
     | '/_authenticated/curso/$slug'
     | '/_authenticated/encontros/$id'
+    | '/_authenticated/especialistas/$id'
     | '/_authenticated/gestores/$id'
     | '/_authenticated/mensagens/$id'
     | '/_authenticated/missoes/$key'
@@ -887,6 +912,7 @@ export interface FileRouteTypes {
     | '/_authenticated/comunidade/'
     | '/_authenticated/comunidades/'
     | '/_authenticated/encontros/'
+    | '/_authenticated/especialistas/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/missoes/'
     | '/_authenticated/pessoas/'
@@ -1313,6 +1339,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEncontrosIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/especialistas/': {
+      id: '/_authenticated/especialistas/'
+      path: '/especialistas'
+      fullPath: '/especialistas/'
+      preLoaderRoute: typeof AuthenticatedEspecialistasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/especialistas/$id': {
+      id: '/_authenticated/especialistas/$id'
+      path: '/especialistas/$id'
+      fullPath: '/especialistas/$id'
+      preLoaderRoute: typeof AuthenticatedEspecialistasIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/gestores/$id': {
       id: '/_authenticated/gestores/$id'
       path: '/gestores/$id'
@@ -1487,6 +1527,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedComunidadesSlugRoute: typeof AuthenticatedComunidadesSlugRoute
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
+  AuthenticatedEspecialistasIdRoute: typeof AuthenticatedEspecialistasIdRoute
   AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
   AuthenticatedMensagensIdRoute: typeof AuthenticatedMensagensIdRoute
   AuthenticatedMissoesKeyRoute: typeof AuthenticatedMissoesKeyRoute
@@ -1494,6 +1535,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedComunidadeIndexRoute: typeof AuthenticatedComunidadeIndexRoute
   AuthenticatedComunidadesIndexRoute: typeof AuthenticatedComunidadesIndexRoute
   AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
+  AuthenticatedEspecialistasIndexRoute: typeof AuthenticatedEspecialistasIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedMissoesIndexRoute: typeof AuthenticatedMissoesIndexRoute
   AuthenticatedPessoasIndexRoute: typeof AuthenticatedPessoasIndexRoute
@@ -1520,6 +1562,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedComunidadesSlugRoute: AuthenticatedComunidadesSlugRoute,
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
+  AuthenticatedEspecialistasIdRoute: AuthenticatedEspecialistasIdRoute,
   AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
   AuthenticatedMensagensIdRoute: AuthenticatedMensagensIdRoute,
   AuthenticatedMissoesKeyRoute: AuthenticatedMissoesKeyRoute,
@@ -1527,6 +1570,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedComunidadeIndexRoute: AuthenticatedComunidadeIndexRoute,
   AuthenticatedComunidadesIndexRoute: AuthenticatedComunidadesIndexRoute,
   AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
+  AuthenticatedEspecialistasIndexRoute: AuthenticatedEspecialistasIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedMissoesIndexRoute: AuthenticatedMissoesIndexRoute,
   AuthenticatedPessoasIndexRoute: AuthenticatedPessoasIndexRoute,
