@@ -65,6 +65,7 @@ import { Route as AuthenticatedEncontrosIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenticated/encontros.$id'
 import { Route as AuthenticatedEspecialistasIndexRouteImport } from './routes/_authenticated/especialistas.index'
 import { Route as AuthenticatedEspecialistasIdRouteImport } from './routes/_authenticated/especialistas.$id'
+import { Route as AuthenticatedEspecialistasPainelRouteImport } from './routes/_authenticated/especialistas.painel'
 import { Route as AuthenticatedGestoresIdRouteImport } from './routes/_authenticated/gestores.$id'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedMensagensIdRouteImport } from './routes/_authenticated/mensagens.$id'
@@ -381,6 +382,12 @@ const AuthenticatedEspecialistasIdRoute =
     path: '/especialistas/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedEspecialistasPainelRoute =
+  AuthenticatedEspecialistasPainelRouteImport.update({
+    id: '/especialistas/painel',
+    path: '/especialistas/painel',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedGestoresIdRoute = AuthenticatedGestoresIdRouteImport.update({
   id: '/gestores/$id',
   path: '/gestores/$id',
@@ -529,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
+  '/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -602,6 +610,7 @@ export interface FileRoutesByTo {
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
+  '/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -678,6 +687,7 @@ export interface FileRoutesById {
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
   '/_authenticated/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
+  '/_authenticated/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -754,6 +764,7 @@ export interface FileRouteTypes {
     | '/curso/$slug'
     | '/encontros/$id'
     | '/especialistas/$id'
+    | '/especialistas/painel'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -827,6 +838,7 @@ export interface FileRouteTypes {
     | '/curso/$slug'
     | '/encontros/$id'
     | '/especialistas/$id'
+    | '/especialistas/painel'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -902,6 +914,7 @@ export interface FileRouteTypes {
     | '/_authenticated/curso/$slug'
     | '/_authenticated/encontros/$id'
     | '/_authenticated/especialistas/$id'
+    | '/_authenticated/especialistas/painel'
     | '/_authenticated/gestores/$id'
     | '/_authenticated/mensagens/$id'
     | '/_authenticated/missoes/$key'
@@ -1353,6 +1366,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEspecialistasIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/especialistas/painel': {
+      id: '/_authenticated/especialistas/painel'
+      path: '/especialistas/painel'
+      fullPath: '/especialistas/painel'
+      preLoaderRoute: typeof AuthenticatedEspecialistasPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/gestores/$id': {
       id: '/_authenticated/gestores/$id'
       path: '/gestores/$id'
@@ -1528,6 +1548,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
   AuthenticatedEspecialistasIdRoute: typeof AuthenticatedEspecialistasIdRoute
+  AuthenticatedEspecialistasPainelRoute: typeof AuthenticatedEspecialistasPainelRoute
   AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
   AuthenticatedMensagensIdRoute: typeof AuthenticatedMensagensIdRoute
   AuthenticatedMissoesKeyRoute: typeof AuthenticatedMissoesKeyRoute
@@ -1563,6 +1584,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
   AuthenticatedEspecialistasIdRoute: AuthenticatedEspecialistasIdRoute,
+  AuthenticatedEspecialistasPainelRoute: AuthenticatedEspecialistasPainelRoute,
   AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
   AuthenticatedMensagensIdRoute: AuthenticatedMensagensIdRoute,
   AuthenticatedMissoesKeyRoute: AuthenticatedMissoesKeyRoute,
