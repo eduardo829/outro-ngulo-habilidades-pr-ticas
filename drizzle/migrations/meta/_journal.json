@@ -204,6 +204,13 @@
       "when": 1793717316551,
       "tag": "0028_ecosystem_v2_communities_opportunities",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1793718791721,
+      "tag": "0029_ecosystem_specialists_partners",
+      "breakpoints": true
     }
   ]
 }

@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_actions: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          note: string | null
+          target_id: string | null
+          target_kind: string
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          target_id?: string | null
+          target_kind: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          target_id?: string | null
+          target_kind?: string
+        }
+        Relationships: []
+      }
       ai_settings: {
         Row: {
           daily_spend_limit_cents: number
@@ -1518,11 +1548,16 @@ export type Database = {
           author_id: string
           category: string
           city: string | null
+          community_id: string | null
           created_at: string
           description: string
           id: string
+          partnership_type: string | null
           remote: boolean
           removed: boolean
+          sector: string | null
+          skills_wanted: string[]
+          stage: string | null
           status: string
           title: string
         }
@@ -1530,11 +1565,16 @@ export type Database = {
           author_id: string
           category: string
           city?: string | null
+          community_id?: string | null
           created_at?: string
           description: string
           id?: string
+          partnership_type?: string | null
           remote?: boolean
           removed?: boolean
+          sector?: string | null
+          skills_wanted?: string[]
+          stage?: string | null
           status?: string
           title: string
         }
@@ -1542,11 +1582,16 @@ export type Database = {
           author_id?: string
           category?: string
           city?: string | null
+          community_id?: string | null
           created_at?: string
           description?: string
           id?: string
+          partnership_type?: string | null
           remote?: boolean
           removed?: boolean
+          sector?: string | null
+          skills_wanted?: string[]
+          stage?: string | null
           status?: string
           title?: string
         }
@@ -1558,22 +1603,32 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "opportunities_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
         ]
       }
       opportunity_interests: {
         Row: {
           created_at: string
           opportunity_id: string
+          status: string
           user_id: string
         }
         Insert: {
           created_at?: string
           opportunity_id: string
+          status?: string
           user_id: string
         }
         Update: {
           created_at?: string
           opportunity_id?: string
+          status?: string
           user_id?: string
         }
         Relationships: [
@@ -1705,6 +1760,80 @@ export type Database = {
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "communities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professional_profiles: {
+        Row: {
+          about: string
+          availability: string | null
+          budget_text: string | null
+          categories: string[]
+          city: string | null
+          community_ids: string[]
+          consent_public: boolean
+          created_at: string
+          credentials: Json
+          experience: string
+          headline: string
+          portfolio: Json
+          remote: boolean
+          specialties: string[]
+          status: string
+          updated_at: string
+          user_id: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          about?: string
+          availability?: string | null
+          budget_text?: string | null
+          categories?: string[]
+          city?: string | null
+          community_ids?: string[]
+          consent_public?: boolean
+          created_at?: string
+          credentials?: Json
+          experience?: string
+          headline?: string
+          portfolio?: Json
+          remote?: boolean
+          specialties?: string[]
+          status?: string
+          updated_at?: string
+          user_id: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          about?: string
+          availability?: string | null
+          budget_text?: string | null
+          categories?: string[]
+          city?: string | null
+          community_ids?: string[]
+          consent_public?: boolean
+          created_at?: string
+          credentials?: Json
+          experience?: string
+          headline?: string
+          portfolio?: Json
+          remote?: boolean
+          specialties?: string[]
+          status?: string
+          updated_at?: string
+          user_id?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1986,6 +2115,102 @@ export type Database = {
           },
         ]
       }
+      service_request_matches: {
+        Row: {
+          created_at: string
+          professional_id: string
+          request_id: string
+          sent_by: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          professional_id: string
+          request_id: string
+          sent_by?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          professional_id?: string
+          request_id?: string
+          sent_by?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_request_matches_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "service_request_matches_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "service_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_requests: {
+        Row: {
+          budget_text: string | null
+          category: string
+          city: string | null
+          created_at: string
+          deadline: string | null
+          id: string
+          need: string
+          professional_id: string | null
+          remote: boolean
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          budget_text?: string | null
+          category: string
+          city?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          need: string
+          professional_id?: string | null
+          remote?: boolean
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          budget_text?: string | null
+          category?: string
+          city?: string | null
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          need?: string
+          professional_id?: string | null
+          remote?: boolean
+          requester_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_requests_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professional_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "service_requests_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           key: string
@@ -2119,6 +2344,7 @@ export type Database = {
         Args: { _email: string; _guest: string; _user: string }
         Returns: string
       }
+      has_public_specialists: { Args: never; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
