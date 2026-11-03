@@ -1,7 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, type ReactNode } from "react";
-import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target, Globe, Info, Wrench } from "lucide-react";
+import { Home, BookOpen, User, Shield, LogOut, Users, CalendarDays, MessagesSquare, Bell, Mail, LayoutGrid, Compass, Target, Globe, Info, Wrench, Handshake, FolderOpen } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/lib/auth";
@@ -9,12 +9,14 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/inicio", label: "Início", icon: Home },
-  { to: "/meu-angulo", label: "Meu Ângulo", short: "Ângulo", icon: Compass },
-  { to: "/catalogo", label: "Cursos", icon: LayoutGrid },
-  { to: "/meus-cursos", label: "Meus cursos", short: "Meus", icon: BookOpen },
-  { to: "/comunidade", label: "Comunidade", icon: MessagesSquare },
-  { to: "/encontros", label: "Encontros", icon: CalendarDays },
+  { to: "/comunidades", label: "Comunidades", short: "Comunidades", icon: MessagesSquare },
+  { to: "/mural", label: "Oportunidades", short: "Oportun.", icon: Handshake },
+  { to: "/meus-cursos", label: "Academia", icon: BookOpen },
+  { to: "/encontros", label: "Eventos", icon: CalendarDays },
+  { to: "/catalogo", label: "Todos os cursos", icon: LayoutGrid },
+  { to: "/recursos", label: "Recursos", icon: FolderOpen },
   { to: "/pessoas", label: "Pessoas", icon: Users },
+  { to: "/meu-angulo", label: "Meu Ângulo", icon: Compass },
   { to: "/perfil", label: "Meu perfil", icon: User },
 ] as const;
 
@@ -61,6 +63,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const me = useMyProfile();
   const unread = useUnread();
+
+  useEffect(() => {
+    if (me.data) void supabase.rpc("touch_activity");
+  }, [me.data?.id, path]);
 
   useEffect(() => {
     if (me.data && !me.data.onboarded && path !== "/boas-vindas") navigate({ to: "/boas-vindas", replace: true });
