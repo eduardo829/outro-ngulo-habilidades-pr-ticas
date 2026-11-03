@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const unread = useUnread();
 
   useEffect(() => {
-    if (me.data) void supabase.rpc("touch_activity");
+    if (me.data) supabase.rpc("touch_activity").then(() => {});
   }, [me.data?.id, path]);
 
   useEffect(() => {
