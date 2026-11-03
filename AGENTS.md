@@ -34,3 +34,4 @@
 - Message recipients have UPDATE on read_at only. Why: marking read must never permit editing another user's message.
 - Security database regressions execute actual migration SQL in isolated PGlite. Why: verify permissions and state transitions without real purchases.
 - Admin reports (src/lib/reports.functions.ts, /admin/relatorios) are built server-side from real data after has_role check, with optional AI reading restricted to those numbers, and are e-mailed only on demand to the requesting admin. Why: no list/scheduled sends through app e-mail, no invented figures.
+- Ecosystem 2.0: communities (public.communities + community_members, can_view_community/is_community_mod helpers) scope posts via posts.community_id with RESTRICTIVE RLS; opportunities board (/mural), reports queue and resources library are separate owner/staff-scoped tables, moderated at /admin/moderacao. Why: multiple communities and moderation without touching courses or payments.
