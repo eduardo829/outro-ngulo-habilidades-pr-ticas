@@ -11,11 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AcademiaRouteImport } from './routes/academia'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ComoFuncionaRouteImport } from './routes/como-funciona'
+import { Route as ComunidadesRouteImport } from './routes/comunidades'
 import { Route as ConhecaAComunidadeRouteImport } from './routes/conheca-a-comunidade'
 import { Route as ConhecaOsEncontrosRouteImport } from './routes/conheca-os-encontros'
 import { Route as CorretorNaPraticaRouteImport } from './routes/corretor-na-pratica'
 import { Route as DiretrizesRouteImport } from './routes/diretrizes'
+import { Route as EspecialistasRouteImport } from './routes/especialistas'
 import { Route as FerramentasRouteImport } from './routes/ferramentas'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
@@ -94,9 +98,24 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcademiaRoute = AcademiaRouteImport.update({
+  id: '/academia',
+  path: '/academia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoFuncionaRoute = ComoFuncionaRouteImport.update({
+  id: '/como-funciona',
+  path: '/como-funciona',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadesRoute = ComunidadesRouteImport.update({
+  id: '/comunidades',
+  path: '/comunidades',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConhecaAComunidadeRoute = ConhecaAComunidadeRouteImport.update({
@@ -117,6 +136,11 @@ const CorretorNaPraticaRoute = CorretorNaPraticaRouteImport.update({
 const DiretrizesRoute = DiretrizesRouteImport.update({
   id: '/diretrizes',
   path: '/diretrizes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspecialistasRoute = EspecialistasRouteImport.update({
+  id: '/especialistas',
+  path: '/especialistas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FerramentasRoute = FerramentasRouteImport.update({
@@ -494,11 +518,15 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -570,11 +598,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -647,11 +679,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
@@ -725,11 +761,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
@@ -801,11 +841,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
@@ -877,11 +921,15 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
@@ -955,11 +1003,15 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AcademiaRoute: typeof AcademiaRoute
   AuthRoute: typeof AuthRoute
+  ComoFuncionaRoute: typeof ComoFuncionaRoute
+  ComunidadesRoute: typeof ComunidadesRoute
   ConhecaAComunidadeRoute: typeof ConhecaAComunidadeRoute
   ConhecaOsEncontrosRoute: typeof ConhecaOsEncontrosRoute
   CorretorNaPraticaRoute: typeof CorretorNaPraticaRoute
   DiretrizesRoute: typeof DiretrizesRoute
+  EspecialistasRoute: typeof EspecialistasRoute
   FerramentasRoute: typeof FerramentasRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
@@ -1001,11 +1053,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/academia': {
+      id: '/academia'
+      path: '/academia'
+      fullPath: '/academia'
+      preLoaderRoute: typeof AcademiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-funciona': {
+      id: '/como-funciona'
+      path: '/como-funciona'
+      fullPath: '/como-funciona'
+      preLoaderRoute: typeof ComoFuncionaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidades': {
+      id: '/comunidades'
+      path: '/comunidades'
+      fullPath: '/comunidades'
+      preLoaderRoute: typeof ComunidadesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conheca-a-comunidade': {
@@ -1034,6 +1107,13 @@ declare module '@tanstack/react-router' {
       path: '/diretrizes'
       fullPath: '/diretrizes'
       preLoaderRoute: typeof DiretrizesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/especialistas': {
+      id: '/especialistas'
+      path: '/especialistas'
+      fullPath: '/especialistas'
+      preLoaderRoute: typeof EspecialistasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ferramentas': {
@@ -1631,11 +1711,15 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AcademiaRoute: AcademiaRoute,
   AuthRoute: AuthRoute,
+  ComoFuncionaRoute: ComoFuncionaRoute,
+  ComunidadesRoute: ComunidadesRoute,
   ConhecaAComunidadeRoute: ConhecaAComunidadeRoute,
   ConhecaOsEncontrosRoute: ConhecaOsEncontrosRoute,
   CorretorNaPraticaRoute: CorretorNaPraticaRoute,
   DiretrizesRoute: DiretrizesRoute,
+  EspecialistasRoute: EspecialistasRoute,
   FerramentasRoute: FerramentasRoute,
   OportunidadesRoute: OportunidadesRoute,
   PrivacidadeRoute: PrivacidadeRoute,
