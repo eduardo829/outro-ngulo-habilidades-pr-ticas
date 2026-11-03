@@ -22,6 +22,7 @@ import { Route as DiretrizesRouteImport } from './routes/diretrizes'
 import { Route as EspecialistasRouteImport } from './routes/especialistas'
 import { Route as FerramentasRouteImport } from './routes/ferramentas'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
+import { Route as ParceirosRouteImport } from './routes/parceiros'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -152,6 +153,11 @@ const FerramentasRoute = FerramentasRouteImport.update({
 const OportunidadesRoute = OportunidadesRouteImport.update({
   id: '/oportunidades',
   path: '/oportunidades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParceirosRoute = ParceirosRouteImport.update({
+  id: '/parceiros',
+  path: '/parceiros',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
@@ -535,6 +541,7 @@ export interface FileRoutesByFullPath {
   '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
+  '/parceiros': typeof ParceirosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -616,6 +623,7 @@ export interface FileRoutesByTo {
   '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
+  '/parceiros': typeof ParceirosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -698,6 +706,7 @@ export interface FileRoutesById {
   '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
+  '/parceiros': typeof ParceirosRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -781,6 +790,7 @@ export interface FileRouteTypes {
     | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
+    | '/parceiros'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
@@ -862,6 +872,7 @@ export interface FileRouteTypes {
     | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
+    | '/parceiros'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
@@ -943,6 +954,7 @@ export interface FileRouteTypes {
     | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
+    | '/parceiros'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
@@ -1026,6 +1038,7 @@ export interface RootRouteChildren {
   EspecialistasRoute: typeof EspecialistasRoute
   FerramentasRoute: typeof FerramentasRoute
   OportunidadesRoute: typeof OportunidadesRoute
+  ParceirosRoute: typeof ParceirosRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -1141,6 +1154,13 @@ declare module '@tanstack/react-router' {
       path: '/oportunidades'
       fullPath: '/oportunidades'
       preLoaderRoute: typeof OportunidadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parceiros': {
+      id: '/parceiros'
+      path: '/parceiros'
+      fullPath: '/parceiros'
+      preLoaderRoute: typeof ParceirosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidade': {
@@ -1742,6 +1762,7 @@ const rootRouteChildren: RootRouteChildren = {
   EspecialistasRoute: EspecialistasRoute,
   FerramentasRoute: FerramentasRoute,
   OportunidadesRoute: OportunidadesRoute,
+  ParceirosRoute: ParceirosRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   ResetPasswordRoute: ResetPasswordRoute,
