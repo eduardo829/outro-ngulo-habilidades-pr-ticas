@@ -94,7 +94,7 @@ function Reports() {
 function Communities() {
   const qc = useQueryClient();
   const list = useQuery({ queryKey: ["admin-communities"], queryFn: async () => (await supabase.from("communities").select("*").order("position")).data ?? [] });
-  async function update(id: string, patch: Record<string, unknown>) {
+  async function update(id: string, patch: { active?: boolean; visibility?: string; categories?: string[] }) {
     const { error } = await supabase.from("communities").update(patch).eq("id", id);
     if (error) return toast.error("Não foi possível salvar.");
     qc.invalidateQueries({ queryKey: ["admin-communities"] }); qc.invalidateQueries({ queryKey: ["communities"] });

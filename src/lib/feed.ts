@@ -2,7 +2,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchProfiles } from "@/lib/community";
 import type { FeedPost } from "@/components/community/PostCard";
 
-export async function fetchFeed(me: string, opts: { category?: string | undefined; kind?: string | undefined; saved?: boolean; limit?: number; communityId?: string; ids?: string[] } = {}) {
+export async function fetchFeed(me: string, opts: { category?: string | undefined; kind?: string | undefined; saved?: boolean; limit?: number; communityId?: string | undefined; ids?: string[] } = {}) {
   let q = supabase.from("posts").select("*").order("pinned", { ascending: false }).order("featured", { ascending: false }).order("created_at", { ascending: false }).limit(opts.limit ?? 50);
   if (opts.category && opts.category !== "Todas") q = q.eq("category", opts.category);
   if (opts.communityId) q = q.eq("community_id", opts.communityId);
