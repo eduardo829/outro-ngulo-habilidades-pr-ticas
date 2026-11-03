@@ -14,7 +14,7 @@ export const Route = createFileRoute("/_authenticated/encontros/")({
   component: Events,
 });
 
-const TABS = ["Próximos", "Minha agenda", "Gestores", "Anteriores"] as const;
+const TABS = ["Próximos", "Calendário", "Minha agenda", "Gestores", "Anteriores"] as const;
 
 function Events() {
   const { user } = useAuth();
@@ -46,6 +46,24 @@ function Events() {
             </li>
           ))}
         </ul>
+      ) : tab === "Calendário" ? (
+        upcoming.length ? (
+          <div className="mt-8 space-y-8">
+            {[...new Set(upcoming.map((e) => new Date(e.starts_at).toLocaleDateString("pt-BR", { month: "long", year: "numeric" })))].map((m) => (
+              <section key={m}>
+                <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{m}</h2>
+                <ul className="mt-3 divide-y border-y">
+                  {upcoming.filter((e) => new Date(e.starts_at).toLocaleDateString("pt-BR", { month: "long", year: "numeric" }) === m).map((e) => (
+                    <li key={e.id}><Link to="/encontros/$id" params={{ id: e.id }} className="flex items-center gap-4 py-3 hover:bg-secondary/50">
+                      <div className="w-14 shrink-0 text-center"><p className="text-2xl font-extrabold leading-none">{new Date(e.starts_at).getDate()}</p><p className="text-xs text-muted-foreground">{new Date(e.starts_at).toLocaleDateString("pt-BR", { weekday: "short" })}</p></div>
+                      <div className="min-w-0"><p className="truncate font-medium">{e.title}</p><p className="text-xs text-muted-foreground">{eventWhen(e.starts_at).time}{e.expert ? ` · com ${e.expert.name}` : ""} · {e.duration_min} min</p></div>
+                    </Link></li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        ) : <p className="mt-8 text-muted-foreground">Nenhum encontro agendado.</p>
       ) : tab === "Minha agenda" ? (
         mine.length ? (
           <ul className="mt-8 divide-y rounded-xl border bg-card">

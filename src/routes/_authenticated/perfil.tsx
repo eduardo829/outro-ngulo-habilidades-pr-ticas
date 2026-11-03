@@ -27,7 +27,7 @@ const schema = z.object({
   link: z.union([z.literal(""), z.string().url("Link inválido").max(255)]).optional(),
 });
 
-type Form = { display_name: string; bio: string; city: string; area: string; interests: string; can_share: string; wants_learn: string; link: string; avatar_url: string; in_directory: boolean; persona: string; working_on: string; skills: string; learn_tags: string };
+type Form = { display_name: string; bio: string; city: string; area: string; interests: string; can_share: string; wants_learn: string; link: string; avatar_url: string; in_directory: boolean; persona: string; working_on: string; skills: string; learn_tags: string; goals: string; open_to_partnerships: boolean };
 
 function ProfilePage() {
   const { user } = useAuth();
@@ -49,6 +49,7 @@ function ProfilePage() {
         interests: data.interests.join(", "), can_share: data.can_share ?? "", wants_learn: data.wants_learn ?? "",
         link: data.link ?? "", avatar_url: data.avatar_url ?? "", in_directory: data.in_directory,
         persona: data.persona ?? "", working_on: data.working_on ?? "", skills: data.skills.join(", "), learn_tags: data.learn_tags.join(", "),
+        goals: data.goals ?? "", open_to_partnerships: data.open_to_partnerships,
       });
     }, () => { if (alive) setLoadError(true); });
     return () => { alive = false; };
@@ -72,6 +73,7 @@ function ProfilePage() {
       in_directory: f.in_directory, persona: f.persona || null, working_on: f.working_on || null,
       skills: f.skills.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10),
       learn_tags: f.learn_tags.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10), updated_at: new Date().toISOString(),
+      goals: f.goals.trim().slice(0, 500) || null, open_to_partnerships: f.open_to_partnerships,
     }).eq("id", user.id);
     if (error) throw error;
     toast.success("Perfil salvo.");
@@ -122,6 +124,11 @@ function ProfilePage() {
         <div><Label htmlFor="int">O que quero desenvolver (separe por vírgula)</Label><Input id="int" value={f.interests} onChange={set("interests")} /></div>
         <div><Label htmlFor="share">Em que eu poderia ajudar outra pessoa</Label><Textarea id="share" value={f.can_share} onChange={set("can_share")} maxLength={300} /></div>
         <div><Label htmlFor="learn">Em que gostaria de receber ajuda</Label><Textarea id="learn" value={f.wants_learn} onChange={set("wants_learn")} maxLength={300} /></div>
+        <div><Label htmlFor="goals">Objetivos profissionais (opcional)</Label><Textarea id="goals" value={f.goals} onChange={set("goals")} maxLength={500} placeholder="Ex.: abrir meu negócio em 2027, conseguir os primeiros 10 clientes" /></div>
+        <div className="flex items-center justify-between rounded-lg border bg-card p-4">
+          <div><Label htmlFor="partner">Aberto a networking e parcerias</Label><p className="text-xs text-muted-foreground">Mostra no seu perfil que você topa conversar sobre parcerias.</p></div>
+          <Switch id="partner" checked={f.open_to_partnerships} onCheckedChange={(c) => setF({ ...f, open_to_partnerships: c })} />
+        </div>
         <div><Label htmlFor="link">LinkedIn ou link profissional (opcional)</Label><Input id="link" type="url" value={f.link} onChange={set("link")} placeholder="https://" /></div>
         <div className="flex items-center justify-between rounded-lg border bg-card p-4">
           <div><Label htmlFor="dir">Aparecer em “Pessoas”</Label><p className="text-xs text-muted-foreground">Opcional. Seu e-mail nunca é exibido.</p></div>

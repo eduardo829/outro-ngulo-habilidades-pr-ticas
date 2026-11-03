@@ -15,8 +15,8 @@ export const Route = createFileRoute("/_authenticated/admin/encontros")({
   component: AdminEvents,
 });
 
-type F = { id?: string; title: string; theme: string; description: string; expert_id: string; date: string; duration_min: number; capacity: number; meeting_url: string; recording_url: string; summary: string; materials: string };
-const empty: F = { title: "", theme: "", description: "", expert_id: "", date: "", duration_min: 60, capacity: 12, meeting_url: "", recording_url: "", summary: "", materials: "" };
+type F = { id?: string; title: string; theme: string; description: string; expert_id: string; date: string; duration_min: number; capacity: number; meeting_url: string; recording_url: string; summary: string; materials: string; community_id: string };
+const empty: F = { title: "", theme: "", description: "", expert_id: "", date: "", duration_min: 60, capacity: 12, meeting_url: "", recording_url: "", summary: "", materials: "", community_id: "" };
 const toLocal = (iso: string) => { const d = new Date(iso); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16); };
 
 function Detail({ id }: { id: string }) {
@@ -44,18 +44,19 @@ function AdminEvents() {
   const [f, setF] = useState<F | null>(null);
   const [open, setOpen] = useState<string | null>(null);
   const experts = useQuery({ queryKey: ["admin-experts"], queryFn: async () => ((await supabase.from("experts").select("*").order("position")).data ?? []) as Expert[] });
+  const communities = useQuery({ queryKey: ["admin-communities-min"], queryFn: async () => (await supabase.from("communities").select("id, name").order("position")).data ?? [] });
   const list = useQuery({ queryKey: ["admin-events"], queryFn: async () => ((await supabase.from("events").select(EVENT_COLS).order("starts_at", { ascending: false })).data ?? []) as EventRow[] });
 
   async function edit(e: EventRow) {
     const { data: url } = await supabase.rpc("event_join_url", { _event: e.id });
-    setF({ id: e.id, title: e.title, theme: e.theme, description: e.description ?? "", expert_id: e.expert_id ?? "", date: toLocal(e.starts_at), duration_min: e.duration_min, capacity: e.capacity, meeting_url: (url as string) ?? "", recording_url: e.recording_url ?? "", summary: e.summary ?? "", materials: e.materials ?? "" });
+    setF({ id: e.id, title: e.title, theme: e.theme, description: e.description ?? "", expert_id: e.expert_id ?? "", date: toLocal(e.starts_at), duration_min: e.duration_min, capacity: e.capacity, meeting_url: (url as string) ?? "", recording_url: e.recording_url ?? "", summary: e.summary ?? "", materials: e.materials ?? "", community_id: e.community_id ?? "" });
     window.scrollTo({ top: 0 });
   }
   async function save(ev: React.FormEvent) {
     ev.preventDefault();
     if (!f || f.title.trim().length < 3 || !f.date) return toast.error("Preencha título e data.");
     for (const u of [f.meeting_url, f.recording_url]) if (u && !/^https:\/\//.test(u)) return toast.error("Links devem começar com https://");
-    const row = { title: f.title.trim(), theme: f.theme || "Geral", description: f.description || null, expert_id: f.expert_id || null, starts_at: new Date(f.date).toISOString(), duration_min: Number(f.duration_min), capacity: Number(f.capacity), meeting_url: f.meeting_url || null, recording_url: f.recording_url || null, summary: f.summary || null, materials: f.materials || null };
+    const row = { title: f.title.trim(), theme: f.theme || "Geral", description: f.description || null, expert_id: f.expert_id || null, starts_at: new Date(f.date).toISOString(), duration_min: Number(f.duration_min), capacity: Number(f.capacity), meeting_url: f.meeting_url || null, recording_url: f.recording_url || null, summary: f.summary || null, materials: f.materials || null, community_id: f.community_id || null };
     const { error } = f.id ? await supabase.from("events").update(row).eq("id", f.id) : await supabase.from("events").insert(row);
     if (error) return toast.error("Não foi possível salvar.");
     toast.success("Encontro salvo."); setF(null); list.refetch();
@@ -74,6 +75,7 @@ function AdminEvents() {
           <div className="grid gap-3 sm:grid-cols-2">
             <div><Label>Título</Label><Input value={f.title} onChange={set("title")} /></div>
             <div><Label>Tema</Label><Input value={f.theme} onChange={set("theme")} placeholder="Networking" /></div>
+            <div><Label>Comunidade</Label><select value={f.community_id} onChange={set("community_id")} className="h-10 w-full rounded-md border bg-background px-3 text-sm"><option value="">—</option>{communities.data?.map((x) => <option key={x.id} value={x.id}>{x.name}</option>)}</select></div>
             <div><Label>Gestor</Label><select value={f.expert_id} onChange={set("expert_id")} className="h-10 w-full rounded-md border bg-background px-3 text-sm"><option value="">—</option>{experts.data?.map((x) => <option key={x.id} value={x.id}>{x.name}</option>)}</select></div>
             <div><Label>Data e horário</Label><Input type="datetime-local" value={f.date} onChange={set("date")} /></div>
             <div><Label>Duração (min)</Label><Input type="number" min={15} max={480} value={f.duration_min} onChange={set("duration_min")} /></div>
