@@ -2363,6 +2363,11 @@ export type Database = {
         Args: { _course: string; _key: string }
         Returns: boolean
       }
+      is_request_owner: { Args: { _r: string; _u: string }; Returns: boolean }
+      is_request_recipient: {
+        Args: { _r: string; _u: string }
+        Returns: boolean
+      }
       is_staff: { Args: { _u: string }; Returns: boolean }
       profile_visible: {
         Args: { _target: string; _viewer: string }
