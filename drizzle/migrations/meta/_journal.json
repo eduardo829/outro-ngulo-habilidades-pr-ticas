@@ -204,6 +204,27 @@
       "when": 1793717316551,
       "tag": "0028_ecosystem_v2_communities_opportunities",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1793718791721,
+      "tag": "0029_ecosystem_specialists_partners",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1793718809707,
+      "tag": "0030_service_requests_rls_helpers",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1793719012568,
+      "tag": "0031_notify_professional_status",
+      "breakpoints": true
     }
   ]
 }
