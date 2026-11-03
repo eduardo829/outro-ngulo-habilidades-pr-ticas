@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 
-type MemberPath = "/inicio" | "/pessoas" | "/encontros";
+type MemberPath = "/inicio" | "/pessoas" | "/encontros" | "/app/especialistas" | "/app/comunidades";
 
 /** Signed in → member destination; visitor → sign-up that returns to this page. */
 export function MemberLink({ to, member, visitor, className, signup = true }: { to: MemberPath; member: ReactNode; visitor: ReactNode; className?: string; signup?: boolean }) {

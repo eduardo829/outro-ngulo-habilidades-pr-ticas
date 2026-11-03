@@ -9,6 +9,7 @@ import { Connections, GestorPhoto, KnowledgeGraph, Txt, Ventures } from "@/compo
 import { getGestor, isPending } from "@/lib/gestores";
 
 export const Route = createFileRoute("/gestor/$slug")({
+  staticData: { sitemap: true },
   loader: ({ params }) => {
     const g = getGestor(params.slug);
     if (!g) throw notFound();

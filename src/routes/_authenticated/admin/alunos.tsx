@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/admin/alunos")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [
     { title: "Usuários e matrículas — Administração Outro Ângulo" },
     { name: "description", content: "Confira cadastros, confirmação de e-mail e matrículas no Outro Ângulo." },

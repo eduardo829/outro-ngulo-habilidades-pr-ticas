@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/mural")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Oportunidades — Outro Ângulo" }, { name: "description", content: "Sócios, parcerias, serviços e projetos publicados por membros." }, { property: "og:title", content: "Oportunidades — Outro Ângulo" }, { property: "og:description", content: "Sócios, parcerias, serviços e projetos publicados por membros." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Board,
 });

@@ -16,6 +16,7 @@ const TOOLS = [
 ] as const;
 
 export const Route = createFileRoute("/ferramentas")({
+  staticData: { sitemap: true },
   validateSearch: z.object({ t: z.enum(["validador", "viabilidade", "plano"]).optional() }),
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Page,

@@ -13,7 +13,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 
 const T = "Especialistas — Outro Ângulo";
 const D = "Profissionais de IA, sistemas, marketing, finanças, jurídico, gestão e design para o seu negócio.";
-export const Route = createFileRoute("/_authenticated/especialistas/")({
+export const Route = createFileRoute("/_authenticated/app/especialistas/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Directory,
 });
@@ -40,7 +41,7 @@ function Directory() {
           <p className="mt-2 max-w-xl text-muted-foreground">Profissionais cadastrados na comunidade. O selo "Verificado" só aparece depois de uma análise real da nossa equipe.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" asChild><Link to="/especialistas/painel">Quero ser especialista</Link></Button>
+          <Button variant="outline" asChild><Link to="/app/especialistas/painel">Quero ser especialista</Link></Button>
           <Button onClick={() => setOpen(true)}>Descrever minha necessidade</Button>
         </div>
       </div>
@@ -62,7 +63,7 @@ function Directory() {
                 <Avatar name={p.display_name} url={p.avatar_url} />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Link to="/especialistas/$id" params={{ id: p.user_id }} className="font-bold hover:underline">{p.display_name}</Link>
+                    <Link to="/app/especialistas/$id" params={{ id: p.user_id }} className="font-bold hover:underline">{p.display_name}</Link>
                     {badgeFor(p) === "verified" && <span className="inline-flex items-center gap-1 text-xs font-medium text-primary"><BadgeCheck className="h-4 w-4" />Verificado pelo Outro Ângulo</span>}
                   </div>
                   <p className="text-sm text-muted-foreground">{p.headline}</p>
@@ -73,7 +74,7 @@ function Directory() {
                     {p.budget_text && canShowBudget(p.categories) && <Tag>{p.budget_text}</Tag>}
                   </div>
                 </div>
-                <Button size="sm" variant="outline" asChild className="self-center"><Link to="/especialistas/$id" params={{ id: p.user_id }}>Ver perfil</Link></Button>
+                <Button size="sm" variant="outline" asChild className="self-center"><Link to="/app/especialistas/$id" params={{ id: p.user_id }}>Ver perfil</Link></Button>
               </li>
             ))}
           </ul>

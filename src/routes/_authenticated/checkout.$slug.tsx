@@ -9,6 +9,7 @@ import { checkoutErrorMessage, origemFromSearch } from "@/lib/checkout-logic";
 import { trackConversionEvent } from "@/lib/meta-pixel";
 
 export const Route = createFileRoute("/_authenticated/checkout/$slug")({
+  staticData: { sitemap: false },
   validateSearch: (s: Record<string, unknown>): { origem?: string } => {
     const origem = origemFromSearch(s);
     return origem ? { origem } : {};

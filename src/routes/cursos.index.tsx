@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CourseCatalog } from "@/components/CourseCatalog";
 
 export const Route = createFileRoute("/cursos/")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Cursos — Outro Ângulo" },

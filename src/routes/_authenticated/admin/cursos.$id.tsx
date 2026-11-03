@@ -24,6 +24,7 @@ type Course = Database["public"]["Tables"]["courses"]["Row"];
 type Lesson = Database["public"]["Tables"]["lessons"]["Row"];
 
 export const Route = createFileRoute("/_authenticated/admin/cursos/$id")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Editar curso — Administração Outro Ângulo" }, { name: "description", content: "Administre editar curso no Outro Ângulo." }, { property: "og:title", content: "Editar curso — Administração Outro Ângulo" }, { property: "og:description", content: "Administre editar curso no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: CourseEditor,
 });

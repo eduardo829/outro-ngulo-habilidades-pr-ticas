@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { LegalPage } from "@/components/LegalPage";
 
 export const Route = createFileRoute("/termos")({
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "Termos de uso (rascunho) — Outro Ângulo" },

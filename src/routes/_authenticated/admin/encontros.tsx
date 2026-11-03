@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_authenticated/admin/encontros")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Encontros — Administração Outro Ângulo" }, { name: "description", content: "Administre encontros no Outro Ângulo." }, { property: "og:title", content: "Encontros — Administração Outro Ângulo" }, { property: "og:description", content: "Administre encontros no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AdminEvents,
 });

@@ -7,6 +7,7 @@ import { generateReport, emailMyReport } from "@/lib/reports.functions";
 import { brDate, reportSections, type AdminReport } from "@/lib/report-types";
 
 export const Route = createFileRoute("/_authenticated/admin/relatorios")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Relatórios — Administração Outro Ângulo" }, { name: "robots", content: "noindex" }] }),
   component: Reports,
 });

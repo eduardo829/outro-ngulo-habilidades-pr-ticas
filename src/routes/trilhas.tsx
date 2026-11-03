@@ -16,6 +16,7 @@ const T = "Trilhas — Outro Ângulo";
 const D = "Não comece pelo curso. Comece pela pergunta: trilhas que unem aulas, conversas, pessoas e encontros.";
 
 export const Route = createFileRoute("/trilhas")({
+  staticData: { sitemap: true },
   head: () => ({ meta: [{ title: T }, { name: "description", content: D }, { property: "og:title", content: T }, { property: "og:description", content: D }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Trilhas,
 });

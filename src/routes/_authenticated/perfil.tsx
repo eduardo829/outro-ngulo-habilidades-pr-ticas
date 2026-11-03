@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/lib/community";
 
 export const Route = createFileRoute("/_authenticated/perfil")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Meu perfil — Outro Ângulo" }, { name: "description", content: "Edite seu perfil e preferências." }, { property: "og:title", content: "Meu perfil — Outro Ângulo" }, { property: "og:description", content: "Edite seu perfil e preferências." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: ProfilePage,
 });
@@ -131,7 +132,7 @@ function ProfilePage() {
         </div>
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-card p-4">
           <div><p className="text-sm font-medium">Ofereço serviços profissionais</p><p className="text-xs text-muted-foreground">Crie um perfil de especialista. Ele é analisado pela equipe antes de aparecer.</p></div>
-          <Link to="/especialistas/painel" className="text-sm font-medium underline">Quero ser especialista</Link>
+          <Link to="/app/especialistas/painel" className="text-sm font-medium underline">Quero ser especialista</Link>
         </div>
         <div><Label htmlFor="link">LinkedIn ou link profissional (opcional)</Label><Input id="link" type="url" value={f.link} onChange={set("link")} placeholder="https://" /></div>
         <div className="flex items-center justify-between rounded-lg border bg-card p-4">

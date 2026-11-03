@@ -11,16 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AcademiaRouteImport } from './routes/academia'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ComoFuncionaRouteImport } from './routes/como-funciona'
+import { Route as ComunidadesRouteImport } from './routes/comunidades'
 import { Route as ConhecaAComunidadeRouteImport } from './routes/conheca-a-comunidade'
 import { Route as ConhecaOsEncontrosRouteImport } from './routes/conheca-os-encontros'
 import { Route as CorretorNaPraticaRouteImport } from './routes/corretor-na-pratica'
 import { Route as DiretrizesRouteImport } from './routes/diretrizes'
+import { Route as EspecialistasRouteImport } from './routes/especialistas'
 import { Route as FerramentasRouteImport } from './routes/ferramentas'
 import { Route as OportunidadesRouteImport } from './routes/oportunidades'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as TermosRouteImport } from './routes/termos'
 import { Route as TrilhasRouteImport } from './routes/trilhas'
@@ -59,14 +64,9 @@ import { Route as AuthenticatedAulaLessonIdRouteImport } from './routes/_authent
 import { Route as AuthenticatedCheckoutSlugRouteImport } from './routes/_authenticated/checkout.$slug'
 import { Route as AuthenticatedComunidadeIndexRouteImport } from './routes/_authenticated/comunidade.index'
 import { Route as AuthenticatedComunidadePostIdRouteImport } from './routes/_authenticated/comunidade.$postId'
-import { Route as AuthenticatedComunidadesIndexRouteImport } from './routes/_authenticated/comunidades.index'
-import { Route as AuthenticatedComunidadesSlugRouteImport } from './routes/_authenticated/comunidades.$slug'
 import { Route as AuthenticatedCursoSlugRouteImport } from './routes/_authenticated/curso.$slug'
 import { Route as AuthenticatedEncontrosIndexRouteImport } from './routes/_authenticated/encontros.index'
 import { Route as AuthenticatedEncontrosIdRouteImport } from './routes/_authenticated/encontros.$id'
-import { Route as AuthenticatedEspecialistasIndexRouteImport } from './routes/_authenticated/especialistas.index'
-import { Route as AuthenticatedEspecialistasIdRouteImport } from './routes/_authenticated/especialistas.$id'
-import { Route as AuthenticatedEspecialistasPainelRouteImport } from './routes/_authenticated/especialistas.painel'
 import { Route as AuthenticatedGestoresIdRouteImport } from './routes/_authenticated/gestores.$id'
 import { Route as AuthenticatedMensagensIndexRouteImport } from './routes/_authenticated/mensagens.index'
 import { Route as AuthenticatedMensagensIdRouteImport } from './routes/_authenticated/mensagens.$id'
@@ -78,6 +78,11 @@ import { Route as ApiPublicMercadopagoWebhookRouteImport } from './routes/api/pu
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 import { Route as AuthenticatedAdminCursosIndexRouteImport } from './routes/_authenticated/admin/cursos.index'
 import { Route as AuthenticatedAdminCursosIdRouteImport } from './routes/_authenticated/admin/cursos.$id'
+import { Route as AuthenticatedAppComunidadesIndexRouteImport } from './routes/_authenticated/app.comunidades.index'
+import { Route as AuthenticatedAppComunidadesSlugRouteImport } from './routes/_authenticated/app.comunidades.$slug'
+import { Route as AuthenticatedAppEspecialistasIndexRouteImport } from './routes/_authenticated/app.especialistas.index'
+import { Route as AuthenticatedAppEspecialistasIdRouteImport } from './routes/_authenticated/app.especialistas.$id'
+import { Route as AuthenticatedAppEspecialistasPainelRouteImport } from './routes/_authenticated/app.especialistas.painel'
 import { Route as AuthenticatedAprenderSlugIndexRouteImport } from './routes/_authenticated/aprender.$slug.index'
 import { Route as AuthenticatedAprenderSlugModuloRouteImport } from './routes/_authenticated/aprender.$slug.$modulo'
 import { Route as AuthenticatedAprenderSlugEspacoRouteImport } from './routes/_authenticated/aprender.$slug.espaco'
@@ -94,9 +99,24 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcademiaRoute = AcademiaRouteImport.update({
+  id: '/academia',
+  path: '/academia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComoFuncionaRoute = ComoFuncionaRouteImport.update({
+  id: '/como-funciona',
+  path: '/como-funciona',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadesRoute = ComunidadesRouteImport.update({
+  id: '/comunidades',
+  path: '/comunidades',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConhecaAComunidadeRoute = ConhecaAComunidadeRouteImport.update({
@@ -117,6 +137,11 @@ const CorretorNaPraticaRoute = CorretorNaPraticaRouteImport.update({
 const DiretrizesRoute = DiretrizesRouteImport.update({
   id: '/diretrizes',
   path: '/diretrizes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EspecialistasRoute = EspecialistasRouteImport.update({
+  id: '/especialistas',
+  path: '/especialistas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FerramentasRoute = FerramentasRouteImport.update({
@@ -142,6 +167,11 @@ const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -348,18 +378,6 @@ const AuthenticatedComunidadePostIdRoute =
     path: '/comunidade/$postId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedComunidadesIndexRoute =
-  AuthenticatedComunidadesIndexRouteImport.update({
-    id: '/comunidades/',
-    path: '/comunidades/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedComunidadesSlugRoute =
-  AuthenticatedComunidadesSlugRouteImport.update({
-    id: '/comunidades/$slug',
-    path: '/comunidades/$slug',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedCursoSlugRoute = AuthenticatedCursoSlugRouteImport.update({
   id: '/curso/$slug',
   path: '/curso/$slug',
@@ -375,24 +393,6 @@ const AuthenticatedEncontrosIdRoute =
   AuthenticatedEncontrosIdRouteImport.update({
     id: '/encontros/$id',
     path: '/encontros/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEspecialistasIndexRoute =
-  AuthenticatedEspecialistasIndexRouteImport.update({
-    id: '/especialistas/',
-    path: '/especialistas/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEspecialistasIdRoute =
-  AuthenticatedEspecialistasIdRouteImport.update({
-    id: '/especialistas/$id',
-    path: '/especialistas/$id',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedEspecialistasPainelRoute =
-  AuthenticatedEspecialistasPainelRouteImport.update({
-    id: '/especialistas/painel',
-    path: '/especialistas/painel',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedGestoresIdRoute = AuthenticatedGestoresIdRouteImport.update({
@@ -457,6 +457,36 @@ const AuthenticatedAdminCursosIdRoute =
     path: '/cursos/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAppComunidadesIndexRoute =
+  AuthenticatedAppComunidadesIndexRouteImport.update({
+    id: '/app/comunidades/',
+    path: '/app/comunidades/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppComunidadesSlugRoute =
+  AuthenticatedAppComunidadesSlugRouteImport.update({
+    id: '/app/comunidades/$slug',
+    path: '/app/comunidades/$slug',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppEspecialistasIndexRoute =
+  AuthenticatedAppEspecialistasIndexRouteImport.update({
+    id: '/app/especialistas/',
+    path: '/app/especialistas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppEspecialistasIdRoute =
+  AuthenticatedAppEspecialistasIdRouteImport.update({
+    id: '/app/especialistas/$id',
+    path: '/app/especialistas/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAppEspecialistasPainelRoute =
+  AuthenticatedAppEspecialistasPainelRouteImport.update({
+    id: '/app/especialistas/painel',
+    path: '/app/especialistas/painel',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAprenderSlugIndexRoute =
   AuthenticatedAprenderSlugIndexRouteImport.update({
     id: '/aprender/$slug/',
@@ -494,16 +524,21 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/trilhas': typeof TrilhasRoute
@@ -540,11 +575,8 @@ export interface FileRoutesByFullPath {
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
-  '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
-  '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
-  '/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -553,33 +585,41 @@ export interface FileRoutesByFullPath {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/comunidade/': typeof AuthenticatedComunidadeIndexRoute
-  '/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/encontros/': typeof AuthenticatedEncontrosIndexRoute
-  '/especialistas/': typeof AuthenticatedEspecialistasIndexRoute
   '/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/app/comunidades/$slug': typeof AuthenticatedAppComunidadesSlugRoute
+  '/app/especialistas/$id': typeof AuthenticatedAppEspecialistasIdRoute
+  '/app/especialistas/painel': typeof AuthenticatedAppEspecialistasPainelRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
+  '/app/comunidades/': typeof AuthenticatedAppComunidadesIndexRoute
+  '/app/especialistas/': typeof AuthenticatedAppEspecialistasIndexRoute
   '/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/trilhas': typeof TrilhasRoute
@@ -615,11 +655,8 @@ export interface FileRoutesByTo {
   '/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
-  '/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/encontros/$id': typeof AuthenticatedEncontrosIdRoute
-  '/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
-  '/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -628,35 +665,43 @@ export interface FileRoutesByTo {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/comunidade': typeof AuthenticatedComunidadeIndexRoute
-  '/comunidades': typeof AuthenticatedComunidadesIndexRoute
   '/encontros': typeof AuthenticatedEncontrosIndexRoute
-  '/especialistas': typeof AuthenticatedEspecialistasIndexRoute
   '/mensagens': typeof AuthenticatedMensagensIndexRoute
   '/missoes': typeof AuthenticatedMissoesIndexRoute
   '/pessoas': typeof AuthenticatedPessoasIndexRoute
   '/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/app/comunidades/$slug': typeof AuthenticatedAppComunidadesSlugRoute
+  '/app/especialistas/$id': typeof AuthenticatedAppEspecialistasIdRoute
+  '/app/especialistas/painel': typeof AuthenticatedAppEspecialistasPainelRoute
   '/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/admin/cursos': typeof AuthenticatedAdminCursosIndexRoute
+  '/app/comunidades': typeof AuthenticatedAppComunidadesIndexRoute
+  '/app/especialistas': typeof AuthenticatedAppEspecialistasIndexRoute
   '/aprender/$slug': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/academia': typeof AcademiaRoute
   '/auth': typeof AuthRoute
+  '/como-funciona': typeof ComoFuncionaRoute
+  '/comunidades': typeof ComunidadesRoute
   '/conheca-a-comunidade': typeof ConhecaAComunidadeRoute
   '/conheca-os-encontros': typeof ConhecaOsEncontrosRoute
   '/corretor-na-pratica': typeof CorretorNaPraticaRoute
   '/diretrizes': typeof DiretrizesRoute
+  '/especialistas': typeof EspecialistasRoute
   '/ferramentas': typeof FerramentasRoute
   '/oportunidades': typeof OportunidadesRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sobre': typeof SobreRoute
   '/termos': typeof TermosRoute
   '/trilhas': typeof TrilhasRoute
@@ -693,11 +738,8 @@ export interface FileRoutesById {
   '/_authenticated/aula/$lessonId': typeof AuthenticatedAulaLessonIdRoute
   '/_authenticated/checkout/$slug': typeof AuthenticatedCheckoutSlugRoute
   '/_authenticated/comunidade/$postId': typeof AuthenticatedComunidadePostIdRoute
-  '/_authenticated/comunidades/$slug': typeof AuthenticatedComunidadesSlugRoute
   '/_authenticated/curso/$slug': typeof AuthenticatedCursoSlugRoute
   '/_authenticated/encontros/$id': typeof AuthenticatedEncontrosIdRoute
-  '/_authenticated/especialistas/$id': typeof AuthenticatedEspecialistasIdRoute
-  '/_authenticated/especialistas/painel': typeof AuthenticatedEspecialistasPainelRoute
   '/_authenticated/gestores/$id': typeof AuthenticatedGestoresIdRoute
   '/_authenticated/mensagens/$id': typeof AuthenticatedMensagensIdRoute
   '/_authenticated/missoes/$key': typeof AuthenticatedMissoesKeyRoute
@@ -706,35 +748,43 @@ export interface FileRoutesById {
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/comunidade/': typeof AuthenticatedComunidadeIndexRoute
-  '/_authenticated/comunidades/': typeof AuthenticatedComunidadesIndexRoute
   '/_authenticated/encontros/': typeof AuthenticatedEncontrosIndexRoute
-  '/_authenticated/especialistas/': typeof AuthenticatedEspecialistasIndexRoute
   '/_authenticated/mensagens/': typeof AuthenticatedMensagensIndexRoute
   '/_authenticated/missoes/': typeof AuthenticatedMissoesIndexRoute
   '/_authenticated/pessoas/': typeof AuthenticatedPessoasIndexRoute
   '/_authenticated/admin/cursos/$id': typeof AuthenticatedAdminCursosIdRoute
+  '/_authenticated/app/comunidades/$slug': typeof AuthenticatedAppComunidadesSlugRoute
+  '/_authenticated/app/especialistas/$id': typeof AuthenticatedAppEspecialistasIdRoute
+  '/_authenticated/app/especialistas/painel': typeof AuthenticatedAppEspecialistasPainelRoute
   '/_authenticated/aprender/$slug/$modulo': typeof AuthenticatedAprenderSlugModuloRoute
   '/_authenticated/aprender/$slug/espaco': typeof AuthenticatedAprenderSlugEspacoRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/_authenticated/admin/cursos/': typeof AuthenticatedAdminCursosIndexRoute
+  '/_authenticated/app/comunidades/': typeof AuthenticatedAppComunidadesIndexRoute
+  '/_authenticated/app/especialistas/': typeof AuthenticatedAppEspecialistasIndexRoute
   '/_authenticated/aprender/$slug/': typeof AuthenticatedAprenderSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/trilhas'
@@ -771,11 +821,8 @@ export interface FileRouteTypes {
     | '/aula/$lessonId'
     | '/checkout/$slug'
     | '/comunidade/$postId'
-    | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
-    | '/especialistas/$id'
-    | '/especialistas/painel'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -784,33 +831,41 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/admin/'
     | '/comunidade/'
-    | '/comunidades/'
     | '/encontros/'
-    | '/especialistas/'
     | '/mensagens/'
     | '/missoes/'
     | '/pessoas/'
     | '/admin/cursos/$id'
+    | '/app/comunidades/$slug'
+    | '/app/especialistas/$id'
+    | '/app/especialistas/painel'
     | '/aprender/$slug/$modulo'
     | '/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
     | '/admin/cursos/'
+    | '/app/comunidades/'
+    | '/app/especialistas/'
     | '/aprender/$slug/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/trilhas'
@@ -846,11 +901,8 @@ export interface FileRouteTypes {
     | '/aula/$lessonId'
     | '/checkout/$slug'
     | '/comunidade/$postId'
-    | '/comunidades/$slug'
     | '/curso/$slug'
     | '/encontros/$id'
-    | '/especialistas/$id'
-    | '/especialistas/painel'
     | '/gestores/$id'
     | '/mensagens/$id'
     | '/missoes/$key'
@@ -859,34 +911,42 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/admin'
     | '/comunidade'
-    | '/comunidades'
     | '/encontros'
-    | '/especialistas'
     | '/mensagens'
     | '/missoes'
     | '/pessoas'
     | '/admin/cursos/$id'
+    | '/app/comunidades/$slug'
+    | '/app/especialistas/$id'
+    | '/app/especialistas/painel'
     | '/aprender/$slug/$modulo'
     | '/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
     | '/admin/cursos'
+    | '/app/comunidades'
+    | '/app/especialistas'
     | '/aprender/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/academia'
     | '/auth'
+    | '/como-funciona'
+    | '/comunidades'
     | '/conheca-a-comunidade'
     | '/conheca-os-encontros'
     | '/corretor-na-pratica'
     | '/diretrizes'
+    | '/especialistas'
     | '/ferramentas'
     | '/oportunidades'
     | '/privacidade'
     | '/recuperar-senha'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/sobre'
     | '/termos'
     | '/trilhas'
@@ -923,11 +983,8 @@ export interface FileRouteTypes {
     | '/_authenticated/aula/$lessonId'
     | '/_authenticated/checkout/$slug'
     | '/_authenticated/comunidade/$postId'
-    | '/_authenticated/comunidades/$slug'
     | '/_authenticated/curso/$slug'
     | '/_authenticated/encontros/$id'
-    | '/_authenticated/especialistas/$id'
-    | '/_authenticated/especialistas/painel'
     | '/_authenticated/gestores/$id'
     | '/_authenticated/mensagens/$id'
     | '/_authenticated/missoes/$key'
@@ -936,35 +993,43 @@ export interface FileRouteTypes {
     | '/api/public/stripe-webhook'
     | '/_authenticated/admin/'
     | '/_authenticated/comunidade/'
-    | '/_authenticated/comunidades/'
     | '/_authenticated/encontros/'
-    | '/_authenticated/especialistas/'
     | '/_authenticated/mensagens/'
     | '/_authenticated/missoes/'
     | '/_authenticated/pessoas/'
     | '/_authenticated/admin/cursos/$id'
+    | '/_authenticated/app/comunidades/$slug'
+    | '/_authenticated/app/especialistas/$id'
+    | '/_authenticated/app/especialistas/painel'
     | '/_authenticated/aprender/$slug/$modulo'
     | '/_authenticated/aprender/$slug/espaco'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
     | '/_authenticated/admin/cursos/'
+    | '/_authenticated/app/comunidades/'
+    | '/_authenticated/app/especialistas/'
     | '/_authenticated/aprender/$slug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AcademiaRoute: typeof AcademiaRoute
   AuthRoute: typeof AuthRoute
+  ComoFuncionaRoute: typeof ComoFuncionaRoute
+  ComunidadesRoute: typeof ComunidadesRoute
   ConhecaAComunidadeRoute: typeof ConhecaAComunidadeRoute
   ConhecaOsEncontrosRoute: typeof ConhecaOsEncontrosRoute
   CorretorNaPraticaRoute: typeof CorretorNaPraticaRoute
   DiretrizesRoute: typeof DiretrizesRoute
+  EspecialistasRoute: typeof EspecialistasRoute
   FerramentasRoute: typeof FerramentasRoute
   OportunidadesRoute: typeof OportunidadesRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SobreRoute: typeof SobreRoute
   TermosRoute: typeof TermosRoute
   TrilhasRoute: typeof TrilhasRoute
@@ -1001,11 +1066,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/academia': {
+      id: '/academia'
+      path: '/academia'
+      fullPath: '/academia'
+      preLoaderRoute: typeof AcademiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/como-funciona': {
+      id: '/como-funciona'
+      path: '/como-funciona'
+      fullPath: '/como-funciona'
+      preLoaderRoute: typeof ComoFuncionaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidades': {
+      id: '/comunidades'
+      path: '/comunidades'
+      fullPath: '/comunidades'
+      preLoaderRoute: typeof ComunidadesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conheca-a-comunidade': {
@@ -1034,6 +1120,13 @@ declare module '@tanstack/react-router' {
       path: '/diretrizes'
       fullPath: '/diretrizes'
       preLoaderRoute: typeof DiretrizesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/especialistas': {
+      id: '/especialistas'
+      path: '/especialistas'
+      fullPath: '/especialistas'
+      preLoaderRoute: typeof EspecialistasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ferramentas': {
@@ -1069,6 +1162,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -1337,20 +1437,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedComunidadePostIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/comunidades/': {
-      id: '/_authenticated/comunidades/'
-      path: '/comunidades'
-      fullPath: '/comunidades/'
-      preLoaderRoute: typeof AuthenticatedComunidadesIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/comunidades/$slug': {
-      id: '/_authenticated/comunidades/$slug'
-      path: '/comunidades/$slug'
-      fullPath: '/comunidades/$slug'
-      preLoaderRoute: typeof AuthenticatedComunidadesSlugRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/curso/$slug': {
       id: '/_authenticated/curso/$slug'
       path: '/curso/$slug'
@@ -1370,27 +1456,6 @@ declare module '@tanstack/react-router' {
       path: '/encontros/$id'
       fullPath: '/encontros/$id'
       preLoaderRoute: typeof AuthenticatedEncontrosIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/especialistas/': {
-      id: '/_authenticated/especialistas/'
-      path: '/especialistas'
-      fullPath: '/especialistas/'
-      preLoaderRoute: typeof AuthenticatedEspecialistasIndexRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/especialistas/$id': {
-      id: '/_authenticated/especialistas/$id'
-      path: '/especialistas/$id'
-      fullPath: '/especialistas/$id'
-      preLoaderRoute: typeof AuthenticatedEspecialistasIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/especialistas/painel': {
-      id: '/_authenticated/especialistas/painel'
-      path: '/especialistas/painel'
-      fullPath: '/especialistas/painel'
-      preLoaderRoute: typeof AuthenticatedEspecialistasPainelRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/gestores/$id': {
@@ -1469,6 +1534,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/cursos/$id'
       preLoaderRoute: typeof AuthenticatedAdminCursosIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/app/comunidades/': {
+      id: '/_authenticated/app/comunidades/'
+      path: '/app/comunidades'
+      fullPath: '/app/comunidades/'
+      preLoaderRoute: typeof AuthenticatedAppComunidadesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/comunidades/$slug': {
+      id: '/_authenticated/app/comunidades/$slug'
+      path: '/app/comunidades/$slug'
+      fullPath: '/app/comunidades/$slug'
+      preLoaderRoute: typeof AuthenticatedAppComunidadesSlugRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/especialistas/': {
+      id: '/_authenticated/app/especialistas/'
+      path: '/app/especialistas'
+      fullPath: '/app/especialistas/'
+      preLoaderRoute: typeof AuthenticatedAppEspecialistasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/especialistas/$id': {
+      id: '/_authenticated/app/especialistas/$id'
+      path: '/app/especialistas/$id'
+      fullPath: '/app/especialistas/$id'
+      preLoaderRoute: typeof AuthenticatedAppEspecialistasIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/especialistas/painel': {
+      id: '/_authenticated/app/especialistas/painel'
+      path: '/app/especialistas/painel'
+      fullPath: '/app/especialistas/painel'
+      preLoaderRoute: typeof AuthenticatedAppEspecialistasPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/aprender/$slug/': {
       id: '/_authenticated/aprender/$slug/'
@@ -1566,24 +1666,24 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAulaLessonIdRoute: typeof AuthenticatedAulaLessonIdRoute
   AuthenticatedCheckoutSlugRoute: typeof AuthenticatedCheckoutSlugRoute
   AuthenticatedComunidadePostIdRoute: typeof AuthenticatedComunidadePostIdRoute
-  AuthenticatedComunidadesSlugRoute: typeof AuthenticatedComunidadesSlugRoute
   AuthenticatedCursoSlugRoute: typeof AuthenticatedCursoSlugRoute
   AuthenticatedEncontrosIdRoute: typeof AuthenticatedEncontrosIdRoute
-  AuthenticatedEspecialistasIdRoute: typeof AuthenticatedEspecialistasIdRoute
-  AuthenticatedEspecialistasPainelRoute: typeof AuthenticatedEspecialistasPainelRoute
   AuthenticatedGestoresIdRoute: typeof AuthenticatedGestoresIdRoute
   AuthenticatedMensagensIdRoute: typeof AuthenticatedMensagensIdRoute
   AuthenticatedMissoesKeyRoute: typeof AuthenticatedMissoesKeyRoute
   AuthenticatedPessoasIdRoute: typeof AuthenticatedPessoasIdRoute
   AuthenticatedComunidadeIndexRoute: typeof AuthenticatedComunidadeIndexRoute
-  AuthenticatedComunidadesIndexRoute: typeof AuthenticatedComunidadesIndexRoute
   AuthenticatedEncontrosIndexRoute: typeof AuthenticatedEncontrosIndexRoute
-  AuthenticatedEspecialistasIndexRoute: typeof AuthenticatedEspecialistasIndexRoute
   AuthenticatedMensagensIndexRoute: typeof AuthenticatedMensagensIndexRoute
   AuthenticatedMissoesIndexRoute: typeof AuthenticatedMissoesIndexRoute
   AuthenticatedPessoasIndexRoute: typeof AuthenticatedPessoasIndexRoute
+  AuthenticatedAppComunidadesSlugRoute: typeof AuthenticatedAppComunidadesSlugRoute
+  AuthenticatedAppEspecialistasIdRoute: typeof AuthenticatedAppEspecialistasIdRoute
+  AuthenticatedAppEspecialistasPainelRoute: typeof AuthenticatedAppEspecialistasPainelRoute
   AuthenticatedAprenderSlugModuloRoute: typeof AuthenticatedAprenderSlugModuloRoute
   AuthenticatedAprenderSlugEspacoRoute: typeof AuthenticatedAprenderSlugEspacoRoute
+  AuthenticatedAppComunidadesIndexRoute: typeof AuthenticatedAppComunidadesIndexRoute
+  AuthenticatedAppEspecialistasIndexRoute: typeof AuthenticatedAppEspecialistasIndexRoute
   AuthenticatedAprenderSlugIndexRoute: typeof AuthenticatedAprenderSlugIndexRoute
 }
 
@@ -1602,24 +1702,26 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAulaLessonIdRoute: AuthenticatedAulaLessonIdRoute,
   AuthenticatedCheckoutSlugRoute: AuthenticatedCheckoutSlugRoute,
   AuthenticatedComunidadePostIdRoute: AuthenticatedComunidadePostIdRoute,
-  AuthenticatedComunidadesSlugRoute: AuthenticatedComunidadesSlugRoute,
   AuthenticatedCursoSlugRoute: AuthenticatedCursoSlugRoute,
   AuthenticatedEncontrosIdRoute: AuthenticatedEncontrosIdRoute,
-  AuthenticatedEspecialistasIdRoute: AuthenticatedEspecialistasIdRoute,
-  AuthenticatedEspecialistasPainelRoute: AuthenticatedEspecialistasPainelRoute,
   AuthenticatedGestoresIdRoute: AuthenticatedGestoresIdRoute,
   AuthenticatedMensagensIdRoute: AuthenticatedMensagensIdRoute,
   AuthenticatedMissoesKeyRoute: AuthenticatedMissoesKeyRoute,
   AuthenticatedPessoasIdRoute: AuthenticatedPessoasIdRoute,
   AuthenticatedComunidadeIndexRoute: AuthenticatedComunidadeIndexRoute,
-  AuthenticatedComunidadesIndexRoute: AuthenticatedComunidadesIndexRoute,
   AuthenticatedEncontrosIndexRoute: AuthenticatedEncontrosIndexRoute,
-  AuthenticatedEspecialistasIndexRoute: AuthenticatedEspecialistasIndexRoute,
   AuthenticatedMensagensIndexRoute: AuthenticatedMensagensIndexRoute,
   AuthenticatedMissoesIndexRoute: AuthenticatedMissoesIndexRoute,
   AuthenticatedPessoasIndexRoute: AuthenticatedPessoasIndexRoute,
+  AuthenticatedAppComunidadesSlugRoute: AuthenticatedAppComunidadesSlugRoute,
+  AuthenticatedAppEspecialistasIdRoute: AuthenticatedAppEspecialistasIdRoute,
+  AuthenticatedAppEspecialistasPainelRoute:
+    AuthenticatedAppEspecialistasPainelRoute,
   AuthenticatedAprenderSlugModuloRoute: AuthenticatedAprenderSlugModuloRoute,
   AuthenticatedAprenderSlugEspacoRoute: AuthenticatedAprenderSlugEspacoRoute,
+  AuthenticatedAppComunidadesIndexRoute: AuthenticatedAppComunidadesIndexRoute,
+  AuthenticatedAppEspecialistasIndexRoute:
+    AuthenticatedAppEspecialistasIndexRoute,
   AuthenticatedAprenderSlugIndexRoute: AuthenticatedAprenderSlugIndexRoute,
 }
 
@@ -1629,16 +1731,21 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AcademiaRoute: AcademiaRoute,
   AuthRoute: AuthRoute,
+  ComoFuncionaRoute: ComoFuncionaRoute,
+  ComunidadesRoute: ComunidadesRoute,
   ConhecaAComunidadeRoute: ConhecaAComunidadeRoute,
   ConhecaOsEncontrosRoute: ConhecaOsEncontrosRoute,
   CorretorNaPraticaRoute: CorretorNaPraticaRoute,
   DiretrizesRoute: DiretrizesRoute,
+  EspecialistasRoute: EspecialistasRoute,
   FerramentasRoute: FerramentasRoute,
   OportunidadesRoute: OportunidadesRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SobreRoute: SobreRoute,
   TermosRoute: TermosRoute,
   TrilhasRoute: TrilhasRoute,

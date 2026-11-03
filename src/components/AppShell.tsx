@@ -97,7 +97,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Icon className="h-4 w-4" aria-hidden />{label}
               </Link>
               {to === "/mural" && (specialists.data || isAdmin) && (
-                <Link to="/especialistas" className={linkCls} activeProps={active}><BriefcaseBusiness className="h-4 w-4" aria-hidden />Especialistas</Link>
+                <Link to="/app/especialistas" className={linkCls} activeProps={active}><BriefcaseBusiness className="h-4 w-4" aria-hidden />Especialistas</Link>
               )}
             </Fragment>
           ))}

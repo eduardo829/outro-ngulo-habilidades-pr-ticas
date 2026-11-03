@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/admin/cursos/")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Cursos — Administração Outro Ângulo" }, { name: "description", content: "Administre cursos no Outro Ângulo." }, { property: "og:title", content: "Cursos — Administração Outro Ângulo" }, { property: "og:description", content: "Administre cursos no Outro Ângulo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AdminCourses,
 });

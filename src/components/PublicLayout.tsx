@@ -10,13 +10,11 @@ import { openCookieSettings } from "@/lib/consent";
 import { MetaPixel } from "@/components/MetaPixel";
 
 const NAV = [
-  { to: "/trilhas", label: "Trilhas" },
-  { to: "/ferramentas", label: "Ferramentas" },
-  { to: "/cursos", label: "Cursos" },
-  { to: "/conheca-a-comunidade", label: "Comunidade" },
-  { to: "/conheca-os-encontros", label: "Encontros" },
+  { to: "/", label: "Início" },
+  { to: "/comunidades", label: "Comunidades" },
+  { to: "/especialistas", label: "Especialistas" },
   { to: "/oportunidades", label: "Oportunidades" },
-  { to: "/gestores", label: "Gestores" },
+  { to: "/academia", label: "Academia" },
   { to: "/sobre", label: "Sobre" },
 ] as const;
 
@@ -86,10 +84,11 @@ export function PublicLayout({ children }: { children: ReactNode }) {
             <p className="mt-2 max-w-xs text-sm opacity-65">Habilidades para a vida que não veio com manual.</p>
           </div>
           <nav className="flex flex-col gap-2 text-sm opacity-85">
-            <Link to="/trilhas">Trilhas</Link>
-            <Link to="/cursos">Cursos</Link>
-            <Link to="/conheca-a-comunidade">Comunidade</Link>
-            <Link to="/conheca-os-encontros">Encontros</Link>
+            <Link to="/comunidades">Comunidades</Link>
+            <Link to="/especialistas">Especialistas</Link>
+            <Link to="/oportunidades">Oportunidades</Link>
+            <Link to="/academia">Academia</Link>
+            <Link to="/como-funciona">Como funciona</Link>
             <Link to="/sobre">Sobre o projeto</Link>
             <Link to="/diretrizes">Diretrizes da comunidade</Link>
           </nav>
