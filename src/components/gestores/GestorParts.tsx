@@ -93,7 +93,7 @@ export function KnowledgeGraph({ g }: { g: GestorProfile }) {
 export function Connections({ g }: { g: GestorProfile }) {
   const tracks = g.learning_tracks.filter((t) => TRILHAS.some((x) => x.title === t));
   const rows = [
-    { k: "Discutindo", items: g.discussions, to: "/conheca-a-comunidade" as const, cta: "Ver comunidade" },
+    { k: "Discutindo", items: g.discussions, to: "/comunidades" as const, cta: "Ver comunidade" },
     { k: "Ferramentas", items: g.tools, to: "/trilhas" as const, cta: "Ver trilhas" },
     { k: "Trilhas", items: tracks.length ? tracks.map((t) => ({ title: t })) : [{ title: "[trilhas]" }], to: "/trilhas" as const, cta: "Começar" },
     { k: "Encontros", items: g.events, to: "/conheca-os-encontros" as const, cta: "Ver encontros" },
@@ -141,7 +141,7 @@ export function DoisAngulos({ n }: { n?: string }) {
         </div>
         <div className="mt-12 flex flex-wrap items-center gap-4 border-t pt-6">
           <p className="font-display text-2xl font-extrabold">E você?</p>
-          <Link to="/conheca-a-comunidade" className="link-arrow inline-flex items-center gap-1 text-sm font-semibold">Entrar na conversa<ArrowRight className="h-4 w-4" /></Link>
+          <Link to="/comunidades" className="link-arrow inline-flex items-center gap-1 text-sm font-semibold">Entrar na conversa<ArrowRight className="h-4 w-4" /></Link>
         </div>
       </div>
     </section>
