@@ -90,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen md:grid md:grid-cols-[232px_minmax(0,1fr)]">
       <aside className="sticky top-0 hidden h-screen flex-col border-r bg-sidebar p-4 md:flex">
         <Link to="/inicio" className="px-2 py-2"><Logo /></Link>
-        <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Navegação principal">
+        <nav className="mt-6 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto" aria-label="Navegação principal">
           {NAV.map(({ to, label, icon: Icon }) => (
             <Fragment key={to}>
               <Link to={to} className={linkCls} activeProps={active}>
@@ -114,6 +114,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link key={to} to={to} className={linkCls} activeOptions={{ exact: true }} activeProps={active}><Icon className="h-4 w-4" aria-hidden />{label}</Link>
           ))}
         </nav>
+        <Link to="/" className={cn(linkCls, "mb-1")}><Globe className="h-4 w-4" aria-hidden />Voltar ao site</Link>
         <button onClick={signOut} className={linkCls}><LogOut className="h-4 w-4" aria-hidden />Sair</button>
       </aside>
 
@@ -121,7 +122,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur md:hidden">
           <Link to="/inicio"><Logo /></Link>
           <div className="flex items-center">
-            <Link to="/" className={iconBtn} aria-label="Ir para o site"><Globe className="h-5 w-5" /></Link>
+            <Link to="/" className={iconBtn} aria-label="Voltar ao site"><Globe className="h-5 w-5" /></Link>
             <Link to="/mensagens" className={iconBtn} aria-label="Mensagens"><Mail className="h-5 w-5" /><Badge n={unread.data?.messages} /></Link>
             <Link to="/notificacoes" className={iconBtn} aria-label="Notificações"><Bell className="h-5 w-5" /><Badge n={unread.data?.all} /></Link>
             <Link to="/perfil" className={iconBtn} aria-label="Meu perfil"><User className="h-5 w-5" /></Link>
