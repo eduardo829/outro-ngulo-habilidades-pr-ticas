@@ -12,7 +12,7 @@ import { RequestForm } from "@/components/specialists/RequestForm";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/_authenticated/especialistas/$id")({
+export const Route = createFileRoute("/_authenticated/app/especialistas/$id")({
   head: () => ({ meta: [{ title: "Especialista — Outro Ângulo" }, { name: "description", content: "Perfil profissional na comunidade Outro Ângulo." }, { property: "og:title", content: "Especialista — Outro Ângulo" }, { property: "og:description", content: "Perfil profissional na comunidade Outro Ângulo." }, { property: "og:type", content: "profile" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Profile,
 });
@@ -37,7 +37,7 @@ function Profile() {
   });
   if (q.isLoading) return <Page><p className="text-muted-foreground">Carregando…</p></Page>;
   const p = q.data;
-  if (!p) return <Page><p>Perfil não encontrado ou ainda não aprovado.</p><Link to="/especialistas" className="underline">Voltar aos especialistas</Link></Page>;
+  if (!p) return <Page><p>Perfil não encontrado ou ainda não aprovado.</p><Link to="/app/especialistas" className="underline">Voltar aos especialistas</Link></Page>;
   const name = p.person?.display_name ?? "Profissional";
   const badge = badgeFor(p);
   const portfolio = (Array.isArray(p.portfolio) ? p.portfolio : []) as Link_[];
@@ -47,7 +47,7 @@ function Profile() {
   }
   return (
     <Page narrow>
-      <Link to="/especialistas" className="text-sm text-muted-foreground hover:underline">← Especialistas</Link>
+      <Link to="/app/especialistas" className="text-sm text-muted-foreground hover:underline">← Especialistas</Link>
       {p.status !== "approved" && <p className="mt-4 rounded-md bg-secondary p-3 text-sm">Pré-visualização: este perfil ainda não está público.</p>}
       <div className="mt-6 flex items-start gap-4">
         <Avatar name={name} url={p.person?.avatar_url} size="lg" />

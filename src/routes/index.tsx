@@ -204,9 +204,9 @@ function Home() {
               )}
               <div className="mt-8 flex flex-wrap items-center gap-6">
                 <Button asChild size="lg" className="bg-highlight text-highlight-foreground hover:bg-highlight/90">
-                  <MemberLink to="/especialistas" member="Encontrar um especialista" visitor="Encontrar um especialista" />
+                  <MemberLink to="/app/especialistas" member="Encontrar um especialista" visitor="Encontrar um especialista" />
                 </Button>
-                <MemberLink to="/especialistas" member="Quero oferecer meus serviços" visitor="Quero oferecer meus serviços" className="link-arrow nav-line text-sm" />
+                <MemberLink to="/app/especialistas" member="Quero oferecer meus serviços" visitor="Quero oferecer meus serviços" className="link-arrow nav-line text-sm" />
               </div>
             </div>
           </div>

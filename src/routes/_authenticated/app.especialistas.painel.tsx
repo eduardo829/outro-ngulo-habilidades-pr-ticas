@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useNavigate } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/especialistas/painel")({
+export const Route = createFileRoute("/_authenticated/app/especialistas/painel")({
   head: () => ({ meta: [{ title: "Meu perfil profissional — Outro Ângulo" }, { name: "description", content: "Cadastre seu perfil profissional e acompanhe solicitações de serviço." }, { property: "og:title", content: "Meu perfil profissional — Outro Ângulo" }, { property: "og:description", content: "Cadastre seu perfil profissional e acompanhe solicitações de serviço." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: Painel,
 });
@@ -76,7 +76,7 @@ function Painel() {
 
   return (
     <Page narrow>
-      <Link to="/especialistas" className="text-sm text-muted-foreground hover:underline">← Especialistas</Link>
+      <Link to="/app/especialistas" className="text-sm text-muted-foreground hover:underline">← Especialistas</Link>
       <h1 className="mt-4 text-3xl font-extrabold">Meu perfil profissional</h1>
       <p className="mt-2 text-muted-foreground">Seu perfil só aparece no diretório depois de aprovado pela equipe e com sua autorização. Editar dados principais de um perfil aprovado o envia de novo para análise.</p>
       <p className="mt-3 text-sm">Situação: <Tag tone="primary">{mine.data ? STATUS_LABEL[status] : "Ainda não criado"}</Tag>{mine.data?.verified_at && <span className="ml-2 text-primary">· Verificado</span>}</p>
@@ -101,7 +101,7 @@ function Painel() {
           <Button variant="outline" disabled={busy || status === "suspended"} onClick={() => save(false)}>Salvar rascunho</Button>
           {status === "draft" && <Button disabled={busy} onClick={() => save(true)}>Enviar para análise</Button>}
           {status !== "draft" && status !== "suspended" && <Button disabled={busy} onClick={() => save(false)}>Salvar alterações</Button>}
-          {mine.data && <Button variant="ghost" asChild><Link to="/especialistas/$id" params={{ id: user!.id }}>Ver como fica</Link></Button>}
+          {mine.data && <Button variant="ghost" asChild><Link to="/app/especialistas/$id" params={{ id: user!.id }}>Ver como fica</Link></Button>}
         </div>
       </div>
 

@@ -13,7 +13,7 @@ import { VISIBILITY_LABEL } from "@/lib/ecosystem";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/_authenticated/comunidades/$slug")({
+export const Route = createFileRoute("/_authenticated/app/comunidades/$slug")({
   head: () => ({ meta: [{ title: "Comunidade — Outro Ângulo" }, { name: "description", content: "Feed, membros e eventos da comunidade." }, { property: "og:title", content: "Comunidade — Outro Ângulo" }, { property: "og:description", content: "Feed, membros e eventos da comunidade." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: CommunityPage,
 });
@@ -58,7 +58,7 @@ function CommunityPage() {
   });
 
   if (c.isLoading) return <Page><p className="text-muted-foreground">Carregando…</p></Page>;
-  if (!c.data) return <Page><p>Comunidade não encontrada ou indisponível. <Link to="/comunidades" className="text-primary underline">Ver comunidades</Link></p></Page>;
+  if (!c.data) return <Page><p>Comunidade não encontrada ou indisponível. <Link to="/app/comunidades" className="text-primary underline">Ver comunidades</Link></p></Page>;
   const com = c.data;
   const isMod = isAdmin || com.myRole === "moderator" || com.myRole === "admin";
 

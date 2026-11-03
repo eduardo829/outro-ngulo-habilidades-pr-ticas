@@ -66,7 +66,7 @@ function Admin() {
           <p className="mb-4 text-sm text-muted-foreground">"Aprovar" publica como Profissional cadastrado. "Verificar" só depois de conferir identidade e, para profissões regulamentadas, o registro no órgão (OAB, CRC…).</p>
           {d.pros.length ? <ul className="divide-y">{d.pros.map((p) => (
             <li key={p.user_id} className="py-4 text-sm">
-              <div className="flex flex-wrap items-center gap-2"><Link to="/especialistas/$id" params={{ id: p.user_id }} className="font-bold hover:underline">{d.name(p.user_id)}</Link><Tag tone="primary">{STATUS_LABEL[p.status as ProStatus]}</Tag>{p.verified_at && <Tag>Verificado</Tag>}{!p.consent_public && <Tag>Sem autorização de exibição</Tag>}</div>
+              <div className="flex flex-wrap items-center gap-2"><Link to="/app/especialistas/$id" params={{ id: p.user_id }} className="font-bold hover:underline">{d.name(p.user_id)}</Link><Tag tone="primary">{STATUS_LABEL[p.status as ProStatus]}</Tag>{p.verified_at && <Tag>Verificado</Tag>}{!p.consent_public && <Tag>Sem autorização de exibição</Tag>}</div>
               <p className="text-muted-foreground">{p.headline} · {p.categories.map((c) => SPECIALIST_CATEGORIES[c]).join(", ")}</p>
               {Array.isArray(p.credentials) && p.credentials.length > 0 && <p className="text-xs">Credenciais: {(p.credentials as { type?: string; number?: string; issuer?: string }[]).map((c) => [c.type, c.number, c.issuer].filter(Boolean).join(" ")).join("; ")}</p>}
               <div className="mt-2 flex flex-wrap gap-2">

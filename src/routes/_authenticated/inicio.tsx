@@ -104,8 +104,8 @@ function Dashboard() {
           <h1 className="mt-3 text-3xl font-extrabold md:text-5xl">Olá{first ? `, ${first}` : ""}.</h1>
           <p className="mt-2 text-lg text-ink-foreground/80">O que você pode aprender, fazer ou conquistar hoje?</p>
           <div className="mt-4 flex flex-wrap gap-2 md:justify-end">
-            <Button asChild size="sm" className="bg-highlight text-highlight-foreground hover:bg-highlight/90"><Link to="/comunidades/$slug" params={{ slug: "empreender-do-zero" }}>Publicar</Link></Button>
-            <Button asChild size="sm" variant="outline" className="border-ink-foreground/40 bg-transparent text-ink-foreground hover:bg-ink-foreground/10"><Link to="/comunidades">Explorar comunidades</Link></Button>
+            <Button asChild size="sm" className="bg-highlight text-highlight-foreground hover:bg-highlight/90"><Link to="/app/comunidades/$slug" params={{ slug: "empreender-do-zero" }}>Publicar</Link></Button>
+            <Button asChild size="sm" variant="outline" className="border-ink-foreground/40 bg-transparent text-ink-foreground hover:bg-ink-foreground/10"><Link to="/app/comunidades">Explorar comunidades</Link></Button>
           </div>
           <span aria-hidden className="mt-5 block h-px w-16 bg-highlight" />
         </div>
@@ -149,7 +149,7 @@ function Dashboard() {
         <section>
           <SectionTitle action={more("/comunidades")}>Acontecendo na comunidade</SectionTitle>
           <div className="rounded-xl border bg-card px-5">
-            {feed.data?.length ? feed.data.map((p) => <PostCard key={p.id} p={p} me={user!.id} compact />) : <p className="py-6 text-muted-foreground">Ainda sem publicações. <Link to="/comunidades/$slug" params={{ slug: "empreender-do-zero" }} className="text-primary underline">Comece uma conversa</Link>.</p>}
+            {feed.data?.length ? feed.data.map((p) => <PostCard key={p.id} p={p} me={user!.id} compact />) : <p className="py-6 text-muted-foreground">Ainda sem publicações. <Link to="/app/comunidades/$slug" params={{ slug: "empreender-do-zero" }} className="text-primary underline">Comece uma conversa</Link>.</p>}
           </div>
         </section>
         <section>
