@@ -1648,6 +1648,166 @@ export type Database = {
           },
         ]
       }
+      partner_clicks: {
+        Row: {
+          created_at: string
+          id: number
+          is_member: boolean
+          partner_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_member?: boolean
+          partner_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_member?: boolean
+          partner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_clicks_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_proposals: {
+        Row: {
+          admin_note: string | null
+          area: string | null
+          company: string | null
+          country: string | null
+          created_at: string
+          email: string
+          id: string
+          interest: string
+          ip_hash: string | null
+          is_member: boolean
+          link: string | null
+          name: string
+          origin: string | null
+          partner_id: string | null
+          proposal: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_note?: string | null
+          area?: string | null
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          interest: string
+          ip_hash?: string | null
+          is_member?: boolean
+          link?: string | null
+          name: string
+          origin?: string | null
+          partner_id?: string | null
+          proposal: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_note?: string | null
+          area?: string | null
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          interest?: string
+          ip_hash?: string | null
+          is_member?: boolean
+          link?: string | null
+          name?: string
+          origin?: string | null
+          partner_id?: string | null
+          proposal?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_proposals_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partners: {
+        Row: {
+          areas: string[]
+          category: string
+          city: string | null
+          country: string
+          created_at: string
+          description: string
+          id: string
+          kind: string
+          logo_url: string | null
+          name: string
+          partnership_types: string[]
+          position: number
+          published: boolean
+          relation: string | null
+          slug: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          areas?: string[]
+          category: string
+          city?: string | null
+          country: string
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          logo_url?: string | null
+          name: string
+          partnership_types?: string[]
+          position?: number
+          published?: boolean
+          relation?: string | null
+          slug: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          areas?: string[]
+          category?: string
+          city?: string | null
+          country?: string
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          logo_url?: string | null
+          name?: string
+          partnership_types?: string[]
+          position?: number
+          published?: boolean
+          relation?: string | null
+          slug?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       plan_actions: {
         Row: {
           created_at: string

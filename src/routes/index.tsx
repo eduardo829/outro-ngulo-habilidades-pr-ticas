@@ -10,6 +10,7 @@ import { publishedCoursesQuery, settingsQuery } from "@/lib/queries";
 import { CourseCard } from "@/components/CourseCard";
 import { GESTORES } from "@/lib/gestores";
 import { Angle, SectionLabel } from "@/components/Angle";
+import { PartnerGrid, partnersQuery } from "@/components/partners/Partners";
 
 export const Route = createFileRoute("/")({
   staticData: { sitemap: true },
@@ -296,6 +297,9 @@ function Home() {
         </div>
       </section>
 
+      {/* Parceiros fundadores */}
+      <FoundingPartners />
+
       {/* Convite final */}
       <section className="relative overflow-hidden bg-ink text-ink-foreground">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-10 px-5 py-20 md:flex-row md:items-end md:py-28">
@@ -309,5 +313,24 @@ function Home() {
         </div>
       </section>
     </PublicLayout>
+  );
+}
+
+function FoundingPartners() {
+  const { data = [] } = useQuery(partnersQuery);
+  const founders = data.filter((p) => p.kind === "founder");
+  if (!founders.length) return null;
+  return (
+    <section className="border-t">
+      <div className="mx-auto max-w-6xl px-5 py-20 md:py-28">
+        <SectionLabel>Parceiros fundadores</SectionLabel>
+        <h2 className="mt-8 max-w-3xl text-3xl font-bold md:text-4xl">Experiência real. Conexões internacionais.</h2>
+        <p className="mt-6 max-w-2xl leading-relaxed text-muted-foreground">
+          O Outro Ângulo nasce da experiência de quem constrói e desenvolve negócios na prática. Conheça algumas das empresas e iniciativas vinculadas ao nosso fundador, incluindo operações no Reino Unido.
+        </p>
+        <div className="mt-12"><PartnerGrid partners={founders} origin="home" /></div>
+        <Link to="/parceiros" className="link-arrow nav-line mt-10 inline-block text-sm">Ver todos os parceiros</Link>
+      </div>
+    </section>
   );
 }
