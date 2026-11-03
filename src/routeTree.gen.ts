@@ -49,6 +49,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
 import { Route as AuthenticatedAdminComunidadeRouteImport } from './routes/_authenticated/admin/comunidade'
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
+import { Route as AuthenticatedAdminEcossistemaRouteImport } from './routes/_authenticated/admin/ecossistema'
 import { Route as AuthenticatedAdminEncontrosRouteImport } from './routes/_authenticated/admin/encontros'
 import { Route as AuthenticatedAdminGestoresRouteImport } from './routes/_authenticated/admin/gestores'
 import { Route as AuthenticatedAdminModeracaoRouteImport } from './routes/_authenticated/admin/moderacao'
@@ -285,6 +286,12 @@ const AuthenticatedAdminConfiguracoesRoute =
   AuthenticatedAdminConfiguracoesRouteImport.update({
     id: '/configuracoes',
     path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminEcossistemaRoute =
+  AuthenticatedAdminEcossistemaRouteImport.update({
+    id: '/ecossistema',
+    path: '/ecossistema',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminEncontrosRoute =
@@ -524,6 +531,7 @@ export interface FileRoutesByFullPath {
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/ecossistema': typeof AuthenticatedAdminEcossistemaRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
@@ -598,6 +606,7 @@ export interface FileRoutesByTo {
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/ecossistema': typeof AuthenticatedAdminEcossistemaRoute
   '/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
@@ -675,6 +684,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
   '/_authenticated/admin/comunidade': typeof AuthenticatedAdminComunidadeRoute
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/admin/ecossistema': typeof AuthenticatedAdminEcossistemaRoute
   '/_authenticated/admin/encontros': typeof AuthenticatedAdminEncontrosRoute
   '/_authenticated/admin/gestores': typeof AuthenticatedAdminGestoresRoute
   '/_authenticated/admin/moderacao': typeof AuthenticatedAdminModeracaoRoute
@@ -752,6 +762,7 @@ export interface FileRouteTypes {
     | '/admin/alunos'
     | '/admin/comunidade'
     | '/admin/configuracoes'
+    | '/admin/ecossistema'
     | '/admin/encontros'
     | '/admin/gestores'
     | '/admin/moderacao'
@@ -826,6 +837,7 @@ export interface FileRouteTypes {
     | '/admin/alunos'
     | '/admin/comunidade'
     | '/admin/configuracoes'
+    | '/admin/ecossistema'
     | '/admin/encontros'
     | '/admin/gestores'
     | '/admin/moderacao'
@@ -902,6 +914,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/alunos'
     | '/_authenticated/admin/comunidade'
     | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/admin/ecossistema'
     | '/_authenticated/admin/encontros'
     | '/_authenticated/admin/gestores'
     | '/_authenticated/admin/moderacao'
@@ -1254,6 +1267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/ecossistema': {
+      id: '/_authenticated/admin/ecossistema'
+      path: '/ecossistema'
+      fullPath: '/admin/ecossistema'
+      preLoaderRoute: typeof AuthenticatedAdminEcossistemaRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/encontros': {
       id: '/_authenticated/admin/encontros'
       path: '/encontros'
@@ -1499,6 +1519,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAlunosRoute: typeof AuthenticatedAdminAlunosRoute
   AuthenticatedAdminComunidadeRoute: typeof AuthenticatedAdminComunidadeRoute
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminEcossistemaRoute: typeof AuthenticatedAdminEcossistemaRoute
   AuthenticatedAdminEncontrosRoute: typeof AuthenticatedAdminEncontrosRoute
   AuthenticatedAdminGestoresRoute: typeof AuthenticatedAdminGestoresRoute
   AuthenticatedAdminModeracaoRoute: typeof AuthenticatedAdminModeracaoRoute
@@ -1514,6 +1535,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminAlunosRoute: AuthenticatedAdminAlunosRoute,
     AuthenticatedAdminComunidadeRoute: AuthenticatedAdminComunidadeRoute,
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+    AuthenticatedAdminEcossistemaRoute: AuthenticatedAdminEcossistemaRoute,
     AuthenticatedAdminEncontrosRoute: AuthenticatedAdminEncontrosRoute,
     AuthenticatedAdminGestoresRoute: AuthenticatedAdminGestoresRoute,
     AuthenticatedAdminModeracaoRoute: AuthenticatedAdminModeracaoRoute,

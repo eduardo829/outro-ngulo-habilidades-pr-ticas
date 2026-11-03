@@ -39,7 +39,6 @@ function Admin() {
     const { error } = await supabase.from("professional_profiles").update(patch).eq("user_id", id);
     if (error) return toast.error("Não foi possível atualizar.");
     await logAction(action, "professional", id);
-    if (patch.status === "approved" || action === "verify") await supabase.from("notifications").insert({ user_id: id, kind: "service", title: action === "verify" ? "Seu perfil profissional foi verificado" : "Seu perfil profissional foi aprovado", link: "/especialistas/painel" }).then(() => {});
     refresh();
   }
   async function forward(reqId: string, proId: string) {
