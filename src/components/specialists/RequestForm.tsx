@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-export function RequestForm({ professionalId, defaultCategory, onDone }: { professionalId?: string; defaultCategory?: string; onDone: () => void }) {
+export function RequestForm({ professionalId, defaultCategory, onDone }: { professionalId?: string | undefined; defaultCategory?: string | undefined; onDone: () => void }) {
   const { user } = useAuth();
   const [f, setF] = useState({ category: defaultCategory ?? "ia", need: "", budget: "", deadline: "", city: "", remote: true });
   const [busy, setBusy] = useState(false);
