@@ -90,7 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="min-h-screen md:grid md:grid-cols-[232px_minmax(0,1fr)]">
       <aside className="sticky top-0 hidden h-screen flex-col border-r bg-sidebar p-4 md:flex">
         <Link to="/inicio" className="px-2 py-2"><Logo /></Link>
-        <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Navegação principal">
+        <nav className="mt-6 flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto" aria-label="Navegação principal">
           {NAV.map(({ to, label, icon: Icon }) => (
             <Fragment key={to}>
               <Link to={to} className={linkCls} activeProps={active}>
